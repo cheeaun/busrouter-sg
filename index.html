@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Singapore Bus Routes Explorer</title>
+<!--
+	Hey you, fork me at https://github.com/cheeaun/busrouter-sg
+-->
+<meta name="google" value="notranslate">
+<style>
+html, body{
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+	font-family: sans-serif;
+	font-size: 16px;
+}
+#map{
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 320px;
+	height: 100%;
+}
+#sidebar{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 320px;
+}
+#sidebar section{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background-color: #f7f7f7;
+}
+#sidebar h1{
+	color: #fff;
+	background-color: #7ac000;
+	margin: 0;
+	padding: 0 16px;
+	height: 32px;
+	line-height: 32px;
+	font-size: 16px;
+}
+#sidebar h1 b{
+	font-weight: bold;
+}
+#sidebar h1 a{
+	color: #fff;
+	text-decoration: none;
+}
+#sidebar section>div{
+	position: absolute;
+	top: 32px;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	width: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	-webkit-overflow-scrolling: touch;
+}
+#sidebar section div h2{
+	color: #999;
+	background-color: #f7f7f7;
+	margin: 0;
+	padding: 0 16px;
+	height: 24px;
+	line-height: 24px;
+	font-size: 12px;
+	border-bottom: 1px solid #ededed;
+}
+#sidebar section div ul{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#sidebar section div ul li{
+	display: inline;
+}
+#sidebar section div ul li a{
+	text-decoration: none;
+	color: #333;
+	background-color: #fff;
+	display: block;
+	padding: 0 16px;
+	height: 32px;
+	line-height: 32px;
+	border-bottom: 1px solid #ededed;
+	overflow: hidden;
+	cursor: pointer;
+}
+#sidebar section#bus-services-section div ul li a.selected{
+	color: #fff;
+	background-color: #95cf29;
+}
+#sidebar section#bus-routes-section div ul li a.selected .tag{
+	color: #fff;
+	background-color: #95cf29;
+}
+#sidebar section div ul li a.stop-a{
+	padding-left: 48px;
+	background: #fff url(http://gothere.sg/static/img/icons/api/marker_A.png) no-repeat 10px 2px;
+}
+#sidebar section div ul li a.stop-b{
+	padding-left: 48px;
+	background: #fff url(http://gothere.sg/static/img/icons/api/marker_B.png) no-repeat 10px 2px;
+}
+#sidebar section div ul li a.stop{
+	padding-left: 48px;
+	background: #fff url(assets/dot.png) no-repeat 16px center;
+}
+#sidebar section div ul li a .tag{
+	vertical-align: middle;
+	display: inline-block;
+	font-weight: bold;
+	font-size: 12px;
+	color: #999;
+	background-color: #ededed;
+	padding: 3px 5px;
+	margin: 0 5px 0 0;
+	line-height: 1em;
+	border-radius: 4px;
+}
+#sidebar section .tab{
+	width: 50%;
+	color: #999;
+	display: inline-block;
+	text-align: center;
+	padding: 7px 0;
+	font-weight: bold;
+	font-size: 14px;
+	text-decoration: none;
+	border-bottom: 1px solid #ededed;
+}
+#sidebar section .tab:hover{
+	color: #95cf29;
+}
+#sidebar section .tab.selected{
+	border-color: #fff;
+	color: #000;
+	background-color: #fff;
+}
+.arrow{
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 10px;
+	opacity: .6;
+}
+#bus-routes-section{
+	-webkit-transition-property: -webkit-transform, opacity;
+	-webkit-transition-duration: .3s;
+	-moz-transition-property: -moz-transform, opacity;
+	-moz-transition-duration: .3s;
+	transition-property: transform, opacity;
+	transition-duration: .3s;
+}
+#bus-routes-section.hidden{
+	opacity: 0;
+	-webkit-transform: translate3d(100%, 0, 0);
+	-moz-transform: translateX(100%);
+	transform: translateX(100%);
+}
+</style>
+<aside id="sidebar">
+<section id="bus-services-section">
+	<h1>Bus Services</h1>
+	<div id="bus-services"></div>
+</section>
+<section id="bus-routes-section" class="hidden">
+	<h1><a href="#/">Bus Services</a> <span class="arrow">&#9658;</span> <b></b></h1>
+	<div id="bus-routes"></div>
+</section>
+</aside>
+<div id="map"></div>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/zepto/0.8/zepto.min.js"></script>
+<script src="assets/director.js"></script>
+<script src="assets/amplify.store.js"></script>
+<script src="http://gothere.sg/jsapi?sensor=false"></script>
+<script>
+(function(){
+	var map, busServices, busStops, markers;
+
+	var init = function(){
+		if (!map || !busServices || !busStops) return;
+		
+		var html = '';
+		var $busServices = $('#bus-services');
+		$.each(busServices, function(k, v){
+			html += '<h2>' + k + '</h2><ul>';
+			for (var i=0, l=v.length; i<l; i++){
+				var service = v[i],
+					no = service.no;
+				html += '<li><a href="#/service/' + no + '" id="service-' + no + '"><b>' + no + '</b></a></li>';
+			}
+			html += '</ul>';
+		});
+		$busServices.html(html);
+		
+		var $busRoutes = $('#bus-routes');
+		var router = Router({
+			'/': function(){
+				$('#bus-routes-section').addClass('hidden');
+				setTimeout(function(){
+					$busServices.find('a.selected').removeClass('selected');
+				}, 750);
+			},
+			'/service/([0-9a-zA-Z]+)/?([0-9a-zA-Z]+)?': function(no, route){
+				var routed = !!route;
+				if (!route) route = 1;
+				
+				// reset
+				$busServices.find('a.selected').removeClass('selected');
+				$('#service-' + no).addClass('selected');
+				map.clearOverlays();
+				map.closeInfoWindow();
+				if (!routed){
+					var center = new GLatLng(1.368405, 103.84779);
+					map.setCenter(center, 11);
+				}
+				
+				var run = function(data){
+					if (!data) return;
+					var one = data[route],
+						route1 = one.route,
+						stops1 = one.stops,
+						latlngs1 = [],
+						locations1 = [];
+					for (var i=0, l=route1.length; i<l; i++){
+						var coord = route1[i],
+							latlng = coord.split(',');
+						latlngs1.push(new GLatLng(parseFloat(latlng[1], 10), parseFloat(latlng[0], 10)));
+					}
+					var polyline1 = new GPolyline(latlngs1, '#95cf29', 5, 0.6);
+					map.addOverlay(polyline1);
+					
+					var baseIcon = new GIcon();
+					baseIcon.image = 'assets/dot.png';
+					baseIcon.shadow = null;
+					baseIcon.iconSize = new GSize(18, 18);
+					baseIcon.shadowSize = new GSize(18, 18);
+					baseIcon.iconAnchor = new GPoint(9, 9);
+					baseIcon.infoWindowAnchor = new GPoint(-10, -10);
+					
+					var firstIcon = new GIcon();
+					firstIcon.image = 'http://gothere.sg/static/img/icons/api/marker_A.png';
+					firstIcon.shadow = null;
+					firstIcon.iconSize = new GSize(28, 43);
+					firstIcon.shadowSize = new GSize(28, 43);
+					firstIcon.iconAnchor = new GPoint(14, 43);
+					firstIcon.infoWindowAnchor = new GPoint(-10, 21);
+					
+					var html = '';
+					if (data[2] && data[2].route && data[2].route.length){
+						html += '<a href="#/service/' + no + '" class="tab ' + (route == 1 ? 'selected' : '') + '">Route 1</a>'
+							+ '<a href="#/service/' + no + '/2" class="tab ' + (route == 2 ? 'selected' : '') + '">Route 2</a>';
+					}
+					html += '<ul>';
+					
+					markers = {};
+					
+					for (var i=0, l=stops1.length; i<l; i++){
+						var stop = stops1[i],
+							info = busStops[stop],
+							coords = info.coords,
+							latlng = coords.split(','),
+							icon = new GIcon(baseIcon, 'assets/dot.png');
+						if (i == 0) icon = new GIcon(firstIcon, 'http://gothere.sg/static/img/icons/api/marker_A.png');
+						if (i == (l-1)) icon = new GIcon(firstIcon, 'http://gothere.sg/static/img/icons/api/marker_B.png');
+						var marker = new GMarker(new GLatLng(parseFloat(latlng[1], 10), parseFloat(latlng[0], 10)), {
+							clickable: false,
+							icon: icon
+						});
+						map.addOverlay(marker);
+						marker.bindInfoWindow('<b style="font-size: 14px;">' + stop + ': ' + info.name + '</b>');
+						(function(stop){
+							GEvent.addListener(marker, 'click', function(){
+								$busRoutes.find('li a.selected').removeClass('selected');
+								$('#stop-' + stop).addClass('selected').focus();
+							});
+						})(stop);
+						markers[stop] = marker;
+						
+						var className = i==0 ? 'stop-a' : i==(l-1) ? 'stop-b' : 'stop';
+						html += '<li><a tabindex="-1" class="' + className + '" id="stop-' + stop + '"><span class="tag">' + stop + '</span> ' + info.name + '</a></li>';
+					}
+					$busRoutes.html(html + '</ul>');
+					$busRoutes[0].scrollTop = 0;
+					$('#bus-routes-section h1 b').text(no);
+					$('#bus-routes-section').removeClass('hidden');
+					
+					amplify.store('busService-' + no, data, {expires: 24*60*60*1000});
+				};
+				
+				var serviceData = amplify.store('busService-' + no);
+				serviceData ? run(serviceData) : $.getJSON('data/bus-services/' + no + '.json', run);
+			},
+		}).init(location.hash || '/');
+		
+		$('#bus-routes li a').live('click', function(e){
+			e.preventDefault();
+			var stop = $(this).find('.tag').text(),
+				marker = markers[stop],
+				latlng = marker.getLatLng();
+			if (map.getZoom() < 15) map.setZoom(15);
+			map.panTo(latlng);
+			GEvent.trigger(marker, 'click');
+		});
+		
+		$(document).keyup(function(e){
+			var key = e.keyCode;
+			switch (key){
+				case 39:
+				case 40:
+					var $selected = $busRoutes.find('li a.selected');
+					if (!$selected.length) return;
+					$selected.removeClass('selected');
+					var $nextLi = $selected.parent('li').next('li');
+					if (!$nextLi.length) return;
+					$nextLi.find('a').trigger('click');
+					break;
+				case 37:
+				case 38:
+					var $selected = $busRoutes.find('li a.selected');
+					if (!$selected.length) return;
+					$selected.removeClass('selected');
+					var $prevLi = $selected.parent('li').prev('li');
+					if (!$prevLi.length) return;
+					$prevLi.find('a').trigger('click');
+					break;
+			}
+		});
+	};
+
+	busStops = amplify.store('busStops');
+	busStops ? init() : $.getJSON('data/bus-stops.json', function(data){
+		if (!data) return;
+		busStops = data;
+		init();
+		amplify.store('busStops', busStops, {expires: 24*60*60*1000});
+	});
+
+	busServices = amplify.store('busServices');
+	busServices ? init() : $.getJSON('data/bus-services.json', function(data){
+		if (!data) return;
+		busServices = data;
+		init();
+		amplify.store('busServices', busServices, {expires: 24*60*60*1000});
+	});
+
+	gothere.load('maps');
+	function initialize(){
+		if (GBrowserIsCompatible()){
+			map = new GMap2(document.getElementById('map'));
+			var center = new GLatLng(1.368405, 103.84779);
+			map.setCenter(center, 11);
+			init();
+		}
+	}
+	gothere.setOnLoadCallback(initialize);
+})();
+</script>
