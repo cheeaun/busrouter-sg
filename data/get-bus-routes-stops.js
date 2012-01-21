@@ -61,38 +61,6 @@ for (var type in data){
 								}
 							});
 						});
-						/*
-						var $codes = $body.find('.bus_stop_code:not(.header)');
-						var $names = $body.find('.bus_stop_name:not(.header)');
-						if (dir == 2){
-							var $codes1 = $codes.filter(':odd');
-							var $names1 = $names.filter(':odd');
-							var $codes2 = $codes.filter(':even');
-							var $names2 = $names.filter(':even');
-							$codes1.each(function(){
-								var text = this.textContent.trim();
-								if (text) busStops[1].push(text);
-							});
-							$codes2.each(function(){
-								var text = this.textContent.trim();
-								if (text) busStops[2].push(text);
-							});
-						} else {
-							$codes.each(function(){
-								var text = this.textContent.trim();
-								if (text) busStops[1].push(text);
-							});
-						}
-						
-						$codes.each(function(i){
-							var onclick = this.getAttribute('onclick');
-							if (!onclick) return; // Some don't have onclick, skip
-							stops[this.textContent.trim()] = {
-								coords: onclick.match(/e\(([^()]+)\)/)[1],
-								name: $names[i].textContent.trim()
-							}
-						});
-						*/
 						_done(null, {
 							busStops: busStops,
 							stops: stops

@@ -115,6 +115,10 @@ html, body{
 }
 #sidebar section div ul li a.stop{
 	padding-left: 48px;
+	background: #fff url(http://gothere.sg/static/img/icons/api/marker.png) no-repeat 10px 2px;
+}
+#sidebar section div ul li a.stop-dot{
+	padding-left: 48px;
 	background: #fff url(assets/dot.png) no-repeat 16px center;
 }
 #sidebar section div ul li a .tag{
@@ -153,6 +157,11 @@ html, body{
 	vertical-align: middle;
 	font-size: 10px;
 	opacity: .6;
+}
+#bus-services-section.loading #bus-services ul li a.selected{
+	background-image: url(assets/loader.gif);
+	background-position: 97% center ;
+	background-repeat: no-repeat;
 }
 #bus-routes-section{
 	-webkit-transition-property: -webkit-transform, opacity;
@@ -211,6 +220,7 @@ html, body{
 		$busServices.html(html);
 		
 		var $busRoutes = $('#bus-routes');
+		var currentNo;
 		var router = Router({
 			'/': function(){
 				$('#bus-routes-section').addClass('hidden');
@@ -219,7 +229,6 @@ html, body{
 				}, 750);
 			},
 			'/service/([0-9a-zA-Z]+)/?([0-9a-zA-Z]+)?': function(no, route){
-				var routed = !!route;
 				if (!route) route = 1;
 				
 				// reset
@@ -227,25 +236,27 @@ html, body{
 				$('#service-' + no).addClass('selected');
 				map.clearOverlays();
 				map.closeInfoWindow();
-				if (!routed){
+				if (no != currentNo){
+					currentNo = no;
 					var center = new GLatLng(1.368405, 103.84779);
 					map.setCenter(center, 11);
 				}
 				
 				var run = function(data){
+					$('#bus-services-section').removeClass('loading');
 					if (!data) return;
 					var one = data[route],
-						route1 = one.route,
-						stops1 = one.stops,
-						latlngs1 = [],
-						locations1 = [];
-					for (var i=0, l=route1.length; i<l; i++){
-						var coord = route1[i],
+						routes = one.route,
+						stops = one.stops,
+						latlngs = [],
+						locations = [];
+					for (var i=0, l=routes.length; i<l; i++){
+						var coord = routes[i],
 							latlng = coord.split(',');
-						latlngs1.push(new GLatLng(parseFloat(latlng[1], 10), parseFloat(latlng[0], 10)));
+						latlngs.push(new GLatLng(parseFloat(latlng[1], 10), parseFloat(latlng[0], 10)));
 					}
-					var polyline1 = new GPolyline(latlngs1, '#95cf29', 5, 0.6);
-					map.addOverlay(polyline1);
+					var polyline = new GPolyline(latlngs, '#95cf29', 5, 0.7);
+					map.addOverlay(polyline);
 					
 					var baseIcon = new GIcon();
 					baseIcon.image = 'assets/dot.png';
@@ -253,7 +264,7 @@ html, body{
 					baseIcon.iconSize = new GSize(18, 18);
 					baseIcon.shadowSize = new GSize(18, 18);
 					baseIcon.iconAnchor = new GPoint(9, 9);
-					baseIcon.infoWindowAnchor = new GPoint(-10, -10);
+					baseIcon.infoWindowAnchor = new GPoint(-10, -24);
 					
 					var firstIcon = new GIcon();
 					firstIcon.image = 'http://gothere.sg/static/img/icons/api/marker_A.png';
@@ -261,7 +272,7 @@ html, body{
 					firstIcon.iconSize = new GSize(28, 43);
 					firstIcon.shadowSize = new GSize(28, 43);
 					firstIcon.iconAnchor = new GPoint(14, 43);
-					firstIcon.infoWindowAnchor = new GPoint(-10, 21);
+					firstIcon.infoWindowAnchor = new GPoint(-10, 18);
 					
 					var html = '';
 					if (data[2] && data[2].route && data[2].route.length){
@@ -272,14 +283,35 @@ html, body{
 					
 					markers = {};
 					
-					for (var i=0, l=stops1.length; i<l; i++){
-						var stop = stops1[i],
+					var firstSameLast = false;
+					for (var i=0, l=stops.length; i<l; i++){
+						var stop = stops[i],
 							info = busStops[stop],
 							coords = info.coords,
 							latlng = coords.split(','),
-							icon = new GIcon(baseIcon, 'assets/dot.png');
-						if (i == 0) icon = new GIcon(firstIcon, 'http://gothere.sg/static/img/icons/api/marker_A.png');
-						if (i == (l-1)) icon = new GIcon(firstIcon, 'http://gothere.sg/static/img/icons/api/marker_B.png');
+							icon = new GIcon(baseIcon, 'assets/dot.png'),
+							last = l-1,
+							className = 'stop-dot';
+						if (i == 0){
+							var lastStop = stops[last],
+								lastInfo = busStops[lastStop];
+							if (info.name == lastInfo.name){
+								firstSameLast = true;
+								icon = new GIcon(firstIcon, 'http://gothere.sg/static/img/icons/api/marker.png');
+								className = 'stop';
+							} else {
+								icon = new GIcon(firstIcon, 'http://gothere.sg/static/img/icons/api/marker_A.png');
+								className = 'stop-a';
+							}
+						} else if (i == last){
+							if (firstSameLast){
+								icon = new GIcon(firstIcon, 'http://gothere.sg/static/img/icons/api/marker.png');
+								className = 'stop';
+							} else {
+								icon = new GIcon(firstIcon, 'http://gothere.sg/static/img/icons/api/marker_B.png');
+								className = 'stop-b';
+							}
+						}
 						var marker = new GMarker(new GLatLng(parseFloat(latlng[1], 10), parseFloat(latlng[0], 10)), {
 							clickable: false,
 							icon: icon
@@ -294,7 +326,6 @@ html, body{
 						})(stop);
 						markers[stop] = marker;
 						
-						var className = i==0 ? 'stop-a' : i==(l-1) ? 'stop-b' : 'stop';
 						html += '<li><a tabindex="-1" class="' + className + '" id="stop-' + stop + '"><span class="tag">' + stop + '</span> ' + info.name + '</a></li>';
 					}
 					$busRoutes.html(html + '</ul>');
@@ -306,7 +337,12 @@ html, body{
 				};
 				
 				var serviceData = amplify.store('busService-' + no);
-				serviceData ? run(serviceData) : $.getJSON('data/bus-services/' + no + '.json', run);
+				if (serviceData){
+					run(serviceData);
+				} else {
+					$('#bus-services-section').addClass('loading');
+					$.getJSON('data/bus-services/' + no + '.json', run);
+				}
 			},
 		}).init(location.hash || '/');
 		
