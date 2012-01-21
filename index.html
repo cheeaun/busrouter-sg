@@ -183,6 +183,22 @@ html, body{
 	-o-transform: translateX(100%);
 	transform: translateX(100%);
 }
+footer{
+	position: absolute;
+	bottom: 0;
+	left: 320px;
+	padding: 5px 10px;
+	background-color: #fff;
+	opacity: .4;
+	z-index: 1000;
+	font-size: 11px;
+}
+footer:hover{
+	opacity: .8;
+}
+footer a{
+	color: #000;
+}
 </style>
 <aside id="sidebar">
 <section id="bus-services-section">
@@ -195,6 +211,7 @@ html, body{
 </section>
 </aside>
 <div id="map"></div>
+<footer><a href="https://github.com/cheeaun/busrouter-sg" target="_blank">Yet another project</a> by <a href="http://twitter.com/cheeaun" target="_blank">@cheeaun</a></footer>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/zepto/0.8/zepto.min.js"></script>
 <script src="assets/director.js"></script>
 <script src="assets/amplify.store.js"></script>
