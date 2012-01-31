@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <title>Singapore Bus Routes Explorer</title>
-<!--
-	Hey you, fork me at https://github.com/cheeaun/busrouter-sg
--->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google" value="notranslate">
 <style>
@@ -14,33 +11,87 @@ html, body{
 	width: 100%;
 	height: 100%;
 	font-family: sans-serif;
-	font-size: 16px;
+	font-size: 14px;
 	-webkit-text-size-adjust: none;
 }
-#map{
+a{
+	color: #1155CC;
+	text-decoration: none;
+}
+a:hover{
+	text-decoration: underline;
+}
+hr{
+	margin: 8px 0 6px;
+	border: 0;
+	border-top: 1px solid #F0F0E7;
+}
+header{
+	color: #fff;
+	background-color: #454545;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	height: 32px;
+	line-height: 32px;
+	padding: 0 16px;
+	box-shadow: 0 0 10px rgba(0,0,0,.25);
+	z-index: 3;
+}
+header h1{
+	font-size: 16px;
+	display: inline;
+}
+header h1 a{
+	color: #fff;
+}
+header h1 a:hover{
+	text-decoration: none;
+}
+header p{
+	margin: 0 0 0 16px;
+	padding: 0;
+	display: inline;
+	opacity: .75;
+}
+header p a{
+	color: #fff;
+}
+#places-search-form{
 	position: absolute;
 	top: 0;
 	right: 0;
-	bottom: 0;
-	left: 320px;
-	height: 100%;
+	width: 300px;
 }
-#sidebar{
+#places-search-form input{
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 288px;
+	margin: 0 6px;
+}
+#map{
 	position: absolute;
-	top: 0;
-	bottom: 0;
+	top: 32px;
 	left: 0;
-	width: 320px;
+	bottom: 0;
+	right: 300px;
 }
-#sidebar section{
+aside{
 	position: absolute;
-	top: 0;
+	top: 32px;
 	bottom: 0;
-	left: 0;
-	width: 100%;
-	background-color: #f7f7f7;
+	right: 0;
+	width: 300px;
+	z-index: 1;
+	box-shadow: 0 0 10px rgba(0,0,0,.25);
+	overflow: hidden;
 }
-#sidebar h1{
+aside h1{
 	color: #fff;
 	background-color: #7ac000;
 	margin: 0;
@@ -49,14 +100,41 @@ html, body{
 	line-height: 32px;
 	font-size: 16px;
 }
-#sidebar h1 b{
+aside #bus-stops-section h1,
+aside #bus-stop-routes-section h1{
+	background-color: #f01b48;
+}
+aside h1 b{
 	font-weight: bold;
 }
-#sidebar h1 a{
+aside h1 a{
 	color: #fff;
-	text-decoration: none;
 }
-#sidebar section>div{
+aside h1 a.close{
+	font-weight: bold;
+	color: #fff;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 32px;
+	height: 32px;
+	line-height: 32px;
+	text-align: center;
+}
+aside h1 a.close:hover{
+	text-decoration: none;
+	background-color: rgba(255,255,255,.5);
+}
+aside section{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background-color: #f7f7f7;
+}
+aside section>div{
 	position: absolute;
 	top: 32px;
 	left: 0;
@@ -67,7 +145,13 @@ html, body{
 	overflow-x: hidden;
 	-webkit-overflow-scrolling: touch;
 }
-#sidebar section div h2{
+aside section p{
+	margin: 0;
+	padding: 16px;
+	color: #666;
+	text-align: center;
+}
+aside section div h2{
 	color: #999;
 	background-color: #f7f7f7;
 	margin: 0;
@@ -77,16 +161,15 @@ html, body{
 	font-size: 12px;
 	border-bottom: 1px solid #ededed;
 }
-#sidebar section div ul{
+aside section div ul{
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
-#sidebar section div ul li{
+aside section div ul li{
 	display: inline;
 }
-#sidebar section div ul li a{
-	text-decoration: none;
+aside section div ul li a{
 	color: #333;
 	background-color: #fff;
 	display: block;
@@ -97,31 +180,38 @@ html, body{
 	overflow: hidden;
 	cursor: pointer;
 }
+aside section div ul li a:hover{
+	text-decoration: none;
+}
+#sidebar section#bus-services-section div ul li a:active,
 #sidebar section#bus-services-section div ul li a.selected{
 	color: #fff;
 	background-color: #95cf29;
 }
-#sidebar section#bus-routes-section div ul li a.selected .tag{
+#sidebar section#bus-routes-section div ul li a:active .tag,
+#sidebar section#bus-routes-section div ul li a.selected .tag,
+#sidebar section#bus-stops-section div ul li a:active .tag,
+#sidebar section#bus-stops-section div ul li a.selected .tag{
 	color: #fff;
-	background-color: #95cf29;
+	background-color: #f78da3;
 }
-#sidebar section div ul li a.stop-a{
+aside section div ul li a.stop-a{
 	padding-left: 48px;
-	background: #fff url(http://gothere.sg/static/img/icons/api/marker_A.png) no-repeat 10px 2px;
+	background: #fff url(http://gothere.sg/static/img/icons/api/marker_red_A.png) no-repeat 10px 2px;
 }
-#sidebar section div ul li a.stop-b{
+aside section div ul li a.stop-b{
 	padding-left: 48px;
-	background: #fff url(http://gothere.sg/static/img/icons/api/marker_B.png) no-repeat 10px 2px;
+	background: #fff url(http://gothere.sg/static/img/icons/api/marker_red_B.png) no-repeat 10px 2px;
 }
-#sidebar section div ul li a.stop{
+aside section div ul li a.stop{
 	padding-left: 48px;
-	background: #fff url(http://gothere.sg/static/img/icons/api/marker.png) no-repeat 10px 2px;
+	background: #fff url(http://gothere.sg/static/img/icons/api/marker_red.png) no-repeat 10px 2px;
 }
-#sidebar section div ul li a.stop-dot{
+aside section div ul li a.stop-dot{
 	padding-left: 48px;
-	background: #fff url(assets/dot.png) no-repeat 16px center;
+	background: #fff url(assets/dot-red.png) no-repeat 16px center;
 }
-#sidebar section div ul li a .tag{
+aside section div ul li a .tag{
 	vertical-align: middle;
 	display: inline-block;
 	font-weight: bold;
@@ -133,24 +223,51 @@ html, body{
 	line-height: 1em;
 	border-radius: 4px;
 }
-#sidebar section .tab{
+aside section #bus-stop-routes ul li a .tag{
+	border-radius: 0;
+}
+aside section #bus-stop-routes ul li a:focus .tag,
+aside section #bus-stop-routes ul li a:hover .tag{
+	color: #fff;
+	background-color: #95cf29;
+}
+aside section .tab{
 	width: 50%;
 	color: #999;
 	display: inline-block;
 	text-align: center;
 	padding: 7px 0;
 	font-weight: bold;
-	font-size: 14px;
-	text-decoration: none;
 	border-bottom: 1px solid #ededed;
 }
-#sidebar section .tab:hover{
-	color: #95cf29;
+aside section .tab:hover{
+	color: #000;
+	text-decoration: none;
 }
-#sidebar section .tab.selected{
+aside section .tab.selected{
 	border-color: #fff;
 	color: #000;
 	background-color: #fff;
+}
+aside section{
+	-webkit-transition-property: -webkit-transform, opacity;
+	-webkit-transition-duration: .3s;
+	-moz-transition-property: -moz-transform, opacity;
+	-moz-transition-duration: .3s;
+	-ms-transition-property: -ms-transform, opacity;
+	-ms-transition-duration: .3s;
+	-o-transition-property: -o-transform, opacity;
+	-o-transition-duration: .3s;
+	transition-property: transform, opacity;
+	transition-duration: .3s;
+}
+aside section.hidden{
+	opacity: 0;
+	-webkit-transform: translate3d(100%, 0, 0);
+	-moz-transform: translateX(100%);
+	-ms-transform: translateX(100%);
+	-o-transform: translateX(100%);
+	transform: translateX(100%);
 }
 .arrow{
 	display: inline-block;
@@ -163,65 +280,86 @@ html, body{
 	background-position: 97% center ;
 	background-repeat: no-repeat;
 }
-#bus-routes-section{
-	-webkit-transition-property: -webkit-transform, opacity;
-	-webkit-transition-duration: .3s;
-	-moz-transition-property: -moz-transform, opacity;
-	-moz-transition-duration: .3s;
-	-ms-transition-property: -ms-transform, opacity;
-	-ms-transition-duration: .3s;
-	-o-transition-property: -o-transform, opacity;
-	-o-transition-duration: .3s;
-	transition-property: transform, opacity;
-	transition-duration: .3s;
+.infowindow{
+	font-size: 13px;
 }
-#bus-routes-section.hidden{
-	opacity: 0;
-	-webkit-transform: translate3d(100%, 0, 0);
-	-moz-transform: translateX(100%);
-	-ms-transform: translateX(100%);
-	-o-transform: translateX(100%);
-	transform: translateX(100%);
+.infowindow h1{
+	font-size: 14px;
+	margin: 0 0 2px;
+	padding: 0;
 }
-footer{
-	position: absolute;
-	bottom: 0;
-	left: 320px;
-	padding: 5px 10px;
-	background-color: #fff;
-	opacity: .4;
-	z-index: 1000;
-	font-size: 11px;
+.infowindow .tag{
+	vertical-align: middle;
+	display: inline-block;
+	font-weight: bold;
+	font-size: 12px;
+	color: #fff;
+	background-color: #f78da3;
+	padding: 3px 5px;
+	margin: 0 5px 0 0;
+	line-height: 1em;
+	border-radius: 4px;
 }
-footer:hover{
-	opacity: .8;
+.infowindow a.infoservice,
+.infowindow span.infoservice{
+	font-weight: bold;
+	font-size: 12px;
+	color: #fff;
+	background-color: #95cf29;
+	padding: 2px 6px;
+	margin: 4px 0 0;
+	display: inline-block;
 }
-footer a{
-	color: #000;
+.infowindow a.infoservice:hover{
+	background-color: #7ac000;
+	text-decoration: none;
+}
+.infowindow span.infoservice{
+	color: #999;
+	background-color: #ededed;
 }
 </style>
+<header>
+	<h1><a href="#/">Singapore Bus Routes Explorer</a></h1>
+	<p><small><a href="https://github.com/cheeaun/busrouter-sg" target="_blank">Yet another project</a> by <a href="http://twitter.com/cheeaun" target="_blank">@cheeaun</a></small></p>
+	<form id="places-search-form">
+		<input type="search" placeholder="Search for a place">
+	</form>
+</header>
 <aside id="sidebar">
-<section id="bus-services-section">
-	<h1>Bus Services</h1>
-	<div id="bus-services"></div>
-</section>
-<section id="bus-routes-section" class="hidden">
-	<h1><a href="#/">Bus Services</a> <span class="arrow">&#9658;</span> <b></b></h1>
-	<div id="bus-routes"></div>
-</section>
+	<section id="bus-services-section">
+		<h1>Bus Services</h1>
+		<div id="bus-services"></div>
+	</section>
+	<section id="bus-routes-section" class="extra hidden">
+		<h1><a href="#/">Bus Services</a> <span class="arrow">&#9658;</span> <b></b></h1>
+		<div id="bus-routes"></div>
+	</section>
+	<section id="bus-stops-section" class="extra hidden">
+		<h1>Bus Stops <a href="#" class="close">&times;</a></h1>
+		<div id="bus-stops"></div>
+	</section>
+	<section id="bus-stop-routes-section" class="extra hidden">
+		<h1>Routes for Bus Stop <b></b> <a href="#/" class="close">&times;</a></h1>
+		<div id="bus-stop-routes"></div>
+	</section>
 </aside>
 <div id="map"></div>
-<footer><a href="https://github.com/cheeaun/busrouter-sg" target="_blank">Yet another project</a> by <a href="http://twitter.com/cheeaun" target="_blank">@cheeaun</a></footer>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/zepto/0.8/zepto.min.js"></script>
-<script src="assets/director.js"></script>
-<script src="assets/amplify.store.js"></script>
-<script src="http://gothere.sg/jsapi?sensor=false"></script>
+<script src="scripts.js"></script>
 <script>
 (function(){
-	var map, busServices, busStops, markers;
+	var map, busServices, busStops, busStopsServices, markers = {}, polylines = {};
+	
+	var markerImage = {
+		'dot': 'assets/dot-red.png',
+		'o': 'http://gothere.sg/static/img/icons/api/marker_red.png',
+		'a': 'http://gothere.sg/static/img/icons/api/marker_red_A.png',
+		'b': 'http://gothere.sg/static/img/icons/api/marker_red_B.png'
+	};
 
 	var init = function(){
-		if (!map || !busServices || !busStops) return;
+		if (!map || !busServices || !busStops || !busStopsServices) return;
 		
 		var html = '';
 		var $busServices = $('#bus-services');
@@ -230,34 +368,160 @@ footer a{
 			for (var i=0, l=v.length; i<l; i++){
 				var service = v[i],
 					no = service.no;
-				html += '<li><a href="#/service/' + no + '" id="service-' + no + '"><b>' + no + '</b></a></li>';
+				html += '<li><a href="#/services/' + no + '" id="service-' + no + '"><b>' + no + '</b></a></li>';
 			}
 			html += '</ul>';
 		});
 		$busServices.html(html);
 		
+		var infowindow = new google.maps.InfoWindow({
+			maxWidth: 300
+		});
+		var polyline = new google.maps.Polyline({
+			clickable: false,
+			strokeColor: '#f01b48',
+			strokeWeight: 5,
+			strokeOpacity: .5
+		});
+		
+		var clearMap = function(){
+			for (var stop in markers) markers[stop].setMap(null);
+			markers = {};
+			for (var stop in stopMarkers) stopMarkers[stop].setMap(null);
+			stopMarkers = {};
+			for (var service in polylines) polylines[service].setMap(null);
+			polylines = {};
+			polyline.setMap(null);
+			infowindow.close();
+		};
+		
+		google.maps.event.addListener(map, 'markerClick', function(data){
+			var marker = data.marker,
+				stop = data.stop,
+				currentService = data.currentService,
+				hideShowRoutesLink = data.hideShowRoutesLink,
+				info = busStops[stop],
+				name = info.name,
+				services = busStopsServices[stop];
+			var html = '<div class="infowindow"><h1>' + name + '</h1>'
+				+ 'Bus stop number: <span class="tag">' + stop + '</span><br>';
+			$.each(services, function(key, service){
+				if (service == currentService){
+					html += '<span class="infoservice">' + service + '</span> ';
+				} else {
+					html += '<a href="#/services/' + service + '" class="infoservice">' + service + '</a> ';
+				}
+			});
+			if (services.length > 1 && !hideShowRoutesLink){
+				html += '<hr><a href="#/stops/' + stop + '">Show all routes passing here</a>';
+			}
+			html += '</div>';
+			infowindow.setContent(html);
+			infowindow.open(map, marker);
+		});
+		
+		var stopMarkers = {};
+		google.maps.event.addListener(map, 'idle', function(){
+			if (!/stops$/i.test(location.hash) && location.hash != '#/') return;
+			var $busStops = $('#bus-stops');
+			var zoom = map.getZoom();
+			if (zoom >= 15){
+				$('#bus-stops-section').removeClass('hidden');
+				
+				var bounds = map.getBounds();
+				
+				for (var no in stopMarkers){
+					var m = stopMarkers[no];
+					if (!bounds.contains(m.getPosition())){
+						m.setMap(null);
+						delete stopMarkers[no];
+					}
+				}
+				
+				var busStopsOnMap = [];
+				$.each(busStops, function(no, stop){
+					if (!stopMarkers[no]){
+						var latlng = stop.coords.split(','),
+							position = new google.maps.LatLng(parseFloat(latlng[1], 10), parseFloat(latlng[0], 10));
+						if (!bounds.contains(position)) return;
+						var marker = new google.maps.Marker({
+								position: position,
+								map: map,
+								title: stop.name,
+								icon: markerImage.dot
+							});
+						google.maps.event.addListener(marker, 'click', function(){
+							google.maps.event.trigger(map, 'markerClick', {
+								marker: marker,
+								stop: no
+							});
+						});
+						stopMarkers[no] = marker;
+					}
+					busStopsOnMap.push({
+						no: no,
+						stop: stop
+					});
+					
+				});
+				
+				if (busStopsOnMap.length){
+					var html = '<ul>';
+					busStopsOnMap.sort(function(a, b){
+						var aName = a.stop.name,
+							bName = b.stop.name;
+						if (aName < bName) return -1;
+						if (aName > bName) return 1;
+						return 0;
+					});
+					for (var i in busStopsOnMap){
+						var b = busStopsOnMap[i],
+							no = b.no,
+							name = b.stop.name;
+						html += '<li><a class="stop-dot" id="stop-' + no + '"><span class="tag">' + no + '</span> ' + name + '</a></li>';
+					}
+					html += '</ul>';
+					$busStops.html(html);
+				} else {
+					$busStops.html('<p>Try zoom in or pan around to see bus stops on the map.</p>');
+				}
+			} else {
+				for (var no in stopMarkers) stopMarkers[no].setMap(null);
+				stopMarkers = [];
+				$busStops.html('<p>Try zoom in or pan around to see bus stops on the map.</p>');
+			}
+		});
+		
+		$('#bus-stops li a').live('click', function(e){
+			e.preventDefault();
+			var stop = $(this).find('.tag').text(),
+				marker = stopMarkers[stop],
+				latlng = marker.getPosition();
+			map.panTo(latlng);
+			google.maps.event.trigger(marker, 'click');
+		});
+		$('#bus-stops-section a.close').live('click', function(e){
+			e.preventDefault();
+			$('#bus-stops-section').addClass('hidden');
+		});
+		
 		var $busRoutes = $('#bus-routes');
 		var currentNo;
 		var router = Router({
 			'/': function(){
-				$('#bus-routes-section').addClass('hidden');
+				$('section.extra').addClass('hidden');
+				clearMap();
 				setTimeout(function(){
 					$busServices.find('a.selected').removeClass('selected');
 				}, 750);
 			},
-			'/service/([0-9a-zA-Z]+)/?([0-9a-zA-Z]+)?': function(no, route){
+			'/services/([0-9a-zA-Z]+)/?([0-9a-zA-Z]+)?': function(no, route){
 				if (!route) route = 1;
 				
 				// reset
 				$busServices.find('a.selected').removeClass('selected');
 				$('#service-' + no).addClass('selected');
-				map.clearOverlays();
-				map.closeInfoWindow();
-				if (no != currentNo){
-					currentNo = no;
-					var center = new GLatLng(1.368405, 103.84779);
-					map.setCenter(center, 11);
-				}
+				clearMap();
 				
 				var run = function(data){
 					$('#bus-services-section').removeClass('loading');
@@ -266,88 +530,88 @@ footer a{
 						routes = one.route,
 						stops = one.stops,
 						latlngs = [],
-						locations = [];
+						locations = [],
+						bounds = new google.maps.LatLngBounds();
 					for (var i=0, l=routes.length; i<l; i++){
 						var coord = routes[i],
-							latlng = coord.split(',');
-						latlngs.push(new GLatLng(parseFloat(latlng[1], 10), parseFloat(latlng[0], 10)));
+							latlng = coord.split(','),
+							position = new google.maps.LatLng(parseFloat(latlng[1], 10), parseFloat(latlng[0], 10));
+						latlngs.push(position);
+						bounds.extend(position);
 					}
-					var polyline = new GPolyline(latlngs, '#95cf29', 5, 0.7);
-					map.addOverlay(polyline);
+					polyline.setPath(latlngs);
+					polyline.setMap(map);
 					
-					var baseIcon = new GIcon();
-					baseIcon.image = 'assets/dot.png';
-					baseIcon.shadow = null;
-					baseIcon.iconSize = new GSize(18, 18);
-					baseIcon.shadowSize = new GSize(18, 18);
-					baseIcon.iconAnchor = new GPoint(9, 9);
-					baseIcon.infoWindowAnchor = new GPoint(-10, -24);
-					
-					var firstIcon = new GIcon();
-					firstIcon.image = 'http://gothere.sg/static/img/icons/api/marker_A.png';
-					firstIcon.shadow = null;
-					firstIcon.iconSize = new GSize(28, 43);
-					firstIcon.shadowSize = new GSize(28, 43);
-					firstIcon.iconAnchor = new GPoint(14, 43);
-					firstIcon.infoWindowAnchor = new GPoint(-10, 18);
+					if (no != currentNo || !bounds.contains(map.getCenter())){
+						currentNo = no;
+						map.fitBounds(bounds);
+					}
 					
 					var html = '';
 					if (data[2] && data[2].route && data[2].route.length){
-						html += '<a href="#/service/' + no + '" class="tab ' + (route == 1 ? 'selected' : '') + '">Route 1</a>'
-							+ '<a href="#/service/' + no + '/2" class="tab ' + (route == 2 ? 'selected' : '') + '">Route 2</a>';
+						html += '<a href="#/services/' + no + '" class="tab ' + (route == 1 ? 'selected' : '') + '">Route 1</a>'
+							+ '<a href="#/services/' + no + '/2" class="tab ' + (route == 2 ? 'selected' : '') + '">Route 2</a>';
 					}
 					html += '<ul>';
 					
-					markers = {};
-					
 					var firstSameLast = false;
-					for (var i=0, l=stops.length; i<l; i++){
-						var stop = stops[i],
-							info = busStops[stop],
+					var l = stops.length;
+					$.each(stops, function(i, stop){
+						var info = busStops[stop],
 							coords = info.coords,
+							name = info.name,
+							services = busStopsServices[stop],
 							latlng = coords.split(','),
-							icon = new GIcon(baseIcon, 'assets/dot.png'),
+							icon = markerImage.dot,
 							last = l-1,
 							className = 'stop-dot';
 						if (i == 0){
 							var lastStop = stops[last],
 								lastInfo = busStops[lastStop];
-							if (info.name == lastInfo.name){
+							if (name == lastInfo.name){
 								firstSameLast = true;
-								icon = new GIcon(firstIcon, 'http://gothere.sg/static/img/icons/api/marker.png');
+								icon = markerImage.o;
 								className = 'stop';
 							} else {
-								icon = new GIcon(firstIcon, 'http://gothere.sg/static/img/icons/api/marker_A.png');
+								icon = markerImage.a;
 								className = 'stop-a';
 							}
 						} else if (i == last){
 							if (firstSameLast){
-								icon = new GIcon(firstIcon, 'http://gothere.sg/static/img/icons/api/marker.png');
+								icon = markerImage.o;
 								className = 'stop';
 							} else {
-								icon = new GIcon(firstIcon, 'http://gothere.sg/static/img/icons/api/marker_B.png');
+								icon = markerImage.b;
 								className = 'stop-b';
 							}
 						}
-						var marker = new GMarker(new GLatLng(parseFloat(latlng[1], 10), parseFloat(latlng[0], 10)), {
-							clickable: false,
-							icon: icon
-						});
-						map.addOverlay(marker);
-						marker.bindInfoWindow('<b style="font-size: 14px;">' + stop + ': ' + info.name + '</b>');
-						(function(stop){
-							GEvent.addListener(marker, 'click', function(){
+						if (i != last || !firstSameLast){
+							var marker = new google.maps.Marker({
+								position: new google.maps.LatLng(parseFloat(latlng[1], 10), parseFloat(latlng[0], 10)),
+								map: map,
+								icon: icon,
+								title: name,
+								animation: (i == 0 || i == last) ? google.maps.Animation.DROP : null,
+								zIndex: (i == 0 || i == last) ? 5 : 1
+							});
+							google.maps.event.addListener(marker, 'click', function(){
+								google.maps.event.trigger(map, 'markerClick', {
+									marker: marker,
+									stop: stop,
+									currentService: no
+								});
 								$busRoutes.find('li a.selected').removeClass('selected');
 								$('#stop-' + stop).addClass('selected').focus();
 							});
-						})(stop);
-						markers[stop] = marker;
+							markers[stop] = marker;
+						}
 						
-						html += '<li><a tabindex="-1" class="' + className + '" id="stop-' + stop + '"><span class="tag">' + stop + '</span> ' + info.name + '</a></li>';
-					}
+						html += '<li><a tabindex="-1" class="' + className + '" id="stop-' + stop + '"><span class="tag">' + stop + '</span> ' + name + '</a></li>';
+					});
 					$busRoutes.html(html + '</ul>');
 					$busRoutes[0].scrollTop = 0;
 					$('#bus-routes-section h1 b').text(no);
+					$('section.extra').addClass('hidden');
 					$('#bus-routes-section').removeClass('hidden');
 					
 					amplify.store('busService-' + no, data, {expires: 24*60*60*1000});
@@ -361,19 +625,134 @@ footer a{
 					$.getJSON('data/bus-services/' + no + '.json', run);
 				}
 			},
+			'/stops/([0-9a-zA-Z]+)': function(stop){
+				clearMap();
+				var stopData = busStops[stop],
+					coord = stopData.coords,
+					latlng = coord.split(','),
+					position = new google.maps.LatLng(parseFloat(latlng[1], 10), parseFloat(latlng[0], 10)),
+					marker = new google.maps.Marker({
+						position: position,
+						map: map,
+						icon: markerImage.o,
+						title: stopData.name,
+						animation: google.maps.Animation.DROP
+					});
+				google.maps.event.addListener(marker, 'click', function(){
+					google.maps.event.trigger(map, 'markerClick', {
+						marker: marker,
+						stop: stop,
+						hideShowRoutesLink: true
+					});
+				});
+				markers[stop] = marker;
+				
+				var services = busStopsServices[stop],
+					servicesIndex = 0;
+					servicesBounds = new google.maps.LatLngBounds(),
+					html = '',
+					done = function(){
+						map.fitBounds(servicesBounds);
+						
+						$('#bus-stop-routes-section').removeClass('hidden').find('h1 b').text(stop);
+						$('#bus-stop-routes').html('<ul>' + html + '</ul>');
+					},
+					run = function(data, service){
+						var d = data['1'],
+							stops = d.stops;
+						// The stop could be in the second route instead and
+						// could also be the last stop of the route, so choose the second route
+						if (stops.indexOf(stop) == -1 || stops[stops.length-1] == stop){
+							d = data['2'];
+							stops = d.stops;
+							if (stops.indexOf(stop) == -1){
+								// Failsafe, if second route somehow doesn't have the stop for some reason
+								d = data['1'];
+								stops = d.stops;
+							}
+						}
+						var routes = d.route,
+							latlngs = [],
+							locations = [];
+						for (var i=0, l=routes.length; i<l; i++){
+							var coord = routes[i],
+								latlng = coord.split(','),
+								position = new google.maps.LatLng(parseFloat(latlng[1], 10), parseFloat(latlng[0], 10));
+							latlngs.push(position);
+							servicesBounds.extend(position);
+						}
+						var line = new google.maps.Polyline({
+							strokeColor: '#f01b48',
+							strokeWeight: 5,
+							strokeOpacity: .4,
+							path: latlngs,
+							map: map
+						});
+						google.maps.event.addListener(line, 'mouseover', function(){
+							$('#stop-service-' + service).trigger('mouseover').focus();
+						});
+						google.maps.event.addListener(line, 'mouseout', function(){
+							$('#stop-service-' + service).trigger('mouseout').blur();
+						});
+						google.maps.event.addListener(line, 'click', function(){
+							location.href = $('#stop-service-' + service).attr('href');
+						});
+						polylines[service] = line;
+						
+						html += '<li><a href="#/services/' + service + '" id="stop-service-' + service + '"><span class="tag">' + service + '</span> ' + busStops[stops[0]].name + ' 	&rarr; ' + busStops[stops[stops.length-1]].name
+							+ '</a></li>';
+						
+						servicesIndex++;
+						if (servicesIndex == services.length) done();
+					};
+				$.each(services, function(i, no){
+					var serviceData = amplify.store('busService-' + no);
+					if (serviceData){
+						run(serviceData, no);
+					} else {
+						$.getJSON('data/bus-services/' + no + '.json', function(data){
+							run(data, no);
+						});
+					}
+				});
+			}
 		}).init(location.hash || '/');
 		
 		$('#bus-routes li a').live('click', function(e){
 			e.preventDefault();
 			var stop = $(this).find('.tag').text(),
 				marker = markers[stop],
-				latlng = marker.getLatLng();
+				latlng = marker.getPosition();
 			if (map.getZoom() < 15) map.setZoom(15);
 			map.panTo(latlng);
-			GEvent.trigger(marker, 'click');
+			google.maps.event.trigger(marker, 'click');
+		});
+		
+		$('#bus-stop-routes li a').live('mouseover', function(){
+			var serv = $(this).find('.tag').text();
+			for (var service in polylines){
+				var line = polylines[service];
+				if (service == serv){
+					line.setOptions({
+						strokeOpacity: .8
+					});
+				} else {
+					line.setOptions({
+						strokeOpacity: .1
+					});
+				}
+			}
+		}).live('mouseout', function(){
+			for (var service in polylines){
+				polylines[service].setOptions({
+					strokeOpacity: .4
+				});
+			}
 		});
 		
 		$(document).keyup(function(e){
+			if (!(/services\/.+/i).test(location.hash)) return;
+			if (e.target.tagName && e.target.tagName.toLowerCase() == 'input') return;
 			var key = e.keyCode;
 			switch (key){
 				case 39:
@@ -397,7 +776,7 @@ footer a{
 			}
 		});
 	};
-
+	
 	busStops = amplify.store('busStops');
 	busStops ? init() : $.getJSON('data/bus-stops.json', function(data){
 		if (!data) return;
@@ -405,7 +784,7 @@ footer a{
 		init();
 		amplify.store('busStops', busStops, {expires: 24*60*60*1000});
 	});
-
+	
 	busServices = amplify.store('busServices');
 	busServices ? init() : $.getJSON('data/bus-services.json', function(data){
 		if (!data) return;
@@ -413,16 +792,76 @@ footer a{
 		init();
 		amplify.store('busServices', busServices, {expires: 24*60*60*1000});
 	});
-
-	gothere.load('maps');
-	function initialize(){
-		if (GBrowserIsCompatible()){
-			map = new GMap2(document.getElementById('map'));
-			var center = new GLatLng(1.368405, 103.84779);
-			map.setCenter(center, 11);
-			init();
-		}
+	
+	busStopsServices = amplify.store('busStopsServices');
+	busStopsServices ? init() : $.getJSON('data/bus-stops-services.json', function(data){
+		if (!data) return;
+		busStopsServices = data;
+		init();
+		amplify.store('busStopsServices', busStopsServices, {expires: 24*60*60*1000});
+	});
+	
+	window.initialize = function(){
+		map = new google.maps.Map(document.getElementById('map'), {
+			center: new google.maps.LatLng(1.368405, 103.84779),
+			zoom: 11,
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			mapTypeControl: false,
+			streetViewControl: false,
+			overviewMapControl: true,
+			overviewMapControlOptions: {
+				opened: true
+			}
+		});
+		var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(1.25902803324958,103.640944981446), new google.maps.LatLng(1.44527693946651,103.997948007655));
+		map.fitBounds(bounds);
+		var inited = false;
+		google.maps.event.addListener(map, 'tilesloaded', function(){
+			if (!inited){
+				init();
+				inited = true;
+			}
+		});
+		
+		// Places search form
+		var $form = $('#places-search-form'),
+			service = new google.maps.places.PlacesService(map);
+		$form.submit(function(e){
+			e.preventDefault();
+			service.search({
+				name: $form.find('input').val(),
+				bounds: bounds
+			}, function(results, status){
+				if (status == google.maps.places.PlacesServiceStatus.OK && results.length){
+					var place = results[0]; // Only get first result
+					console.log(place);
+					if (place.geometry.viewport) {
+						map.fitBounds(place.geometry.viewport);
+					} else {
+						map.setCenter(place.geometry.location);
+						map.setZoom(17);
+					}
+				}
+			});
+		});
+		var autocomplete = new google.maps.places.Autocomplete($form.find('input')[0], {
+			bounds: bounds
+		});
+		google.maps.event.addListener(autocomplete, 'place_changed', function(){
+			var place = autocomplete.getPlace();
+			if (!place.geometry) return;
+			if (place.geometry.viewport) {
+				map.fitBounds(place.geometry.viewport);
+			} else {
+				map.setCenter(place.geometry.location);
+				map.setZoom(17);
+			}
+		});
 	}
-	gothere.setOnLoadCallback(initialize);
+	window.onload = function(){
+		var script = document.createElement('script');
+		script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyDpk0BS7iLdbn5U545tiIN12k1OCgj2cc4&libraries=places&sensor=false&callback=initialize";
+		document.body.appendChild(script);
+	};
 })();
 </script>

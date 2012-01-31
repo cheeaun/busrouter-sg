@@ -1,7 +1,8 @@
 
+
 //
-// Generated on Tue Dec 06 2011 04:47:21 GMT-0500 (EST) by Nodejitsu, Inc (Using Codesurgeon).
-// Version 1.0.7
+// Generated on Tue Jan 31 2012 02:13:32 GMT+0000 (MPST) by Nodejitsu, Inc (Using Codesurgeon).
+// Version 1.0.9
 //
 
 (function (exports) {
@@ -302,7 +303,7 @@ function paramifyString(str, params, mod) {
             }
         }
     }
-    return mod === str ? "([a-zA-Z0-9-]+)" : mod;
+    return mod === str ? "([._a-zA-Z0-9-]+)" : mod;
 }
 
 function regifyString(str, params) {
@@ -403,8 +404,10 @@ Router.prototype.dispatch = function(method, path, callback) {
 Router.prototype.invoke = function(fns, thisArg, callback) {
     var self = this;
     if (this.async) {
-        _asyncEverySeries(fns, function(fn, next) {
-            if (typeof fn == "function") {
+        _asyncEverySeries(fns, function apply(fn, next) {
+            if (Array.isArray(fn)) {
+                return _asyncEverySeries(fn, apply, next);
+            } else if (typeof fn == "function") {
                 fn.apply(thisArg, fns.captures.concat(next));
             }
         }, function() {
