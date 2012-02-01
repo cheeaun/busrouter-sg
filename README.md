@@ -20,6 +20,6 @@ The data you'll get are:
 - `bus-stops-services.json` - List all bus stops with the bus numbers/services that stops there.
 - `services/{number}.json` - List two routes with all (polyline) coordinates and bus stops for each route. If the bus service doesn't have a second route, the second route data will be empty.
 
-The map is powered by [Google Maps JavaScript API](http://code.google.com/apis/maps/documentation/javascript/). The color scheme and markers are *inspired* by [Gothere.sg](http://gothere.sg/). Tested to work great on latest Firefox and Chrome browsers.
+The icon is from [The Noun Project](http://thenounproject.com/noun/bus/#icon-No97). The map is powered by [Google Maps JavaScript API](http://code.google.com/apis/maps/documentation/javascript/). The color scheme and markers are *inspired* by [Gothere.sg](http://gothere.sg/). Tested to work great on latest Firefox and Chrome browsers.
 
 If you have any feedback, tweet me at [@cheeaun](http://twitter.com/cheeaun).
