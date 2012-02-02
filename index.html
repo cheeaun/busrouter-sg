@@ -35,8 +35,8 @@ header{
 	left: 0;
 	bottom: 0;
 	right: 0;
-	height: 32px;
-	line-height: 32px;
+	height: 48px;
+	line-height: 48px;
 	padding: 0 16px;
 	box-shadow: 0 0 10px rgba(0,0,0,.25);
 	z-index: 3;
@@ -58,7 +58,7 @@ header p{
 	margin: 0 0 0 16px;
 	padding: 0;
 	display: inline;
-	opacity: .75;
+	opacity: .5;
 }
 header p a{
 	color: #fff;
@@ -77,17 +77,19 @@ header p a{
 	box-sizing: border-box;
 	width: 288px;
 	margin: 0 6px;
+	padding: 6px;
+	height: 32px;
 }
 #map{
 	position: absolute;
-	top: 32px;
+	top: 48px;
 	left: 0;
 	bottom: 0;
 	right: 300px;
 }
 aside{
 	position: absolute;
-	top: 32px;
+	top: 48px;
 	bottom: 0;
 	right: 0;
 	width: 300px;
@@ -128,7 +130,7 @@ aside h1 a.close{
 }
 aside h1 a.close:hover{
 	text-decoration: none;
-	background-color: rgba(255,255,255,.5);
+	background-color: rgba(0,0,0,.15);
 }
 aside section{
 	position: absolute;
@@ -283,6 +285,14 @@ aside section.hidden{
 	background-image: url(assets/loader.gif);
 	background-position: 97% center ;
 	background-repeat: no-repeat;
+}
+#bus-stop-routes-section.loading h1 a.close{
+	display: none;
+}
+#bus-stop-routes-section.loading #bus-stop-routes{
+	background-image: url(assets/loader-large.gif);
+	background-repeat: no-repeat;
+	background-position: center;
 }
 .infowindow{
 	font-size: 13px;
@@ -641,6 +651,9 @@ if (location.hostname == 'cheeaun.github.com'){
 			},
 			'/stops/([0-9a-zA-Z]+)': function(stop){
 				clearMap();
+				
+				$('#bus-stop-routes-section').removeClass('hidden').addClass('loading').find('h1 b').text(stop);
+				
 				var stopData = busStops[stop],
 					coord = stopData.coords,
 					latlng = coord.split(','),
@@ -668,7 +681,7 @@ if (location.hostname == 'cheeaun.github.com'){
 					done = function(){
 						map.fitBounds(servicesBounds);
 						
-						$('#bus-stop-routes-section').removeClass('hidden').find('h1 b').text(stop);
+						$('#bus-stop-routes-section').removeClass('loading');
 						$('#bus-stop-routes').html('<ul>' + html + '</ul>');
 					},
 					run = function(data, service){
