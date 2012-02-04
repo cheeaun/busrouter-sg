@@ -30,6 +30,11 @@ hr{
 header{
 	color: #fff;
 	background-color: #454545;
+	background-image: -webkit-linear-gradient(top, #656565, #454545);
+	background-image: -moz-linear-gradient(top, #656565, #454545);
+	background-image: -ms-linear-gradient(top, #656565, #454545);
+	background-image: -o-linear-gradient(top, #656565, #454545);
+	background-image: linear-gradient(to bottom, #656565, #454545);
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -43,7 +48,9 @@ header{
 }
 header h1{
 	font-size: 16px;
-	display: inline;
+	margin: 0;
+	padding: 0;
+	text-align: center;
 }
 header h1 a{
 	color: #fff;
@@ -54,31 +61,141 @@ header h1 a:hover{
 header h1 img{
 	vertical-align: text-bottom;
 }
-header p{
-	margin: 0 0 0 16px;
-	padding: 0;
-	display: inline;
-	opacity: .5;
-}
-header p a{
-	color: #fff;
-}
-#places-search-form{
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 300px;
-}
-#places-search-form input{
+#header-about{
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-ms-box-sizing: border-box;
 	-o-box-sizing: border-box;
 	box-sizing: border-box;
-	width: 288px;
+	border-radius: 15px;
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	padding: 6px 18px;
+	height: 30px;
+	color: #fff;
+	background-color: rgba(0,0,0,.3);
+	display: inline-block;
+	line-height: 16px;
+	font-weight: bold;
+	cursor: pointer;
+	font-size: 13px;
+}
+#header-about:hover{
+	text-decoration: none;
+	background-color: rgba(0,0,0,.7);
+}
+#places-search-form{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 200px;
+}
+#places-search-form input{
+	outline: 0;
+	-webkit-appearance: none;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	border: 0;
+	border-radius: 15px;
+	color: #bbb;
+	background-color: rgba(255,255,255,.3);
+	width: 188px;
 	margin: 0 6px;
-	padding: 6px;
-	height: 32px;
+	padding: 6px 12px;
+	height: 30px;
+	-webkit-transition: background-color .3s;
+	-moz-transition: background-color .3s;
+	-ms-transition: background-color .3s;
+	-o-transition: background-color .3s;
+	transition: background-color .3s;
+}
+#places-search-form input:focus{
+	background-color: #fff;
+	color: #333;
+}
+#places-search-form input::-webkit-input-placeholder{
+	color: #bbb;
+}
+#places-search-form input:-moz-placeholder{
+	color: #bbb;
+}
+#about{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 999999;
+	background-color: rgba(0,0,0,.5);
+	-webkit-transition: background-color .3s;
+	-moz-transition: background-color .3s;
+	-ms-transition: background-color .3s;
+	-o-transition: background-color .3s;
+	transition: background-color .3s;
+}
+#about.hidden{
+	z-index: -1;
+	background-color: rgba(0,0,0,0);
+}
+#about section{
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	position: absolute;
+	top: 20%;
+	left: 50%;
+	width: 480px;
+	margin: 0 0 0 -240px;
+	background-color: #fff;
+	border-radius: 8px;
+	box-shadow: 0 0 10px #000;
+	padding: 16px;
+	line-height: 1.5em;
+	-webkit-transform: scale3d(1, 1, 1);
+	-moz-transform: scale(1, 1);
+	-ms-transform: scale(1, 1);
+	-o-transform: scale(1, 1);
+	transform: scale(1, 1);
+	-webkit-transition: -webkit-transform .3s;
+	-moz-transition: -moz-transform .3s;
+	-ms-transition: -ms-transform .3s;
+	-o-transition: -o-transform .3s;
+	transition: transform .3s;
+}
+#about.hidden section{
+	-webkit-transform: scale3d(0, 0, 1);
+	-moz-transform: scale(0, 0);
+	-ms-transform: scale(0, 0);
+	-o-transform: scale(0, 0);
+	transform: scale(0, 0);
+}
+#about section .close{
+	display: inline-block;
+	position: absolute;
+	top: -12px;
+	right: -12px;
+	width: 24px;
+	height: 24px;
+	line-height: 24px;
+	text-align: center;
+	font-weight: bold;
+	color: #fff;
+	background-color: #000;
+	border-radius: 50%;
+	cursor: pointer;
+	opacity: .75;
+}
+#about section .close:hover{
+	text-decoration: none;
+	opacity: 1;
 }
 #map{
 	position: absolute;
@@ -345,11 +462,17 @@ if (location.hostname == 'cheeaun.github.com'){
 </script>
 <header>
 	<h1><a href="#/"><img src="assets/logo.png" width="16" height="20" alt=""> Singapore Bus Routes Explorer</a></h1>
-	<p><small><a href="https://github.com/cheeaun/busrouter-sg" target="_blank">Yet another project</a> by <a href="http://twitter.com/cheeaun" target="_blank">@cheeaun</a></small></p>
 	<form id="places-search-form">
 		<input type="search" placeholder="Search for a place">
 	</form>
+	<a id="header-about">About</a>
 </header>
+<div id="about" class="hidden">
+	<section>
+		<a class="close">&times;</a>
+		<b>Singapore Bus Routes Explorer</b> is <a href="https://github.com/cheeaun/busrouter-sg" target="_blank">yet another project</a> by <a href="http://twitter.com/cheeaun" target="_blank">@cheeaun</a>. This works best on <strong>modern web browsers</strong> and the data is <em>extracted</em> from the <a href="http://www.publictransport.sg/">Land Transport Authority</a>. Feel free to <a href="http://twitter.com/cheeaun" target="_blank">send feedback</a>, <a href="https://github.com/cheeaun/busrouter-sg/issues" target="_blank">report any issues</a> and share this with your friends.
+	</section>
+</div>
 <aside id="sidebar">
 	<section id="bus-services-section">
 		<h1>Bus Services</h1>
@@ -840,6 +963,7 @@ if (location.hostname == 'cheeaun.github.com'){
 				opened: true
 			}
 		});
+		
 		var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(1.25902803324958,103.640944981446), new google.maps.LatLng(1.44527693946651,103.997948007655));
 		map.fitBounds(bounds);
 		var inited = false;
@@ -890,5 +1014,12 @@ if (location.hostname == 'cheeaun.github.com'){
 		script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyDpk0BS7iLdbn5U545tiIN12k1OCgj2cc4&libraries=places&sensor=false&callback=initialize";
 		document.body.appendChild(script);
 	};
+	
+	$('#header-about').click(function(){
+		$('#about').removeClass('hidden');
+	});
+	$('#about .close').click(function(){
+		$('#about').addClass('hidden');
+	});
 })();
 </script>
