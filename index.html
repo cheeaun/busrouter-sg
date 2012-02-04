@@ -320,19 +320,19 @@ aside section div ul li a:hover{
 }
 aside section div ul li a.stop-a{
 	padding-left: 48px;
-	background: #fff url(http://gothere.sg/static/img/icons/api/marker_red_A.png) no-repeat 10px 2px;
+	background: #fff url(assets/red-circle-a.png) no-repeat 12px 2px;
 }
 aside section div ul li a.stop-b{
 	padding-left: 48px;
-	background: #fff url(http://gothere.sg/static/img/icons/api/marker_red_B.png) no-repeat 10px 2px;
-}
-aside section div ul li a.stop{
-	padding-left: 48px;
-	background: #fff url(http://gothere.sg/static/img/icons/api/marker_red.png) no-repeat 10px 2px;
+	background: #fff url(assets/red-circle-b.png) no-repeat 12px 2px;
 }
 aside section div ul li a.stop-dot{
 	padding-left: 48px;
-	background: #fff url(assets/dot-red.png) no-repeat 16px center;
+	background: #fff url(assets/red-circle-dot.png) no-repeat 12px 2px;
+}
+aside section div ul li a.stop{
+	padding-left: 48px;
+	background: #fff url(assets/red-circle.png) no-repeat 16px center;
 }
 aside section div ul li a .tag{
 	vertical-align: middle;
@@ -499,10 +499,10 @@ if (location.hostname == 'cheeaun.github.com'){
 	var map, busServices, busStops, busStopsServices, markers = {}, polylines = {};
 	
 	var markerImage = {
-		'dot': 'assets/dot-red.png',
-		'o': 'http://gothere.sg/static/img/icons/api/marker_red.png',
-		'a': 'http://gothere.sg/static/img/icons/api/marker_red_A.png',
-		'b': 'http://gothere.sg/static/img/icons/api/marker_red_B.png'
+		circle: 'assets/red-circle.png',
+		dot: 'assets/red-pin-dot.png',
+		a: 'assets/red-pin-a.png',
+		b: 'assets/red-pin-b.png'
 	};
 
 	var init = function(){
@@ -595,7 +595,7 @@ if (location.hostname == 'cheeaun.github.com'){
 								position: position,
 								map: map,
 								title: stop.name,
-								icon: markerImage.dot
+								icon: markerImage.circle
 							});
 						google.maps.event.addListener(marker, 'click', function(){
 							google.maps.event.trigger(map, 'markerClick', {
@@ -625,7 +625,7 @@ if (location.hostname == 'cheeaun.github.com'){
 						var b = busStopsOnMap[i],
 							no = b.no,
 							name = b.stop.name;
-						html += '<li><a class="stop-dot" id="stop-' + no + '"><span class="tag">' + no + '</span> ' + name + '</a></li>';
+						html += '<li><a class="stop" id="stop-' + no + '"><span class="tag">' + no + '</span> ' + name + '</a></li>';
 					}
 					html += '</ul>';
 					$busStops.html(html);
@@ -709,24 +709,24 @@ if (location.hostname == 'cheeaun.github.com'){
 							name = info.name,
 							services = busStopsServices[stop],
 							latlng = coords.split(','),
-							icon = markerImage.dot,
+							icon = markerImage.circle,
 							last = l-1,
-							className = 'stop-dot';
+							className = 'stop';
 						if (i == 0){
 							var lastStop = stops[last],
 								lastInfo = busStops[lastStop];
 							if (name == lastInfo.name){
 								firstSameLast = true;
-								icon = markerImage.o;
-								className = 'stop';
+								icon = markerImage.dot;
+								className = 'stop-dot';
 							} else {
 								icon = markerImage.a;
 								className = 'stop-a';
 							}
 						} else if (i == last){
 							if (firstSameLast){
-								icon = markerImage.o;
-								className = 'stop';
+								icon = markerImage.dot;
+								className = 'stop-dot';
 							} else {
 								icon = markerImage.b;
 								className = 'stop-b';
@@ -784,7 +784,7 @@ if (location.hostname == 'cheeaun.github.com'){
 					marker = new google.maps.Marker({
 						position: position,
 						map: map,
-						icon: markerImage.o,
+						icon: markerImage.circle,
 						title: stopData.name,
 						animation: google.maps.Animation.DROP
 					});
