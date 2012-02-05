@@ -318,6 +318,23 @@ aside section div ul li a:hover{
 	color: #fff;
 	background-color: #f78da3;
 }
+#bus-routes-section a.details{
+	font-size: 12px;
+	display: block;
+	margin: 8px;
+	padding: 8px;
+	text-align: center;
+	font-weight: bold;
+	border-radius: 8px;
+	border: 1px solid #EDEDED;
+	background-color: rgba(255,255,255,.5);
+}
+#bus-routes-section a.details:hover{
+	background-color: #fff;
+}
+#bus-routes-section a.details:active{
+	background-color: #ededed;
+}
 aside section div ul li a.stop-a{
 	padding-left: 48px;
 	background: #fff url(assets/red-circle-a.png) no-repeat 12px 2px;
@@ -510,12 +527,14 @@ if (location.hostname == 'cheeaun.github.com'){
 		
 		var html = '';
 		var $busServices = $('#bus-services');
+		var busServiceProviders = {};
 		$.each(busServices, function(k, v){
 			html += '<h2>' + k + '</h2><ul>';
 			for (var i=0, l=v.length; i<l; i++){
 				var service = v[i],
 					no = service.no;
 				html += '<li><a href="#/services/' + no + '" id="service-' + no + '"><b>' + no + '</b></a></li>';
+				busServiceProviders[no] = service.provider;
 			}
 			html += '</ul>';
 		});
@@ -695,6 +714,12 @@ if (location.hostname == 'cheeaun.github.com'){
 					}
 					
 					var html = '';
+					var provider = busServiceProviders[no];
+					if (provider){
+						// Only SBS or SMRT, for now.
+						var url = provider == 'sbs' ? 'http://www.sbstransit.com.sg/journeyplan/servicedetails.aspx?serviceno=' : 'http://www.smrtbuses.com.sg/ebusguide/busfrequency.asp?BusNo=';
+						html += '<a href="' + url + no + '" target="_blank" class="details">See Bus Details and Schedules</a>';
+					}
 					if (data[2] && data[2].route && data[2].route.length){
 						html += '<a href="#/services/' + no + '" class="tab ' + (route == 1 ? 'selected' : '') + '">Route 1</a>'
 							+ '<a href="#/services/' + no + '/2" class="tab ' + (route == 2 ? 'selected' : '') + '">Route 2</a>';
@@ -1020,6 +1045,15 @@ if (location.hostname == 'cheeaun.github.com'){
 	});
 	$('#about .close').click(function(){
 		$('#about').addClass('hidden');
+	});
+	
+	$('#bus-routes-section a.details').live('click', function(e){
+		e.preventDefault();
+		var width = 640,
+			height = 480,
+			top = ((screen.availHeight || screen.height)-height)/2,
+			left = (screen.width-width)/2;
+		window.open(this.href, 'bus-details', 'width=' + width + ',height=' + height + ',menubar=0,resizable=1,scrollbars=1,toolbar=0,top=' + top + ',left=' + left);
 	});
 })();
 </script>
