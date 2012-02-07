@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html>
 <head>
 <meta charset="utf-8">
 <title>Singapore Bus Routes Explorer</title>
@@ -470,7 +471,10 @@ aside section.hidden{
 </style>
 <script>
 if (location.hostname == 'cheeaun.github.com'){
-	var _gaq = [['_setAccount', 'UA-23235796-4'], ['_trackPageview']];
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-23235796-4']);
+	_gaq.push(['_trackPageview']);
+	
 	(function() {
 		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
@@ -1061,3 +1065,4 @@ if (location.hostname == 'cheeaun.github.com'){
 })();
 </script>
 </body>
+</html>
