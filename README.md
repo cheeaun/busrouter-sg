@@ -1,7 +1,7 @@
 Singapore Bus Routes Explorer
 =============================
 
-[![Available in the Chrome Web Store](http://code.google.com/chrome/webstore/images/branding/ChromeWebStore_Badge_v2_496x150.png)](https://chrome.google.com/webstore/detail/kmoebclbglclobmahimdaniikogclifn)
+[![Available in the Chrome Web Store](https://developers.google.com/chrome/web-store/images/branding/ChromeWebStore_BadgeWBorder_v2_496x150.png)](https://chrome.google.com/webstore/detail/kmoebclbglclobmahimdaniikogclifn)
 
 Abbreviated as **SBRE**. I know, the name sucks. This app basically shows all routes on the map for all bus services in Singapore, inspired by [this tweet](https://twitter.com/mengwong/status/155511398653362177).
 
