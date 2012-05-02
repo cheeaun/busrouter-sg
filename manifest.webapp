@@ -2,6 +2,7 @@
   "version": "0.1.1",
   "name": "Singapore Bus Routes Explorer",
   "description": "Show all routes and bus stops on the map for all bus services in Singapore.",
+  "launch_path": "/busrouter-sg/",
   "icons": {
     "128": "/busrouter-sg/assets/icon_128.png"
   },
