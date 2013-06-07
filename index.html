@@ -30,6 +30,23 @@ header h1{
 	padding: 0;
 	text-shadow: 0px 2px 6px #fff, 0px 2px 6px #fff, 0px 2px 6px #fff;
 }
+.label{
+	font-size: .85em;
+	display: inline-block;
+	border-radius: 3px;
+	padding: 3px 4px;
+	line-height: 1em;
+	background-color: #999;
+	color: #fff;
+	font-weight: 500;
+	text-shadow: 0 -1px rgba(0,0,0,.15);
+}
+.label-stop{
+	background-color: #F78DA3;
+}
+.label-service{
+	background-color: #95CF29;
+}
 #search{
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -69,6 +86,9 @@ header h1{
 }
 #datalist a:hover{
 	background-color: #fafafa;
+}
+#datalist a .label{
+	margin-right: 7px;
 }
 #map{
 	position: absolute;
@@ -173,7 +193,8 @@ parallel(flow, function(error, results){
 			results.forEach(function(result){
 				var value = result.value;
 				var name = result.name;
-				html += '<li><a href="' + result.url + '" class="' + result.type + '" data-value="' + value + '">' + value + ' ' + name + '</a></li>';
+				var type = result.type;
+				html += '<li><a href="' + result.url + '" class="' + type + '" data-value="' + value + '"><span class="label label-' + type + '">' + value + '</span> ' + name + '</a></li>';
 			});
 		}
 
