@@ -591,193 +591,248 @@ module.exports = function parallel(fns, context, callback) {
 function noop() {}
 
 });
-require.register("microjs-path/path.js", function(exports, require, module){
-var current = null,
-    root = null,
-    rescue = null,
-    previous = null,
-    defined = {};
-var Path = {
-    map: function (path) {
-        if (defined.hasOwnProperty(path)) {
-            return defined[path];
-        } else {
-            return new Route(path);
-        }
-    },
-    root: function (path) {
-        root = path;
-    },
-    rescue: function (fn) {
-        rescue = fn;
-    },
-    history: {
-        initial:{}, // Empty container for "Initial Popstate" checking variables.
-        pushState: function(state, title, path){
-            if(Path.history.supported){
-                if(Path.dispatch(path)){
-                    history.pushState(state, title, path);
-                }
-            } else {
-                if(Path.history.fallback){
-                    location.hash = "#" + path;
-                }
-            }
-        },
-        popState: function(event){
-            var initialPop = !Path.history.initial.popped && location.href == Path.history.initial.URL;
-            Path.history.initial.popped = true;
-            if(initialPop) return;
-            Path.dispatch(document.location.pathname);
-        },
-        listen: function(fallback){
-            Path.history.supported = !!(window.history && window.history.pushState);
-            Path.history.fallback  = fallback;
+require.register("component-keyname/index.js", function(exports, require, module){
 
-            if(Path.history.supported){
-                Path.history.initial.popped = false;//('state' in window.history);
-                Path.history.initial.URL = location.href;
-                window.onpopstate = Path.history.popState;
-            } else {
-                if(Path.history.fallback){
-                    for(route in defined){
-                        if(route.charAt(0) != "#"){
-                          defined["#"+route] = defined[route];
-                          defined["#"+route].path = "#"+route;
-                        }
-                    }
-                    Path.listen();
-                }
-            }
-        }
-    },
-    match: function (path, parameterize) {
-        var params = {}, route = null, possible_routes, slice, i, j, compare;
-        for (route in defined) {
-            if (route !== null && route !== undefined) {
-                route = defined[route];
-                possible_routes = route.partition();
-                for (j = 0; j < possible_routes.length; j++) {
-                    slice = possible_routes[j];
-                    compare = path;
-                    if (slice.search(/:/) > 0) {
-                        for (i = 0; i < slice.split("/").length; i++) {
-                            if ((i < compare.split("/").length) && (slice.split("/")[i].charAt(0) === ":")) {
-                                params[slice.split('/')[i].replace(/:/, '')] = compare.split("/")[i];
-                                compare = compare.replace(compare.split("/")[i], slice.split("/")[i]);
-                            }
-                        }
-                    }
-                    if (slice === compare) {
-                        if (parameterize) {
-                            route.params = params;
-                        }
-                        return route;
-                    }
-                }
-            }
-        }
-        return null;
-    },
-    dispatch: function (passed_route) {
-        var previous_route, matched_route;
-        if (current !== passed_route) {
-            previous = current;
-            current = passed_route;
-            matched_route = Path.match(passed_route, true);
+/**
+ * Key name map.
+ */
 
-            if (previous) {
-                previous_route = Path.match(previous);
-                if (previous_route !== null && previous_route.do_exit !== null) {
-                    previous_route.do_exit();
-                }
-            }
-
-            if (matched_route !== null) {
-                matched_route.run();
-                return true;
-            } else {
-                if (rescue !== null) {
-                    rescue();
-                }
-            }
-        }
-    },
-    listen: function () {
-        var fn = function(){ Path.dispatch(location.hash); }
-
-        if (location.hash === '' || location.hash === '#') {
-            if (root !== null) {
-                location.hash = root;
-            }
-        }
-
-        window.onhashchange = fn;
-
-        if(location.hash !== "") {
-            Path.dispatch(location.hash);
-        }
-    }
+var map = {
+  8: 'backspace',
+  9: 'tab',
+  13: 'enter',
+  16: 'shift',
+  17: 'ctrl',
+  18: 'alt',
+  20: 'capslock',
+  27: 'esc',
+  32: 'space',
+  33: 'pageup',
+  34: 'pagedown',
+  35: 'end',
+  36: 'home',
+  37: 'left',
+  38: 'up',
+  39: 'right',
+  40: 'down',
+  45: 'ins',
+  46: 'del',
+  91: 'meta',
+  93: 'meta',
+  224: 'meta'
 };
 
+/**
+ * Return key name for `n`.
+ *
+ * @param {Number} n
+ * @return {String}
+ * @api public
+ */
 
-function Route(path) {
-    this.path = path;
-    this.action = null;
-    this.do_enter = [];
-    this.do_exit = null;
-    this.params = {};
-    defined[path] = this;
+module.exports = function(n){
+  return map[n];
+};
+});
+require.register("pazguille-route66/index.js", function(exports, require, module){
+var location = window.location,
+    bind = window.addEventListener ? 'addEventListener' : 'attachEvent',
+    load = window.addEventListener ? 'load' : 'onload',
+    supported = (window.onpopstate !== undefined),
+    updateurl = supported ? 'popstate' : load;
+
+
+/**
+ * Create a new Path.
+ * @constructor
+ * @param {string} path - The path of a route.
+ * @property {string} url
+ * @property {array} listeners
+ * @property {string} regexp
+ * @returns {Object}
+ */
+function Path(path) {
+    this.url = path;
+    this.listeners = [];
+    this.toRegExp();
+
+    return this;
 }
-Route.prototype = {
-    to: function (fn) {
-        this.action = fn;
-        return this;
-    },
-    enter: function (fns) {
-        if (fns instanceof Array) {
-            this.do_enter = this.do_enter.concat(fns);
-        } else {
-            this.do_enter.push(fns);
-        }
-        return this;
-    },
-    exit: function (fn) {
-        this.do_exit = fn;
-        return this;
-    },
-    partition: function () {
-        var parts = [], options = [], re = /\(([^}]+?)\)/g, text, i;
-        while (text = re.exec(this.path)) {
-            parts.push(text[1]);
-        }
-        options.push(this.path.split("(")[0]);
-        for (i = 0; i < parts.length; i++) {
-            options.push(options[options.length - 1] + parts[i]);
-        }
-        return options;
-    },
-    run: function () {
-        var halt_execution = false, i, result, previous;
 
-        if (defined[this.path].hasOwnProperty("do_enter")) {
-            if (defined[this.path].do_enter.length > 0) {
-                for (i = 0; i < defined[this.path].do_enter.length; i++) {
-                    result = defined[this.path].do_enter[i].call(this);
-                    if (result === false) {
-                        halt_execution = true;
-                        break;
-                    }
-                }
-            }
-        }
-        if (!halt_execution) {
-            defined[this.path].action();
-        }
-    }
+/**
+ * Converts the path string into a regexp.
+ * @public
+ */
+Path.prototype.toRegExp = function () {
+    this.regexp = new RegExp('^' + this.url.replace(/:\w+/g, '([^\\/]+)').replace(/\//g, '\\/') + '$');
+
+    return this;
 };
 
-module.exports = Path;
+
+/**
+ * Route66 Class
+ */
+
+/**
+ * Create a new router.
+ * @constructor
+ * @property {array} paths
+ * @property {string} regexp
+ * @returns {Object}
+ */
+function Route66() {
+    this.init();
+
+    return this;
+}
+
+/**
+ * Initialize a new router.
+ * @constructs
+ */
+Route66.prototype.init = function () {
+    var that = this,
+        hash;
+
+    this._collection = {};
+
+    window[bind](updateurl, function () {
+        hash = location.hash.split('#!')[1] || location.hash.split('#')[1];
+
+        // Home
+        if (location.pathname === '/' && hash === undefined) {
+            that._match('/');
+        } else {
+            that._match(hash);
+        }
+
+    }, false);
+
+    if (!supported) {
+        window[bind]('onhashchange', function () {
+            hash = location.hash.split('#!')[1] || location.hash.split('#')[1];
+            that._match(hash);
+        });
+    }
+
+    return this;
+
+};
+
+/**
+ * Checks if the current hash matches with a path.
+ * @param {string} hash - The current hash.
+ */
+Route66.prototype._match = function (hash) {
+    var listeners,
+        key,
+        i = 0,
+        path,
+        params,
+        len;
+
+    for (key in this._collection) {
+
+        if (this._collection[key] !== undefined) {
+
+            path = this._collection[key];
+
+            params = hash.match(path.regexp);
+
+            if (params) {
+
+                params.splice(0, 1);
+
+                listeners = this._collection[key].listeners;
+
+                len = listeners.length;
+
+                for (i; i < len; i += 1) {
+                    listeners[i].apply(undefined, params);
+                }
+            }
+
+        }
+    }
+
+    return this;
+};
+
+/**
+ * Creates a new path and stores its listener into the collection.
+ * @param {string} path -
+ * @param {funtion} listener -
+ */
+Route66.prototype.path = function (path, listener) {
+    var key;
+
+    if (typeof path === 'object' && listener === undefined) {
+
+        for (key in path) {
+            if (path[key] !== undefined) {
+                this._createPath(key, path[key]);
+            }
+        }
+
+    } else {
+        this._createPath(path, listener);
+    }
+
+    return this;
+};
+
+/**
+ * Creates a new path and stores its listener into the collection.
+ */
+Route66.prototype._createPath = function (path, listener) {
+    if (this._collection[path] === undefined) {
+        this._collection[path] = new Path(path);
+    }
+
+    this._collection[path].listeners.push(listener);
+};
+
+/**
+ * Removes a path and its litener from the collection with the given path.
+ * @param {string} path
+ * @param {funtion} listener
+ */
+Route66.prototype.remove = function (path, listener) {
+    var listeners = this._collection[path],
+        i = 0,
+        len = listeners.length;
+
+    if (len !== undefined) {
+        for (i; i < len; i += 1) {
+            if (listeners[i] === listener) {
+                listeners.splice(i, 1);
+                break;
+            }
+        }
+    }
+
+    if (listeners.length === 0 || listener === undefined) {
+        delete this._collection[path];
+    }
+
+    return this;
+};
+
+/**
+ * Returns a collections of listeners with the given path or an entire collection.
+ * @param {string} path
+ * @return {array}
+ */
+Route66.prototype.paths = function (path) {
+    return (path !== undefined) ? this._collection[path] : this._collection;
+};
+
+
+/**
+ * Expose Route66
+ */
+exports = module.exports = Route66;
 });
 require.alias("ForbesLindesay-ajax/index.js", "busrouter-sg/deps/ajax/index.js");
 require.alias("ForbesLindesay-ajax/index.js", "ajax/index.js");
@@ -791,8 +846,9 @@ require.alias("jonathanong-array-parallel/index.js", "busrouter-sg/deps/array-pa
 require.alias("jonathanong-array-parallel/index.js", "array-parallel/index.js");
 require.alias("jonathanong-array-parallel/index.js", "jonathanong-array-parallel/index.js");
 
-require.alias("microjs-path/path.js", "busrouter-sg/deps/path/path.js");
-require.alias("microjs-path/path.js", "busrouter-sg/deps/path/index.js");
-require.alias("microjs-path/path.js", "path/index.js");
-require.alias("microjs-path/path.js", "microjs-path/index.js");
+require.alias("component-keyname/index.js", "busrouter-sg/deps/keyname/index.js");
+require.alias("component-keyname/index.js", "keyname/index.js");
+
+require.alias("pazguille-route66/index.js", "busrouter-sg/deps/route66/index.js");
+require.alias("pazguille-route66/index.js", "route66/index.js");
 

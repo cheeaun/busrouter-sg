@@ -4,6 +4,7 @@
     "ForbesLindesay/ajax": "*",
     "MatthewMueller/debounce": "*",
     "jonathanong/array-parallel": "*",
-    "microjs/path": "*"
+    "component/keyname": "*",
+    "pazguille/route66": "*"
   }
 }
