@@ -9,13 +9,14 @@
 	<h1>Singapore Bus Routes Explorer</h1>
 </header>
 <div id="pane">
-	<div id="pane-home">
-		<input id="search" type="search" placeholder="Bus service no., stop no. or location" autocorrect="off" autocomplete="off" autofocus>
+	<div id="pane-home" class="pane">
+		<input id="search" type="search" placeholder="Bus service no., stop no. or location" autocorrect="off" autocomplete="off">
 		<a id="search-clear">&times;</a>
-		<ul id="datalist"></ul>
+		<ul id="search-datalist"></ul>
 	</div>
-	<div id="pane-stop"></div>
-	<div id="pane-service"></div>
+	<div id="pane-stop" class="pane"></div>
+	<div id="pane-service" class="pane"></div>
+	<div id="pane" class="pane"></div>
 </div>
 <div id="map"></div>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpk0BS7iLdbn5U545tiIN12k1OCgj2cc4&sensor=false"></script>

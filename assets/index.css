@@ -2,11 +2,13 @@ body{
 	font-family: Roboto, arial, sans-serif;
 	background-color: #E5E3DF;
 }
+
 input{
 	font-family: Roboto, arial, sans-serif;
 	font-weight: 300;
 	font-size: 1em;
 }
+
 header{
 	position: absolute;
 	top: 0;
@@ -24,6 +26,7 @@ header h1{
 	margin: 0 0 .5em;
 	padding: 0;
 }
+
 #pane{
 	position: absolute;
 	top: 2em;
@@ -34,16 +37,18 @@ header h1{
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
+
 .label{
-	font-size: .85em;
+	font-size: 11px !important;
 	display: inline-block;
 	border-radius: 3px;
 	padding: 3px 4px;
 	line-height: 1em;
 	background-color: #999;
 	color: #fff;
-	font-weight: 500;
+	font-weight: 500 !important;
 	text-shadow: 0 -1px rgba(0,0,0,.15);
+	text-decoration: none;
 }
 .label-stop{
 	background-color: #F78DA3;
@@ -51,6 +56,10 @@ header h1{
 .label-service{
 	background-color: #95CF29;
 }
+.label-service:hover{
+	background-color: #7ac000;
+}
+
 #search{
 	-webkit-appearance: none;
 	-moz-box-sizing: border-box;
@@ -67,6 +76,7 @@ header h1{
 #search:focus{
 	border-color: #4d90fe;
 }
+
 #search-clear{
 	opacity: 0;
 	position: absolute;
@@ -82,10 +92,13 @@ header h1{
 #search-clear:hover{
 	color: #666;
 }
-#search:focus + #search-clear{
+#search.is-valued + #search-clear{
 	opacity: 1;
 }
-#datalist{
+
+#search-datalist{
+	-webkit-transform: translateX(-200%);
+	transform: translateX(-200%);
 	z-index: 101;
 	border-radius: 2px;
 	position: absolute;
@@ -99,7 +112,11 @@ header h1{
 	overflow: hidden;
 	font-size: .8em;
 }
-#datalist a{
+#search-datalist.is-visible{
+	-webkit-transform: translateX(0);
+	transform: translateX(0);
+}
+#search-datalist a{
 	cursor: pointer;
 	display: block;
 	padding: 7px 10px;
@@ -107,17 +124,42 @@ header h1{
 	color: #000;
 	text-decoration: none;
 }
-#datalist li.selected a,
-#datalist a:hover{
+#search-datalist li.selected a,
+#search-datalist a:hover{
 	background-color: #fafafa;
 }
-#datalist a .label{
+#search-datalist a .label{
 	margin-right: 7px;
 }
+
 #map{
 	position: absolute;
 	top: 0;
 	right: 0;
 	bottom: 0;
 	left: 0;
+}
+
+.infowindow h1{
+	font-weight: 500;
+	font-size: 1em;
+	margin: 0;
+	padding: 0;
+}
+.infowindow p{
+	margin: .4em 0;
+	padding: .2em 0 0;
+	border-top: 1px solid #eee;
+	line-height: 2em;
+}
+.infowindow .label-stop{
+	margin-right: 7px;
+}
+.infowindow .label-service{
+	margin-right: 2px;
+}
+
+/* Forcefully hide Street View link from POI infowindows */
+.gm-wsv{
+	display: none !important;
 }
