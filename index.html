@@ -800,7 +800,8 @@ if (location.hostname == 'cheeaun.github.com'){
 
 		var $busRoutes = $('#bus-routes');
 		var currentNo;
-		var router = Router({
+
+		var router = routie({
 			'/': function(){
 				$('section.extra').addClass('hidden');
 				clearMap();
@@ -808,7 +809,7 @@ if (location.hostname == 'cheeaun.github.com'){
 					$busServices.find('a.selected').removeClass('selected');
 				}, 400);
 			},
-			'/services/([0-9a-zA-Z]+)/?([0-9a-zA-Z]+)?': function(no, route){
+			'/services/:no/:route?': function(no, route){
 				if (!route) route = 1;
 
 				// reset
@@ -922,7 +923,7 @@ if (location.hostname == 'cheeaun.github.com'){
 					$.getJSON('data/2/bus-services/' + no + '.json', run);
 				}
 			},
-			'/stops/([0-9a-zA-Z]+)': function(stop){
+			'/stops/:stop': function(stop){
 				clearMap();
 
 				$('#bus-stop-routes-section').removeClass('hidden').addClass('loading').find('h1 b').text(stop);
@@ -1014,9 +1015,9 @@ if (location.hostname == 'cheeaun.github.com'){
 					}
 				});
 			}
-		}).init();
+		});
 
-		if (location.hash) router.dispatch('on', location.hash.slice(1));
+		if (location.hash) routie(location.hash.slice(1));
 
 		$('#bus-routes li a').live('click', function(e){
 			e.preventDefault();
