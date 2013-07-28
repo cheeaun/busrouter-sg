@@ -516,7 +516,7 @@ if (location.hostname == 'cheeaun.github.com'){
 		amplify.store('dataVersion', dataVersion);
 	}
 
-	var map, busServices, busStops, busStopsServices, markers = {}, polylines = {};
+	var markers = {}, polylines = {};
 
 	var markerImage = {
 		circle: 'assets/red-circle.png',
@@ -525,8 +525,117 @@ if (location.hostname == 'cheeaun.github.com'){
 		b: 'assets/red-pin-b.png'
 	};
 
-	var init = function(){
-		if (!map || !busServices || !busStops || !busStopsServices) return;
+	var q = queue();
+
+	[
+		function(callback){
+			var busStops = amplify.store('busStops');
+			if (busStops){
+				callback(null, busStops);
+			} else {
+				$.getJSON('data/2/bus-stops.json', function(data){
+					if (!data) return;
+					var busStops = {};
+					$.each(data, function(i, d){
+						busStops[d.no] = d;
+					});
+					callback(null, busStops);
+					amplify.store('busStops', busStops, {expires: 24*60*60*1000});
+				})
+			}
+		},
+		function(callback){
+			var busServices = amplify.store('busServices');
+			if (busServices){
+				callback(null, busServices);
+			} else {
+				$.getJSON('data/2/bus-services.json', function(data){
+					if (!data) return;
+					callback(null, data);
+					amplify.store('busServices', data, {expires: 24*60*60*1000});
+				});
+			}
+		},
+		function(callback){
+			var busStopsServices = amplify.store('busStopsServices');
+			if (busStopsServices){
+				callback(null, busStopsServices);
+			} else {
+				$.getJSON('data/2/bus-stops-services.json', function(data){
+					if (!data) return;
+					callback(null, data);
+					amplify.store('busStopsServices', data, {expires: 24*60*60*1000});
+				});
+			}
+		},
+		function(callback){
+			window.onload = function(){
+				google.maps.visualRefresh = true;
+				var map = new google.maps.Map(document.getElementById('map'), {
+					center: new google.maps.LatLng(1.3520830, 103.8198360),
+					zoom: 11,
+					mapTypeId: google.maps.MapTypeId.ROADMAP,
+					disableDefaultUI: true,
+					overviewMapControl: true,
+					overviewMapControlOptions: {
+						opened: true
+					},
+					zoomControl: true,
+					zoomControlOptions: {
+						style: google.maps.ZoomControlStyle.SMALL,
+						position: google.maps.ControlPosition.RIGHT_BOTTOM
+					}
+				});
+
+				var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(1.1663980,103.60557550), new google.maps.LatLng(1.47088090,104.08568050));
+				map.fitBounds(bounds);
+
+				// Places search form
+				var $form = $('#places-search-form'),
+					service = new google.maps.places.PlacesService(map);
+				$form.submit(function(e){
+					e.preventDefault();
+					service.search({
+						name: $form.find('input').val(),
+						bounds: bounds
+					}, function(results, status){
+						if (status == google.maps.places.PlacesServiceStatus.OK && results.length){
+							var place = results[0]; // Only get first result
+							if (place.geometry.viewport) {
+								map.fitBounds(place.geometry.viewport);
+							} else {
+								map.setCenter(place.geometry.location);
+								map.setZoom(17);
+							}
+						}
+					});
+				});
+				var autocomplete = new google.maps.places.Autocomplete($form.find('input')[0], {
+					bounds: bounds
+				});
+				google.maps.event.addListener(autocomplete, 'place_changed', function(){
+					var place = autocomplete.getPlace();
+					if (!place.geometry) return;
+					if (place.geometry.viewport) {
+						map.fitBounds(place.geometry.viewport);
+					} else {
+						map.setCenter(place.geometry.location);
+						map.setZoom(17);
+					}
+				});
+
+				callback(null, map);
+			};
+		}
+	].forEach(function(task){
+		q.defer(task);
+	});
+
+	q.awaitAll(function(error, results){
+		var busStops = results[0];
+		var busServices = results[1];
+		var busStopsServices = results[2];
+		var map = results[3];
 
 		var html = '';
 		var $busServices = $('#bus-services');
@@ -959,97 +1068,7 @@ if (location.hostname == 'cheeaun.github.com'){
 					break;
 			}
 		});
-	};
-
-	busStops = amplify.store('busStops');
-	busStops ? init() : $.getJSON('data/2/bus-stops.json', function(data){
-		if (!data) return;
-		busStops = {};
-		$.each(data, function(i, d){
-			busStops[d.no] = d;
-		});
-		init();
-		amplify.store('busStops', busStops, {expires: 24*60*60*1000});
 	});
-
-	busServices = amplify.store('busServices');
-	busServices ? init() : $.getJSON('data/2/bus-services.json', function(data){
-		if (!data) return;
-		busServices = data;
-		init();
-		amplify.store('busServices', busServices, {expires: 24*60*60*1000});
-	});
-
-	busStopsServices = amplify.store('busStopsServices');
-	busStopsServices ? init() : $.getJSON('data/2/bus-stops-services.json', function(data){
-		if (!data) return;
-		busStopsServices = data;
-		init();
-		amplify.store('busStopsServices', busStopsServices, {expires: 24*60*60*1000});
-	});
-
-	(function(){
-		google.maps.visualRefresh = true;
-		map = new google.maps.Map(document.getElementById('map'), {
-			center: new google.maps.LatLng(1.3520830, 103.8198360),
-			zoom: 11,
-			mapTypeId: google.maps.MapTypeId.ROADMAP,
-			disableDefaultUI: true,
-			overviewMapControl: true,
-			overviewMapControlOptions: {
-				opened: true
-			},
-			zoomControl: true,
-			zoomControlOptions: {
-				style: google.maps.ZoomControlStyle.SMALL,
-				position: google.maps.ControlPosition.RIGHT_BOTTOM
-			}
-		});
-
-		var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(1.1663980,103.60557550), new google.maps.LatLng(1.47088090,104.08568050));
-		map.fitBounds(bounds);
-		var inited = false;
-		google.maps.event.addListener(map, 'tilesloaded', function(){
-			if (!inited){
-				init();
-				inited = true;
-			}
-		});
-
-		// Places search form
-		var $form = $('#places-search-form'),
-			service = new google.maps.places.PlacesService(map);
-		$form.submit(function(e){
-			e.preventDefault();
-			service.search({
-				name: $form.find('input').val(),
-				bounds: bounds
-			}, function(results, status){
-				if (status == google.maps.places.PlacesServiceStatus.OK && results.length){
-					var place = results[0]; // Only get first result
-					if (place.geometry.viewport) {
-						map.fitBounds(place.geometry.viewport);
-					} else {
-						map.setCenter(place.geometry.location);
-						map.setZoom(17);
-					}
-				}
-			});
-		});
-		var autocomplete = new google.maps.places.Autocomplete($form.find('input')[0], {
-			bounds: bounds
-		});
-		google.maps.event.addListener(autocomplete, 'place_changed', function(){
-			var place = autocomplete.getPlace();
-			if (!place.geometry) return;
-			if (place.geometry.viewport) {
-				map.fitBounds(place.geometry.viewport);
-			} else {
-				map.setCenter(place.geometry.location);
-				map.setZoom(17);
-			}
-		});
-	})();
 
 	$('#header-about').click(function(){
 		$('#about').removeClass('hidden');
