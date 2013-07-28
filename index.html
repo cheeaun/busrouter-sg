@@ -291,6 +291,9 @@ aside section div ul li a{
 	border-bottom: 1px solid #ededed;
 	overflow: hidden;
 	cursor: pointer;
+	-webkit-transition: background-color .3s;
+	-moz-transition: background-color .3s;
+	transition: background-color .3s;
 }
 aside section div ul li a:hover{
 	text-decoration: none;
@@ -677,7 +680,7 @@ if (location.hostname == 'cheeaun.github.com'){
 				clearMap();
 				setTimeout(function(){
 					$busServices.find('a.selected').removeClass('selected');
-				}, 750);
+				}, 400);
 			},
 			'/services/([0-9a-zA-Z]+)/?([0-9a-zA-Z]+)?': function(no, route){
 				if (!route) route = 1;
