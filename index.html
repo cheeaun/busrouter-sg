@@ -957,7 +957,7 @@ if (location.hostname == 'cheeaun.github.com'){
 	busStops = amplify.store('busStops');
 	busStops ? init() : $.getJSON('data/2/bus-stops.json', function(data){
 		if (!data) return;
-		var busStops = {};
+		busStops = {};
 		$.each(data, function(i, d){
 			busStops[d.no] = d;
 		});
