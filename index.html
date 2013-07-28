@@ -1020,7 +1020,6 @@ if (location.hostname == 'cheeaun.github.com'){
 			}, function(results, status){
 				if (status == google.maps.places.PlacesServiceStatus.OK && results.length){
 					var place = results[0]; // Only get first result
-					console.log(place);
 					if (place.geometry.viewport) {
 						map.fitBounds(place.geometry.viewport);
 					} else {
