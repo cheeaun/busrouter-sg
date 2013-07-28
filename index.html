@@ -509,6 +509,13 @@ if (location.hostname == 'cheeaun.github.com'){
 <script src="js/scripts.js"></script>
 <script>
 (function(){
+	var dataVersion = '2'; // Versioning for all the bus data
+	var currentDataVersion = amplify.store('dataVersion');
+	if (dataVersion != currentDataVersion && localStorage && localStorage.clear){
+		localStorage.clear();
+		amplify.store('dataVersion', dataVersion);
+	}
+
 	var map, busServices, busStops, busStopsServices, markers = {}, polylines = {};
 
 	var markerImage = {
