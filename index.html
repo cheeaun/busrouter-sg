@@ -995,18 +995,22 @@ if (location.hostname == 'cheeaun.github.com'){
 	(function(){
 		google.maps.visualRefresh = true;
 		map = new google.maps.Map(document.getElementById('map'), {
-			center: new google.maps.LatLng(1.368405, 103.84779),
+			center: new google.maps.LatLng(1.3520830, 103.8198360),
 			zoom: 11,
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
-			mapTypeControl: false,
-			streetViewControl: false,
+			disableDefaultUI: true,
 			overviewMapControl: true,
 			overviewMapControlOptions: {
 				opened: true
+			},
+			zoomControl: true,
+			zoomControlOptions: {
+				style: google.maps.ZoomControlStyle.SMALL,
+				position: google.maps.ControlPosition.RIGHT_BOTTOM
 			}
 		});
 
-		var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(1.25902803324958,103.640944981446), new google.maps.LatLng(1.44527693946651,103.997948007655));
+		var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(1.1663980,103.60557550), new google.maps.LatLng(1.47088090,104.08568050));
 		map.fitBounds(bounds);
 		var inited = false;
 		google.maps.event.addListener(map, 'tilesloaded', function(){
