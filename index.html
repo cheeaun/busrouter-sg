@@ -515,8 +515,9 @@ if (location.hostname == 'cheeaun.github.com'){
 	</section>
 </aside>
 <div id="map"></div>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/zepto/0.8/zepto.min.js"></script>
-<script src="scripts.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/zepto/1.0/zepto.min.js"></script>
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDpk0BS7iLdbn5U545tiIN12k1OCgj2cc4&libraries=places&sensor=false"></script>
+<script src="js/scripts.js"></script>
 <script>
 (function(){
 	var map, busServices, busStops, busStopsServices, markers = {}, polylines = {};
@@ -901,7 +902,9 @@ if (location.hostname == 'cheeaun.github.com'){
 					}
 				});
 			}
-		}).init(location.hash || '/');
+		}).init();
+
+		if (location.hash) router.dispatch('on', location.hash.slice(1));
 
 		$('#bus-routes li a').live('click', function(e){
 			e.preventDefault();
@@ -989,7 +992,7 @@ if (location.hostname == 'cheeaun.github.com'){
 		amplify.store('busStopsServices', busStopsServices, {expires: 24*60*60*1000});
 	});
 
-	window.initialize = function(){
+	(function(){
 		google.maps.visualRefresh = true;
 		map = new google.maps.Map(document.getElementById('map'), {
 			center: new google.maps.LatLng(1.368405, 103.84779),
@@ -1047,12 +1050,7 @@ if (location.hostname == 'cheeaun.github.com'){
 				map.setZoom(17);
 			}
 		});
-	}
-	window.onload = function(){
-		var script = document.createElement('script');
-		script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyDpk0BS7iLdbn5U545tiIN12k1OCgj2cc4&libraries=places&sensor=false&callback=initialize";
-		document.body.appendChild(script);
-	};
+	})();
 
 	$('#header-about').click(function(){
 		$('#about').removeClass('hidden');
