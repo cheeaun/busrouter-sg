@@ -819,7 +819,7 @@ if (location.hostname == 'cheeaun.github.io'){
 			}
 		});
 
-		$('#bus-stops li a').live('click', function(e){
+		$('#bus-stops').on('click', 'li a', function(e){
 			e.preventDefault();
 			var stop = $(this).find('.tag').text();
 			var marker = stopMarkers[stop];
@@ -827,7 +827,7 @@ if (location.hostname == 'cheeaun.github.io'){
 			map.panTo(latlng);
 			google.maps.event.trigger(marker, 'click');
 		});
-		$('#bus-stops-section a.close').live('click', function(e){
+		$('#bus-stops-section').on('click', 'a.close', function(e){
 			e.preventDefault();
 			$('#bus-stops-section').addClass('hidden');
 		});
@@ -1066,7 +1066,7 @@ if (location.hostname == 'cheeaun.github.io'){
 
 		if (location.hash) routie(location.hash.slice(1));
 
-		$('#bus-routes li a').live('click', function(e){
+		$('#bus-routes').on('click', 'li a', function(e){
 			e.preventDefault();
 			var stop = $(this).find('.tag').text();
 			var marker = markers[stop];
@@ -1077,7 +1077,7 @@ if (location.hostname == 'cheeaun.github.io'){
 			google.maps.event.trigger(marker, 'click');
 		});
 
-		$('#bus-stop-routes li a').live('mouseover', function(){
+		$('#bus-stop-routes').on('mouseover', 'li a', function(){
 			var serv = $(this).find('.tag').text();
 			for (var service in polylines){
 				var line = polylines[service];
@@ -1091,7 +1091,7 @@ if (location.hostname == 'cheeaun.github.io'){
 					});
 				}
 			}
-		}).live('mouseout', function(){
+		}).on('mouseout', 'li a', function(){
 			for (var service in polylines){
 				polylines[service].setOptions({
 					strokeOpacity: .4
@@ -1133,7 +1133,7 @@ if (location.hostname == 'cheeaun.github.io'){
 		$('#about').addClass('hidden');
 	});
 
-	$('#bus-routes-section a.details').live('click', function(e){
+	$('#bus-routes-section').on('click', 'a.details', function(e){
 		e.preventDefault();
 
 		var width = 640;
