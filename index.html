@@ -533,44 +533,41 @@ if (location.hostname == 'cheeaun.github.io'){
 		b: 'assets/red-pin-b.png'
 	};
 
+	var dataEndPoints = {
+		busStops: 'data/2/bus-stops.json',
+		busServices: 'data/2/bus-services.json',
+		busStopsServices: 'data/2/bus-stops-services.json'
+	};
+
+	var getData = function(key, url, cb){
+		if (arguments.length == 2){
+			cb = url;
+			url = '';
+		}
+		var data = lscache.get(key);
+		if (data){
+			cb(null, data);
+		} else {
+			var endPoint = url || dataEndPoints[key];
+			$.getJSON(endPoint, function(d){
+				if (!d) return;
+				cb(null, d);
+				lscache.set(key, d, 24*60);
+			});
+		}
+	};
+
 	var q = queue();
 
 	[
 		function(callback){
-			var busStops = lscache.get('busStops');
-			if (busStops){
-				callback(null, busStops);
-			} else {
-				$.getJSON('data/2/bus-stops.json', function(data){
-					if (!data) return;
-					callback(null, data);
-					lscache.set('busStops', data, 24*60);
-				})
-			}
+			getData('busStops', callback);
 		},
 		function(callback){
-			var busServices = lscache.get('busServices');
-			if (busServices){
-				callback(null, busServices);
-			} else {
-				$.getJSON('data/2/bus-services.json', function(data){
-					if (!data) return;
-					callback(null, data);
-					lscache.set('busServices', data, 24*60);
-				});
-			}
+			getData('busServices', callback);
 		},
 		function(callback){
-			var busStopsServices = lscache.get('busStopsServices');
-			if (busStopsServices){
-				callback(null, busStopsServices);
-			} else {
-				$.getJSON('data/2/bus-stops-services.json', function(data){
-					if (!data) return;
-					callback(null, data);
-					lscache.set('busStopsServices', data, 24*60);
-				});
-			}
+			getData('busStopsServices', callback);
 		},
 		function(callback){
 			window.onload = function(){
@@ -952,13 +949,9 @@ if (location.hostname == 'cheeaun.github.io'){
 					lscache.set('busService-' + no, data, 24*60);
 				};
 
-				var serviceData = lscache.get('busService-' + no);
-				if (serviceData){
+				getData('busService' + no, 'data/2/bus-services/' + no + '.json', function(e, serviceData){
 					run(serviceData);
-				} else {
-					$('#bus-services-section').addClass('loading');
-					$.getJSON('data/2/bus-services/' + no + '.json', run);
-				}
+				});
 			},
 			'/stops/:stop': function(stop){
 				clearMap();
@@ -1039,18 +1032,12 @@ if (location.hostname == 'cheeaun.github.io'){
 
 				var q = queue();
 
-				services.forEach(function(service){
+				services.forEach(function(no){
 					q.defer(function(callback){
-						var serviceData = lscache.get('busService-' + service);
-						if (serviceData){
-							run(serviceData, service);
+						getData('busService' + no, 'data/2/bus-services/' + no + '.json', function(e, serviceData){
+							run(serviceData, no);
 							callback();
-						} else {
-							$.getJSON('data/2/bus-services/' + service + '.json', function(data){
-								run(data, service);
-								callback();
-							});
-						}
+						});
 					});
 				});
 
