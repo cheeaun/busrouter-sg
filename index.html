@@ -514,6 +514,7 @@ if (location.hostname == 'cheeaun.github.io'){
 (function(){
 	var dataVersion = '2'; // Versioning for all the bus data
 	var currentDataVersion = lscache.get('busDataVersion');
+
 	if (dataVersion != currentDataVersion && localStorage && localStorage.length && localStorage.removeItem){
 		// Remove amplify's localStorage
 		for (var i = localStorage.length-1; i >= 0 ; --i) {
@@ -546,7 +547,7 @@ if (location.hostname == 'cheeaun.github.io'){
 				$.getJSON('data/2/bus-stops.json', function(data){
 					if (!data) return;
 					var busStops = {};
-					$.each(data, function(i, d){
+					data.forEach(function(d){
 						busStops[d.no] = d;
 					});
 					callback(null, busStops);
@@ -601,8 +602,9 @@ if (location.hostname == 'cheeaun.github.io'){
 				map.fitBounds(bounds);
 
 				// Places search form
-				var $form = $('#places-search-form'),
-					service = new google.maps.places.PlacesService(map);
+				var $form = $('#places-search-form');
+				var service = new google.maps.places.PlacesService(map);
+
 				$form.submit(function(e){
 					e.preventDefault();
 					service.search({
@@ -620,6 +622,7 @@ if (location.hostname == 'cheeaun.github.io'){
 						}
 					});
 				});
+
 				var autocomplete = new google.maps.places.Autocomplete($form.find('input')[0], {
 					bounds: bounds
 				});
@@ -651,7 +654,8 @@ if (location.hostname == 'cheeaun.github.io'){
 		var $busServices = $('#bus-services');
 		var busServicesByType = {};
 		var busServicesMap = {};
-		$.each(busServices.services, function(i, service){
+
+		busServices.services.forEach(function(service){
 			var type = service.type;
 			if (busServicesByType[type]){
 				busServicesByType[type].push(service);
@@ -660,11 +664,12 @@ if (location.hostname == 'cheeaun.github.io'){
 			}
 			busServicesMap[service.no] = service;
 		});
+
 		$.each(busServicesByType, function(k, v){
 			html += '<h2>' + busServices.types[k] + '</h2><ul>';
 			for (var i=0, l=v.length; i<l; i++){
-				var service = v[i],
-					no = service.no;
+				var service = v[i];
+				var no = service.no;
 				html += '<li><a href="#/services/' + no + '" id="service-' + no + '"><b>' + no + '</b></a></li>';
 			}
 			html += '</ul>';
@@ -674,6 +679,7 @@ if (location.hostname == 'cheeaun.github.io'){
 		var infowindow = new google.maps.InfoWindow({
 			maxWidth: 300
 		});
+
 		var polyline = new google.maps.Polyline({
 			clickable: false,
 			strokeColor: '#f01b48',
@@ -693,26 +699,29 @@ if (location.hostname == 'cheeaun.github.io'){
 		};
 
 		google.maps.event.addListener(map, 'markerClick', function(data){
-			var marker = data.marker,
-				stop = data.stop,
-				currentService = data.currentService,
-				hideShowRoutesLink = data.hideShowRoutesLink,
-				info = busStops[stop],
-				name = info.name,
-				services = busStopsServices[stop];
+			var marker = data.marker;
+			var stop = data.stop;
+			var currentService = data.currentService;
+			var hideShowRoutesLink = data.hideShowRoutesLink;
+			var info = busStops[stop];
+			var name = info.name;
+			var services = busStopsServices[stop];
 			var html = '<div class="infowindow"><h1>' + name + '</h1>'
 				+ 'Bus stop number: <span class="tag">' + stop + '</span><br>';
-			$.each(services, function(key, service){
+
+			services.forEach(function(service){
 				if (service == currentService){
 					html += '<span class="infoservice">' + service + '</span> ';
 				} else {
 					html += '<a href="#/services/' + service + '" class="infoservice">' + service + '</a> ';
 				}
 			});
+
 			if (services.length > 1 && !hideShowRoutesLink){
 				html += '<hr><a href="#/stops/' + stop + '">Show all routes passing here</a>';
 			}
 			html += '</div>';
+
 			infowindow.setContent(html);
 			infowindow.open(map, marker);
 		});
@@ -740,40 +749,43 @@ if (location.hostname == 'cheeaun.github.io'){
 					if (!stopMarkers[no]){
 						var position = new google.maps.LatLng(stop.lat, stop.lng);
 						if (!bounds.contains(position)) return;
+
 						var marker = new google.maps.Marker({
-								position: position,
-								map: map,
-								title: stop.name,
-								icon: markerImage.circle
-							});
+							position: position,
+							map: map,
+							title: stop.name,
+							icon: markerImage.circle
+						});
+
 						google.maps.event.addListener(marker, 'click', function(){
 							google.maps.event.trigger(map, 'markerClick', {
 								marker: marker,
 								stop: no
 							});
 						});
+
 						stopMarkers[no] = marker;
 					}
+
 					busStopsOnMap.push({
 						no: no,
 						stop: stop
 					});
-
 				});
 
 				if (busStopsOnMap.length){
 					var html = '<ul>';
 					busStopsOnMap.sort(function(a, b){
-						var aName = a.stop.name,
-							bName = b.stop.name;
+						var aName = a.stop.name;
+						var bName = b.stop.name;
 						if (aName < bName) return -1;
 						if (aName > bName) return 1;
 						return 0;
 					});
 					for (var i in busStopsOnMap){
-						var b = busStopsOnMap[i],
-							no = b.no,
-							name = b.stop.name;
+						var b = busStopsOnMap[i];
+						var no = b.no;
+						var name = b.stop.name;
 						html += '<li><a class="stop" id="stop-' + no + '"><span class="tag">' + no + '</span> ' + name + '</a></li>';
 					}
 					html += '</ul>';
@@ -790,9 +802,9 @@ if (location.hostname == 'cheeaun.github.io'){
 
 		$('#bus-stops li a').live('click', function(e){
 			e.preventDefault();
-			var stop = $(this).find('.tag').text(),
-				marker = stopMarkers[stop],
-				latlng = marker.getPosition();
+			var stop = $(this).find('.tag').text();
+			var marker = stopMarkers[stop];
+			var latlng = marker.getPosition();
 			map.panTo(latlng);
 			google.maps.event.trigger(marker, 'click');
 		});
@@ -823,16 +835,18 @@ if (location.hostname == 'cheeaun.github.io'){
 				var run = function(data){
 					$('#bus-services-section').removeClass('loading');
 					if (!data) return;
-					var one = data[route],
-						routes = one.route,
-						stops = one.stops,
-						latlngs = [],
-						locations = [],
-						bounds = new google.maps.LatLngBounds();
+
+					var one = data[route];
+					var routes = one.route;
+					var stops = one.stops;
+					var latlngs = [];
+					var locations = [];
+					var bounds = new google.maps.LatLngBounds();
+
 					for (var i=0, l=routes.length; i<l; i++){
-						var coord = routes[i],
-							latlng = coord.split(','),
-							position = new google.maps.LatLng(parseFloat(latlng[0], 10), parseFloat(latlng[1], 10));
+						var coord = routes[i];
+						var latlng = coord.split(',');
+						var position = new google.maps.LatLng(parseFloat(latlng[0], 10), parseFloat(latlng[1], 10));
 						latlngs.push(position);
 						bounds.extend(position);
 					}
@@ -859,16 +873,18 @@ if (location.hostname == 'cheeaun.github.io'){
 
 					var firstSameLast = false;
 					var l = stops.length;
-					$.each(stops, function(i, stop){
-						var info = busStops[stop],
-							name = info.name,
-							services = busStopsServices[stop],
-							icon = markerImage.circle,
-							last = l-1,
-							className = 'stop';
+
+					stops.forEach(function(stop, i){
+						var info = busStops[stop];
+						var name = info.name;
+						var services = busStopsServices[stop];
+						var icon = markerImage.circle;
+						var last = l-1;
+						var className = 'stop';
+
 						if (i == 0){
-							var lastStop = stops[last],
-								lastInfo = busStops[lastStop];
+							var lastStop = stops[last];
+							var lastInfo = busStops[lastStop];
 							if (name == lastInfo.name){
 								firstSameLast = true;
 								icon = markerImage.dot;
@@ -931,15 +947,16 @@ if (location.hostname == 'cheeaun.github.io'){
 
 				$('#bus-stop-routes-section').removeClass('hidden').addClass('loading').find('h1 b').text(stop);
 
-				var stopData = busStops[stop],
-					position = new google.maps.LatLng(stopData.lat, stopData.lng),
-					marker = new google.maps.Marker({
-						position: position,
-						map: map,
-						icon: markerImage.dot,
-						title: stopData.name,
-						animation: google.maps.Animation.DROP
-					});
+				var stopData = busStops[stop];
+				var position = new google.maps.LatLng(stopData.lat, stopData.lng);
+				var marker = new google.maps.Marker({
+					position: position,
+					map: map,
+					icon: markerImage.dot,
+					title: stopData.name,
+					animation: google.maps.Animation.DROP
+				});
+
 				google.maps.event.addListener(marker, 'click', function(){
 					google.maps.event.trigger(map, 'markerClick', {
 						marker: marker,
@@ -949,54 +966,58 @@ if (location.hostname == 'cheeaun.github.io'){
 				});
 				markers[stop] = marker;
 
-				var services = busStopsServices[stop],
-					servicesBounds = new google.maps.LatLngBounds(),
-					html = '',
-					run = function(data, service){
-						var d = data['1'],
-							stops = d.stops;
-						// The stop could be in the second route instead and
-						// could also be the last stop of the route, so choose the second route
-						if (stops.indexOf(stop) == -1 || stops[stops.length-1] == stop){
-							d = data['2'];
-							stops = d.stops;
-							if (stops.indexOf(stop) == -1){
-								// Failsafe, if second route somehow doesn't have the stop for some reason
-								d = data['1'];
-								stops = d.stops;
-							}
-						}
-						var routes = d.route,
-							latlngs = [],
-							locations = [];
-						for (var i=0, l=routes.length; i<l; i++){
-							var coord = routes[i],
-								latlng = coord.split(','),
-								position = new google.maps.LatLng(parseFloat(latlng[0], 10), parseFloat(latlng[1], 10));
-							latlngs.push(position);
-							servicesBounds.extend(position);
-						}
-						var line = new google.maps.Polyline({
-							strokeColor: '#f01b48',
-							strokeWeight: 5,
-							strokeOpacity: .4,
-							path: latlngs,
-							map: map
-						});
-						google.maps.event.addListener(line, 'mouseover', function(){
-							$('#stop-service-' + service).trigger('mouseover').focus();
-						});
-						google.maps.event.addListener(line, 'mouseout', function(){
-							$('#stop-service-' + service).trigger('mouseout').blur();
-						});
-						google.maps.event.addListener(line, 'click', function(){
-							location.href = $('#stop-service-' + service).attr('href');
-						});
-						polylines[service] = line;
+				var services = busStopsServices[stop];
+				var servicesBounds = new google.maps.LatLngBounds();
+				var html = '';
 
-						html += '<li><a href="#/services/' + service + '" id="stop-service-' + service + '"><span class="tag">' + service + '</span> '+ busServicesMap[service].name
-							+ '</a></li>';
-					};
+				var run = function(data, service){
+					var d = data['1'];
+					var stops = d.stops;
+
+					// The stop could be in the second route instead and
+					// could also be the last stop of the route, so choose the second route
+					if (stops.indexOf(stop) == -1 || stops[stops.length-1] == stop){
+						d = data['2'];
+						stops = d.stops;
+						if (stops.indexOf(stop) == -1){
+							// Failsafe, if second route somehow doesn't have the stop for some reason
+							d = data['1'];
+							stops = d.stops;
+						}
+					}
+
+					var routes = d.route;
+					var latlngs = [];
+					var locations = [];
+
+					for (var i=0, l=routes.length; i<l; i++){
+						var coord = routes[i];
+						var latlng = coord.split(',');
+						var position = new google.maps.LatLng(parseFloat(latlng[0], 10), parseFloat(latlng[1], 10));
+						latlngs.push(position);
+						servicesBounds.extend(position);
+					}
+					var line = new google.maps.Polyline({
+						strokeColor: '#f01b48',
+						strokeWeight: 5,
+						strokeOpacity: .4,
+						path: latlngs,
+						map: map
+					});
+					google.maps.event.addListener(line, 'mouseover', function(){
+						$('#stop-service-' + service).trigger('mouseover').focus();
+					});
+					google.maps.event.addListener(line, 'mouseout', function(){
+						$('#stop-service-' + service).trigger('mouseout').blur();
+					});
+					google.maps.event.addListener(line, 'click', function(){
+						location.href = $('#stop-service-' + service).attr('href');
+					});
+					polylines[service] = line;
+
+					html += '<li><a href="#/services/' + service + '" id="stop-service-' + service + '"><span class="tag">' + service + '</span> '+ busServicesMap[service].name
+						+ '</a></li>';
+				};
 
 				var q = queue();
 
@@ -1028,9 +1049,10 @@ if (location.hostname == 'cheeaun.github.io'){
 
 		$('#bus-routes li a').live('click', function(e){
 			e.preventDefault();
-			var stop = $(this).find('.tag').text(),
-				marker = markers[stop],
-				latlng = marker.getPosition();
+			var stop = $(this).find('.tag').text();
+			var marker = markers[stop];
+			var latlng = marker.getPosition();
+
 			if (map.getZoom() < 15) map.setZoom(15);
 			map.panTo(latlng);
 			google.maps.event.trigger(marker, 'click');
@@ -1094,10 +1116,12 @@ if (location.hostname == 'cheeaun.github.io'){
 
 	$('#bus-routes-section a.details').live('click', function(e){
 		e.preventDefault();
-		var width = 640,
-			height = 480,
-			top = ((screen.availHeight || screen.height)-height)/2,
-			left = (screen.width-width)/2;
+
+		var width = 640;
+		var height = 480;
+		var top = ((screen.availHeight || screen.height)-height)/2;
+		var left = (screen.width-width)/2;
+
 		window.open(this.href, 'bus-details', 'width=' + width + ',height=' + height + ',menubar=0,resizable=1,scrollbars=1,toolbar=0,top=' + top + ',left=' + left);
 	});
 })();
