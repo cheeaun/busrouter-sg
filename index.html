@@ -545,12 +545,8 @@ if (location.hostname == 'cheeaun.github.io'){
 			} else {
 				$.getJSON('data/2/bus-stops.json', function(data){
 					if (!data) return;
-					var busStops = {};
-					data.forEach(function(d){
-						busStops[d.no] = d;
-					});
-					callback(null, busStops);
-					lscache.set('busStops', busStops, 24*60);
+					callback(null, data);
+					lscache.set('busStops', data, 24*60);
 				})
 			}
 		},
@@ -668,8 +664,11 @@ if (location.hostname == 'cheeaun.github.io'){
 		var busStopsServices = results[2];
 		var map = results[3];
 
-		var html = '';
-		var $busServices = $('#bus-services');
+		var busStopsMap = {};
+		busStops.forEach(function(stop){
+			busStopsMap[stop.no] = stop;
+		});
+
 		var busServicesByType = {};
 		var busServicesMap = {};
 
@@ -683,6 +682,8 @@ if (location.hostname == 'cheeaun.github.io'){
 			busServicesMap[service.no] = service;
 		});
 
+		var $busServices = $('#bus-services');
+		var html = '';
 		$.each(busServicesByType, function(k, v){
 			html += '<h2>' + busServices.types[k] + '</h2><ul>';
 			for (var i=0, l=v.length; i<l; i++){
@@ -721,7 +722,7 @@ if (location.hostname == 'cheeaun.github.io'){
 			var stop = data.stop;
 			var currentService = data.currentService;
 			var hideShowRoutesLink = data.hideShowRoutesLink;
-			var info = busStops[stop];
+			var info = busStopsMap[stop];
 			var name = info.name;
 			var services = busStopsServices[stop];
 			var html = '<div class="infowindow"><h1>' + name + '</h1>'
@@ -763,7 +764,8 @@ if (location.hostname == 'cheeaun.github.io'){
 				}
 
 				var busStopsOnMap = [];
-				$.each(busStops, function(no, stop){
+				busStops.forEach(function(stop){
+					var no = stop.no;
 					if (!stopMarkers[no]){
 						var position = new google.maps.LatLng(stop.lat, stop.lng);
 						if (!bounds.contains(position)) return;
@@ -800,12 +802,11 @@ if (location.hostname == 'cheeaun.github.io'){
 						if (aName > bName) return 1;
 						return 0;
 					});
-					for (var i in busStopsOnMap){
-						var b = busStopsOnMap[i];
+					busStopsOnMap.forEach(function(b){
 						var no = b.no;
 						var name = b.stop.name;
 						html += '<li><a class="stop" id="stop-' + no + '"><span class="tag">' + no + '</span> ' + name + '</a></li>';
-					}
+					});
 					html += '</ul>';
 					$busStops.html(html);
 				} else {
@@ -893,7 +894,7 @@ if (location.hostname == 'cheeaun.github.io'){
 					var l = stops.length;
 
 					stops.forEach(function(stop, i){
-						var info = busStops[stop];
+						var info = busStopsMap[stop];
 						var name = info.name;
 						var services = busStopsServices[stop];
 						var icon = markerImage.circle;
@@ -902,7 +903,7 @@ if (location.hostname == 'cheeaun.github.io'){
 
 						if (i == 0){
 							var lastStop = stops[last];
-							var lastInfo = busStops[lastStop];
+							var lastInfo = busStopsMap[lastStop];
 							if (name == lastInfo.name){
 								firstSameLast = true;
 								icon = markerImage.dot;
@@ -965,7 +966,7 @@ if (location.hostname == 'cheeaun.github.io'){
 
 				$('#bus-stop-routes-section').removeClass('hidden').addClass('loading').find('h1 b').text(stop);
 
-				var stopData = busStops[stop];
+				var stopData = busStopsMap[stop];
 				var position = new google.maps.LatLng(stopData.lat, stopData.lng);
 				var marker = new google.maps.Marker({
 					position: position,
