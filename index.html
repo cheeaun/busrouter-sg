@@ -601,6 +601,25 @@ if (location.hostname == 'cheeaun.github.io'){
 				var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(1.1663980,103.60557550), new google.maps.LatLng(1.47088090,104.08568050));
 				map.fitBounds(bounds);
 
+				var maxX = bounds.getNorthEast().lng();
+				var maxY = bounds.getNorthEast().lat();
+				var minX = bounds.getSouthWest().lng();
+				var minY = bounds.getSouthWest().lat();
+				var panBackToBounds = function(){
+					var c = map.getCenter();
+					var x = c.lng();
+					var y = c.lat();
+
+					if (x < minX) x = minX;
+					if (x > maxX) x = maxX;
+					if (y < minY) y = minY;
+					if (y > maxY) y = maxY;
+
+					map.panTo(new google.maps.LatLng(y, x));
+				};
+				google.maps.event.addListener(map, 'dragend', panBackToBounds);
+				google.maps.event.addListener(map, 'zoom_changed', panBackToBounds);
+
 				// Places search form
 				var $form = $('#places-search-form');
 				var service = new google.maps.places.PlacesService(map);
