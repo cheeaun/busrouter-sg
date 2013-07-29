@@ -526,8 +526,6 @@ if (location.hostname == 'cheeaun.github.io'){
 		lscache.set('busDataVersion', dataVersion);
 	}
 
-	var markers = {}, polylines = {};
-
 	var markerImage = {
 		circle: 'assets/red-circle.png',
 		dot: 'assets/red-pin-dot.png',
@@ -695,10 +693,11 @@ if (location.hostname == 'cheeaun.github.io'){
 		});
 		$busServices.html(html);
 
+		var markers = {};
+		var polylines = {};
 		var infowindow = new google.maps.InfoWindow({
 			maxWidth: 300
 		});
-
 		var polyline = new google.maps.Polyline({
 			clickable: false,
 			strokeColor: '#f01b48',
