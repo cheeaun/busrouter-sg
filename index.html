@@ -950,15 +950,8 @@ if (location.hostname == 'cheeaun.github.io'){
 				markers[stop] = marker;
 
 				var services = busStopsServices[stop],
-					servicesIndex = 0;
 					servicesBounds = new google.maps.LatLngBounds(),
 					html = '',
-					done = function(){
-						map.fitBounds(servicesBounds);
-
-						$('#bus-stop-routes-section').removeClass('loading');
-						$('#bus-stop-routes').html('<ul>' + html + '</ul>');
-					},
 					run = function(data, service){
 						var d = data['1'],
 							stops = d.stops;
@@ -1003,19 +996,30 @@ if (location.hostname == 'cheeaun.github.io'){
 
 						html += '<li><a href="#/services/' + service + '" id="stop-service-' + service + '"><span class="tag">' + service + '</span> '+ busServicesMap[service].name
 							+ '</a></li>';
-
-						servicesIndex++;
-						if (servicesIndex == services.length) done();
 					};
-				$.each(services, function(i, no){
-					var serviceData = lscache.get('busService-' + no);
-					if (serviceData){
-						run(serviceData, no);
-					} else {
-						$.getJSON('data/2/bus-services/' + no + '.json', function(data){
-							run(data, no);
-						});
-					}
+
+				var q = queue();
+
+				services.forEach(function(service){
+					q.defer(function(callback){
+						var serviceData = lscache.get('busService-' + service);
+						if (serviceData){
+							run(serviceData, service);
+							callback();
+						} else {
+							$.getJSON('data/2/bus-services/' + service + '.json', function(data){
+								run(data, service);
+								callback();
+							});
+						}
+					});
+				});
+
+				q.awaitAll(function(){
+					map.fitBounds(servicesBounds);
+
+					$('#bus-stop-routes-section').removeClass('loading');
+					$('#bus-stop-routes').html('<ul>' + html + '</ul>');
 				});
 			}
 		});
