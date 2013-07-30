@@ -674,7 +674,7 @@ if (location.hostname == 'cheeaun.github.io'){
 		});
 		$busServices.html(html);
 
-		var markers = {};
+		var markers = [];
 		var polylines = {};
 		var infowindow = new google.maps.InfoWindow({
 			maxWidth: 300
@@ -687,8 +687,8 @@ if (location.hostname == 'cheeaun.github.io'){
 		});
 
 		var clearMap = function(){
-			for (var stop in markers) markers[stop].setMap(null);
-			markers = {};
+			markers.forEach(function(marker){ marker.setMap(null); });
+			markers = [];
 			for (var stop in stopMarkers) stopMarkers[stop].setMap(null);
 			stopMarkers = {};
 			for (var service in polylines) polylines[service].setMap(null);
@@ -901,7 +901,10 @@ if (location.hostname == 'cheeaun.github.io'){
 								className = 'stop-b';
 							}
 						}
-						if (i != last || !firstSameLast){
+						if (i == last && firstSameLast){
+							// Push the first marker as the last one. MINDBLOWN!
+							markers.push(markers[0]);
+						} else {
 							var marker = new google.maps.Marker({
 								position: new google.maps.LatLng(info.lat, info.lng),
 								map: map,
@@ -917,12 +920,12 @@ if (location.hostname == 'cheeaun.github.io'){
 									currentService: no
 								});
 								$busRoutes.find('li a.selected').removeClass('selected');
-								$('#stop-' + stop).addClass('selected').focus();
+								$('.stop-' + stop + '[data-index="' + i + '"]').addClass('selected').focus();
 							});
-							markers[stop] = marker;
+							markers.push(marker);
 						}
 
-						html += '<li><a tabindex="-1" class="' + className + '" id="stop-' + stop + '"><span class="tag">' + stop + '</span> ' + name + '</a></li>';
+						html += '<li><a tabindex="-1" class="' + className + ' stop-' + stop + '" data-index="' + i + '"><span class="tag">' + stop + '</span> ' + name + '</a></li>';
 					});
 					$busRoutes.html(html + '</ul>');
 					$busRoutes[0].scrollTop = 0;
@@ -959,7 +962,7 @@ if (location.hostname == 'cheeaun.github.io'){
 						hideShowRoutesLink: true
 					});
 				});
-				markers[stop] = marker;
+				markers.push(marker);
 
 				var services = busStopsServices[stop];
 				var servicesBounds = new google.maps.LatLngBounds();
@@ -1038,8 +1041,9 @@ if (location.hostname == 'cheeaun.github.io'){
 
 		$('#bus-routes').on('click', 'li a', function(e){
 			e.preventDefault();
-			var stop = $(this).find('.tag').text();
-			var marker = markers[stop];
+			var stopIndex = $(this).data('index');
+			var marker = markers[stopIndex];
+			if (!marker) return;
 			var latlng = marker.getPosition();
 
 			if (map.getZoom() < 15) map.setZoom(15);
