@@ -610,30 +610,14 @@ if (location.hostname == 'cheeaun.github.io'){
 				google.maps.event.addListener(map, 'dragend', panBackToBounds);
 				google.maps.event.addListener(map, 'zoom_changed', panBackToBounds);
 
-				// Places search form
 				var $form = $('#places-search-form');
-				var service = new google.maps.places.PlacesService(map);
-
 				$form.on('submit', function(e){
 					e.preventDefault();
-					service.search({
-						name: $form.find('input').val(),
-						bounds: bounds
-					}, function(results, status){
-						if (status == google.maps.places.PlacesServiceStatus.OK && results.length){
-							var place = results[0]; // Only get first result
-							if (place.geometry.viewport) {
-								map.fitBounds(place.geometry.viewport);
-							} else {
-								map.setCenter(place.geometry.location);
-								map.setZoom(17);
-							}
-						}
-					});
 				});
 
 				var autocomplete = new google.maps.places.Autocomplete($form.find('input')[0], {
-					bounds: bounds
+					bounds: bounds,
+					componentRestrictions: {country: 'sg'}
 				});
 				google.maps.event.addListener(autocomplete, 'place_changed', function(){
 					var place = autocomplete.getPlace();
