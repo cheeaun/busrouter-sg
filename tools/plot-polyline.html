@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<meta charset="utf-8">
+<style>
+#map1{
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  right: 50%;
+  bottom: 50%;
+  left: 0;
+  border: 1px solid #999;
+}
+#map2{
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 50%;
+  left: 50%;
+  border: 1px solid #999;
+}
+#coords1{
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  margin: 0;
+  width: 50%;
+  height: 50%;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  bottom: 0;
+  left: 0;
+}
+#coords2{
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  margin: 0;
+  width: 50%;
+  height: 50%;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  bottom: 0;
+  left: 50%;
+}
+</style>
+<div id="map1"></div>
+<div id="map2"></div>
+<textarea id="coords1" placeholder="Coordinates of polyline here"></textarea>
+<textarea id="coords2" placeholder="Coordinates of polyline here"></textarea>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpk0BS7iLdbn5U545tiIN12k1OCgj2cc4&sensor=false"></script>
+<script>
+window.onload = function(){
+  google.maps.visualRefresh = true;
+  var center = new google.maps.LatLng(1.3520830, 103.8198360);
+  var mapOpts = {
+    zoom: 10,
+    center: center,
+  };
+
+  var map1 = new google.maps.Map(document.getElementById('map1'), mapOpts);
+  var map2 = new google.maps.Map(document.getElementById('map2'), mapOpts);
+
+  var ignoreIdle = false;
+  var setIgnoreIdle = function(){
+    ignoreIdle = true;
+    setTimeout(function(){
+      ignoreIdle = false;
+    }, 100);
+  };
+  google.maps.event.addListener(map1, 'idle', function(){
+    if (ignoreIdle) return;
+    setIgnoreIdle();
+    map2.setZoom(map1.getZoom());
+    map2.setCenter(map1.getCenter());
+  });
+  google.maps.event.addListener(map2, 'idle', function(){
+    if (ignoreIdle) return;
+    setIgnoreIdle();
+    map1.setZoom(map2.getZoom());
+    map1.setCenter(map2.getCenter());
+  });
+
+  var poly1 = new google.maps.Polyline();
+  var poly2 = new google.maps.Polyline();
+
+  var $coords1 = document.getElementById('coords1');
+  $coords1.oninput = function(){
+    var coords = $coords1.value;
+    var data = '';
+    try {
+      data = JSON.parse(coords);
+    } catch(e) {
+      return;
+    }
+    poly1.setPath(data.map(function(coords){
+      coords = coords.split(',');
+      return new google.maps.LatLng(coords[1], coords[0]);
+    }));
+    poly1.setMap(map1);
+  };
+
+  var $coords2 = document.getElementById('coords2');
+  $coords2.oninput = function(){
+    var coords = $coords2.value;
+    var data = '';
+    try {
+      data = JSON.parse(coords);
+    } catch(e) {
+      return;
+    }
+    poly2.setPath(data.map(function(coords){
+      coords = coords.split(',');
+      return new google.maps.LatLng(coords[1], coords[0]);
+    }));
+    poly2.setMap(map2);
+  };
+};
+</script>
