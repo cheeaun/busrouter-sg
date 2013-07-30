@@ -5,7 +5,8 @@ module.exports = function(grunt) {
 		uglify: {
 			scripts: {
 				options: {
-					sourceMap: 'js/scripts.js.map'
+					sourceMap: 'js/scripts.js.map',
+					sourceMappingURL: 'scripts.js.map'
 				},
 				files: {
 					'js/scripts.js': [
