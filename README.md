@@ -7,7 +7,7 @@ Abbreviated as **SBRE**. I know, the name sucks. This app basically shows all ro
 
 All data such as routes, bus stops and services are *taken* from <http://publictransport.sg/>, which means they are copyrighted by the [Land Transport Authority](http://www.lta.gov.sg/).
 
-Here's how to get the data, assuming that you have `node`, `[grunt](http://gruntjs.com/)` and checked out this repo:
+Here's how to get the data, assuming that you have `node`, [grunt](http://gruntjs.com/) and checked out this repo:
 
 	npm install
 	grunt fetchBusServices
