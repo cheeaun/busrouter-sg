@@ -23,6 +23,11 @@ The data you'll get are:
 - [`bus-stops-services.json`](http://cheeaun.github.com/busrouter-sg/data/2/bus-stops-services.json) - List all bus stops with the bus numbers/services that stops there.
 - `bus-services/{number}.json` - List two routes with all (polyline) coordinates and bus stops for each route. If the bus service doesn't have a second route, the second route data will be empty. E.g. <http://cheeaun.github.com/busrouter-sg/data/2/bus-services/2.json>.
 
+Few more `grunt` goodies:
+
+- `grunt connect` - starts a local server
+- `grunt uglify` - concat/minify the JS files
+
 The icon is from [The Noun Project](http://thenounproject.com/noun/bus/#icon-No97). The map is powered by [Google Maps JavaScript API](http://code.google.com/apis/maps/documentation/javascript/). The color scheme and markers are *inspired* by [Gothere.sg](http://gothere.sg/). Tested to work great on **modern** web browsers.
 
 If you have any feedback, tweet me at [@cheeaun](http://twitter.com/cheeaun).
