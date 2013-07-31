@@ -21,7 +21,7 @@ The data you'll get are:
 - [`bus-services.json`](http://cheeaun.github.com/busrouter-sg/data/2/bus-services.json) - Lists all bus services with the bus numbers, `routes` (number of routes where 2 means two routes, usually in opposite direction) and the bus operator.
 - [`bus-stops.json`](http://cheeaun.github.com/busrouter-sg/data/2/bus-stops.json) - Lists all bus stops with coordinates and names.
 - [`bus-stops-services.json`](http://cheeaun.github.com/busrouter-sg/data/2/bus-stops-services.json) - List all bus stops with the bus numbers/services that stops there.
-- `bus-services/{number}.json` - List two routes with all (polyline) coordinates and bus stops for each route. If the bus service doesn't have a second route, the second route data will be empty. E.g. [http://cheeaun.github.com/busrouter-sg/data/2/bus-services/2.json]().
+- `bus-services/{number}.json` - List two routes with all (polyline) coordinates and bus stops for each route. If the bus service doesn't have a second route, the second route data will be empty. E.g. <http://cheeaun.github.com/busrouter-sg/data/2/bus-services/2.json>.
 
 The icon is from [The Noun Project](http://thenounproject.com/noun/bus/#icon-No97). The map is powered by [Google Maps JavaScript API](http://code.google.com/apis/maps/documentation/javascript/). The color scheme and markers are *inspired* by [Gothere.sg](http://gothere.sg/). Tested to work great on **modern** web browsers.
 
