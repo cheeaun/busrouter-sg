@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8">
 <title>Singapore Bus Routes Explorer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 <link rel="shortcut icon" href="assets/favicon.png">
+<link rel="apple-touch-icon-precomposed" href="assets/icon_144.png">
 <meta name="google" value="notranslate">
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,300,500">
 <style>
@@ -27,6 +29,9 @@ a{
 }
 a:hover{
 	text-decoration: underline;
+}
+a[href="#"]{
+	-webkit-touch-callout: none;
 }
 hr{
 	margin: 8px 0 6px;
@@ -65,6 +70,7 @@ header h1 a:hover{
 }
 header h1 img{
 	vertical-align: text-bottom;
+	image-rendering: -moz-crisp-edges;
 }
 #header-about{
 	-webkit-box-sizing: border-box;
@@ -87,6 +93,9 @@ header h1 img{
 #header-about:hover{
 	text-decoration: none;
 	background-color: rgba(0,0,0,.7);
+}
+#header-sidebar{
+	display: none;
 }
 #places-search-form{
 	position: absolute;
@@ -300,6 +309,8 @@ aside section div ul li a{
 }
 aside section div ul li a:hover{
 	text-decoration: none;
+	color: #000;
+	background-color: #fafafa;
 }
 #sidebar section#bus-services-section div ul li a:active,
 #sidebar section#bus-services-section div ul li a.selected{
@@ -333,18 +344,23 @@ aside section div ul li a:hover{
 aside section div ul li a.stop-a{
 	padding-left: 48px;
 	background: #fff url(assets/red-circle-a.png) no-repeat 12px 2px;
+	background-size: 26px 27px;
 }
 aside section div ul li a.stop-b{
 	padding-left: 48px;
 	background: #fff url(assets/red-circle-b.png) no-repeat 12px 2px;
+	background-size: 26px 27px;
 }
 aside section div ul li a.stop-dot{
 	padding-left: 48px;
 	background: #fff url(assets/red-circle-dot.png) no-repeat 12px 2px;
+	background-size: 26px 27px;
 }
 aside section div ul li a.stop{
 	padding-left: 48px;
 	background: #fff url(assets/red-circle.png) no-repeat 16px center;
+	background-size: 18px 19px;
+	image-rendering: -moz-crisp-edges;
 }
 aside section div ul li a .tag{
 	vertical-align: middle;
@@ -456,6 +472,81 @@ aside section.hidden{
 	color: #999;
 	background-color: #ededed;
 }
+
+@media screen and (max-width: 640px){
+	body{
+		position: relative;
+	}
+
+	#places-search-form{
+		display: none;
+	}
+
+	header, #sidebar{
+		box-shadow: none;
+	}
+
+	header{
+		background-image: none;
+	}
+
+	header h1{
+		text-align: left;
+		font-size: 14px;
+	}
+
+	#map{
+		right: 0;
+	}
+
+	#header-about{
+		display: none;
+	}
+
+	#header-sidebar{
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		position: absolute;
+		top: 0;
+		right: 0;
+		height: 40px;
+		width: 50px;
+		line-height: 40px;
+		color: #fff;
+		background-color: transparent;
+		display: inline-block;
+		font-weight: normal;
+		cursor: pointer;
+		font-size: 16px;
+		text-align: center;
+		text-decoration: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+	#header-sidebar.active{
+		text-decoration: none;
+		background-color: rgba(0,0,0,.4);
+	}
+
+	#sidebar{
+		border-left: 1px solid #aaa;
+		-webkit-transition-property: -webkit-transform, opacity;
+		-webkit-transition-duration: .3s;
+		-moz-transition-property: -moz-transform, opacity;
+		-moz-transition-duration: .3s;
+		transition-property: transform, opacity;
+		transition-duration: .3s;
+		opacity: 1;
+	}
+
+	#sidebar.hidden{
+		opacity: 0;
+		pointer-events: none;
+	}
+}
 </style>
 <script>
 if (location.hostname == 'cheeaun.github.io'){
@@ -474,13 +565,14 @@ if (location.hostname == 'cheeaun.github.io'){
 (function(e,t,r){if(!r.version&&!r.__ai){e.debuggify=r;var a,n,s,o="debuggify",g=Array.prototype.slice,i={};r._e=[];s=e.onerror;e.onerror=function(){r._e&&r._e.push(arguments);return s?s.apply(this,arguments):void 0};r.init=function(e,s,c){function u(e,t,r,a){var n=r.split(".");if(2==n.length){e=e[n[0]];r=n[1]}e[r]=function(){var e=a?a+"#"+r:r;t.push([e].concat(g.call(arguments,0)))}}function p(e,t,r,a){var n,s=r.split(" ");for(n=0;s.length>n;n++)u(e,t,s[n],a)}a=t.createElement("script");a.type="text/javascript";a.async=!0;a.src="https://cdn.debuggify.net/js/"+e+"/debuggify.logger.http.js";n=t.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);var d=r;c!==void 0?d=r[c]=[]:c=o;d.Logger=d.Logger||[];var l=d.Logger;p(d,d,"Logger.get setEnv addTransport setDefaults onload alias metadata",null);var f=function(e){var t=this,r=i[n],a={},n=t&&t.namespace?t.namespace+"__"+e:e;if(r!==void 0)return i[n];p(a,l,"setLevel setFlag get message setNamespace addTransport sendToCollector report track untrack setUID isTracked genericMessage attach log warn error info debug",n);a.name=e;a.get=f;a.namespace=n;a.parent=t;i[n]=a;l.push(["get"].concat(g.call(arguments,0)));return a};l.get=f};r.__ai="0.2.0"}})(window,document,window.debuggify||[]);debuggify.init("a8598b18df7d47de27b4bbf02fdca20f");
 </script>
 </head>
-<body>
+<body ontouchstart><!-- make a:active work on iOS Mobile Safari -->
 <header>
 	<h1><a href="#/"><img src="assets/logo.png" width="16" height="20" alt=""> &nbsp;Singapore Bus Routes Explorer</a></h1>
 	<form id="places-search-form">
 		<input type="search" placeholder="Search for a place">
 	</form>
 	<a id="header-about">About</a>
+	<a id="header-sidebar" class="active">&#9776;</a>
 </header>
 <div id="about" class="hidden">
 	<section>
@@ -526,11 +618,34 @@ if (location.hostname == 'cheeaun.github.io'){
 		lscache.set('busDataVersion', dataVersion);
 	}
 
+	var scrollTop = function(){
+		var body = document.body;
+		/mobi/i.test(navigator.userAgent) && setTimeout(function(){
+			body.style.height = screen.height + 'px';
+			window.scrollTo(0, 0);
+			body.style.height = window.innerHeight + 'px';
+		}, 1000);
+	};
+	scrollTop();
+	window.onorientationchange = scrollTop;
+
 	var markerImage = {
-		circle: 'assets/red-circle.png',
-		dot: 'assets/red-pin-dot.png',
-		a: 'assets/red-pin-a.png',
-		b: 'assets/red-pin-b.png'
+		circle: {
+			url: 'assets/red-circle.png',
+			scaledSize: new google.maps.Size(36/2, 38/2)
+		},
+		dot: {
+			url: 'assets/red-pin-dot.png',
+			scaledSize: new google.maps.Size(52/2, 76/2)
+		},
+		a: {
+			url: 'assets/red-pin-a.png',
+			scaledSize: new google.maps.Size(52/2, 76/2)
+		},
+		b: {
+			url: 'assets/red-pin-b.png',
+			scaledSize: new google.maps.Size(52/2, 76/2)
+		}
 	};
 
 	var dataEndPoints = {
@@ -588,47 +703,57 @@ if (location.hostname == 'cheeaun.github.io'){
 					}
 				});
 
+				if ($(window).width() <= 640){
+					map.setOptions({
+						overviewMapControl: false,
+						zoomControl: false
+					});
+				}
+
 				var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(1.1663980,103.60557550), new google.maps.LatLng(1.47088090,104.08568050));
 				map.fitBounds(bounds);
 
-				var maxX = bounds.getNorthEast().lng();
-				var maxY = bounds.getNorthEast().lat();
-				var minX = bounds.getSouthWest().lng();
-				var minY = bounds.getSouthWest().lat();
-				var panBackToBounds = function(){
-					var c = map.getCenter();
-					var x = c.lng();
-					var y = c.lat();
+				if ($(window).width() > 660){
+					// This panning thing is buggy on iOS Mobile Safari
+					var maxX = bounds.getNorthEast().lng();
+					var maxY = bounds.getNorthEast().lat();
+					var minX = bounds.getSouthWest().lng();
+					var minY = bounds.getSouthWest().lat();
+					var panBackToBounds = function(){
+						var c = map.getCenter();
+						var x = c.lng();
+						var y = c.lat();
 
-					if (x < minX) x = minX;
-					if (x > maxX) x = maxX;
-					if (y < minY) y = minY;
-					if (y > maxY) y = maxY;
+						if (x < minX) x = minX;
+						if (x > maxX) x = maxX;
+						if (y < minY) y = minY;
+						if (y > maxY) y = maxY;
 
-					map.panTo(new google.maps.LatLng(y, x));
-				};
-				google.maps.event.addListener(map, 'dragend', panBackToBounds);
-				google.maps.event.addListener(map, 'zoom_changed', panBackToBounds);
+						map.panTo(new google.maps.LatLng(y, x));
+					};
+					google.maps.event.addListener(map, 'dragend', panBackToBounds);
+					google.maps.event.addListener(map, 'zoom_changed', panBackToBounds);
 
-				var $form = $('#places-search-form');
-				$form.on('submit', function(e){
-					e.preventDefault();
-				});
+					var $form = $('#places-search-form');
+					$form.on('submit', function(e){
+						e.preventDefault();
+					});
 
-				var autocomplete = new google.maps.places.Autocomplete($form.find('input')[0], {
-					bounds: bounds,
-					componentRestrictions: {country: 'sg'}
-				});
-				google.maps.event.addListener(autocomplete, 'place_changed', function(){
-					var place = autocomplete.getPlace();
-					if (!place.geometry) return;
-					if (place.geometry.viewport) {
-						map.fitBounds(place.geometry.viewport);
-					} else {
-						map.setCenter(place.geometry.location);
-						map.setZoom(17);
-					}
-				});
+					var autocomplete = new google.maps.places.Autocomplete($form.find('input')[0], {
+						bounds: bounds,
+						componentRestrictions: {country: 'sg'}
+					});
+					google.maps.event.addListener(autocomplete, 'place_changed', function(){
+						var place = autocomplete.getPlace();
+						if (!place.geometry) return;
+						if (place.geometry.viewport) {
+							map.fitBounds(place.geometry.viewport);
+						} else {
+							map.setCenter(place.geometry.location);
+							map.setZoom(17);
+						}
+					});
+				}
 
 				callback(null, map);
 			};
@@ -677,7 +802,7 @@ if (location.hostname == 'cheeaun.github.io'){
 		var markers = [];
 		var polylines = {};
 		var infowindow = new google.maps.InfoWindow({
-			maxWidth: 300
+			maxWidth: 260
 		});
 		var polyline = new google.maps.Polyline({
 			clickable: false,
@@ -925,7 +1050,7 @@ if (location.hostname == 'cheeaun.github.io'){
 							markers.push(marker);
 						}
 
-						html += '<li><a tabindex="-1" class="' + className + ' stop-' + stop + '" data-index="' + i + '"><span class="tag">' + stop + '</span> ' + name + '</a></li>';
+						html += '<li><a tabindex="0" href="#" class="' + className + ' stop-' + stop + '" data-index="' + i + '"><span class="tag">' + stop + '</span> ' + name + '</a></li>';
 					});
 					$busRoutes.html(html + '</ul>');
 					$busRoutes[0].scrollTop = 0;
@@ -1116,6 +1241,11 @@ if (location.hostname == 'cheeaun.github.io'){
 		var left = (screen.width-width)/2;
 
 		window.open(this.href, 'bus-details', 'width=' + width + ',height=' + height + ',menubar=0,resizable=1,scrollbars=1,toolbar=0,top=' + top + ',left=' + left);
+	});
+
+	$('#header-sidebar').click(function(){
+		$('#sidebar').toggleClass('hidden');
+		$('#header-sidebar').toggleClass('active')
 	});
 })();
 </script>
