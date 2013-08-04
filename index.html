@@ -1092,22 +1092,15 @@ if (location.hostname == 'cheeaun.github.io'){
 					var stops = one.stops;
 					var latlngs = [];
 					var locations = [];
-					var bounds = new google.maps.LatLngBounds();
 
 					for (var i=0, l=routes.length; i<l; i++){
 						var coord = routes[i];
 						var latlng = coord.split(',');
 						var position = new google.maps.LatLng(parseFloat(latlng[0], 10), parseFloat(latlng[1], 10));
 						latlngs.push(position);
-						bounds.extend(position);
 					}
 					polyline.setPath(latlngs);
 					polyline.setMap(map);
-
-					if (no != currentNo || !bounds.contains(map.getCenter())){
-						currentNo = no;
-						map.fitBounds(bounds);
-					}
 
 					var html = '';
 					var provider = busServicesMap[no].operator;
@@ -1124,6 +1117,7 @@ if (location.hostname == 'cheeaun.github.io'){
 
 					var firstSameLast = false;
 					var l = stops.length;
+					var bounds = new google.maps.LatLngBounds();
 
 					stops.forEach(function(stop, i){
 						var info = busStopsMap[stop];
@@ -1157,8 +1151,9 @@ if (location.hostname == 'cheeaun.github.io'){
 							// Push the first marker as the last one. MINDBLOWN!
 							markers.push(markers[0]);
 						} else {
+							var position = new google.maps.LatLng(info.lat, info.lng);
 							var marker = new google.maps.Marker({
-								position: new google.maps.LatLng(info.lat, info.lng),
+								position: position,
 								map: map,
 								icon: icon,
 								title: name,
@@ -1175,15 +1170,23 @@ if (location.hostname == 'cheeaun.github.io'){
 								$('.stop-' + stop + '[data-index="' + i + '"]').addClass('selected').focus();
 							});
 							markers.push(marker);
+
+							bounds.extend(position);
 						}
 
 						html += '<li><a tabindex="0" href="#" class="' + className + ' stop-' + stop + '" data-index="' + i + '"><span class="tag">' + stop + '</span> ' + name + '</a></li>';
 					});
+
 					$busRoutes.html(html + '</ul>');
 					$busRoutes[0].scrollTop = 0;
 					$('#bus-routes-section h1 b').text(no);
 					$('section.extra').addClass('hidden');
 					$('#bus-routes-section').removeClass('hidden');
+
+					if (no != currentNo || !bounds.contains(map.getCenter())){
+						currentNo = no;
+						map.fitBounds(bounds);
+					}
 
 					lscache.set('busService-' + no, data, 24*60);
 				};
@@ -1237,6 +1240,11 @@ if (location.hostname == 'cheeaun.github.io'){
 						}
 					}
 
+					stops.forEach(function(stopNo){
+						var stop = busStopsMap[stopNo];
+						servicesBounds.extend(new google.maps.LatLng(stop.lat, stop.lng));
+					});
+
 					var routes = d.route;
 					var latlngs = [];
 					var locations = [];
@@ -1246,7 +1254,6 @@ if (location.hostname == 'cheeaun.github.io'){
 						var latlng = coord.split(',');
 						var position = new google.maps.LatLng(parseFloat(latlng[0], 10), parseFloat(latlng[1], 10));
 						latlngs.push(position);
-						servicesBounds.extend(position);
 					}
 					var line = new google.maps.Polyline({
 						strokeColor: '#f01b48',
