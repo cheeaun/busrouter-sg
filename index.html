@@ -500,14 +500,6 @@ aside section.hidden{
 		display: none;
 	}
 
-	header, #sidebar{
-		box-shadow: none;
-	}
-
-	header{
-		background-image: none;
-	}
-
 	header h1{
 		text-align: left;
 		font-size: 14px;
@@ -519,6 +511,13 @@ aside section.hidden{
 
 	#header-about{
 		display: none;
+	}
+
+	#about section{
+		top: 80px;
+		left: 5%;
+		width: 90%;
+		margin: 0;
 	}
 
 	#header-sidebar{
@@ -550,7 +549,6 @@ aside section.hidden{
 	}
 
 	#sidebar{
-		border-left: 1px solid #aaa;
 		-webkit-transition-property: -webkit-transform, opacity;
 		-webkit-transition-duration: .3s;
 		-moz-transition-property: -moz-transform, opacity;
@@ -636,16 +634,18 @@ if (location.hostname == 'cheeaun.github.io'){
 		lscache.set('busDataVersion', dataVersion);
 	}
 
-	var scrollTop = function(){
-		var body = document.body;
-		/mobi/i.test(navigator.userAgent) && setTimeout(function(){
-			body.style.height = screen.height + 'px';
-			window.scrollTo(0, 0);
-			body.style.height = window.innerHeight + 'px';
-		}, 1000);
-	};
-	scrollTop();
-	window.onorientationchange = scrollTop;
+	if (/mobi/i.test(navigator.userAgent)){
+		var scrollTop = function(){
+			var body = document.body;
+			setTimeout(function(){
+				body.style.height = screen.height + 'px';
+				window.scrollTo(0, 0);
+				body.style.height = window.innerHeight + 'px';
+			}, 300);
+		};
+		scrollTop();
+		window.onresize = scrollTop;
+	}
 
 	var markerImage = {
 		location: {
@@ -699,6 +699,8 @@ if (location.hostname == 'cheeaun.github.io'){
 		}
 	};
 
+	var isSmallScreen = $(window).width() <= 640;
+
 	var q = queue();
 
 	[
@@ -730,7 +732,7 @@ if (location.hostname == 'cheeaun.github.io'){
 					}
 				});
 
-				if ($(window).width() <= 640){
+				if (isSmallScreen){
 					map.setOptions({
 						overviewMapControl: false,
 						zoomControl: false
@@ -808,7 +810,7 @@ if (location.hostname == 'cheeaun.github.io'){
 					});
 				}
 
-				if ($(window).width() > 660){
+				if (!isSmallScreen){
 					// This panning thing is buggy on iOS Mobile Safari
 					var maxX = bounds.getNorthEast().lng();
 					var maxY = bounds.getNorthEast().lat();
@@ -1269,6 +1271,7 @@ if (location.hostname == 'cheeaun.github.io'){
 			if (map.getZoom() < 15) map.setZoom(15);
 			map.panTo(latlng);
 			google.maps.event.trigger(marker, 'click');
+			if (isSmallScreen) $('#header-sidebar').click();
 		});
 
 		$('#bus-stop-routes').on('mouseover', 'li a', function(){
@@ -1326,6 +1329,12 @@ if (location.hostname == 'cheeaun.github.io'){
 	$('#about .close').click(function(){
 		$('#about').addClass('hidden');
 	});
+
+	if (isSmallScreen){
+		$('header h1 a').click(function(){
+			$('#about').toggleClass('hidden');
+		});
+	}
 
 	$('#bus-routes-section').on('click', 'a.details', function(e){
 		e.preventDefault();
