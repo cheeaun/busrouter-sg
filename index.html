@@ -871,6 +871,11 @@ if (location.hostname == 'cheeaun.github.io'){
 	});
 
 	q.awaitAll(function(error, results){
+		if (error || !results || results.length != 4){
+			alert('Oops, an error occured.');
+			return;
+		}
+
 		var busStops = results[0];
 		var busServices = results[1];
 		var busStopsServices = results[2];
