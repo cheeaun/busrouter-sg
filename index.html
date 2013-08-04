@@ -474,6 +474,23 @@ aside section.hidden{
 	background-color: #ededed;
 }
 
+#geolocation-control{
+	border: 1px solid rgba(0,0,0,.4);
+	background: rgba(255,255,255,.8) url(assets/geolocation-arrow.png) no-repeat 40% 60%;
+	background-size: 15px 15px;
+	image-rendering: -moz-crisp-edges;
+	width: 32px;
+	height: 32px;
+	border-radius: 5px;
+	margin: 5px;
+	cursor: pointer;
+	box-shadow: 0 1px 2px rgba(0,0,0,.1);
+}
+
+#geolocation-control.active{
+	background-image: url(assets/geolocation-arrow-active.png);
+}
+
 @media screen and (max-width: 640px){
 	body{
 		position: relative;
@@ -631,21 +648,30 @@ if (location.hostname == 'cheeaun.github.io'){
 	window.onorientationchange = scrollTop;
 
 	var markerImage = {
+		location: {
+			url: 'assets/blue-circle.png',
+			scaledSize: new google.maps.Size(36/2, 38/2),
+			anchor: new google.maps.Point(36/4, 38/4)
+		},
 		circle: {
 			url: 'assets/red-circle.png',
-			scaledSize: new google.maps.Size(36/2, 38/2)
+			scaledSize: new google.maps.Size(36/2, 38/2),
+			anchor: new google.maps.Point(36/4, 38/4)
 		},
 		dot: {
 			url: 'assets/red-pin-dot.png',
-			scaledSize: new google.maps.Size(52/2, 76/2)
+			scaledSize: new google.maps.Size(52/2, 76/2),
+			anchor: new google.maps.Point(52/4, 76/4)
 		},
 		a: {
 			url: 'assets/red-pin-a.png',
-			scaledSize: new google.maps.Size(52/2, 76/2)
+			scaledSize: new google.maps.Size(52/2, 76/2),
+			anchor: new google.maps.Point(52/4, 76/4)
 		},
 		b: {
 			url: 'assets/red-pin-b.png',
-			scaledSize: new google.maps.Size(52/2, 76/2)
+			scaledSize: new google.maps.Size(52/2, 76/2),
+			anchor: new google.maps.Point(52/4, 76/4)
 		}
 	};
 
@@ -713,6 +739,74 @@ if (location.hostname == 'cheeaun.github.io'){
 
 				var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(1.1663980,103.60557550), new google.maps.LatLng(1.47088090,104.08568050));
 				map.fitBounds(bounds);
+
+				if (navigator.geolocation){
+					map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push($('<a href="#" id="geolocation-control" />')[0]);
+
+					var locationMarker = new google.maps.Marker({
+						map: map,
+						clickable: false,
+						title: 'Current location',
+						icon: markerImage.location,
+						cursor: 'default',
+						visible: false,
+						zIndex: 9001
+					});
+					var locationCircle = new google.maps.Circle({
+						map: map,
+						clickable: false,
+						fillColor: '#00b4d2',
+						fillOpacity: 0.1,
+						strokeWeight: 0,
+						visible: false,
+						zIndex: 9000
+					});
+
+					var watching = false, watch;
+					var unwatch = function(){
+						navigator.geolocation.clearWatch(watch);
+						watching = false;
+						locationCircle.setVisible(false);
+						locationMarker.setVisible(false);
+						$('#geolocation-control').removeClass('active');
+					};
+
+					$('#map').on('click', '#geolocation-control', function(e){
+						e.preventDefault();
+						if (watching){
+							var pos = locationMarker.getPosition();
+							if (map.getBounds().contains(pos)){
+								unwatch();
+							} else {
+								map.panTo(pos);
+							}
+						} else {
+							var panToLocation = false;
+							watch = navigator.geolocation.watchPosition(function(position){
+								watching = true;
+								var coords = position.coords;
+								var pos = new google.maps.LatLng(coords.latitude, coords.longitude);
+								locationCircle.setCenter(pos);
+								locationCircle.setRadius(coords.accuracy);
+								locationCircle.setVisible(true);
+								locationMarker.setPosition(pos);
+								locationMarker.setVisible(true);
+								if (!panToLocation && bounds.contains(pos)){
+									map.panTo(pos);
+									panToLocation = true;
+								}
+								$('#geolocation-control').addClass('active');
+							}, function(e){
+								unwatch();
+								alert('Unable to get your location. Please try again.');
+							}, {
+								enableHighAccuracy: true,
+								timeout: 60*1000, // 1 min timeout
+								maximumAge: 5*1000 // 5-second cache
+							})
+						}
+					});
+				}
 
 				if ($(window).width() > 660){
 					// This panning thing is buggy on iOS Mobile Safari
