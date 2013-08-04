@@ -678,19 +678,21 @@ if (location.hostname == 'cheeaun.github.io'){
 	var dataEndPoints = {
 		busStops: 'data/2/bus-stops.json',
 		busServices: 'data/2/bus-services.json',
+		busService: 'data/2/bus-services/{{no}}.json',
 		busStopsServices: 'data/2/bus-stops-services.json'
 	};
 
-	var getData = function(key, url, cb){
+	var getData = function(key, params, cb){
 		if (arguments.length == 2){
-			cb = url;
-			url = '';
+			cb = params;
+			params = {};
 		}
 		var data = lscache.get(key);
 		if (data){
 			cb(null, data);
 		} else {
-			var endPoint = url || dataEndPoints[key];
+			var endPoint = dataEndPoints[key.split('-')[0]];
+			for (p in params) endPoint = endPoint.replace('{{' + p + '}}', params[p]);
 			$.getJSON(endPoint, function(d){
 				if (!d) return;
 				cb(null, d);
@@ -1158,7 +1160,7 @@ if (location.hostname == 'cheeaun.github.io'){
 					lscache.set('busService-' + no, data, 24*60);
 				};
 
-				getData('busService' + no, 'data/2/bus-services/' + no + '.json', function(e, serviceData){
+				getData('busService-' + no, {no: no}, function(e, serviceData){
 					run(serviceData);
 				});
 			},
@@ -1243,7 +1245,7 @@ if (location.hostname == 'cheeaun.github.io'){
 
 				services.forEach(function(no){
 					q.defer(function(callback){
-						getData('busService' + no, 'data/2/bus-services/' + no + '.json', function(e, serviceData){
+						getData('busService-' + no, {no: no}, function(e, serviceData){
 							run(serviceData, no);
 							callback();
 						});
