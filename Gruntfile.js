@@ -17,7 +17,6 @@ module.exports = function(grunt) {
 					'js/scripts.js': [
 						'assets/js/zepto/zepto.js',
 						'assets/js/zepto/event.js',
-						'assets/js/zepto/ajax.js',
 						'assets/js/*.js'
 					]
 				}
