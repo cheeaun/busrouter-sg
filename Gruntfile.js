@@ -6,7 +6,12 @@ module.exports = function(grunt) {
 			scripts: {
 				options: {
 					sourceMap: 'js/scripts.js.map',
-					sourceMappingURL: 'scripts.js.map'
+					sourceMappingURL: 'scripts.js.map',
+					sourceMapRoot: '../',
+					beautify: {
+						max_line_len: 500,
+						ie_proof: false
+					}
 				},
 				files: {
 					'js/scripts.js': [
