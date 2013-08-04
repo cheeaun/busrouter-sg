@@ -911,11 +911,22 @@ if (location.hostname == 'cheeaun.github.io'){
 		});
 
 		var clearMap = function(){
-			markers.forEach(function(marker){ marker.setMap(null); });
+			markers.forEach(function(marker){
+				marker.setMap(null);
+				google.maps.event.clearInstanceListeners(marker);
+			});
 			markers = [];
-			for (var stop in stopMarkers) stopMarkers[stop].setMap(null);
+			for (var stop in stopMarkers){
+				var marker = stopMarkers[stop];
+				marker.setMap(null);
+				google.maps.event.clearInstanceListeners(marker);
+			}
 			stopMarkers = {};
-			for (var service in polylines) polylines[service].setMap(null);
+			for (var service in polylines){
+				var line = polylines[service];
+				line.setMap(null);
+				google.maps.event.clearInstanceListeners(line);
+			}
 			polylines = {};
 			polyline.setMap(null);
 			infowindow.close();
