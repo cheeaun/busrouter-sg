@@ -892,7 +892,7 @@ if (location.hostname == 'cheeaun.github.io'){
 			if (busServicesByType[type]){
 				busServicesByType[type].push(service);
 			} else {
-				busServicesByType[type] = [];
+				busServicesByType[type] = [service];
 			}
 			busServicesMap[service.no] = service;
 		});
