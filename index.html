@@ -621,7 +621,6 @@ if (location.hostname == 'cheeaun.github.io'){
 (function(){
 	var dataVersion = '2'; // Versioning for all the bus data
 	var currentDataVersion = lscache.get('busDataVersion');
-
 	if (dataVersion != currentDataVersion && localStorage && localStorage.length && localStorage.removeItem){
 		// Remove amplify's localStorage
 		for (var i = localStorage.length-1; i >= 0 ; --i) {
@@ -706,7 +705,7 @@ if (location.hostname == 'cheeaun.github.io'){
 		}
 	};
 
-	var isSmallScreen = $(window).width() <= 640;
+	var isSmallScreen = window.innerWidth <= 640;
 
 	var q = queue();
 
@@ -750,7 +749,10 @@ if (location.hostname == 'cheeaun.github.io'){
 				map.fitBounds(bounds);
 
 				if (navigator.geolocation){
-					map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push($('<a href="#" id="geolocation-control" />')[0]);
+					var geolocationControl = document.createElement('a');
+					geolocationControl.id = 'geolocation-control';
+					geolocationControl.href = '#';
+					map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(geolocationControl);
 
 					var locationMarker = new google.maps.Marker({
 						map: map,
@@ -897,15 +899,16 @@ if (location.hostname == 'cheeaun.github.io'){
 
 		var $busServices = $('#bus-services');
 		var html = '';
-		$.each(busServicesByType, function(k, v){
-			html += '<h2>' + busServices.types[k] + '</h2><ul>';
-			for (var i=0, l=v.length; i<l; i++){
-				var service = v[i];
+		for (type in busServicesByType){
+			var services = busServicesByType[type];
+			html += '<h2>' + busServices.types[type] + '</h2><ul>';
+			for (var i=0, l=services.length; i<l; i++){
+				var service = services[i];
 				var no = service.no;
 				html += '<li><a href="#/services/' + no + '" id="service-' + no + '">' + no + '</a></li>';
 			}
 			html += '</ul>';
-		});
+		}
 		$busServices.html(html);
 
 		var markers = [];
@@ -1061,16 +1064,21 @@ if (location.hostname == 'cheeaun.github.io'){
 		var currentNo;
 
 		var docTitle = document.title;
-		var router = routie({
-			'/': function(){
+		ruto
+			.config({
+				notfound: function(){
+					ruto.go('/');
+				}
+			})
+			.add('/', function(){
 				document.title = docTitle;
 				$('section.extra').addClass('hidden');
 				clearMap();
 				setTimeout(function(){
 					$busServices.find('a.selected').removeClass('selected');
 				}, 400);
-			},
-			'/services/:no/:route?': function(no, route){
+			})
+			.add(/^\/services\/(\w+)\/?(\d)?$/i, function(path, no, route){
 				document.title = 'Bus service ' + no + ' - ' + docTitle;
 				if (!route) route = 1;
 
@@ -1190,8 +1198,8 @@ if (location.hostname == 'cheeaun.github.io'){
 				getData('busService-' + no, {no: no}, function(e, serviceData){
 					run(serviceData);
 				});
-			},
-			'/stops/:stop': function(stop){
+			})
+			.add(/^\/stops\/(\w+)$/i, function(path, stop){
 				document.title = 'Bus stop ' + stop + ' - ' + docTitle;
 				clearMap();
 
@@ -1290,10 +1298,8 @@ if (location.hostname == 'cheeaun.github.io'){
 					$('#bus-stop-routes-section').removeClass('loading');
 					$('#bus-stop-routes').html('<ul>' + html + '</ul>');
 				});
-			}
-		});
-
-		if (location.hash) routie(location.hash.slice(1));
+			})
+			.init();
 
 		$('#bus-routes').on('click', 'li a', function(e){
 			e.preventDefault();
@@ -1305,7 +1311,7 @@ if (location.hostname == 'cheeaun.github.io'){
 			if (map.getZoom() < 15) map.setZoom(15);
 			map.panTo(latlng);
 			google.maps.event.trigger(marker, 'click');
-			if (isSmallScreen) $('#header-sidebar').click();
+			if (isSmallScreen) $('#header-sidebar').trigger('click');
 		});
 
 		$('#bus-stop-routes').on('mouseover', 'li a', function(){
@@ -1330,7 +1336,7 @@ if (location.hostname == 'cheeaun.github.io'){
 			}
 		});
 
-		$(document).keyup(function(e){
+		$(document).on('keyup', function(e){
 			if (!(/services\/.+/i).test(location.hash)) return;
 			if (e.target.tagName && e.target.tagName.toLowerCase() == 'input') return;
 			var key = e.keyCode;
@@ -1340,7 +1346,7 @@ if (location.hostname == 'cheeaun.github.io'){
 					var $selected = $busRoutes.find('li a.selected');
 					if (!$selected.length) return;
 					$selected.removeClass('selected');
-					var $nextLi = $selected.parent('li').next('li');
+					var $nextLi = $selected.parent().next();
 					if (!$nextLi.length) return;
 					$nextLi.find('a').trigger('click');
 					break;
@@ -1349,7 +1355,7 @@ if (location.hostname == 'cheeaun.github.io'){
 					var $selected = $busRoutes.find('li a.selected');
 					if (!$selected.length) return;
 					$selected.removeClass('selected');
-					var $prevLi = $selected.parent('li').prev('li');
+					var $prevLi = $selected.parent().prev();
 					if (!$prevLi.length) return;
 					$prevLi.find('a').trigger('click');
 					break;
@@ -1357,15 +1363,15 @@ if (location.hostname == 'cheeaun.github.io'){
 		});
 	});
 
-	$('#header-about').click(function(){
+	$('#header-about').on('click', function(){
 		$('#about').removeClass('hidden');
 	});
-	$('#about .close').click(function(){
+	$('#about .close').on('click', function(){
 		$('#about').addClass('hidden');
 	});
 
 	if (isSmallScreen){
-		$('header h1 a').click(function(){
+		$('header h1 a').on('click', function(){
 			$('#about').toggleClass('hidden');
 		});
 	}
@@ -1381,7 +1387,7 @@ if (location.hostname == 'cheeaun.github.io'){
 		window.open(this.href, 'bus-details', 'width=' + width + ',height=' + height + ',menubar=0,resizable=1,scrollbars=1,toolbar=0,top=' + top + ',left=' + left);
 	});
 
-	$('#header-sidebar').click(function(){
+	$('#header-sidebar').on('click', function(){
 		$('#sidebar').toggleClass('hidden');
 		$('#header-sidebar').toggleClass('active')
 	});
