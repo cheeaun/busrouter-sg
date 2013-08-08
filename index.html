@@ -478,6 +478,10 @@ aside section.hidden{
 	color: #999;
 	background-color: #ededed;
 }
+.infowindow .infostop,
+.infowindow .show-routes{
+	white-space: nowrap;
+}
 
 #geolocation-control{
 	border: 1px solid rgba(0,0,0,.4);
@@ -958,7 +962,7 @@ if (location.hostname == 'cheeaun.github.io'){
 			var name = info.name;
 			var services = busStopsServices[stop];
 			var html = '<div class="infowindow"><h1>' + name + '</h1>'
-				+ 'Bus stop number: <span class="tag">' + stop + '</span><br>';
+				+ '<div class="infostop">Bus stop number: <span class="tag">' + stop + '</span></div>';
 
 			services.forEach(function(service){
 				if (service == currentService){
@@ -969,7 +973,7 @@ if (location.hostname == 'cheeaun.github.io'){
 			});
 
 			if (services.length > 1 && !hideShowRoutesLink){
-				html += '<hr><a href="#/stops/' + stop + '">Show all routes passing here</a>';
+				html += '<hr><a href="#/stops/' + stop + '" class="show-routes">Show all routes passing here</a>';
 			}
 			html += '</div>';
 
