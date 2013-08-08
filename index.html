@@ -1371,7 +1371,8 @@ if (location.hostname == 'cheeaun.github.io'){
 	});
 
 	if (isSmallScreen){
-		$('header h1 a').on('click', function(){
+		$('header h1 a').on('click', function(e){
+			e.preventDefault();
 			$('#about').toggleClass('hidden');
 		});
 	}
