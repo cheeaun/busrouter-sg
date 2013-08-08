@@ -135,9 +135,14 @@ var Yokuto = (function(){
 			return this[0].getAttribute('data-' + key);
 		},
 
-		text: function(){
+		text: function(str){
 			if (!this.length) return '';
-			return this[0].textContent;
+			var el = this[0];
+			if (str){
+				el.textContent = str;
+				return this;
+			}
+			return el.textContent;
 		},
 
 		focus: function(){
