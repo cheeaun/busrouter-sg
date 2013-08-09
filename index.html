@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <link rel="shortcut icon" href="favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="assets/icon_144.png">
+<link rel="apple-touch-icon-precomposed" href="assets/icons/icon-144.png">
 <meta name="google" value="notranslate">
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,300,500">
 <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/kmoebclbglclobmahimdaniikogclifn">
@@ -350,22 +350,22 @@ aside section div ul li a:hover{
 }
 aside section div ul li a.stop-a{
 	padding-left: 48px;
-	background: #fff url(assets/red-circle-a.png) no-repeat 12px 2px;
+	background: #fff url(assets/images/red-circle-a.png) no-repeat 12px 2px;
 	background-size: 26px 27px;
 }
 aside section div ul li a.stop-b{
 	padding-left: 48px;
-	background: #fff url(assets/red-circle-b.png) no-repeat 12px 2px;
+	background: #fff url(assets/images/red-circle-b.png) no-repeat 12px 2px;
 	background-size: 26px 27px;
 }
 aside section div ul li a.stop-dot{
 	padding-left: 48px;
-	background: #fff url(assets/red-circle-dot.png) no-repeat 12px 2px;
+	background: #fff url(assets/images/red-circle-dot.png) no-repeat 12px 2px;
 	background-size: 26px 27px;
 }
 aside section div ul li a.stop{
 	padding-left: 48px;
-	background: #fff url(assets/red-circle.png) no-repeat 16px center;
+	background: #fff url(assets/images/red-circle.png) no-repeat 16px center;
 	background-size: 18px 19px;
 	image-rendering: -moz-crisp-edges;
 }
@@ -428,7 +428,7 @@ aside section.hidden{
 	opacity: .6;
 }
 #bus-services-section.loading #bus-services ul li a.selected{
-	background-image: url(assets/loader.gif);
+	background-image: url(assets/images/loader.gif);
 	background-position: 97% center ;
 	background-repeat: no-repeat;
 }
@@ -436,7 +436,7 @@ aside section.hidden{
 	display: none;
 }
 #bus-stop-routes-section.loading #bus-stop-routes{
-	background-image: url(assets/loader-large.gif);
+	background-image: url(assets/images/loader-large.gif);
 	background-repeat: no-repeat;
 	background-position: center;
 }
@@ -486,7 +486,7 @@ aside section.hidden{
 
 #geolocation-control{
 	border: 1px solid rgba(0,0,0,.4);
-	background: rgba(255,255,255,.8) url(assets/geolocation-arrow.png) no-repeat 40% 60%;
+	background: rgba(255,255,255,.8) url(assets/images/geolocation-arrow.png) no-repeat 40% 60%;
 	background-size: 15px 15px;
 	image-rendering: -moz-crisp-edges;
 	width: 32px;
@@ -498,7 +498,7 @@ aside section.hidden{
 }
 
 #geolocation-control.active{
-	background-image: url(assets/geolocation-arrow-active.png);
+	background-image: url(assets/images/geolocation-arrow-active.png);
 }
 
 @media screen and (max-width: 640px){
@@ -596,7 +596,7 @@ if (location.hostname == 'cheeaun.github.io'){
 </head>
 <body ontouchstart><!-- make a:active work on iOS Mobile Safari -->
 <header>
-	<h1><a href="#/"><img src="assets/logo.png" width="16" height="20" alt=""> &nbsp;Singapore Bus Routes Explorer</a></h1>
+	<h1><a href="#/"><img src="assets/images/logo.png" width="16" height="20" alt=""> &nbsp;Singapore Bus Routes Explorer</a></h1>
 	<form id="places-search-form">
 		<input type="search" placeholder="Search for a place">
 	</form>
@@ -661,25 +661,25 @@ if (location.hostname == 'cheeaun.github.io'){
 
 	var markerImage = {
 		location: {
-			url: 'assets/blue-circle.png',
+			url: 'assets/images/blue-circle.png',
 			scaledSize: new google.maps.Size(36/2, 38/2),
 			anchor: new google.maps.Point(36/4, 38/4)
 		},
 		circle: {
-			url: 'assets/red-circle.png',
+			url: 'assets/images/red-circle.png',
 			scaledSize: new google.maps.Size(36/2, 38/2),
 			anchor: new google.maps.Point(36/4, 38/4)
 		},
 		dot: {
-			url: 'assets/red-pin-dot.png',
+			url: 'assets/images/red-pin-dot.png',
 			scaledSize: new google.maps.Size(52/2, 76/2)
 		},
 		a: {
-			url: 'assets/red-pin-a.png',
+			url: 'assets/images/red-pin-a.png',
 			scaledSize: new google.maps.Size(52/2, 76/2)
 		},
 		b: {
-			url: 'assets/red-pin-b.png',
+			url: 'assets/images/red-pin-b.png',
 			scaledSize: new google.maps.Size(52/2, 76/2)
 		}
 	};
