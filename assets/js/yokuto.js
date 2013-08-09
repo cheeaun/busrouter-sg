@@ -14,16 +14,16 @@ var Yokuto = (function(){
 	};
 
 	var closest = function(element, selector){
-      var matches = false;
-      do {
-        matches = matchesSelector(element, selector);
-      } while (!matches && (element = element.parentNode) && element.ownerDocument);
-      return matches ? element : false;
-    };
+	  var matches = false;
+	  do {
+		matches = matchesSelector(element, selector);
+	  } while (!matches && (element = element.parentNode) && element.ownerDocument);
+	  return matches ? element : false;
+	};
 
-    var Y = function(selector, context){
+	var Y = function(selector, context){
 		if (!selector) return this;
-    	if (!context) context = document;
+		if (!context) context = document;
 		var elements;
 		if (typeof selector != 'string'){
 			this.selector = '';
@@ -37,9 +37,9 @@ var Yokuto = (function(){
 			this[i] = elements[i];
 		}
 		return this;
-    };
+	};
 
-    Y.prototype = {
+	Y.prototype = {
 
 		each: function(fn){
 			var len = this.length;
@@ -155,7 +155,7 @@ var Yokuto = (function(){
 			return this;
 		}
 
-    };
+	};
 
 	return function(selector){
 		return new Y(selector);
