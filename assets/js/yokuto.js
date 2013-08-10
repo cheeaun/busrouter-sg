@@ -69,6 +69,7 @@ var Yokuto = (function(){
 		},
 
 		trigger: function(eventName){
+			if (!this.length) return this;
 			var el = this[0];
 			var event = document.createEvent('MouseEvents');
 			var clicks = (eventName == 'dblclick') ? 2 : 1;
