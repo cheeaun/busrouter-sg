@@ -1,7 +1,7 @@
 {
 	"name": "Singapore Bus Routes Explorer",
 	"description": "Show all routes and bus stops on the map for all bus services in Singapore.",
-	"version": "0.1.1",
+	"version": "0.2",
 	"app": {
 		"launch": {
 			"web_url": "http://cheeaun.github.com/busrouter-sg/"
