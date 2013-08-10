@@ -26,7 +26,8 @@ if (location.hostname == 'cheeaun.github.io'){
 
 	var _rollbarParams = {
 		"server.environment": "production",
-		"client.javascript.source_map_enabled": true
+		"client.javascript.source_map_enabled": true,
+		"client.javascript.guess_uncaught_frames": true
 	};
 	_rollbarParams["notifier.snippet_version"] = "2";
 	var _rollbar=["d34791fd62784f70920774893c1c6323", _rollbarParams];
