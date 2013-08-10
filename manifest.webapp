@@ -1,13 +1,20 @@
 {
-  "version": "0.1.1",
-  "name": "Singapore Bus Routes Explorer",
+  "version": "0.2",
+  "name": "BusRouter SG",
   "description": "Show all routes and bus stops on the map for all bus services in Singapore.",
-  "launch_path": "/busrouter-sg/",
-  "icons": {
-    "128": "/busrouter-sg/assets/icon_128.png"
-  },
   "developer": {
     "name": "Lim Chee Aun",
     "url": "http://cheeaun.com/"
+  },
+  "launch_path": "/busrouter-sg/",
+  "icons": {
+    "16": "/busrouter-sg/assets/icons/icon-16.png",
+    "30": "/busrouter-sg/assets/icons/icon-30.png",
+    "32": "/busrouter-sg/assets/icons/icon-32.png",
+    "48": "/busrouter-sg/assets/icons/icon-48.png",
+    "60": "/busrouter-sg/assets/icons/icon-60.png",
+    "64": "/busrouter-sg/assets/icons/icon-64.png",
+    "128": "/busrouter-sg/assets/icons/icon-128.png",
+    "256": "/busrouter-sg/assets/icons/icon-256.png"
   }
 }
