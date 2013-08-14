@@ -81,6 +81,8 @@ if (location.hostname == 'cheeaun.github.io'){
 <script src="js/scripts.js"></script>
 <script>
 (function(){
+	if (!window.addEventListener) return; // If the browser doesn't even support this, just give up.
+
 	var dataVersion = '2'; // Versioning for all the bus data
 	var currentDataVersion = lscache.get('busDataVersion');
 	if (dataVersion != currentDataVersion && localStorage && localStorage.length && localStorage.removeItem){
