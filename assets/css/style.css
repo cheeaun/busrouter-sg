@@ -572,3 +572,15 @@ aside section.hidden{
 	width: device-width;
 	zoom: 1.0;
 }
+
+#outdated-browser{
+  position: absolute;
+  background-color: #ff9;
+  padding: 10px;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 99999999;
+}

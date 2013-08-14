@@ -39,6 +39,11 @@ if (location.hostname == 'cheeaun.github.io'){
 </script>
 </head>
 <body ontouchstart><!-- make a:active work on iOS Mobile Safari -->
+<!--[if lt IE 9]>
+	<div id="outdated-browser">
+		<p>You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+	</div>
+<![endif]-->
 <header>
 	<h1><a href="#/"><img src="assets/images/logo.png" width="16" height="20" alt=""> &nbsp;Singapore Bus Routes Explorer</a></h1>
 	<form id="places-search-form">
