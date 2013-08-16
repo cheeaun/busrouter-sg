@@ -451,7 +451,10 @@ if (location.hostname == 'cheeaun.github.io'){
 					var m = stopMarkers[no];
 					if (!bounds.contains(m.getPosition())){
 						m.setMap(null);
-						delete stopMarkers[no];
+						stopMarkers[no] = undefined;
+						try { // Looks like iOS 6 choke on this
+							delete stopMarkers[no];
+						} catch (e) {}
 					}
 				}
 
