@@ -167,7 +167,8 @@ header h1 img{
 	-moz-transform: scale(0, 0);
 	transform: scale(0, 0);
 }
-#about section b{
+#about section b,
+#about section strong{
 	font-weight: 400;
 }
 #about section .close{
