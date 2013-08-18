@@ -151,8 +151,8 @@ header h1 img{
 	width: 480px;
 	margin: 0 0 0 -240px;
 	background-color: #fff;
-	border-radius: 5px;
-	box-shadow: 0 0 5px #000;
+	border-radius: 3px;
+	box-shadow: 0 0 3px #000;
 	padding: 16px;
 	line-height: 1.5em;
 	-webkit-transform: scale(1, 1);
