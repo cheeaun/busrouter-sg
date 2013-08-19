@@ -147,12 +147,12 @@ var Yokuto = (function(){
 		},
 
 		focus: function(){
-			this.length && this[0].focus();
+			this.length && this[0].focus && this[0].focus();
 			return this;
 		},
 
 		blur: function(){
-			this.length && this[0].blur();
+			this.length && this[0].blur && this[0].blur();
 			return this;
 		}
 
