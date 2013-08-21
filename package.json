@@ -4,9 +4,8 @@
   "description": "Singapore Bus Routes Explorer",
   "main": "make-scripts.js",
   "dependencies": {
-    "uglify-js": "~1.2.6",
-    "cheerio": "~0.11.0",
-    "needle": "~0.5.0"
+    "cheerio": "~0.12.1",
+    "needle": "~0.5.9"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
