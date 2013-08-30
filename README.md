@@ -5,6 +5,11 @@ Singapore Bus Routes Explorer
 
 Abbreviated as **SBRE**. I know, the name sucks. This app basically shows all routes on the map for all bus services in Singapore, inspired by [this tweet](https://twitter.com/mengwong/status/155511398653362177).
 
+Also available as [an iPad app](https://itunes.apple.com/us/app/sgbusrouter/id650227641?ls=1&mt=8), created by [Eddy Yanto](http://eddyyanto.com/).
+
+Technical stuff
+---
+
 All data such as routes, bus stops and services are *taken* from <http://publictransport.sg/>, which means they are copyrighted by the [Land Transport Authority](http://www.lta.gov.sg/).
 
 Here's how to get the data, assuming that you have `node`, [grunt](http://gruntjs.com/) and checked out this repo:
