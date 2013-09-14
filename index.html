@@ -66,9 +66,9 @@ if (location.hostname == 'cheeaun.github.io'){
 	<section>
 		<a class="close">&times;</a>
 		<p><b>Singapore Bus Routes Explorer</b> (or <b>BusRouter SG</b>) lets you explore bus stops and routes on the map for all bus services in Singapore.</p>
-		<p>This is <a href="https://github.com/cheeaun/busrouter-sg" target="_blank">yet another project</a> by <a href="http://twitter.com/cheeaun" target="_blank" itemprop="creator">@cheeaun</a>, works best on <strong>modern web browsers</strong> and the data is <em>extracted</em> from the <a href="http://www.publictransport.sg/">Land Transport Authority</a>. Feel free to <a href="http://twitter.com/cheeaun" target="_blank">send feedback</a>, <a href="https://github.com/cheeaun/busrouter-sg/issues" target="_blank">report any issues</a> and share this with your friends.</p>
-		<a href="https://twitter.com/share" class="twitter-share-button" data-related="cheeaun" data-hashtags="hackerweb">Tweet</a>
-		<a href="https://twitter.com/cheeaun" class="twitter-follow-button" data-show-count="false">Follow @cheeaun</a>
+		<p>This is <a href="https://github.com/cheeaun/busrouter-sg" target="_blank">yet another project</a> by <a href="http://twitter.com/cheeaun" target="_blank" itemprop="creator">@cheeaun</a>, works best on <strong>modern web browsers</strong> and the data is <em>extracted</em> from the <a href="http://www.publictransport.sg/">Land Transport Authority</a>. Feel free to <a href="http://twitter.com/cheeaun" target="_blank">send feedback</a>, <a href="https://github.com/cheeaun/busrouter-sg/issues" target="_blank">report any issues</a> and share this with your friends and family.</p>
+		<div class="fb-like" data-href="http://cheeaun.github.io/busrouter-sg/" data-width="120" data-layout="button_count" data-show-faces="false" data-send="false"></div>
+		<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://cheeaun.github.io/busrouter-sg/" data-text="Singapore Bus Routes Explorer" data-related="cheeaun">Tweet</a>
 	</section>
 </div>
 <aside id="sidebar">
@@ -890,8 +890,18 @@ if (location.hostname == 'cheeaun.github.io'){
 	});
 })();
 </script>
+<div id="fb-root"></div>
 <script async>
 setTimeout(function(){
+	// Facebook
+	(function(d, s, id) {
+	var js, fjs = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) return;
+	js = d.createElement(s); js.id = id;
+	js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+	fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+	// Twitter
 	!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
 }, 2000);
 </script>
