@@ -173,9 +173,9 @@ header h1 img{
 	transition-duration: .2s;
 }
 #about.hidden section{
-	-webkit-transform: translate3d(0, -30px, -20px) rotateX(-8deg);
-	-moz-transform: translate3d(0, -30px, -20px) rotateX(-8deg);
-	transform: translate3d(0, -30px, -20px) rotateX(-8deg);
+	-webkit-transform: translate3d(0, -40px, -30px) rotateX(-10deg);
+	-moz-transform: translate3d(0, -40px, -30px) rotateX(-10deg);
+	transform: translate3d(0, -40px, -30px) rotateX(-10deg);
 	opacity: 0;
 }
 #about section p{
