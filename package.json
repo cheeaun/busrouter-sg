@@ -4,13 +4,13 @@
   "description": "Singapore Bus Routes Explorer",
   "main": "make-scripts.js",
   "dependencies": {
-    "cheerio": "~0.12.1",
+    "cheerio": "~0.12.2",
     "needle": "~0.5.9"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
-    "grunt-contrib-connect": "~0.3.0",
-    "grunt-contrib-uglify": "~0.2.2"
+    "grunt-contrib-connect": "~0.5.0",
+    "grunt-contrib-uglify": "~0.2.4"
   },
   "author": "Lim Chee Aun",
   "license": "MIT"
