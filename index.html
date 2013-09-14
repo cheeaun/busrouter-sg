@@ -686,7 +686,10 @@ if (location.hostname == 'cheeaun.github.io'){
 
 					if (no != currentNo || !bounds.contains(map.getCenter())){
 						currentNo = no;
-						map.fitBounds(bounds);
+						map.panTo(bounds.getCenter());
+						setTimeout(function(){
+							map.fitBounds(bounds);
+						}, 400);
 					}
 
 					lscache.set('busService-' + no, data, 24*60);
