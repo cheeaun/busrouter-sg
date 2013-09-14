@@ -10,7 +10,7 @@ module.exports = function(grunt) {
 					sourceMapRoot: '../',
 					beautify: {
 						max_line_len: 500,
-						ie_proof: false
+						screw_ie8: true
 					}
 				},
 				files: {

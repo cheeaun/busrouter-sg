@@ -11,6 +11,4 @@ return d?b:!1},c=function(a,b){if(!a)return this;b||(b=document);var c;"string"!
 e&&d.call(e,a)},e||!1)}),this},trigger:function(a){if(!this.length)return this;var b=this[0],c=document.createEvent("MouseEvents"),d="dblclick"==a?2:1,e="contextmenu"==a?2:0;return c.initEvent(a,!0,!0,document.defaultView,d,0,0,0,0,!1,!1,!1,!1,e,b),b.dispatchEvent(c),this},find:function(a){return new c(a,this[0])},parent:function(){var a=this[0];return new c(a.parentElement||a.parentNode)},next:function(){var a=this[0];return new c(a.nextElementSibling||a.nextSibling)},prev:function(){var a=this[0];
 return new c(a.previousElementSibling||a.previousSibling)},addClass:function(a){return this.each(function(b){b.classList.add(a)}),this},removeClass:function(a){return this.each(function(b){b.classList.remove(a)}),this},toggleClass:function(a){return this.each(function(b){b.classList.toggle(a)}),this},html:function(a){return this.length?a?(this[0].innerHTML=a,this):this[0].innerHTML:this},attr:function(a){return this.length?this[0].getAttribute(a):""},data:function(a){return this.length?this[0].getAttribute("data-"+a):void 0
 },text:function(a){if(!this.length)return"";var b=this[0];return a?(b.textContent=a,this):b.textContent},focus:function(){return this.length&&this[0].focus&&this[0].focus(),this},blur:function(){return this.length&&this[0].blur&&this[0].blur(),this}},function(a){return new c(a)}}();"$"in window||(window.$=Yokuto);
-/*
-//@ sourceMappingURL=scripts.js.map
-*/
+//# sourceMappingURL=scripts.js.map
