@@ -110,28 +110,42 @@ if (location.hostname == 'cheeaun.github.io'){
 		window.onresize = scrollTop;
 	}
 
+	var sprite = {
+		url: 'assets/images/bus-sprite.png',
+		scaledSize: new google.maps.Size(156/2, 168/2)
+	};
 	var markerImage = {
 		location: {
-			url: 'assets/images/blue-circle.png',
-			scaledSize: new google.maps.Size(36/2, 38/2),
-			anchor: new google.maps.Point(36/4, 38/4)
+			url: sprite.url,
+			scaledSize: sprite.scaledSize,
+			size: new google.maps.Size(36/2, 38/2),
+			anchor: new google.maps.Point(36/4, 38/4),
+			origin: new google.maps.Point(96/2, 0)
 		},
 		circle: {
-			url: 'assets/images/red-circle.png',
-			scaledSize: new google.maps.Size(36/2, 38/2),
-			anchor: new google.maps.Point(36/4, 38/4)
+			url: sprite.url,
+			scaledSize: sprite.scaledSize,
+			size: new google.maps.Size(36/2, 38/2),
+			anchor: new google.maps.Point(36/4, 38/4),
+			origin: new google.maps.Point(60/2, 0)
 		},
 		dot: {
-			url: 'assets/images/red-pin-dot.png',
-			scaledSize: new google.maps.Size(52/2, 76/2)
+			url: sprite.url,
+			scaledSize: sprite.scaledSize,
+			size: new google.maps.Size(52/2, 76/2),
+			origin: new google.maps.Point(0, 92/2)
 		},
 		a: {
-			url: 'assets/images/red-pin-a.png',
-			scaledSize: new google.maps.Size(52/2, 76/2)
+			url: sprite.url,
+			scaledSize: sprite.scaledSize,
+			size: new google.maps.Size(52/2, 76/2),
+			origin: new google.maps.Point(52/2, 92/2)
 		},
 		b: {
-			url: 'assets/images/red-pin-b.png',
-			scaledSize: new google.maps.Size(52/2, 76/2)
+			url: sprite.url,
+			scaledSize: sprite.scaledSize,
+			size: new google.maps.Size(52/2, 76/2),
+			origin: new google.maps.Point(104/2, 92/2)
 		}
 	};
 
@@ -216,6 +230,7 @@ if (location.hostname == 'cheeaun.github.io'){
 					var geolocationControl = document.createElement('a');
 					geolocationControl.id = 'geolocation-control';
 					geolocationControl.href = '#';
+					geolocationControl.innerHTML = '<i></i>';
 					map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(geolocationControl);
 
 					var locationMarker = new google.maps.Marker({
@@ -645,7 +660,7 @@ if (location.hostname == 'cheeaun.github.io'){
 							bounds.extend(position);
 						}
 
-						html += '<li><a tabindex="0" href="#" class="' + className + ' stop-' + stop + '" data-index="' + i + '"><span class="tag">' + stop + '</span> ' + name + '</a></li>';
+						html += '<li><a tabindex="0" href="#" class="' + className + ' stop-' + stop + '" data-index="' + i + '"><i></i><span class="tag">' + stop + '</span> ' + name + '</a></li>';
 					});
 
 					$busRoutes.html(html + '</ul>');

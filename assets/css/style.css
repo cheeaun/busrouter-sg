@@ -294,7 +294,7 @@ aside section div ul li a{
 	color: #333;
 	background-color: #fff;
 	display: block;
-	padding: 0 16px;
+	padding: 0 16px 0 8px;
 	height: 32px;
 	line-height: 32px;
 	border-bottom: 1px solid #ededed;
@@ -338,26 +338,36 @@ aside section div ul li a:hover{
 #bus-routes-section a.details:active{
 	background-color: #ededed;
 }
-aside section div ul li a.stop-a{
-	padding-left: 48px;
-	background: #fff url(../images/red-circle-a.png) no-repeat 12px 2px;
-	background-size: 26px 27px;
+aside section div ul li a.stop-a i,
+aside section div ul li a.stop-b i,
+aside section div ul li a.stop-dot i,
+aside section div ul li a.stop i{
+	display: inline-block;
+	background: transparent url(../images/bus-sprite.png) no-repeat;
+	background-size: 78px 84px;
+	vertical-align: middle;
 }
-aside section div ul li a.stop-b{
-	padding-left: 48px;
-	background: #fff url(../images/red-circle-b.png) no-repeat 12px 2px;
-	background-size: 26px 27px;
+aside section div ul li a.stop-a i,
+aside section div ul li a.stop-b i,
+aside section div ul li a.stop-dot i{
+	width: 26px;
+	height: 27px;
+	margin-right: 8px;
 }
-aside section div ul li a.stop-dot{
-	padding-left: 48px;
-	background: #fff url(../images/red-circle-dot.png) no-repeat 12px 2px;
-	background-size: 26px 27px;
+aside section div ul li a.stop-a i{
+	background-position: -26px -20px;
 }
-aside section div ul li a.stop{
-	padding-left: 48px;
-	background: #fff url(../images/red-circle.png) no-repeat 16px center;
-	background-size: 18px 19px;
-	image-rendering: -moz-crisp-edges;
+aside section div ul li a.stop-b i{
+	background-position: -52px -20px;
+}
+aside section div ul li a.stop-dot i{
+	background-position: 0 -20px;
+}
+aside section div ul li a.stop i{
+	background-position: -30px 0;
+	width: 18px;
+	height: 19px;
+	margin: 0 12px 0 4px;
 }
 aside section div ul li a .tag{
 	vertical-align: middle;
@@ -476,9 +486,7 @@ aside section.hidden{
 
 #geolocation-control{
 	border: 1px solid rgba(0,0,0,.4);
-	background: rgba(255,255,255,.8) url(../images/geolocation-arrow.png) no-repeat 40% 60%;
-	background-size: 15px 15px;
-	image-rendering: -moz-crisp-edges;
+	background-color: rgba(255,255,255,.8);
 	width: 32px;
 	height: 32px;
 	border-radius: 5px;
@@ -486,9 +494,17 @@ aside section.hidden{
 	cursor: pointer;
 	box-shadow: 0 1px 2px rgba(0,0,0,.1);
 }
-
-#geolocation-control.active{
-	background-image: url(../images/geolocation-arrow-active.png);
+#geolocation-control i{
+	margin: 9px 0 0 8px;
+	display: inline-block;
+	width: 15px;
+	height: 15px;
+	background: transparent url(../images/bus-sprite.png) no-repeat;
+	background-size: 78px 84px;
+	image-rendering: -moz-crisp-edges;
+}
+#geolocation-control.active i{
+	background-position: -15px 0;
 }
 
 @media screen and (max-width: 640px){
