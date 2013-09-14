@@ -582,8 +582,10 @@ if (location.hostname == 'cheeaun.github.io'){
 				$('#service-' + no).addClass('selected');
 				clearMap();
 
-				var run = function(data){
-					$('#bus-services-section').removeClass('loading');
+				$busServicesSection = $('#bus-services-section').addClass('loading');
+
+				getData('busService-' + no, {no: no}, function(e, data){
+					$busServicesSection.removeClass('loading');
 					if (!data) return;
 
 					var one = data[route];
@@ -688,10 +690,6 @@ if (location.hostname == 'cheeaun.github.io'){
 					}
 
 					lscache.set('busService-' + no, data, 24*60);
-				};
-
-				getData('busService-' + no, {no: no}, function(e, serviceData){
-					run(serviceData);
 				});
 			})
 			.add(/^\/stops\/(\w+)$/i, function(path, stop){
