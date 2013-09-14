@@ -136,6 +136,9 @@ header h1 img{
 	-webkit-transition: background-color .3s;
 	-moz-transition: background-color .3s;
 	transition: background-color .3s;
+	-webkit-perspective: 200px;
+	-moz-perspective: 200px;
+	perspective: 200px;
 }
 #about.hidden{
 	z-index: -1;
@@ -155,17 +158,25 @@ header h1 img{
 	box-shadow: 0 0 3px #000;
 	padding: 16px;
 	line-height: 1.5em;
-	-webkit-transform: scale(1, 1);
-	-moz-transform: scale(1, 1);
-	transform: scale(1, 1);
-	-webkit-transition: -webkit-transform .3s;
-	-moz-transition: -moz-transform .3s;
-	transition: transform .3s;
+	opacity: 1;
+	-webkit-transform: translateY(0) rotateX(0);
+	-moz-transform: translateY(0) rotateX(0);
+	transform: translateY(0) rotateX(0);
+	-webkit-transform-origin: top center;
+	-moz-transform-origin: top center;
+	transform-origin: top center;
+	-webkit-transition-property: -webkit-transform, opacity;
+	-moz-transition-property: -moz-transform, opacity;
+	transition-property: transform, opacity;
+	-webkit-transition-duration: .3s;
+	-moz-transition-duration: .3s;
+	transition-duration: .3s;
 }
 #about.hidden section{
-	-webkit-transform: scale(0, 0);
-	-moz-transform: scale(0, 0);
-	transform: scale(0, 0);
+	-webkit-transform: translateY(-20px) rotateX(-10deg);
+	-moz-transform: translateY(-20px) rotateX(-10deg);
+	transform: translateY(-20px) rotateX(-10deg);
+	opacity: 0;
 }
 #about section b,
 #about section strong{
@@ -416,10 +427,11 @@ aside section{
 	transition-duration: .3s;
 }
 aside section.hidden{
-	opacity: 0;
+	pointer-events: none;
+	opacity: .3;
 	-webkit-transform: translate3d(100%, 0, 0);
-	-moz-transform: translateX(100%);
-	transform: translateX(100%);
+	-moz-transform: translate3d(100%, 0, 0);
+	transform: translate3d(100%, 0, 0);
 }
 .arrow{
 	display: inline-block;
