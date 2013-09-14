@@ -1,13 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html itemscope itemtype="http://schema.org/WebPage">
 <head>
 <meta charset="utf-8">
 <title>Singapore Bus Routes Explorer</title>
+<meta name="description" content="Explore bus stops and routes on the map for all bus services in Singapore">
 <meta name="apple-mobile-web-app-title" content="BusRouter SG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<link rel="shortcut icon" href="favicon.ico">
 <meta name="google" value="notranslate">
+<meta itemprop="image" content="assets/icons/icon-144.png">
+<meta itemprop="description" content="Explore bus stops and routes on the map for all bus services in Singapore">
+<meta property="og:url" content="http://cheeaun.github.io/busrouter-sg/">
+<meta property="og:title" content="Singapore Bus Routes Explorer">
+<meta property="og:description" content="Explore bus stops and routes on the map for all bus services in Singapore">
+<meta property="og:image" content="http://cheeaun.github.io/busrouter-sg/assets/icons/icon-144.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="144">
+<meta property="og:image:height" content="144">
+<link rel="shortcut icon" href="favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="assets/icons/icon-144.png">
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500">
 <link rel="stylesheet" href="assets/css/style.css">
@@ -45,7 +55,7 @@ if (location.hostname == 'cheeaun.github.io'){
 	</div>
 <![endif]-->
 <header>
-	<h1><a href="#/"><img src="assets/images/logo.png" width="16" height="20" alt=""> &nbsp;Singapore Bus Routes Explorer</a></h1>
+	<h1><a href="#/"><img src="assets/images/logo.png" width="16" height="20" alt=""> &nbsp;<span itemprop="name">Singapore Bus Routes Explorer</span></a></h1>
 	<form id="places-search-form">
 		<input type="search" placeholder="Search for a place">
 	</form>
@@ -55,7 +65,10 @@ if (location.hostname == 'cheeaun.github.io'){
 <div id="about" class="hidden">
 	<section>
 		<a class="close">&times;</a>
-		<b>Singapore Bus Routes Explorer</b> is <a href="https://github.com/cheeaun/busrouter-sg" target="_blank">yet another project</a> by <a href="http://twitter.com/cheeaun" target="_blank">@cheeaun</a>. This works best on <strong>modern web browsers</strong> and the data is <em>extracted</em> from the <a href="http://www.publictransport.sg/">Land Transport Authority</a>. Feel free to <a href="http://twitter.com/cheeaun" target="_blank">send feedback</a>, <a href="https://github.com/cheeaun/busrouter-sg/issues" target="_blank">report any issues</a> and share this with your friends.
+		<p><b>Singapore Bus Routes Explorer</b> (or <b>BusRouter SG</b>) lets you explore bus stops and routes on the map for all bus services in Singapore.</p>
+		<p>This is <a href="https://github.com/cheeaun/busrouter-sg" target="_blank">yet another project</a> by <a href="http://twitter.com/cheeaun" target="_blank" itemprop="creator">@cheeaun</a>, works best on <strong>modern web browsers</strong> and the data is <em>extracted</em> from the <a href="http://www.publictransport.sg/">Land Transport Authority</a>. Feel free to <a href="http://twitter.com/cheeaun" target="_blank">send feedback</a>, <a href="https://github.com/cheeaun/busrouter-sg/issues" target="_blank">report any issues</a> and share this with your friends.</p>
+		<a href="https://twitter.com/share" class="twitter-share-button" data-related="cheeaun" data-hashtags="hackerweb">Tweet</a>
+		<a href="https://twitter.com/cheeaun" class="twitter-follow-button" data-show-count="false">Follow @cheeaun</a>
 	</section>
 </div>
 <aside id="sidebar">
@@ -875,6 +888,11 @@ if (location.hostname == 'cheeaun.github.io'){
 		$('#header-sidebar').toggleClass('active')
 	});
 })();
+</script>
+<script async>
+setTimeout(function(){
+	!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+}, 2000);
 </script>
 </body>
 </html>

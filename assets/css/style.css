@@ -178,6 +178,10 @@ header h1 img{
 	transform: translateY(-20px) rotateX(-10deg);
 	opacity: 0;
 }
+#about section p{
+	margin-top: 0;
+	padding-top: 0;
+}
 #about section b,
 #about section strong{
 	font-weight: 400;
@@ -542,7 +546,7 @@ aside section.hidden{
 	}
 
 	#about section{
-		top: 80px;
+		top: 60px;
 		left: 5%;
 		width: 90%;
 		margin: 0;
