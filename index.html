@@ -242,7 +242,7 @@ if (location.hostname == 'cheeaun.github.io'){
 					});
 				}
 
-				var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(1.1663980,103.60557550), new google.maps.LatLng(1.47088090,104.08568050));
+				var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(1.25352193438281, 103.62192147229632), new google.maps.LatLng(1.50129709375363, 103.99983438993593));
 				map.fitBounds(bounds);
 
 				if (navigator.geolocation){
@@ -470,6 +470,14 @@ if (location.hostname == 'cheeaun.github.io'){
 			infowindow.setContent(html);
 			infowindow.open(map, marker);
 		});
+
+		// Get bounds of ALL bus stops
+		// var allBounds = new google.maps.LatLngBounds();
+		// busStops.forEach(function(stop){
+		// 	var position = new google.maps.LatLng(stop.lat, stop.lng);
+		// 	allBounds.extend(position);
+		// });
+		// console.log(allBounds.toString())
 
 		var stopMarkers = {};
 		google.maps.event.addListener(map, 'idle', function(){
