@@ -90,6 +90,7 @@ if (location.hostname == 'cheeaun.github.io'){
 	</section>
 </aside>
 <div id="map"></div>
+<script src="http://busrouter-sg.s3-ap-southeast-1.amazonaws.com/js/gzip-enabled.js"></script>
 <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDpk0BS7iLdbn5U545tiIN12k1OCgj2cc4&libraries=places&sensor=false"></script>
 <script src="js/scripts.js"></script>
 <script>
@@ -162,11 +163,15 @@ if (location.hostname == 'cheeaun.github.io'){
 		}
 	};
 
+	var rootEndPoints = {
+		github: 'data/2/',
+		s3: 'http://busrouter-sg.s3-ap-southeast-1.amazonaws.com/v2/'
+	};
 	var dataEndPoints = {
-		busStops: 'data/2/bus-stops.json',
-		busServices: 'data/2/bus-services.json',
-		busService: 'data/2/bus-services/{{no}}.json',
-		busStopsServices: 'data/2/bus-stops-services.json'
+		busStops: 'bus-stops.json',
+		busServices: 'bus-services.json',
+		busService: 'bus-services/{{no}}.json',
+		busStopsServices: 'bus-stops-services.json'
 	};
 
 	var getData = function(key, params, done){
@@ -178,9 +183,10 @@ if (location.hostname == 'cheeaun.github.io'){
 		if (data){
 			done(null, data);
 		} else {
-			var endPoint = dataEndPoints[key.split('-')[0]];
-			for (p in params) endPoint = endPoint.replace('{{' + p + '}}', params[p]);
 			var xhr = new XMLHttpRequest();
+			var useS3 = 'withCredentials' in xhr && typeof GZIP_ENABLED != 'undefined' && GZIP_ENABLED;
+			var endPoint = rootEndPoints[useS3 ? 's3' : 'github'] + dataEndPoints[key.split('-')[0]];
+			for (p in params) endPoint = endPoint.replace('{{' + p + '}}', params[p]);
 			xhr.onload = function(){
 				try{
 					var data = JSON.parse(this.responseText);

@@ -1,0 +1,1 @@
+GZIP_ENABLED = true;
