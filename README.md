@@ -32,6 +32,7 @@ Few more `grunt` goodies:
 
 - `grunt connect` - starts a local server
 - `grunt uglify` - concat/minify the JS files
+- `grunt s3` - uploads data to a S3 bucket
 
 The icon is from [The Noun Project](http://thenounproject.com/noun/bus/#icon-No97). The map is powered by [Google Maps JavaScript API](http://code.google.com/apis/maps/documentation/javascript/). The color scheme and markers are *inspired* by [Gothere.sg](http://gothere.sg/). Tested to work great on **modern** web browsers.
 
