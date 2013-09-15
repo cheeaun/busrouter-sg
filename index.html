@@ -90,6 +90,7 @@ if (location.hostname == 'cheeaun.github.io'){
 	</section>
 </aside>
 <div id="map"></div>
+<div id="bounds-warning">Looks like you're lost. <a href="#" id="back-sg">Go back to Singapore</a>.</div>
 <script src="http://busrouter-sg.s3-ap-southeast-1.amazonaws.com/js/gzip-enabled.js"></script>
 <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDpk0BS7iLdbn5U545tiIN12k1OCgj2cc4&libraries=places&sensor=false"></script>
 <script src="js/scripts.js"></script>
@@ -219,8 +220,9 @@ if (location.hostname == 'cheeaun.github.io'){
 		function(callback){
 			window.onload = function(){
 				google.maps.visualRefresh = true;
+				var center = new google.maps.LatLng(1.3520830, 103.8198360);
 				var map = new google.maps.Map(document.getElementById('map'), {
-					center: new google.maps.LatLng(1.3520830, 103.8198360),
+					center: center,
 					zoom: 11,
 					mapTypeId: google.maps.MapTypeId.ROADMAP,
 					disableDefaultUI: true,
@@ -317,27 +319,25 @@ if (location.hostname == 'cheeaun.github.io'){
 					});
 				}
 
+				var $boundsWarning = $('#bounds-warning');
+				google.maps.event.addListener(map, 'bounds_changed', function(){
+					var mapBounds = map.getBounds();
+					if (mapBounds.intersects(bounds)){
+						$boundsWarning.removeClass('visible');
+					} else {
+						$boundsWarning.addClass('visible');
+					}
+				});
+				$('#back-sg').on('click', function(e){
+					e.preventDefault();
+					$boundsWarning.removeClass('visible');
+					map.panTo(center);
+					setTimeout(function(){
+						map.fitBounds(bounds);
+					}, 300);
+				});
+
 				if (!isSmallScreen){
-					// This panning thing is buggy on iOS Mobile Safari
-					var maxX = bounds.getNorthEast().lng();
-					var maxY = bounds.getNorthEast().lat();
-					var minX = bounds.getSouthWest().lng();
-					var minY = bounds.getSouthWest().lat();
-					var panBackToBounds = function(){
-						var c = map.getCenter();
-						var x = c.lng();
-						var y = c.lat();
-
-						if (x < minX) x = minX;
-						if (x > maxX) x = maxX;
-						if (y < minY) y = minY;
-						if (y > maxY) y = maxY;
-
-						map.panTo(new google.maps.LatLng(y, x));
-					};
-					google.maps.event.addListener(map, 'dragend', panBackToBounds);
-					google.maps.event.addListener(map, 'zoom_changed', panBackToBounds);
-
 					var $form = $('#places-search-form');
 					$form.on('submit', function(e){
 						e.preventDefault();
