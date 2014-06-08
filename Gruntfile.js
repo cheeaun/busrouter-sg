@@ -5,9 +5,7 @@ module.exports = function(grunt) {
 		uglify: {
 			scripts: {
 				options: {
-					sourceMap: 'js/scripts.js.map',
-					sourceMappingURL: 'scripts.js.map',
-					sourceMapRoot: '../',
+					sourceMap: true,
 					beautify: {
 						max_line_len: 500,
 						screw_ie8: true
