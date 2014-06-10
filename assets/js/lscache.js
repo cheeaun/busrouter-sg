@@ -15,12 +15,21 @@
  * limitations under the License.
  */
 
-/*jshint undef:true, browser:true */
+/* jshint undef:true, browser:true, node:true */
+/* global define */
 
-/**
- * Creates a namespace for the lscache functions.
- */
-var lscache = function() {
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define([], factory);
+    } else if (typeof module !== "undefined" && module.exports) {
+        // CommonJS/Node module
+        module.exports = factory();
+    } else {
+        // Browser globals
+        root.lscache = factory();
+    }
+}(this, function () {
 
   // Prefix for all lscache keys
   var CACHE_PREFIX = 'lscache-';
@@ -111,13 +120,12 @@ var lscache = function() {
 
   function warn(message, err) {
     if (!warnings) return;
-    if (!'console' in window || typeof window.console.warn !== 'function') return;
+    if (!('console' in window) || typeof window.console.warn !== 'function') return;
     window.console.warn("lscache - " + message);
     if (err) window.console.warn("lscache - The error was: " + err.message);
   }
 
-  return {
-
+  var lscache = {
     /**
      * Stores the value in localStorage. Expires after specified number of minutes.
      * @param {string} key
@@ -298,4 +306,7 @@ var lscache = function() {
       warnings = enabled;
     }
   };
-}();
+
+  // Return the module
+  return lscache;
+}));
