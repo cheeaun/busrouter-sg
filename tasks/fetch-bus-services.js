@@ -11,8 +11,8 @@ module.exports = function(grunt){
 
 		grunt.util.async.parallel([
 			function(done){
-				grunt.log.writeln('Request to publictransport.sg');
-				needle.get('http://www.publictransport.sg/content/publictransport/en/homepage/map.html', function(err, res, body){
+				grunt.log.writeln('Request to mytransport.sg');
+				needle.get('http://www.mytransport.sg/content/mytransport/map.html', function(err, res, body){
 					var $ = cheerio.load(body);
 
 					var data = {
