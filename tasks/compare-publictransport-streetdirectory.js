@@ -5,7 +5,7 @@ var cheerio = require('cheerio');
 
 module.exports = function(grunt){
 
-	grunt.registerTask('comparePTSD', 'Compare publictransport.sg to streetdirectory.com', function(){
+	grunt.registerTask('comparePTSD', 'Compare mytransport.sg to streetdirectory.com', function(){
 
 		var data = grunt.file.readJSON('data/2/bus-services.json');
 		var services = data.services.map(function(s){
@@ -14,7 +14,7 @@ module.exports = function(grunt){
 				grunt.log.writeln(service);
 				grunt.util.async.parallel([
 					function(done){
-						needle.head('http://www.publictransport.sg/content/publictransport/en/homepage/Ajax/map_ajaxlib.getBusRouteByServiceId.' + service + '.html', function(err, res){
+						needle.head('http://www.mytransport.sg/content/mytransport/ajax_lib/map_ajaxlib.getBusRouteByServiceId.' + service + '.html', function(err, res){
 							var len = parseInt(res.headers['content-length'], 10);
 							var exists = len > 2000; // Exists when length is > 2K
 							done(null, exists);

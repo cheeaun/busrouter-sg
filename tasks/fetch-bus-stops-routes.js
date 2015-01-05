@@ -5,7 +5,7 @@ var cheerio = require('cheerio');
 
 module.exports = function(grunt){
 
-	grunt.registerTask('fetchBusStopsRoutes', 'Fetch bus stops and routes from publictransport.sg', function(){
+	grunt.registerTask('fetchBusStopsRoutes', 'Fetch bus stops and routes from mytransport.sg', function(){
 		var badlines = {}; // Store the bad route lines, report 'em
 		var stops = {}; // Store ALL the bus stops
 		var _ = grunt.util._;
@@ -17,7 +17,7 @@ module.exports = function(grunt){
 			return function(allDone){
 				grunt.util.async.parallel([
 					function(done){
-						needle.get('http://www.publictransport.sg/content/publictransport/en/homepage/Ajax/map_ajaxlib.getBusRouteByServiceId.' + service + '.html', function(err, res, body){
+						needle.get('http://www.mytransport.sg/content/mytransport/ajax_lib/map_ajaxlib.getBusRouteByServiceId.' + service + '.html', function(err, res, body){
 							var $ = cheerio.load(body);
 
 							var routeStops = { 1: [], 2: [] };
@@ -50,7 +50,7 @@ module.exports = function(grunt){
 						});
 					},
 					function(done){
-						needle.get('http://www.publictransport.sg/kml/busroutes/' + service + '-1.kml', function(err, res, body){
+						needle.get('http://www.mytransport.sg/kml/busroutes/' + service + '-1.kml', function(err, res, body){
 							if (err) throw err;
 							if (res.statusCode != 200) throw new Error('Status code: ' + res.statusCode);
 
@@ -77,7 +77,7 @@ module.exports = function(grunt){
 							done(null, []);
 							return;
 						}
-						needle.get('http://www.publictransport.sg/kml/busroutes/' + service + '-2.kml', function(err, res, body){
+						needle.get('http://www.mytransport.sg/kml/busroutes/' + service + '-2.kml', function(err, res, body){
 							if (err) throw err;
 							if (res.statusCode != 200) throw new Error('Status code: ' + res.statusCode);
 
