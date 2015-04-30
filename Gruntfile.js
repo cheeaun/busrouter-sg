@@ -1,5 +1,10 @@
 module.exports = function(grunt) {
 
+  var awsCreds;
+  try{
+    awsCreds = grunt.file.readJSON('aws-credentials.json')
+  } catch(e){}
+
  	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		uglify: {
@@ -25,7 +30,7 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		aws: grunt.file.readJSON('aws-credentials.json'),
+		aws: awsCreds,
 		s3: {
 			options: {
 				accessKeyId: '<%= aws.accessKeyId %>',
