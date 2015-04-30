@@ -31,6 +31,7 @@ module.exports = function(grunt){
 								var args = (onclick.match(/\(([^()]+)\)/i) || [,''])[1].split(',');
 								var lng = args[0].trim();
 								var lat = args[1].trim();
+								if (parseInt(lng, 10) == 0 && parseInt(lat, 10) == 0) return;
 								var seq = parseInt(args[2].trim(), 10); // Starts from 1
 								var code = args[3].trim();
 								var direction = args[4].trim();
@@ -128,6 +129,7 @@ module.exports = function(grunt){
 		grunt.util.async.series(services, function(){
 			var stopsArr = [];
 			_.forEach(stops, function(v, k){
+				if (parseInt(v.lat, 10) == 0 && parseInt(v.lng, 10) == 0) return;
 				stopsArr.push({
 					no: k,
 					lat: v.lat,
