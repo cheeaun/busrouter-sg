@@ -14,17 +14,22 @@ All data such as routes, bus stops and services are *taken* from <http://mytrans
 
 Here's how to get the data, assuming that you have `node`, [grunt](http://gruntjs.com/) and checked out this repo:
 
-	npm install
-	grunt fetchBusServices
-	grunt fetchBusStopsRoutes
-	grunt fixBadRoutes
-	grunt mapServicesStops
-	grunt populateServicesName
+```
+npm install
+grunt fetchBusServices
+grunt fetchBusStopsRoutes
+grunt fixBadRoutes
+grunt mapServicesStops
+grunt populateServicesName
+grunt busStopsGeoJSONKML
+```
 
 The data you'll get are:
 
 - [`bus-services.json`](http://cheeaun.github.com/busrouter-sg/data/2/bus-services.json) - Lists all bus services with the bus numbers, `routes` (number of routes where 2 means two routes, usually in opposite direction) and the bus operator.
 - [`bus-stops.json`](http://cheeaun.github.com/busrouter-sg/data/2/bus-stops.json) - Lists all bus stops with coordinates and names.
+	- `bus-stops.geojson` - GeoJSON format
+	- `bus-stops.kml` - KML format
 - [`bus-stops-services.json`](http://cheeaun.github.com/busrouter-sg/data/2/bus-stops-services.json) - List all bus stops with the bus numbers/services that stops there.
 - `bus-services/{number}.json` - List two routes with all (polyline) coordinates and bus stops for each route. If the bus service doesn't have a second route, the second route data will be empty. E.g. <http://cheeaun.github.com/busrouter-sg/data/2/bus-services/2.json>.
 
