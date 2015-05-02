@@ -116,6 +116,11 @@ var showArrivals = function(id){
 			showArrivals(id);
 		}, 15*1000); // 15 seconds
 	};
+	xhr.onerror = function(){ // Retry if error
+		arrivalsTimeout = setTimeout(function(){
+			showArrivals(id);
+		}, 5*1000); // 5 seconds
+	}
 	xhr.send();
   $arrivals.classList.add('fading');
 };
