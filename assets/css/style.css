@@ -528,6 +528,15 @@ aside section.hidden{
 .infowindow .show-routes{
 	white-space: nowrap;
 }
+.infowindow .infofooter{
+	margin-top: 8px;
+	border-top: 1px solid #F0F0E7;
+	padding-top: 6px;
+}
+.infowindow .infofooter a{
+	display: block;
+	line-height: 1.7em;
+}
 
 #geolocation-control{
 	border: 1px solid rgba(0,0,0,.4);

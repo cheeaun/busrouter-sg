@@ -453,10 +453,13 @@ if (location.hostname == 'cheeaun.github.io'){
 				}
 			});
 
+			html += '<div class="infofooter">';
+			html += '<a href="/bus-arrival/#' + stop + '" target="_blank" class="show-arrivals">Show bus arrival times at this stop &#10064;</a>';
+
 			if (services.length > 1 && !hideShowRoutesLink){
-				html += '<hr><a href="#/stops/' + stop + '" class="show-routes">Show all routes passing here</a>';
+				html += '<a href="#/stops/' + stop + '" class="show-routes">Show all routes passing here</a>';
 			}
-			html += '</div>';
+			html += '</div></div>';
 
 			infowindow.setContent(html);
 			infowindow.open(map, marker);
@@ -891,6 +894,17 @@ if (location.hostname == 'cheeaun.github.io'){
 		var left = (screen.width-width)/2;
 
 		window.open(this.href, 'busDetails', 'width=' + width + ',height=' + height + ',menubar=0,resizable=1,scrollbars=1,toolbar=0,top=' + top + ',left=' + left);
+	});
+
+	$('#map').on('click', 'a.show-arrivals', function(e){
+		e.preventDefault();
+
+		var width = 320;
+		var height = 480;
+		var top = ((screen.availHeight || screen.height)-height)/2;
+		var left = (screen.width-width)/2;
+
+		window.open(this.href, 'busArrivals', 'width=' + width + ',height=' + height + ',menubar=0,resizable=1,scrollbars=1,toolbar=0,top=' + top + ',left=' + left);
 	});
 
 	$('#header-sidebar').on('click', function(){
