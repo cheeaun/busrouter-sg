@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<title>Bus Arrival</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google" value="notranslate">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500">
+<link rel="dns-prefetch" href="//arrivelah.herokuapp.com">
+<style>
+body{
+  font-family: RobotoDraft, sans-serif;
+  max-width: 400px;
+  margin: auto;
+  padding: 10px;
+  font-size: 14px;
+}
+h1{
+  font-weight: 300;
+  font-size: 20px;
+}
+h1 b{
+  font-weight: 400;
+}
+table{
+  width: 100%;
+	table-layout: fixed;
+}
+table th,
+table td{
+  padding: .5em 1em .5em 0;
+  text-align: left;
+}
+thead th{
+  font-weight: 300;
+}
+.insignificant{
+  opacity: .3;
+}
+#loader{
+  animation: spin .5s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  overflow: hidden;
+}
+#loader[hidden]{
+  display: none;
+}
+.fading{
+  animation: fading 1s linear infinite;
+}
+@keyframes fading {
+  from {
+    opacity: .3;
+  }
+  50% {
+    opacity: .7;
+  }
+  to {
+    opacity: .3;
+  }
+}
+</style>
+<script src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js" data-apikey="37e227db7c88af3576c11f86cba0cc02"></script>
+<script>
+if (location.hostname == 'cheeaun.github.io'){
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-23235796-4', 'cheeaun.github.io');
+  ga('send', 'pageview');
+}
+</script>
+<h1>Bus arrival for <b id="bus-stop-code"></b></h1>
+<table>
+  <thead>
+    <th>Bus number</th>
+    <th>Next</th>
+    <th>Subsequent</th>
+  </thead>
+  <tbody id="arrivals">
+		<tr>
+			<td colspan="3">
+				Loading&hellip;
+			</td>
+		</tr>
+	</tbody>
+</table>
+<script>
+var $arrivals = document.getElementById('arrivals');
+var $loader = document.getElementById('loader');
+var arrivalsTimeout;
+var xhr = new XMLHttpRequest();
+
+var showArrivals = function(id){
+  xhr.open('get', 'https://arrivelah.herokuapp.com/?id=' + id, true);
+	xhr.onload = function(){
+	  $arrivals.classList.remove('fading');
+	  var result = JSON.parse(this.responseText);
+	  if (!result || result.error) return;
+	  $arrivals.innerHTML = result.services.sort(function(a, b){
+	    if (a.next.duration_ms == null) return 1;
+	    if (b.next.duration_ms == null) return -1;
+	    return a.next.duration_ms - b.next.duration_ms;
+	  }).map(function(service){
+	    return '<tr>'
+	        + '<th>' + service.no + '</th>'
+	        + '<td>' + timeDisplay(service.next.duration_ms) + '</td>'
+	        + '<td>' + timeDisplay(service.subsequent.duration_ms) + '</td>'
+	      + '</tr>';
+	  }).join('');
+		arrivalsTimeout = setTimeout(function(){
+			showArrivals(id);
+		}, 15*1000); // 15 seconds
+	};
+	xhr.send();
+  $arrivals.classList.add('fading');
+};
+
+var timeDisplay = function(ms){
+  if (ms == null) return '<span class="insignificant">Unavailable</span>';
+  var mins = Math.ceil(ms/1000/60);
+  if (mins <= 0) return 'Now';
+  if (mins == 1) return mins + ' min';
+  return mins + ' mins';
+};
+
+window.onhashchange = function(){
+  var hash = location.hash.slice(1);
+  clearTimeout(arrivalsTimeout);
+
+  if (hash){
+    document.getElementById('bus-stop-code').innerHTML = hash;
+    showArrivals(hash);
+  }
+}
+window.onhashchange();
+</script>
