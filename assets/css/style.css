@@ -471,7 +471,12 @@ aside section.hidden{
 		transparent 75%,
 		transparent
 	);
+	-webkit-animation: barberpole .5s linear infinite;
 	animation: barberpole .5s linear infinite;
+}
+@-webkit-keyframes barberpole {
+	from { background-position: 0 0; }
+	to { background-position: 60px 30px; }
 }
 @keyframes barberpole {
 	from { background-position: 0 0; }
