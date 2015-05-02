@@ -46,7 +46,7 @@ module.exports = function(grunt) {
 					}
 				},
 				cwd: 'data/2/',
-				src: ['*.json', 'bus-services/*.json'],
+				src: ['*.json', '*.geojson', '*.kml', 'bus-services/*.json'],
 				dest: 'v2/'
 			},
 			js: {
