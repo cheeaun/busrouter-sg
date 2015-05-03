@@ -140,6 +140,13 @@ var $arrivals = document.getElementById('arrivals');
 var arrivalsTimeout;
 var xhr = new XMLHttpRequest();
 var showArrivals = function(id){
+	if (document.hidden || document.visibilityState == 'hidden'){
+		// Don't make any AJAX calls when page is not even visible
+		arrivalsTimeout = setTimeout(function(){
+			showArrivals(id);
+		}, 2.5*1000); // 2.5 seconds
+		return;
+	}
 	xhr.open('get', 'https://arrivelah.herokuapp.com/?id=' + id, true);
 	xhr.onload = function(){
 		$arrivals.classList.remove('fading');
