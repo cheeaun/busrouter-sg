@@ -893,7 +893,7 @@ if (location.hostname == 'cheeaun.github.io'){
 		var top = ((screen.availHeight || screen.height)-height)/2;
 		var left = (screen.width-width)/2;
 
-		window.open(this.href, 'busDetails', 'width=' + width + ',height=' + height + ',menubar=0,resizable=1,scrollbars=1,toolbar=0,top=' + top + ',left=' + left);
+		window.open(this.href, 'busDetails'+(new Date()), 'width=' + width + ',height=' + height + ',menubar=0,resizable=1,scrollbars=1,toolbar=0,top=' + top + ',left=' + left);
 	});
 
 	$('#map').on('click', 'a.show-arrivals', function(e){
@@ -904,7 +904,7 @@ if (location.hostname == 'cheeaun.github.io'){
 		var top = ((screen.availHeight || screen.height)-height)/2;
 		var left = (screen.width-width)/2;
 
-		window.open(this.href, 'busArrivals', 'width=' + width + ',height=' + height + ',menubar=0,resizable=1,scrollbars=1,toolbar=0,top=' + top + ',left=' + left);
+		window.open(this.href, 'busArrivals'+(new Date()), 'width=' + width + ',height=' + height + ',menubar=0,resizable=1,scrollbars=1,toolbar=0,top=' + top + ',left=' + left);
 	});
 
 	$('#header-sidebar').on('click', function(){
