@@ -7,115 +7,155 @@
 <link rel="dns-prefetch" href="//arrivelah.herokuapp.com">
 <style>
 body{
-  font-family: RobotoDraft, sans-serif;
-  max-width: 400px;
-  margin: auto;
-  padding: 10px;
-  font-size: 14px;
+	font-family: RobotoDraft, sans-serif;
+	font-size: 14px;
+	padding: 0;
+	margin: 0;
+	background-color: #F7F7F7;
 }
-h1{
-  font-weight: 300;
-  font-size: 20px;
+main{
+	max-width: 480px;
+	margin: 0 auto;
+	box-shadow: 0 0 1px rgba(0,0,0,.3);
+	background-color: #fff;
+	min-height: 100vh;
 }
-h1 b{
-  font-weight: 500;
+header{
+	position: relative;
+	background-color: #E8E4DB;
+	background-size: cover;
+	background-position: center;
+	box-shadow: inset 0 0 10px rgba(0,0,0,.2);
+	max-width: 480px;
+	height: 240px;
+}
+header h1{
+	color: #000;
+	font-weight: 400;
+	font-size: 1em;
+	padding: 80px 10px 0;
+	margin: 0;
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	box-sizing: border-box;
+	background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+	text-shadow: 1px 1px #fff, -1px 1px #fff;
+}
+header h1 b{
+	display: block;
+	font-weight: 500;
+	font-size: 20px;
 }
 table{
-  width: 100%;
+	border: 10px solid #fff;
+	width: 100%;
 	table-layout: fixed;
-  border-spacing: 0;
+	border-spacing: 0;
+	box-sizing: border-box;
 }
 table th,
 table td{
-  padding: .5em 1em .5em 0;
-  text-align: left;
+	padding: .5em 1em .5em 0;
+	text-align: left;
 }
 thead th{
-  font-weight: 300;
+	font-weight: 300;
 }
 tbody th{
-  font-weight: 500;
+	font-weight: 500;
+}
+tfoot td{
+	opacity: .7;
+	padding: 2em 0 1em;
 }
 .insignificant{
-  opacity: .3;
+	opacity: .3;
 }
 .fading{
-  -webkit-animation: fading 1s linear infinite;
-  animation: fading 1s linear infinite;
+	-webkit-animation: fading 1s linear infinite;
+	animation: fading 1s linear infinite;
 }
 @-webkit-keyframes fading {
-  from {
-    opacity: .3;
-  }
-  50% {
-    opacity: .7;
-  }
-  to {
-    opacity: .3;
-  }
+	from {
+		opacity: .3;
+	}
+	50% {
+		opacity: .7;
+	}
+	to {
+		opacity: .3;
+	}
 }
 @keyframes fading {
-  from {
-    opacity: .3;
-  }
-  50% {
-    opacity: .7;
-  }
-  to {
-    opacity: .3;
-  }
+	from {
+		opacity: .3;
+	}
+	50% {
+		opacity: .7;
+	}
+	to {
+		opacity: .3;
+	}
 }
 </style>
 <script src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js" data-apikey="37e227db7c88af3576c11f86cba0cc02"></script>
 <script>
 if (location.hostname == 'cheeaun.github.io'){
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-23235796-4', 'cheeaun.github.io');
-  ga('send', 'pageview');
+	ga('create', 'UA-23235796-4', 'cheeaun.github.io');
+	ga('send', 'pageview');
 }
 </script>
-<h1>Bus arrival for <b id="bus-stop-code"></b></h1>
-<table>
-  <thead>
-    <th>Bus number</th>
-    <th>Next</th>
-    <th>Subsequent</th>
-  </thead>
-  <tbody id="arrivals">
-		<tr>
-			<td colspan="3">
-				Loading&hellip;
-			</td>
-		</tr>
-	</tbody>
-</table>
+<main>
+	<header id="bus-stop-heading">
+		<h1>Bus arrival times for <b><span id="bus-stop-code"></span> - <span id="bus-stop-name"></span></b></h1>
+	</header>
+	<table>
+		<thead>
+			<th>Bus number</th>
+			<th>Next</th>
+			<th>Subsequent</th>
+		</thead>
+		<tbody id="arrivals">
+			<tr>
+				<td colspan="3">
+					Loading&hellip;
+				</td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="3">Note: Arrival times update automatically every 15 seconds.</td>
+			</tr>
+		</tfoot>
+	</table>
+</main>
 <script>
 var $arrivals = document.getElementById('arrivals');
-var $loader = document.getElementById('loader');
 var arrivalsTimeout;
 var xhr = new XMLHttpRequest();
-
 var showArrivals = function(id){
-  xhr.open('get', 'https://arrivelah.herokuapp.com/?id=' + id, true);
+	xhr.open('get', 'https://arrivelah.herokuapp.com/?id=' + id, true);
 	xhr.onload = function(){
-	  $arrivals.classList.remove('fading');
-	  var result = JSON.parse(this.responseText);
-	  if (!result || result.error) return;
-	  $arrivals.innerHTML = result.services.sort(function(a, b){
-	    if (a.next.duration_ms == null) return 1;
-	    if (b.next.duration_ms == null) return -1;
-	    return a.next.duration_ms - b.next.duration_ms;
-	  }).map(function(service){
-	    return '<tr>'
-	        + '<th>' + service.no + '</th>'
-	        + '<td>' + timeDisplay(service.next.duration_ms) + '</td>'
-	        + '<td>' + timeDisplay(service.subsequent.duration_ms) + '</td>'
-	      + '</tr>';
-	  }).join('');
+		$arrivals.classList.remove('fading');
+		var result = JSON.parse(this.responseText);
+		if (!result || result.error) return;
+		$arrivals.innerHTML = result.services.sort(function(a, b){
+			if (a.next.duration_ms == null) return 1;
+			if (b.next.duration_ms == null) return -1;
+			return a.next.duration_ms - b.next.duration_ms;
+		}).map(function(service){
+			return '<tr>'
+					+ '<th>' + service.no + '</th>'
+					+ '<td>' + timeDisplay(service.next.duration_ms) + '</td>'
+					+ '<td>' + timeDisplay(service.subsequent.duration_ms) + '</td>'
+				+ '</tr>';
+		}).join('');
 		arrivalsTimeout = setTimeout(function(){
 			showArrivals(id);
 		}, 15*1000); // 15 seconds
@@ -126,25 +166,55 @@ var showArrivals = function(id){
 		}, 5*1000); // 5 seconds
 	}
 	xhr.send();
-  $arrivals.classList.add('fading');
+	$arrivals.classList.add('fading');
 };
 
 var timeDisplay = function(ms){
-  if (ms == null) return '<span class="insignificant">Unavailable</span>';
-  var mins = Math.ceil(ms/1000/60);
-  if (mins <= 0) return 'Now';
-  if (mins == 1) return mins + ' min';
-  return mins + ' mins';
+	if (ms == null) return '<span class="insignificant">Unavailable</span>';
+	var mins = Math.ceil(ms/1000/60);
+	if (mins <= 0) return 'Now';
+	if (mins == 1) return mins + ' min';
+	return mins + ' mins';
 };
 
-window.onhashchange = function(){
-  var hash = location.hash.slice(1);
-  clearTimeout(arrivalsTimeout);
+var req = new XMLHttpRequest();
+req.open('get', '../data/2/bus-stops.json', true);
+req.onload = function(){
+	var stops = JSON.parse(this.responseText);
+	var stopsMap = stops.reduce(function(map, obj){
+		map[obj.no] = obj;
+		return map;
+	}, {});
 
-  if (hash){
-    document.getElementById('bus-stop-code').innerHTML = hash;
-    showArrivals(hash);
-  }
-}
-window.onhashchange();
+	window.onhashchange = function(){
+		var hash = location.hash.slice(1);
+		var stop = stopsMap[hash];
+		clearTimeout(arrivalsTimeout);
+
+		if (hash && stop){
+			var coords = stop.lat + ',' + stop.lng;
+			document.getElementById('bus-stop-code').innerHTML = hash;
+			document.getElementById('bus-stop-name').innerHTML = stop.name;
+			document.getElementById('bus-stop-heading').style.backgroundImage = ''
+				+ 'url(http://maps.googleapis.com/maps/api/staticmap?'
+					+ [
+						'key=AIzaSyDJii3LssFIl3cw4XzTxtWqSls57rayV5I',
+						'center=' + coords,
+						'zoom=16',
+						'scale=2',
+						'size=480x240',
+						'maptype=roadmap',
+						'format=png',
+						'visual_refresh=true',
+						'markers=size:mid%7Ccolor:red%7C' + coords
+					].join('&')
+				+ ')';
+			showArrivals(hash);
+		} else {
+			alert('Invalid bus stop code.');
+		}
+	}
+	window.onhashchange();
+};
+req.send();
 </script>
