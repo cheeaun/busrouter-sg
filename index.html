@@ -618,8 +618,8 @@ if (location.hostname == 'cheeaun.github.io'){
 					var provider = busServicesMap[no].operator;
 					if (provider){
 						// Only SBS or SMRT, for now.
-						html += '<a href="' + url + no + '" target="_blank" class="details">See Bus Details and Schedules</a>';
 						var url = provider == 'sbs' ? 'http://www.sbstransit.com.sg/journeyplan/servicedetails.aspx?serviceno=' : 'http://www.transitlink.com.sg/eservice/eguide/service_route.php?service=';
+						html += '<a href="' + url + no + '" target="_blank" class="details">See Bus Details and Schedules &#10064;</a>';
 					}
 					if (data[2] && data[2].route && data[2].route.length){
 						html += '<a href="#/services/' + no + '" class="tab ' + (route == 1 ? 'selected' : '') + '">Route 1</a>'
@@ -884,17 +884,6 @@ if (location.hostname == 'cheeaun.github.io'){
 			$('#about').toggleClass('hidden');
 		});
 	}
-
-	$('#bus-routes-section').on('click', 'a.details', function(e){
-		e.preventDefault();
-
-		var width = 640;
-		var height = 480;
-		var top = ((screen.availHeight || screen.height)-height)/2;
-		var left = (screen.width-width)/2;
-
-		window.open(this.href, 'busDetails'+(new Date()), 'width=' + width + ',height=' + height + ',menubar=0,resizable=1,scrollbars=1,toolbar=0,top=' + top + ',left=' + left);
-	});
 
 	$('#map').on('click', 'a.show-arrivals', function(e){
 		e.preventDefault();
