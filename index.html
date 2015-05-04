@@ -618,8 +618,8 @@ if (location.hostname == 'cheeaun.github.io'){
 					var provider = busServicesMap[no].operator;
 					if (provider){
 						// Only SBS or SMRT, for now.
-						var url = provider == 'sbs' ? 'http://www.sbstransit.com.sg/journeyplan/servicedetails.aspx?serviceno=' : 'http://www.smrtbuses.com.sg/ebusguide/busfrequency.asp?BusNo=';
 						html += '<a href="' + url + no + '" target="_blank" class="details">See Bus Details and Schedules</a>';
+						var url = provider == 'sbs' ? 'http://www.sbstransit.com.sg/journeyplan/servicedetails.aspx?serviceno=' : 'http://www.transitlink.com.sg/eservice/eguide/service_route.php?service=';
 					}
 					if (data[2] && data[2].route && data[2].route.length){
 						html += '<a href="#/services/' + no + '" class="tab ' + (route == 1 ? 'selected' : '') + '">Route 1</a>'
