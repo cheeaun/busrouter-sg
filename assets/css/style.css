@@ -4,13 +4,13 @@ html, body{
 	overflow: hidden;
 	width: 100%;
 	height: 100%;
-	font-family: 'RobotoDraft', sans-serif;
+	font-family: Roboto, sans-serif;
 	font-size: 14px;
 	font-weight: 300;
 	-webkit-text-size-adjust: none;
 }
 input{
-	font-family: 'RobotoDraft', sans-serif;
+	font-family: Roboto, sans-serif;
 }
 a{
 	color: #1155CC;
