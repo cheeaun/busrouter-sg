@@ -102,6 +102,11 @@ tfoot td{
 		opacity: .3;
 	}
 }
+#outdated-browser{
+  background-color: #ff9;
+  padding: 10px;
+  text-align: center;
+}
 </style>
 <script src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js" data-apikey="37e227db7c88af3576c11f86cba0cc02"></script>
 <script>
@@ -115,6 +120,11 @@ if (location.hostname == 'cheeaun.github.io'){
 	ga('send', 'pageview');
 }
 </script>
+<!--[if lt IE 10]>
+	<div id="outdated-browser">
+		<p>You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+	</div>
+<![endif]-->
 <main>
 	<header id="bus-stop-heading">
 		<h1>Bus arrival times for <b id="bus-stop-name">&nbsp;</b></h1>
