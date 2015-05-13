@@ -117,7 +117,7 @@ if (location.hostname == 'cheeaun.github.io'){
 </script>
 <main>
 	<header id="bus-stop-heading">
-		<h1>Bus arrival times for <b><span id="bus-stop-code"></span> - <span id="bus-stop-name"></span></b></h1>
+		<h1>Bus arrival times for <b id="bus-stop-name">&nbsp;</b></h1>
 	</header>
 	<table>
 		<thead>
@@ -210,8 +210,7 @@ req.onload = function(){
 
 		if (hash && stop){
 			var coords = stop.lat + ',' + stop.lng;
-			document.getElementById('bus-stop-code').innerHTML = hash;
-			document.getElementById('bus-stop-name').innerHTML = stop.name;
+			document.getElementById('bus-stop-name').innerHTML = hash + ' - ' + stop.name;
 			document.getElementById('bus-stop-heading').style.backgroundImage = ''
 				+ 'url(https://maps.googleapis.com/maps/api/staticmap?'
 					+ [
