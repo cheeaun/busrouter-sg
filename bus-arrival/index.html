@@ -72,6 +72,10 @@ tfoot td{
 .insignificant{
 	opacity: .3;
 }
+.loading{
+	text-align: center;
+	padding: 2em 0;
+}
 .fading{
 	-webkit-animation: fading 1s linear infinite;
 	animation: fading 1s linear infinite;
@@ -121,9 +125,9 @@ if (location.hostname == 'cheeaun.github.io'){
 			<th>Next</th>
 			<th>Subsequent</th>
 		</thead>
-		<tbody id="arrivals">
+		<tbody id="arrivals" class="fading">
 			<tr>
-				<td colspan="3">
+				<td colspan="3" class="loading">
 					Loading&hellip;
 				</td>
 			</tr>
