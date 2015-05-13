@@ -43,6 +43,17 @@ header h1{
 	background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
 	text-shadow: 1px 1px #fff, -1px 1px #fff;
 }
+header:before{
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 18px;
+	height: 19px;
+	margin: -9.5px 0 0 -9px;
+	background: transparent url(../assets/images/red-circle.png) no-repeat;
+	background-size: 18px 19px;
+}
 header h1 b{
 	display: block;
 	font-weight: 500;
@@ -266,9 +277,7 @@ getData('busStops', function(error, stops){
 						'scale=2',
 						'size=480x240',
 						'maptype=roadmap',
-						'format=png',
-						'visual_refresh=true',
-						'markers=scale:2|icon:http://cheeaun.github.io/busrouter-sg/assets/images/red-circle.png|shadow:false|' + coords
+						'format=png'
 					].join('&')
 				+ ')';
 			showArrivals(hash);
