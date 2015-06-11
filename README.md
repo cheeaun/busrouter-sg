@@ -1,5 +1,5 @@
-Singapore Bus Routes Explorer
-=============================
+[Singapore Bus Routes Explorer](https://busrouter.sg/)
+===
 
 [![Available in the Chrome Web Store](https://developer.chrome.com/webstore/images/ChromeWebStore_BadgeWBorder_v2_206x58.png)](https://chrome.google.com/webstore/detail/singapore-bus-routes-expl/kmoebclbglclobmahimdaniikogclifn) [![Get it in the Firefox Marketplace](https://marketplace.cdn.mozilla.net/media/img/mkt/badges/firefox-marketplace_badge-orange_172_60.png)](https://marketplace.firefox.com/app/singapore-bus-routes-explor/)
 
@@ -26,12 +26,12 @@ grunt busStopsGeoJSONKML
 
 The data you'll get are:
 
-- [`bus-services.json`](http://cheeaun.github.com/busrouter-sg/data/2/bus-services.json) - Lists all bus services with the bus numbers, `routes` (number of routes where 2 means two routes, usually in opposite direction) and the bus operator.
-- [`bus-stops.json`](http://cheeaun.github.com/busrouter-sg/data/2/bus-stops.json) - Lists all bus stops with coordinates and names.
+- [`bus-services.json`](https://busrouter.sg/data/2/bus-services.json) - Lists all bus services with the bus numbers, `routes` (number of routes where 2 means two routes, usually in opposite direction) and the bus operator.
+- [`bus-stops.json`](https://busrouter.sg/data/2/bus-stops.json) - Lists all bus stops with coordinates and names.
 	- `bus-stops.geojson` - GeoJSON format
 	- `bus-stops.kml` - KML format
-- [`bus-stops-services.json`](http://cheeaun.github.com/busrouter-sg/data/2/bus-stops-services.json) - List all bus stops with the bus numbers/services that stops there.
-- `bus-services/{number}.json` - List two routes with all (polyline) coordinates and bus stops for each route. If the bus service doesn't have a second route, the second route data will be empty. E.g. <http://cheeaun.github.com/busrouter-sg/data/2/bus-services/2.json>.
+- [`bus-stops-services.json`](https://busrouter.sg/data/2/bus-stops-services.json) - List all bus stops with the bus numbers/services that stops there.
+- `bus-services/{number}.json` - List two routes with all (polyline) coordinates and bus stops for each route. If the bus service doesn't have a second route, the second route data will be empty. E.g. <https://busrouter.sg/data/2/bus-services/2.json>.
 
 Few more `grunt` goodies:
 

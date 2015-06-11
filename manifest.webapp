@@ -6,15 +6,15 @@
     "name": "Lim Chee Aun",
     "url": "http://cheeaun.com/"
   },
-  "launch_path": "/busrouter-sg/",
+  "launch_path": "/",
   "icons": {
-    "16": "/busrouter-sg/assets/icons/icon-16.png",
-    "30": "/busrouter-sg/assets/icons/icon-30.png",
-    "32": "/busrouter-sg/assets/icons/icon-32.png",
-    "48": "/busrouter-sg/assets/icons/icon-48.png",
-    "60": "/busrouter-sg/assets/icons/icon-60.png",
-    "64": "/busrouter-sg/assets/icons/icon-64.png",
-    "128": "/busrouter-sg/assets/icons/icon-128.png",
-    "256": "/busrouter-sg/assets/icons/icon-256.png"
+    "16": "/assets/icons/icon-16.png",
+    "30": "/assets/icons/icon-30.png",
+    "32": "/assets/icons/icon-32.png",
+    "48": "/assets/icons/icon-48.png",
+    "60": "/assets/icons/icon-60.png",
+    "64": "/assets/icons/icon-64.png",
+    "128": "/assets/icons/icon-128.png",
+    "256": "/assets/icons/icon-256.png"
   }
 }
