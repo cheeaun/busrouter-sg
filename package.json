@@ -1,6 +1,6 @@
 {
   "name": "busrouter-sg",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Singapore Bus Routes Explorer",
   "dependencies": {
     "cheerio": "~0.19.0",
