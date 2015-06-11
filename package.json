@@ -2,7 +2,6 @@
   "name": "busrouter-sg",
   "version": "0.0.1",
   "description": "Singapore Bus Routes Explorer",
-  "main": "make-scripts.js",
   "dependencies": {
     "cheerio": "~0.19.0",
     "needle": "~0.9.2"
