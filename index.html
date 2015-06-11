@@ -23,7 +23,6 @@
 <link rel="dns-prefetch" href="https://d2wy8f7a9ursnm.cloudfront.net">
 <link rel="shortcut icon" href="favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="assets/icons/icon-144.png">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/kmoebclbglclobmahimdaniikogclifn">
 <script async src="https://d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js" data-apikey="37e227db7c88af3576c11f86cba0cc02"></script>
@@ -900,6 +899,19 @@ ga('send', 'pageview');
 		$('#sidebar').toggleClass('hidden');
 		$('#header-sidebar').toggleClass('active')
 	});
+})();
+
+WebFontConfig = {
+	google: { families: [ 'Roboto:300,400,500,700' ] }
+};
+(function(){
+	var wf = document.createElement('script');
+	wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+		'://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+	wf.type = 'text/javascript';
+	wf.async = 'true';
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(wf, s);
 })();
 </script>
 <div id="fb-root"></div>
