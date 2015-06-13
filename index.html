@@ -43,20 +43,26 @@ ga('send', 'pageview');
 	</div>
 <![endif]-->
 <header>
-	<h1><a href="#/"><img src="assets/images/logo.png" width="16" height="20" alt=""> &nbsp;<span itemprop="name">Singapore Bus Routes Explorer</span></a></h1>
-	<form id="places-search-form">
-		<input type="search" placeholder="Search for a place">
-	</form>
-	<a id="header-about">About</a>
-	<a id="header-sidebar" class="active">&equiv;</a>
+	<h1><a href="#/"><i class="fa fa-bus"></i>&nbsp;&nbsp;<span itemprop="name">Singapore Bus Routes Explorer</span></a></h1>
+	<a id="header-about"><i class="fa fa-info icon-circle"></i></a>
+	<a id="header-search"><i class="fa fa-search icon-circle"></i></a>
 </header>
-<div id="about" class="hidden">
+<div id="about" class="dialog hidden">
 	<section>
-		<a class="close">&times;</a>
+		<a class="close"><i class="fa fa-times"></i></a>
 		<p><b>Singapore Bus Routes Explorer</b> (or <b>BusRouter SG</b>) lets you explore bus stops and routes on the map for all bus services in Singapore.</p>
 		<p>This is <a href="https://github.com/cheeaun/busrouter-sg" target="_blank">yet another project</a> by <a href="http://twitter.com/cheeaun" target="_blank" itemprop="creator">@cheeaun</a>, works best on <strong>modern web browsers</strong> and the data is <em>extracted</em> from the <a href="http://www.mytransport.sg/">Land Transport Authority</a>. Feel free to <a href="http://twitter.com/cheeaun" target="_blank">send feedback</a>, <a href="https://github.com/cheeaun/busrouter-sg/issues" target="_blank">report any issues</a> and share this with your friends and family.</p>
 		<div class="fb-like" data-href="https://busrouter.sg/" data-width="120" data-layout="button_count" data-show-faces="false" data-send="false"></div>
 		<a href="https://twitter.com/intent/tweet" class="twitter-share-button" data-url="https://busrouter.sg/" data-text="Singapore Bus Routes Explorer" data-related="cheeaun">Tweet</a>
+	</section>
+</div>
+<div id="search" class="dialog hidden">
+	<section>
+		<a class="close"><i class="fa fa-times"></i></a>
+		<p>Search for a place</p>
+		<form id="places-search-form">
+			<input type="search" placeholder="e.g. Clarke Quay, Bugis Junction, Ang Mo Kio">
+		</form>
 	</section>
 </div>
 <aside id="sidebar">
@@ -98,19 +104,6 @@ ga('send', 'pageview');
 		}
 		lscache.flush();
 		lscache.set('busDataVersion', dataVersion);
-	}
-
-	if (/mobi/i.test(navigator.userAgent)){
-		var scrollTop = function(){
-			var body = document.body;
-			setTimeout(function(){
-				body.style.height = screen.height + 'px';
-				window.scrollTo(0, 0);
-				body.style.height = window.innerHeight + 'px';
-			}, 300);
-		};
-		scrollTop();
-		window.onresize = scrollTop;
 	}
 
 	var sprite = {
@@ -240,7 +233,7 @@ ga('send', 'pageview');
 					var geolocationControl = document.createElement('a');
 					geolocationControl.id = 'geolocation-control';
 					geolocationControl.href = '#';
-					geolocationControl.innerHTML = '<i></i>';
+					geolocationControl.innerHTML = '<i class="fa fa-location-arrow"></i>';
 					map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(geolocationControl);
 
 					var locationMarker = new google.maps.Marker({
@@ -326,27 +319,26 @@ ga('send', 'pageview');
 					}, 300);
 				});
 
-				if (!isSmallScreen){
-					var $form = $('#places-search-form');
-					$form.on('submit', function(e){
-						e.preventDefault();
-					});
+				var $form = $('#places-search-form');
+				$form.on('submit', function(e){
+					e.preventDefault();
+				});
 
-					var autocomplete = new google.maps.places.Autocomplete($form.find('input')[0], {
-						bounds: bounds,
-						componentRestrictions: {country: 'sg'}
-					});
-					google.maps.event.addListener(autocomplete, 'place_changed', function(){
-						var place = autocomplete.getPlace();
-						if (!place.geometry) return;
-						if (place.geometry.viewport) {
-							map.fitBounds(place.geometry.viewport);
-						} else {
-							map.setCenter(place.geometry.location);
-							map.setZoom(17);
-						}
-					});
-				}
+				var autocomplete = new google.maps.places.Autocomplete($form.find('input')[0], {
+					bounds: bounds,
+					componentRestrictions: {country: 'sg'}
+				});
+				google.maps.event.addListener(autocomplete, 'place_changed', function(){
+					$('#search').addClass('hidden');
+					var place = autocomplete.getPlace();
+					if (!place.geometry) return;
+					if (place.geometry.viewport) {
+						map.fitBounds(place.geometry.viewport);
+					} else {
+						map.setCenter(place.geometry.location);
+						map.setZoom(17);
+					}
+				});
 
 				callback(null, map);
 			};
@@ -872,16 +864,16 @@ ga('send', 'pageview');
 	$('#header-about').on('click', function(){
 		$('#about').removeClass('hidden');
 	});
+	$('#header-search').on('click', function(){
+		$('#search').removeClass('hidden');
+		$('#places-search-form input').focus();
+	});
 	$('#about .close').on('click', function(){
 		$('#about').addClass('hidden');
 	});
-
-	if (isSmallScreen){
-		$('header h1 a').on('click', function(e){
-			e.preventDefault();
-			$('#about').toggleClass('hidden');
-		});
-	}
+	$('#search .close').on('click', function(){
+		$('#search').addClass('hidden');
+	});
 
 	$('#map').on('click', 'a.show-arrivals', function(e){
 		e.preventDefault();
@@ -893,15 +885,14 @@ ga('send', 'pageview');
 
 		window.open(this.href, 'busArrivals'+(new Date()), 'width=' + width + ',height=' + height + ',menubar=0,resizable=1,scrollbars=1,toolbar=0,top=' + top + ',left=' + left);
 	});
-
-	$('#header-sidebar').on('click', function(){
-		$('#sidebar').toggleClass('hidden');
-		$('#header-sidebar').toggleClass('active')
-	});
 })();
 
 WebFontConfig = {
-	google: { families: [ 'Roboto:300,400,500,700' ] }
+	google: { families: [ 'Roboto:300,400,500,700' ] },
+	custom: {
+		families: [ 'FontAwesome' ],
+		urls: [ 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css' ]
+	}
 };
 (function(){
 	var wf = document.createElement('script');
