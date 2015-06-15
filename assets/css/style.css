@@ -79,6 +79,7 @@ header{
 	-webkit-transform-origin: 22px 22px;
 	transform-origin: 22px 22px;
 	border-radius: 5px;
+	box-sizing: border-box;
 }
 header h1{
 	color: #444;
