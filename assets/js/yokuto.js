@@ -14,11 +14,11 @@ var Yokuto = (function(){
 	};
 
 	var closest = function(element, selector){
-	  var matches = false;
-	  do {
+		var matches = false;
+		do {
 		matches = matchesSelector(element, selector);
-	  } while (!matches && (element = element.parentNode) && element.ownerDocument);
-	  return matches ? element : false;
+		} while (!matches && (element = element.parentNode) && element.ownerDocument);
+		return matches ? element : false;
 	};
 
 	var Y = function(selector, context){
@@ -55,14 +55,18 @@ var Yokuto = (function(){
 				capture = fn;
 				fn = selector;
 				this.each(function(element){
-					element.addEventListener(event, fn, capture || false);
+					event.split(' ').forEach(function(ev){
+						element.addEventListener(ev, fn, capture || false);
+					});
 				});
 			} else {
 				this.each(function(element){
-					element.addEventListener(event, function(e){
-						var target = closest(e.target, selector);
-						if (target) fn.call(target, e);
-					}, capture || false);
+					event.split(' ').forEach(function(ev){
+						element.addEventListener(ev, function(e){
+							var target = closest(e.target, selector);
+							if (target) fn.call(target, e);
+						}, capture || false);
+					});
 				});
 			}
 			return this;
