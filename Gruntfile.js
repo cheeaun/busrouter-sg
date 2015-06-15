@@ -48,9 +48,6 @@ module.exports = function(grunt) {
 		},
 		connect: {
 			server: {
-				options: {
-					keepalive: true
-				}
 			}
 		},
 		aws: awsCreds,
