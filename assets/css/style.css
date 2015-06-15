@@ -1,4 +1,5 @@
 html, body{
+	opacity: 1;
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
@@ -8,6 +9,7 @@ html, body{
 	font-size: 14px;
 	font-weight: 300;
 	-webkit-text-size-adjust: none;
+	transition: opacity .3s;
 }
 input{
 	font-family: Roboto, sans-serif;
@@ -31,6 +33,7 @@ hr{
 	border-top: 1px solid #F0F0E7;
 }
 .icon-circle{
+	vertical-align: middle;
 	width: 24px;
 	height: 24px;
 	border: 1px solid;
@@ -46,17 +49,41 @@ hr{
 .icon-circle:hover{
 	text-decoration: none;
 }
+#logo{
+	position: absolute;
+	opacity: 0;
+	-webkit-transform: rotate(180deg);
+	transform: rotate(180deg);
+	pointer-events: none;
+	cursor: pointer;
+	transition-property: opacity, transform, -webkit-transform;
+	transition-duration: .3s;
+	padding: 5px;
+	z-index: 3;
+	color: #444;
+	border-color: #444;
+}
+#logo .fa{
+	background-color: rgba(255,255,255,.7);
+}
 header{
 	position: absolute;
-	top: 0;
-	left: 0;
+	top: 5px;
+	left: 5px;
 	z-index: 3;
 	font-size: 16px;
-	padding: 10px;
+	padding: 5px 10px;
 	background-color: rgba(255,255,255,.7);
 	-webkit-backdrop-filter: blur(5px);
+	backdrop-filter: blur(5px);
+	transition-property: opacity, transform, -webkit-transform;
+	transition-duration: .3s;
+	-webkit-transform-origin: 22px 22px;
+	transform-origin: 22px 22px;
+	border-radius: 5px;
 }
 header h1{
+	color: #444;
 	display: inline-block;
 	font-size: inherit;
 	font-weight: normal;
@@ -118,6 +145,8 @@ header h1 a:hover{
 	height: 100%;
 	z-index: 100;
 	background-color: rgba(0,0,0,.5);
+	-webkit-backdrop-filter: blur(5px);
+	backdrop-filter: blur(5px);
 	-webkit-transition: background-color .3s;
 	-moz-transition: background-color .3s;
 	transition: background-color .3s;
@@ -139,27 +168,19 @@ header h1 a:hover{
 	width: 480px;
 	margin: 0 0 0 -240px;
 	background-color: #fff;
-	border-radius: 3px;
-	box-shadow: 0 0 3px #000;
+	border-radius: 5px;
 	padding: 16px;
 	line-height: 1.5em;
 	opacity: 1;
 	-webkit-transform: translateY(0) rotateX(0);
-	-moz-transform: translateY(0) rotateX(0);
-	transform: translateY(0) rotateX(0);
 	-webkit-transform-origin: top center;
-	-moz-transform-origin: top center;
+	transform: translateY(0) rotateX(0);
 	transform-origin: top center;
-	-webkit-transition-property: -webkit-transform, opacity;
-	-moz-transition-property: -moz-transform, opacity;
-	transition-property: transform, opacity;
-	-webkit-transition-duration: .2s;
-	-moz-transition-duration: .2s;
+	transition-property: transform, -webkit-transform, opacity;
 	transition-duration: .2s;
 }
 .dialog.hidden section{
 	-webkit-transform: translate3d(0, -40px, -30px) rotateX(-10deg);
-	-moz-transform: translate3d(0, -40px, -30px) rotateX(-10deg);
 	transform: translate3d(0, -40px, -30px) rotateX(-10deg);
 	opacity: 0;
 }
@@ -193,11 +214,13 @@ header h1 a:hover{
 }
 #bounds-warning{
 	position: absolute;
-	top: 40px;
+	top: 45px;
+	left: 5px;
 	display: none;
-	padding: 10px;
-	margin: 10px;
+	padding: 5px 10px;
 	background-color: rgba(0,0,0,.7);
+	-webkit-backdrop-filter: blur(5px);
+	backdrop-filter: blur(5px);
 	color: #fff;
 }
 #bounds-warning a{
@@ -225,18 +248,21 @@ aside{
 	overflow: hidden;
 }
 aside h1{
-	color: #fff;
-	background-color: #7ac000;
+	color: #7ac000;
+	background-color: #fff;
 	margin: 0;
-	padding: 0 16px;
-	height: 32px;
-	line-height: 32px;
+	padding: 0 10px;
+	height: 35px;
+	line-height: 35px;
 	font-size: 16px;
 	font-weight: normal;
+	border-top: 1px solid rgba(0,0,0,.2);
+	border-bottom: 1px solid rgba(0,0,0,.2);
+	box-sizing: border-box;
 }
 aside #bus-stops-section h1,
 aside #bus-stop-routes-section h1{
-	background-color: #f01b48;
+	color: #f01b48;
 	font-weight: normal;
 }
 aside h1 b{
@@ -245,21 +271,31 @@ aside h1 b{
 aside h1 a{
 	color: #fff;
 }
-aside h1 a.close{
-	font-weight: 500;
-	color: #fff;
+aside h1 a.close,
+aside h1 a.back{
+	outline: 0;
+	color: inherit;
 	display: inline-block;
 	position: absolute;
 	top: 0;
 	right: 0;
 	width: 32px;
-	height: 32px;
-	line-height: 32px;
+	height: 35px;
+	line-height: 35px;
 	text-align: center;
+	transition: background-color .3s;
+	box-sizing: border-box;
 }
-aside h1 a.close:hover{
+aside h1 a.close:hover,
+aside h1 a.back:hover{
 	text-decoration: none;
-	background-color: rgba(0,0,0,.15);
+	background-color: rgba(0,0,0,.1);
+}
+aside h1 a.back{
+	position: static;
+	float: left;
+	-webkit-transform: translateX(-10px);
+	transform: translateX(-10px);
 }
 aside section{
 	position: absolute;
@@ -267,11 +303,11 @@ aside section{
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	background-color: #f7f7f7;
+	background-color: #fff;
 }
 aside section>div{
 	position: absolute;
-	top: 32px;
+	top: 35px;
 	left: 0;
 	bottom: 0;
 	right: 0;
@@ -290,7 +326,7 @@ aside section div h2{
 	color: #999;
 	background-color: #f7f7f7;
 	margin: 0;
-	padding: 0 16px;
+	padding: 0 10px;
 	height: 24px;
 	line-height: 24px;
 	font-size: 12px;
@@ -339,22 +375,19 @@ aside section div ul li a:hover{
 	color: #fff;
 	background-color: #f78da3;
 }
+#bus-routes-section .tab-bar{
+	overflow: hidden;
+	position: -webkit-sticky;
+	position: sticky;
+	top: 0;
+	background-color: rgba(240,240,240,.9);
+	-webkit-backdrop-filter: blur(5px);
+	backdrop-filter: blur(5px);
+}
 #bus-routes-section a.details{
-	font-size: 12px;
-	display: block;
-	margin: 8px;
-	padding: 8px;
-	text-align: center;
-	font-weight: normal;
-	border-radius: 8px;
-	border: 1px solid #EDEDED;
-	background-color: rgba(255,255,255,.5);
-}
-#bus-routes-section a.details:hover{
-	background-color: #fff;
-}
-#bus-routes-section a.details:active{
-	background-color: #ededed;
+	float: right;
+	padding: 5px 10px;
+	font-size: 13px;
 }
 aside section div ul li a.stop-a i,
 aside section div ul li a.stop-b i,
@@ -408,36 +441,33 @@ aside section #bus-stop-routes ul li a:hover .tag{
 	background-color: #95cf29;
 }
 aside section .tab{
-	width: 50%;
-	color: #999;
+	color: #333;
 	display: inline-block;
-	text-align: center;
-	padding: 7px 0;
+	padding: 5px 10px;
 	font-weight: normal;
-	border-bottom: 1px solid #ededed;
 }
 aside section .tab:hover{
-	color: #000;
+	color: #f01b48;
 	text-decoration: none;
 }
 aside section .tab.selected{
-	border-color: #fff;
-	color: #000;
 	background-color: #fff;
+	color: #f01b48;
 }
+aside section .tab{
+	border-right: 1px solid rgba(0,0,0,.1);
+}
+
 aside section{
-	-webkit-transition-property: -webkit-transform, opacity;
-	-webkit-transition-duration: .3s;
-	-moz-transition-property: -moz-transform, opacity;
-	-moz-transition-duration: .3s;
-	transition-property: transform, opacity;
+	-webkit-transition-timing-function: cubic-bezier(.3, 0, 0, 1);
+	transition-timing-function: cubic-bezier(.3, 0, 0, 1);
+	transition-property: transform, -webkit-transform, opacity;
 	transition-duration: .3s;
 }
 aside section.hidden{
 	pointer-events: none;
-	opacity: .3;
+	opacity: 0;
 	-webkit-transform: translate3d(100%, 0, 0);
-	-moz-transform: translate3d(100%, 0, 0);
 	transform: translate3d(100%, 0, 0);
 }
 .arrow{
@@ -490,7 +520,7 @@ aside section.hidden{
 	vertical-align: middle;
 	display: inline-block;
 	font-weight: normal;
-	font-size: 12px;
+	font-size: 11px;
 	color: #fff;
 	background-color: #f78da3;
 	padding: 3px 5px;
@@ -516,43 +546,66 @@ aside section.hidden{
 	color: #999;
 	background-color: #ededed;
 }
-.infowindow .infostop,
 .infowindow .show-routes{
 	white-space: nowrap;
 }
 .infowindow .infofooter{
-	margin-top: 8px;
+	margin-top: 7px;
 	border-top: 1px solid #F0F0E7;
-	padding-top: 6px;
+	padding-top: 3px;
 }
 .infowindow .infofooter a{
 	display: block;
-	line-height: 1.7em;
+	line-height: 1.5em;
 }
 
 #geolocation-control{
-	background-color: rgba(255,255,255,.8);
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-	margin: 5px;
+	padding: 5px;
 	cursor: pointer;
-	color: #7F7F7F;
-	text-align: center;
+	outline: 0;
 }
 #geolocation-control i{
-	font-size: 18px !important;
-	line-height: 30px !important;
+	border-color: transparent;
+	color: #7F7F7F;
+	background-color: rgba(255,255,255,.5);
 }
 #geolocation-control.active i{
 	color: #1DB4D0;
+	background-color: rgba(255,255,255,.75);
+}
+
+.share-buttons{
+	display: block;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+.share-buttons li{
+	display: inline;
+}
+.share-buttons li a{
+	padding: 2px 5px;
 }
 
 @media screen and (max-width: 640px){
+	.header-collapsed #logo{
+		pointer-events: all;
+		opacity: 1;
+		-webkit-transform: rotate(0);
+		transform: rotate(0);
+	}
+
 	header{
 		top: 0;
 		left: 0;
 		width: 100%;
+		border-radius: none;
+	}
+	.header-collapsed header{
+		opacity: 0;
+		pointer-events: none;
+		-webkit-transform: scale3d(0,0,0) rotate(-180deg);
+		transform: scale3d(0,0,0) rotate(-180deg);
 	}
 
 	#map{
@@ -560,7 +613,7 @@ aside section.hidden{
 		bottom: 50%;
 	}
 
-	#about section{
+	.dialog section{
 		top: 60px;
 		left: 5%;
 		width: 90%;
@@ -571,6 +624,10 @@ aside section.hidden{
 		top: 50%;
 		left: 0;
 		width: 100%;
+	}
+
+	.infowindow{
+		max-width: 200px;
 	}
 }
 
@@ -585,13 +642,13 @@ aside section.hidden{
 }
 
 #outdated-browser{
-  position: absolute;
-  background-color: #ff9;
-  padding: 10px;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  text-align: center;
-  z-index: 99999999;
+	position: absolute;
+	background-color: #ff9;
+	padding: 10px;
+	top: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	text-align: center;
+	z-index: 99999999;
 }

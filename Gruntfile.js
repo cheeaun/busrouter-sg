@@ -1,9 +1,9 @@
 module.exports = function(grunt) {
 
-  var awsCreds;
-  try{
-    awsCreds = grunt.file.readJSON('aws-credentials.json')
-  } catch(e){}
+	var awsCreds;
+	try{
+		awsCreds = grunt.file.readJSON('aws-credentials.json')
+	} catch(e){}
 
  	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -16,11 +16,34 @@ module.exports = function(grunt) {
 						screw_ie8: true
 					}
 				},
+				files: [{
+					src: [
+						'assets/js/classlist.js',
+						'assets/js/lscache.js',
+						'assets/js/queue.js',
+						'assets/js/ruto.js',
+						'assets/js/yokuto.js',
+						'assets/js/app.js'
+					],
+					dest: 'js/scripts.js'
+				}]
+			}
+		},
+		cssmin: {
+			css: {
 				files: {
-					'js/scripts.js': [
-						'assets/js/*.js'
-					]
+					'assets/css/style.min.css': ['assets/css/style.css']
 				}
+			}
+		},
+		watch: {
+			scripts: {
+				files: 'assets/js/*.js',
+				tasks: ['uglify']
+			},
+			styles: {
+				files: 'assets/css/style.css',
+				tasks: ['cssmin']
 			}
 		},
 		connect: {
@@ -62,8 +85,11 @@ module.exports = function(grunt) {
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-aws');
 	grunt.loadTasks('tasks');
 
+	grunt.registerTask('server', ['connect', 'watch']);
 };

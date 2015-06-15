@@ -15,45 +15,6 @@
 		lscache.set('busDataVersion', dataVersion);
 	}
 
-	var sprite = {
-		url: 'assets/images/bus-sprite.png',
-		scaledSize: new google.maps.Size(156/2, 168/2)
-	};
-	var markerImage = {
-		location: {
-			url: sprite.url,
-			scaledSize: sprite.scaledSize,
-			size: new google.maps.Size(36/2, 38/2),
-			anchor: new google.maps.Point(36/4, 38/4),
-			origin: new google.maps.Point(96/2, 0)
-		},
-		circle: {
-			url: sprite.url,
-			scaledSize: sprite.scaledSize,
-			size: new google.maps.Size(36/2, 38/2),
-			anchor: new google.maps.Point(36/4, 38/4),
-			origin: new google.maps.Point(60/2, 0)
-		},
-		dot: {
-			url: sprite.url,
-			scaledSize: sprite.scaledSize,
-			size: new google.maps.Size(52/2, 76/2),
-			origin: new google.maps.Point(0, 92/2)
-		},
-		a: {
-			url: sprite.url,
-			scaledSize: sprite.scaledSize,
-			size: new google.maps.Size(52/2, 76/2),
-			origin: new google.maps.Point(52/2, 92/2)
-		},
-		b: {
-			url: sprite.url,
-			scaledSize: sprite.scaledSize,
-			size: new google.maps.Size(52/2, 76/2),
-			origin: new google.maps.Point(104/2, 92/2)
-		}
-	};
-
 	var rootEndPoints = {
 		github: 'data/2/',
 		s3: 'https://busrouter-sg.s3-ap-southeast-1.amazonaws.com/v2/'
@@ -97,6 +58,7 @@
 	var isSmallScreen = window.innerWidth <= 640;
 
 	var q = queue();
+	var markerImage;
 
 	[
 		function(callback){
@@ -109,11 +71,18 @@
 			getData('busStopsServices', callback);
 		},
 		function(callback){
-			window.onload = function(){
+			queue()
+				.defer(function(cb){
+					var script = document.createElement('script');
+					script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDJii3LssFIl3cw4XzTxtWqSls57rayV5I&libraries=places&callback=loadMap';
+					document.body.appendChild(script);
+					window.loadMap = cb;
+				})
+				.await(initMap);
+
+			function initMap(){
 				var center = new google.maps.LatLng(1.3520830, 103.8198360);
 				var map = new google.maps.Map(document.getElementById('map'), {
-					center: center,
-					zoom: 11,
 					mapTypeId: google.maps.MapTypeId.ROADMAP,
 					disableDefaultUI: true,
 					keyboardShortcuts: true,
@@ -133,16 +102,59 @@
 						overviewMapControl: false,
 						zoomControl: false
 					});
+
+					google.maps.event.addListener(map, 'dragstart', function(){
+						$('body').addClass('header-collapsed');
+					});
 				}
 
 				var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(1.25352193438281, 103.62192147229632), new google.maps.LatLng(1.50129709375363, 103.99983438993593));
 				map.fitBounds(bounds);
 
+				var sprite = {
+					url: 'assets/images/bus-sprite.png',
+					scaledSize: new google.maps.Size(156/2, 168/2)
+				};
+				markerImage = {
+					location: {
+						url: sprite.url,
+						scaledSize: sprite.scaledSize,
+						size: new google.maps.Size(36/2, 38/2),
+						anchor: new google.maps.Point(36/4, 38/4),
+						origin: new google.maps.Point(96/2, 0)
+					},
+					circle: {
+						url: sprite.url,
+						scaledSize: sprite.scaledSize,
+						size: new google.maps.Size(36/2, 38/2),
+						anchor: new google.maps.Point(36/4, 38/4),
+						origin: new google.maps.Point(60/2, 0)
+					},
+					dot: {
+						url: sprite.url,
+						scaledSize: sprite.scaledSize,
+						size: new google.maps.Size(52/2, 76/2),
+						origin: new google.maps.Point(0, 92/2)
+					},
+					a: {
+						url: sprite.url,
+						scaledSize: sprite.scaledSize,
+						size: new google.maps.Size(52/2, 76/2),
+						origin: new google.maps.Point(52/2, 92/2)
+					},
+					b: {
+						url: sprite.url,
+						scaledSize: sprite.scaledSize,
+						size: new google.maps.Size(52/2, 76/2),
+						origin: new google.maps.Point(104/2, 92/2)
+					}
+				};
+
 				if (navigator.geolocation){
 					var geolocationControl = document.createElement('a');
 					geolocationControl.id = 'geolocation-control';
 					geolocationControl.href = '#';
-					geolocationControl.innerHTML = '<i class="fa fa-location-arrow"></i>';
+					geolocationControl.innerHTML = '<i class="fa fa-location-arrow icon-circle"></i>';
 					map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(geolocationControl);
 
 					var locationMarker = new google.maps.Marker({
@@ -195,6 +207,8 @@
 								locationMarker.setVisible(true);
 								if (!panToLocation && bounds.contains(pos)){
 									map.panTo(pos);
+									var zoom = map.getZoom();
+									if (zoom < 15) map.setZoom(15);
 									panToLocation = true;
 								}
 								$('#geolocation-control').addClass('active');
@@ -341,8 +355,7 @@
 			var info = busStopsMap[stop];
 			var name = info.name;
 			var services = busStopsServices[stop];
-			var html = '<div class="infowindow"><h1>' + name + '</h1>'
-				+ '<div class="infostop">Bus stop number: <span class="tag">' + stop + '</span></div>';
+			var html = '<div class="infowindow"><h1>' + name + '&nbsp;<span class="tag">' + stop + '</span></h1>';
 
 			services.forEach(function(service){
 				if (service == currentService){
@@ -353,10 +366,10 @@
 			});
 
 			html += '<div class="infofooter">';
-			html += '<a href="bus-arrival/#' + stop + '" target="_blank" class="show-arrivals">Show bus arrival times at this stop &#10064;</a>';
+			html += '<a href="bus-arrival/#' + stop + '" target="_blank" class="show-arrivals"><i class="fa fa-clock-o fa-fw"></i> Show bus arrival times here</a>';
 
 			if (services.length > 1 && !hideShowRoutesLink){
-				html += '<a href="#/stops/' + stop + '" class="show-routes">Show all routes passing here</a>';
+				html += '<a href="#/stops/' + stop + '" class="show-routes"><i class="fa fa-code-fork fa-fw"></i> Show all routes passing here</a>';
 			}
 			html += '</div></div>';
 
@@ -477,6 +490,7 @@
 				currentRoute = 'home';
 				document.title = docTitle;
 				$('section.extra').addClass('hidden');
+				$('body').removeClass('header-collapsed');
 				clearMap();
 				setTimeout(function(){
 					$busServices.find('a.selected').removeClass('selected');
@@ -513,17 +527,18 @@
 					polyline.setPath(latlngs);
 					polyline.setMap(map);
 
-					var html = '';
-					var provider = busServicesMap[no].operator;
-					if (provider){
-						// Only SBS or SMRT, for now.
-						var url = provider == 'sbs' ? 'http://www.sbstransit.com.sg/journeyplan/servicedetails.aspx?serviceno=' : 'http://www.transitlink.com.sg/eservice/eguide/service_route.php?service=';
-						html += '<a href="' + url + no + '" target="_blank" class="details">See Bus Details and Schedules &#10064;</a>';
-					}
+					var html = '<div class="tab-bar">';
 					if (data[2] && data[2].route && data[2].route.length){
 						html += '<a href="#/services/' + no + '" class="tab ' + (route == 1 ? 'selected' : '') + '">Route 1</a>'
 							+ '<a href="#/services/' + no + '/2" class="tab ' + (route == 2 ? 'selected' : '') + '">Route 2</a>';
 					}
+					var provider = busServicesMap[no].operator;
+					if (provider){
+						// Only SBS or SMRT, for now.
+						var url = provider == 'sbs' ? 'http://www.sbstransit.com.sg/journeyplan/servicedetails.aspx?serviceno=' : 'http://www.transitlink.com.sg/eservice/eguide/service_route.php?service=';
+						html += '<a href="' + url + no + '" target="_blank" class="details"><i class="fa fa-list-alt"></i> Bus schedules</a>';
+					}
+					html += '</div>';
 					html += '<ul>';
 
 					var firstSameLast = false;
@@ -721,7 +736,7 @@
 			if (isSmallScreen) $('#header-sidebar').trigger('click');
 		});
 
-		$('#bus-stop-routes').on('mouseover', 'li a', function(){
+		$('#bus-stop-routes').on('mouseover touchstart', 'li a', function(){
 			var serv = $(this).find('.tag').text();
 			for (var service in polylines){
 				var line = polylines[service];
@@ -735,7 +750,7 @@
 					});
 				}
 			}
-		}).on('mouseout', 'li a', function(){
+		}).on('mouseout touchend touchcancel', 'li a', function(){
 			for (var service in polylines){
 				polylines[service].setOptions({
 					strokeOpacity: .4
@@ -770,6 +785,9 @@
 		});
 	});
 
+	$('#logo').on('click', function(){
+		$('body').toggleClass('header-collapsed');
+	});
 	$('#header-about').on('click', function(){
 		$('#about').removeClass('hidden');
 	});
@@ -786,29 +804,22 @@
 
 	$('#map').on('click', 'a.show-arrivals', function(e){
 		e.preventDefault();
-
 		var width = 320;
 		var height = 480;
 		var top = ((screen.availHeight || screen.height)-height)/2;
 		var left = (screen.width-width)/2;
-
-		window.open(this.href, 'busArrivals'+(new Date()), 'width=' + width + ',height=' + height + ',menubar=0,resizable=1,scrollbars=1,toolbar=0,top=' + top + ',left=' + left);
+		window.open(this.href, 'busArrivals'+(new Date()), 'width=' + width + ',height=' + height + ',menubar=0,toolbar=0,top=' + top + ',left=' + left);
 	});
-})();
 
-WebFontConfig = {
-	google: { families: [ 'Roboto:300,400,500,700' ] },
-	custom: {
-		families: [ 'FontAwesome' ],
-		urls: [ 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css' ]
-	}
-};
-(function(){
-	var wf = document.createElement('script');
-	wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-		'://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-	wf.type = 'text/javascript';
-	wf.async = 'true';
-	var s = document.getElementsByTagName('script')[0];
-	s.parentNode.insertBefore(wf, s);
+	$('.share-buttons a').on('click', function(e){
+		var el = e.target;
+		if (el.href){
+			e.preventDefault();
+			var width = 500;
+			var height = 300;
+			var top = ((screen.availHeight || screen.height)-height)/2;
+			var left = (screen.width-width)/2;
+			window.open(el.href, 'window-' + Math.random(), 'width=' + width + ',height=' + height + ',menubar=0,toolbar=0,top=' + top + ',left=' + left);
+		}
+	});
 })();
