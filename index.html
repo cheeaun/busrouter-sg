@@ -10,7 +10,6 @@
 <meta name="google" value="notranslate">
 <meta itemprop="image" content="assets/icons/icon-144.png">
 <meta itemprop="description" content="Explore bus stops and routes on the map for all bus services in Singapore">
-<meta property="fb:app_id" content="165047640357519">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://busrouter.sg/">
 <meta property="og:title" content="Singapore Bus Routes Explorer">
@@ -36,7 +35,7 @@ ga('create', 'UA-23235796-4', 'auto');
 ga('send', 'pageview');
 </script>
 </head>
-<body ontouchstart><!-- make a:active work on iOS Mobile Safari -->
+<body>
 <!--[if lt IE 10]>
 	<div id="outdated-browser">
 		<p>You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -52,8 +51,11 @@ ga('send', 'pageview');
 		<a class="close"><i class="fa fa-times"></i></a>
 		<p><b>Singapore Bus Routes Explorer</b> (or <b>BusRouter SG</b>) lets you explore bus stops and routes on the map for all bus services in Singapore.</p>
 		<p>This is <a href="https://github.com/cheeaun/busrouter-sg" target="_blank">yet another project</a> by <a href="http://twitter.com/cheeaun" target="_blank" itemprop="creator">@cheeaun</a>, works best on <strong>modern web browsers</strong> and the data is <em>extracted</em> from the <a href="http://www.mytransport.sg/">Land Transport Authority</a>. Feel free to <a href="http://twitter.com/cheeaun" target="_blank">send feedback</a>, <a href="https://github.com/cheeaun/busrouter-sg/issues" target="_blank">report any issues</a> and share this with your friends and family.</p>
-		<div class="fb-like" data-href="https://busrouter.sg/" data-width="120" data-layout="button_count" data-show-faces="false" data-send="false"></div>
-		<a href="https://twitter.com/intent/tweet" class="twitter-share-button" data-url="https://busrouter.sg/" data-text="Singapore Bus Routes Explorer" data-related="cheeaun">Tweet</a>
+		<ul class="share-buttons">
+			<li><a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fbusrouter.sg%2F&t=Singapore%20Bus%20Routes%20Explorer" target="_blank"><i class="fa fa-facebook-square"></i> Share on Facebook</a></li>
+			<li><a href="https://twitter.com/intent/tweet?source=http%3A%2F%2Fbusrouter.sg%2F&text=Singapore%20Bus%20Routes%20Explorer:%20http%3A%2F%2Fbusrouter.sg%2F&via=cheeaun" target="_blank"><i class="fa fa-twitter-square"></i> Tweet</a></li>
+			<li><a href="https://plus.google.com/share?url=http%3A%2F%2Fbusrouter.sg%2F" target="_blank"><i class="fa fa-google-plus-square"></i> Share on Google+</a></li>
+		</ul>
 	</section>
 </div>
 <div id="search" class="dialog hidden">
@@ -89,36 +91,6 @@ ga('send', 'pageview');
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJii3LssFIl3cw4XzTxtWqSls57rayV5I&libraries=places"></script>
 <script src="js/scripts.js"></script>
 <script src="assets/js/app.js"></script>
-<div id="fb-root"></div>
-<script async>
-setTimeout(function(){
-	// Facebook
-	(function(d, s, id) {
-		var js, fjs = d.getElementsByTagName(s)[0];
-		if (d.getElementById(id)) return;
-		js = d.createElement(s); js.id = id;
-		js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=165047640357519";
-		fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));
-
-	// Twitter
-	window.twttr = (function(d, s, id) {
-		var js, fjs = d.getElementsByTagName(s)[0],
-			t = window.twttr || {};
-		if (d.getElementById(id)) return t;
-		js = d.createElement(s);
-		js.id = id;
-		js.src = "https://platform.twitter.com/widgets.js";
-		fjs.parentNode.insertBefore(js, fjs);
-
-		t._e = [];
-		t.ready = function(f) {
-			t._e.push(f);
-		};
-
-		return t;
-	}(document, "script", "twitter-wjs"));
-}, 2000);
 </script>
 </body>
 </html>
