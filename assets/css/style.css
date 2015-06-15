@@ -1,5 +1,4 @@
 html, body{
-	opacity: 1;
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
@@ -9,7 +8,6 @@ html, body{
 	font-size: 14px;
 	font-weight: 300;
 	-webkit-text-size-adjust: none;
-	transition: opacity .3s;
 }
 input{
 	font-family: Roboto, sans-serif;
