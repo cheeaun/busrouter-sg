@@ -56,6 +56,7 @@ hr{
 	cursor: pointer;
 	transition-property: opacity, transform, -webkit-transform;
 	transition-duration: .3s;
+	transition-delay: .1s;
 	padding: 5px;
 	z-index: 3;
 	color: #444;
@@ -77,6 +78,7 @@ header{
 	backdrop-filter: blur(5px);
 	transition-property: opacity, transform, -webkit-transform;
 	transition-duration: .3s;
+	transition-delay: .1s;
 	-webkit-transform-origin: 22px 22px;
 	transform-origin: 22px 22px;
 	border-radius: 5px;
