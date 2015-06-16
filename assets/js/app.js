@@ -57,10 +57,9 @@
 
 	var isSmallScreen = window.innerWidth <= 640;
 
-	var q = queue();
 	var markerImage;
 
-	[
+	var tasks = [
 		function(callback){
 			getData('busStops', callback);
 		},
@@ -266,11 +265,9 @@
 				callback(null, map);
 			};
 		}
-	].forEach(function(task){
-		q.defer(task);
-	});
+	];
 
-	q.awaitAll(function(error, results){
+	var tasksDone = function(error, results){
 		if (error || !results || results.length != 4){
 			alert('Oops, an error occured.');
 			return;
@@ -376,14 +373,6 @@
 			infowindow.setContent(html);
 			infowindow.open(map, marker);
 		});
-
-		// Get bounds of ALL bus stops
-		// var allBounds = new google.maps.LatLngBounds();
-		// busStops.forEach(function(stop){
-		// 	var position = new google.maps.LatLng(stop.lat, stop.lng);
-		// 	allBounds.extend(position);
-		// });
-		// console.log(allBounds.toString())
 
 		var stopMarkers = {};
 		google.maps.event.addListener(map, 'idle', function(){
@@ -783,6 +772,21 @@
 					break;
 			}
 		});
+	};
+
+	queue().defer(function(cb){
+		var s = document.createElement('script');
+		s.src = 'https://busrouter-sg.s3-ap-southeast-1.amazonaws.com/js/gzip-enabled.js';
+		s.onload = cb;
+		document.body.appendChild(s);
+	}).await(function(){
+		var q = queue();
+
+		tasks.forEach(function(task){
+			q.defer(task);
+		});
+
+		q.awaitAll(tasksDone);
 	});
 
 	$('#logo').on('click', function(){
