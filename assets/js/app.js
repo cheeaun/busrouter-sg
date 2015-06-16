@@ -788,7 +788,11 @@
 	queue().defer(function(cb){
 		var s = document.createElement('script');
 		s.src = 'https://busrouter-sg.s3-ap-southeast-1.amazonaws.com/js/gzip-enabled.js';
-		s.onload = cb;
+		s.onload = function(){
+			var gzip = typeof GZIP_ENABLED != 'undefined' && GZIP_ENABLED;
+			ga('send', 'event', 'features', 'gzip', 'enabled', gzip);
+			cb();
+		};
 		document.body.appendChild(s);
 	}).await(function(){
 		var q = queue();
