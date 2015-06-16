@@ -775,7 +775,8 @@
 
 		$('#sidebar').on('click', function(e){
 			var el = e.target;
-			if (el.tagName.toLowerCase() == 'h1'){
+			var tagName = el.tagName.toLowerCase();
+			if (tagName == 'h1' || (tagName == 'b' && el.parentNode.tagName.toLowerCase() == 'h1')){
 				e.preventDefault();
 				$('body').toggleClass('sidebar-collapsed');
 				setTimeout(function(){
