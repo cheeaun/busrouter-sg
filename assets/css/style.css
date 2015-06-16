@@ -65,6 +65,7 @@ hr{
 	background-color: rgba(255,255,255,.7);
 }
 header{
+	cursor: default;
 	position: absolute;
 	top: 5px;
 	left: 5px;
@@ -245,6 +246,7 @@ aside{
 	overflow: hidden;
 }
 aside h1{
+	cursor: default;
 	color: #7ac000;
 	background-color: #fff;
 	margin: 0;
@@ -604,15 +606,6 @@ aside section.hidden{
 		transform: scale3d(0,0,0) rotate(-180deg);
 	}
 
-	#map{
-		right: 0;
-		bottom: 50%;
-	}
-
-	aside h1{
-		border-top: 1px solid rgba(0,0,0,.2);
-	}
-
 	.dialog section{
 		top: 60px;
 		left: 5%;
@@ -620,10 +613,30 @@ aside section.hidden{
 		margin: 0;
 	}
 
+	#map{
+		right: 0;
+		bottom: 50%;
+		-webkit-transition: bottom .3s;
+		transition: bottom .3s;
+	}
+
 	#sidebar{
 		top: 50%;
 		left: 0;
 		width: 100%;
+		-webkit-transition: top .3s;
+		transition: top .3s;
+	}
+
+	#sidebar h1{
+		border-top: 1px solid rgba(0,0,0,.2);
+	}
+
+	.sidebar-collapsed #map{
+		bottom: 10%;
+	}
+	.sidebar-collapsed #sidebar{
+		top: 90%;
 	}
 
 	.infowindow{

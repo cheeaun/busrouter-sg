@@ -772,6 +772,17 @@
 					break;
 			}
 		});
+
+		$('#sidebar').on('click', function(e){
+			var el = e.target;
+			if (el.tagName.toLowerCase() == 'h1'){
+				e.preventDefault();
+				$('body').toggleClass('sidebar-collapsed');
+				setTimeout(function(){
+					google.maps.event.trigger(map, 'resize');
+				}, 300);
+			}
+		});
 	};
 
 	queue().defer(function(cb){
