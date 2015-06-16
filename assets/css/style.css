@@ -171,16 +171,14 @@ header h1 a:hover{
 	padding: 16px;
 	line-height: 1.5em;
 	opacity: 1;
-	-webkit-transform: translateY(0) rotateX(0);
 	-webkit-transform-origin: top center;
-	transform: translateY(0) rotateX(0);
 	transform-origin: top center;
 	transition-property: transform, -webkit-transform, opacity;
 	transition-duration: .2s;
 }
 .dialog.hidden section{
-	-webkit-transform: translate3d(0, -40px, -30px) rotateX(-10deg);
-	transform: translate3d(0, -40px, -30px) rotateX(-10deg);
+	-webkit-transform: translate3d(0, -40px, -30px) rotate3d(1, 0, 0, -10deg);
+	transform: translate3d(0, -40px, -30px) rotate3d(1, 0, 0, -10deg);
 	opacity: 0;
 }
 .dialog section p{
