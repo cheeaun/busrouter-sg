@@ -50,6 +50,19 @@ module.exports = function(grunt) {
 			server: {
 			}
 		},
+		swPrecache: {
+			production: {
+				options: {
+					staticFileGlobs: [
+						'js/scripts.js',
+						'assets/css/style.min.css',
+						'assets/images/bus-sprite.png',
+						'assets/images/loader-large.gif',
+						'**.html'
+					]
+				}
+			}
+		},
 		aws: awsCreds,
 		s3: {
 			options: {

@@ -13,6 +13,7 @@
     "grunt-contrib-cssmin": "^0.12.3",
     "grunt-contrib-uglify": "~0.9.1",
     "grunt-contrib-watch": "~0.6.1",
+    "sw-precache": "^2.0.0",
     "tokml": "~0.3.0"
   },
   "author": "Lim Chee Aun",
