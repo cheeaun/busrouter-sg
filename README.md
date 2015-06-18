@@ -7,6 +7,14 @@ Abbreviated as **SBRE**. I know, the name sucks. This app basically shows all ro
 
 Also available as [an iPad app](https://itunes.apple.com/us/app/sgbusrouter/id650227641?ls=1&mt=8), created by [Eddy Yanto](http://eddyyanto.com/).
 
+Complete Feature Set
+---
+
+- Show **full route** with all bus stops for every bus service.
+- Show **all** bus stops when zoomed in.
+- Show all routes that **pass through** one bus stop.
+- Show bus **arrival times** for a bus stop.
+
 Technical stuff
 ---
 
