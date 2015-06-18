@@ -1,0 +1,9 @@
+{
+  "short_name": "BusRouter SG",
+  "name": "Singapore Bus Routes Explorer",
+  "icons": {
+    "src": "assets/icons/icon.svg"
+  },
+  "start_url": "/",
+  "display": "standalone"
+}
