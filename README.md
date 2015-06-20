@@ -1,6 +1,8 @@
 [Singapore Bus Routes Explorer](https://busrouter.sg/)
 ===
 
+[![Screenshot of Singapore Bus Routes Explorer](assets/screenshots/screenshot-safari-1.png)](https://busrouter.sg/)
+
 [![Available in the Chrome Web Store](https://developer.chrome.com/webstore/images/ChromeWebStore_BadgeWBorder_v2_206x58.png)](https://chrome.google.com/webstore/detail/singapore-bus-routes-expl/kmoebclbglclobmahimdaniikogclifn) [![Get it in the Firefox Marketplace](https://marketplace.cdn.mozilla.net/media/img/mkt/badges/firefox-marketplace_badge-orange_172_60.png)](https://marketplace.firefox.com/app/busrouter-sg/)
 
 Abbreviated as **SBRE**. I know, the name sucks. This app basically shows all routes on the map for all bus services in Singapore, inspired by [this tweet](https://twitter.com/mengwong/status/155511398653362177).
