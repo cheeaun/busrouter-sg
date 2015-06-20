@@ -791,7 +791,7 @@
 		s.src = 'https://busrouter-sg.s3-ap-southeast-1.amazonaws.com/js/gzip-enabled.js';
 		s.onload = function(){
 			var gzip = typeof GZIP_ENABLED != 'undefined' && GZIP_ENABLED;
-			ga('send', 'event', 'features', 'gzip', 'enabled', gzip);
+			ga('send', 'event', 'features', 'gzip', gzip ? 'enabled' : 'disabled');
 			cb();
 		};
 		document.body.appendChild(s);
