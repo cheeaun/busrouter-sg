@@ -8,14 +8,14 @@ module.exports = function(grunt) {
  	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		uglify: {
+			options: {
+				sourceMap: true,
+				beautify: {
+					max_line_len: 500,
+					screw_ie8: true
+				}
+			},
 			scripts: {
-				options: {
-					sourceMap: true,
-					beautify: {
-						max_line_len: 500,
-						screw_ie8: true
-					}
-				},
 				files: [{
 					src: [
 						'assets/js/classlist.js',
@@ -26,6 +26,15 @@ module.exports = function(grunt) {
 						'assets/js/app.js'
 					],
 					dest: 'js/scripts.js'
+				}]
+			},
+			arrivals: {
+				files: [{
+					src: [
+						'assets/js/classlist.js',
+						'assets/js/lscache.js',
+					],
+					dest: 'js/arrivals.js'
 				}]
 			}
 		},
