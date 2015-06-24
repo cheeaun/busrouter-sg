@@ -297,7 +297,11 @@
 		});
 
 		var $busServices = $('#bus-services');
-		var html = '';
+		var html = '<label class="search-field">'
+				+ '<i class="fa fa-search"></i>'
+				+ '<input type="number" placeholder="Bus stop number e.g.: 133" required>'
+				+ '<a href="#" class="close"><i class="fa fa-times"></i></a>'
+			+ '</label>';
 		for (type in busServicesByType){
 			var services = busServicesByType[type];
 			html += '<h2>' + busServices.types[type] + '</h2><ul>';
@@ -309,6 +313,28 @@
 			html += '</ul>';
 		}
 		$busServices.html(html);
+
+		var $busInput = $busServices.find('input');
+		var $busLinks = $busServices.find('li a');
+		var updateBusList = function(){
+			var val = $busInput.val();
+			$busLinks.each(function(link){
+				var number = link.textContent.trim();
+				var hidden = number.indexOf(val) < 0;
+				if (hidden){
+					$(link).addClass('hidden');
+				} else {
+					$(link).removeClass('hidden');
+				}
+			});
+		};
+		$busInput.on('input', updateBusList);
+		$busServices.find('.close').on('click', function(e){
+			e.preventDefault();
+			$busInput.val('');
+			updateBusList();
+			$busInput.focus();
+		});
 
 		var markers = [];
 		var polylines = {};

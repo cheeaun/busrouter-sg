@@ -150,6 +150,16 @@ var Yokuto = (function(){
 			return el.textContent;
 		},
 
+		val: function(str){
+			if (!this.length) return '';
+			var el = this[0];
+			if (typeof str == 'string'){
+				el.value = str;
+				return this;
+			}
+			return el.value;
+		},
+
 		focus: function(){
 			this.length && this[0].focus && this[0].focus();
 			return this;

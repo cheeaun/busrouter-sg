@@ -11,6 +11,7 @@ html, body{
 }
 input{
 	font-family: Roboto, sans-serif;
+	font-size: 14px;
 }
 a{
 	color: #1155CC;
@@ -363,6 +364,9 @@ aside section div ul li a:hover{
 	color: #000;
 	background-color: #fafafa;
 }
+aside section div ul li a.hidden{
+	display: none;
+}
 #sidebar section#bus-services-section div ul li a:active,
 #sidebar section#bus-services-section div ul li a.selected{
 	color: #fff;
@@ -374,20 +378,6 @@ aside section div ul li a:hover{
 #sidebar section#bus-stops-section div ul li a.selected .tag{
 	color: #fff;
 	background-color: #f78da3;
-}
-#bus-routes-section .tab-bar{
-	overflow: hidden;
-	position: -webkit-sticky;
-	position: sticky;
-	top: 0;
-	background-color: rgba(240,240,240,.9);
-	-webkit-backdrop-filter: blur(5px);
-	backdrop-filter: blur(5px);
-}
-#bus-routes-section a.details{
-	float: right;
-	padding: 5px 10px;
-	font-size: 13px;
 }
 aside section div ul li a.stop-a i,
 aside section div ul li a.stop-b i,
@@ -439,6 +429,68 @@ aside section #bus-stop-routes ul li a:focus .tag,
 aside section #bus-stop-routes ul li a:hover .tag{
 	color: #fff;
 	background-color: #95cf29;
+}
+#bus-services-section .search-field{
+	position: relative;
+	height: 32px;
+	display: block;
+}
+#bus-services-section .search-field .fa-search{
+	opacity: .5;
+	position: absolute;
+	top: 9px;
+	left: 9px;
+}
+#bus-services-section .search-field input{
+	padding: 0 30px 0 30px;
+	height: 32px;
+	line-height: 32px;
+	width: 100%;
+	box-sizing: border-box;
+	border: 0;
+	border-radius: 0;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+	background-color: #fff;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+#bus-services-section .search-field .close{
+	color: #F01B48;
+	line-height: 1em;
+	opacity: .5;
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 9px;
+}
+#bus-services-section .search-field .close *{
+	pointer-events: none;
+}
+#bus-services-section .search-field .close:hover{
+	opacity: .8;
+}
+#bus-services-section .search-field input + .close{
+	pointer-events: none;
+	visibility: hidden;
+}
+#bus-services-section .search-field input:valid + .close{
+	pointer-events: all;
+	visibility: visible;
+}
+#bus-routes-section a.details{
+	float: right;
+	padding: 5px 10px;
+	font-size: 13px;
+}
+#bus-routes-section .tab-bar{
+	overflow: hidden;
+	position: -webkit-sticky;
+	position: sticky;
+	top: 0;
+	background-color: rgba(240,240,240,.9);
+	-webkit-backdrop-filter: blur(5px);
+	backdrop-filter: blur(5px);
 }
 aside section .tab{
 	color: #333;
