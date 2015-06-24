@@ -53,6 +53,10 @@ module.exports = function(grunt) {
 			styles: {
 				files: 'assets/css/style.css',
 				tasks: ['cssmin']
+			},
+			cache: {
+				files: ['js/scripts.js', 'assets/css/style.min.css', '**.html'],
+				tasks: ['swPrecache']
 			}
 		},
 		connect: {
