@@ -299,7 +299,7 @@
 		var $busServices = $('#bus-services');
 		var html = '<label class="search-field">'
 				+ '<i class="fa fa-search"></i>'
-				+ '<input type="number" placeholder="Bus stop number e.g.: 133" required>'
+				+ '<input type="number" placeholder="Bus service number e.g.: 133" required>'
 				+ '<a href="#" class="close"><i class="fa fa-times"></i></a>'
 			+ '</label>';
 		for (type in busServicesByType){
