@@ -70,6 +70,7 @@ module.exports = function(grunt) {
 						'assets/images/loader-large.gif',
 						'index.html',
 						'js/arrivals.js',
+						'assets/images/red-circle.png',
 						'bus-arrival/index.html'
 					]
 				}
