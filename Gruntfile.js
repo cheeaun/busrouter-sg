@@ -55,7 +55,7 @@ module.exports = function(grunt) {
 				tasks: ['cssmin']
 			},
 			cache: {
-				files: ['js/scripts.js', 'assets/css/style.min.css', '**.html'],
+				files: ['js/scripts.js', 'js/arrivals.js', 'assets/css/style.min.css', 'index.html', 'bus-arrival/index.html'],
 				tasks: ['swPrecache']
 			}
 		},
@@ -71,7 +71,9 @@ module.exports = function(grunt) {
 						'assets/css/style.min.css',
 						'assets/images/bus-sprite.png',
 						'assets/images/loader-large.gif',
-						'**.html'
+						'index.html',
+						'js/arrivals.js',
+						'bus-arrival/index.html'
 					]
 				}
 			}
