@@ -10,10 +10,8 @@ module.exports = function(grunt) {
 		uglify: {
 			options: {
 				sourceMap: true,
-				beautify: {
-					max_line_len: 500,
-					screw_ie8: true
-				}
+				maxLineLen: 500,
+				screwIE8: true
 			},
 			scripts: {
 				files: [{
