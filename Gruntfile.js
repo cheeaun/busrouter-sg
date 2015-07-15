@@ -29,6 +29,7 @@ module.exports = function(grunt) {
 				files: [{
 					src: [
 						'assets/js/lscache.js',
+						'assets/js/arrival.js'
 					],
 					dest: 'js/arrivals.js'
 				}]
