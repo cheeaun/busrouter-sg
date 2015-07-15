@@ -18,7 +18,6 @@ module.exports = function(grunt) {
 			scripts: {
 				files: [{
 					src: [
-						'assets/js/classlist.js',
 						'assets/js/lscache.js',
 						'assets/js/queue.js',
 						'assets/js/ruto.js',
@@ -31,7 +30,6 @@ module.exports = function(grunt) {
 			arrivals: {
 				files: [{
 					src: [
-						'assets/js/classlist.js',
 						'assets/js/lscache.js',
 					],
 					dest: 'js/arrivals.js'
