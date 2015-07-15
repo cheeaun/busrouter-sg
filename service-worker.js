@@ -24,7 +24,7 @@
 
 
 
-var PrecacheConfig = [["assets/css/style.min.css","2834a67c59be555f5dcf0322bf5cfb99"],["assets/images/bus-sprite.png","b164bd4647792b795dc9a393baa4eae8"],["assets/images/loader-large.gif","e5692c9dd2d476267ba75fdb2ff0cf8b"],["index.html","d55adf45279908435ee03b1aeff4bec9"],["js/scripts.js","ddcf040d100920687611f4c222c4102a"]];
+var PrecacheConfig = [["assets/css/style.min.css","2834a67c59be555f5dcf0322bf5cfb99"],["assets/images/bus-sprite.png","b164bd4647792b795dc9a393baa4eae8"],["assets/images/loader-large.gif","e5692c9dd2d476267ba75fdb2ff0cf8b"],["bus-arrival/index.html","580d98e318e98ae0be90790cb08d3fa9"],["index.html","d55adf45279908435ee03b1aeff4bec9"],["js/arrivals.js","02cbb2fa7ff7ba69e7b328279340bf8c"],["js/scripts.js","eb2f4de50f6e403361cf8171724b75d9"]];
 var CacheNamePrefix = 'sw-precache-v1--' + (self.registration ? self.registration.scope : '') + '-';
 
 
