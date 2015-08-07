@@ -24,22 +24,20 @@ module.exports = function(grunt) {
 					],
 					dest: 'js/scripts.js'
 				}]
-			},
-			arrivals: {
-				files: [{
-					src: [
-						'assets/js/lscache.js',
-						'assets/js/arrival.js'
-					],
-					dest: 'js/arrivals.js'
-				}]
 			}
 		},
-		cssmin: {
-			css: {
-				files: {
-					'assets/css/style.min.css': ['assets/css/style.css']
-				}
+		inline: {
+			options: {
+				cssmin: true,
+				uglify: true
+			},
+			index: {
+				src: 'assets/html/index.html',
+				dest: 'index.html'
+			},
+			arrival: {
+				src: 'assets/html/arrival.html',
+				dest: 'bus-arrival/index.html'
 			}
 		},
 		watch: {
@@ -47,13 +45,13 @@ module.exports = function(grunt) {
 				files: 'assets/js/*.js',
 				tasks: ['uglify']
 			},
-			styles: {
+			index: {
 				files: 'assets/css/style.css',
-				tasks: ['cssmin']
+				tasks: ['inline:index']
 			},
-			cache: {
-				files: ['js/scripts.js', 'js/arrivals.js', 'assets/css/style.min.css', 'index.html', 'bus-arrival/index.html'],
-				tasks: ['swPrecache']
+			arrival: {
+				files: ['assets/css/arrival.css', 'assets/js/lscache.js', 'assets/js/arrival.js'],
+				tasks: ['inline:arrival']
 			}
 		},
 		connect: {
@@ -81,12 +79,7 @@ module.exports = function(grunt) {
 				options: {
 					staticFileGlobs: [
 						'js/scripts.js',
-						'assets/css/style.min.css',
-						'assets/images/bus-sprite.png',
-						'assets/images/loader-large.gif',
 						'index.html',
-						'js/arrivals.js',
-						'assets/images/red-circle.png',
 						'bus-arrival/index.html'
 					]
 				}
@@ -124,9 +117,9 @@ module.exports = function(grunt) {
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-connect');
+	grunt.loadNpmTasks('grunt-inline');
 	grunt.loadNpmTasks('grunt-aws');
 	grunt.loadTasks('tasks');
 

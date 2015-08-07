@@ -390,7 +390,7 @@ aside section div ul li a.stop-b i,
 aside section div ul li a.stop-dot i,
 aside section div ul li a.stop i{
 	display: inline-block;
-	background: transparent url(../images/bus-sprite.png) no-repeat;
+	background: transparent url(../images/bus-sprite.png?__inline=true) no-repeat;
 	background-size: 78px 84px;
 	vertical-align: middle;
 }
@@ -570,7 +570,7 @@ aside section.hidden{
 	display: none;
 }
 #bus-stop-routes-section.loading #bus-stop-routes{
-	background-image: url(../images/loader-large.gif);
+	background-image: url(../images/loader-large.gif?__inline=true);
 	background-repeat: no-repeat;
 	background-position: center;
 }

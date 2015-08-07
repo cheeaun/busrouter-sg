@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage">
+<head>
+<meta charset="utf-8">
+<title>Singapore Bus Routes Explorer</title>
+<script>if (/cheeaun\.github/i.test(location.hostname)) location = 'https://busrouter.sg/';</script>
+<meta name="description" content="Explore bus stops and routes on the map for all bus services in Singapore">
+<meta name="apple-mobile-web-app-title" content="BusRouter SG">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="google" value="notranslate">
+<meta itemprop="image" content="assets/icons/icon-144.png">
+<meta itemprop="description" content="Explore bus stops and routes on the map for all bus services in Singapore">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://busrouter.sg/">
+<meta property="og:title" content="Singapore Bus Routes Explorer">
+<meta property="og:description" content="Explore bus stops and routes on the map for all bus services in Singapore">
+<meta property="og:image" content="https://busrouter.sg/assets/icons/icon-200.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="200">
+<meta property="og:image:height" content="200">
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="manifest" href="manifest.json">
+<link rel="dns-prefetch" href="http://www.sbstransit.com.sg">
+<link rel="dns-prefetch" href="http://www.transitlink.com.sg">
+<link rel="canonical" href="https://busrouter.sg"/>
+<link rel="apple-touch-icon-precomposed" href="assets/icons/icon-144.png">
+<link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/kmoebclbglclobmahimdaniikogclifn">
+<link rel="stylesheet" href="../css/style.css?__inline=true">
+<script async src="https://d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js" data-apikey="37e227db7c88af3576c11f86cba0cc02"></script>
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-23235796-4', 'auto');
+ga('send', 'pageview');
+</script>
+</head>
+<body>
+<!--[if lt IE 10]>
+	<div id="outdated-browser">
+		<p>You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+	</div>
+<![endif]-->
+<header>
+	<h1><i class="fa fa-bus"></i>&nbsp;&nbsp;<span itemprop="name">Singapore Bus Routes Explorer</span></h1>
+	<a id="header-about"><i class="fa fa-info icon-circle"></i></a>
+	<a id="header-search"><i class="fa fa-search icon-circle"></i></a>
+</header>
+<a id="logo">
+	<i class="fa fa-bus icon-circle"></i>
+</a>
+<div id="about" class="dialog hidden">
+	<section>
+		<a class="close"><i class="fa fa-times"></i></a>
+		<p><b>Singapore Bus Routes Explorer</b> (or <b>BusRouter SG</b>) lets you explore bus stops and routes on the map for all bus services in Singapore.</p>
+		<p>This is <a href="https://github.com/cheeaun/busrouter-sg" target="_blank">yet another project</a> by <a href="http://twitter.com/cheeaun" target="_blank" itemprop="creator">@cheeaun</a>, works best on <strong>modern web browsers</strong> and the data is <em>extracted</em> from the <a href="http://www.mytransport.sg/">Land Transport Authority</a>. Feel free to <a href="http://twitter.com/cheeaun" target="_blank">send feedback</a>, <a href="https://github.com/cheeaun/busrouter-sg/issues" target="_blank">report any issues</a> and share this with your friends and family.</p>
+		<ul class="share-buttons">
+			<li><a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fbusrouter.sg%2F&t=Singapore%20Bus%20Routes%20Explorer" target="_blank"><i class="fa fa-facebook-square"></i> Share on Facebook</a></li>
+			<li><a href="https://twitter.com/intent/tweet?source=http%3A%2F%2Fbusrouter.sg%2F&text=Singapore%20Bus%20Routes%20Explorer:%20http%3A%2F%2Fbusrouter.sg%2F&via=cheeaun" target="_blank"><i class="fa fa-twitter-square"></i> Tweet</a></li>
+			<li><a href="https://plus.google.com/share?url=http%3A%2F%2Fbusrouter.sg%2F" target="_blank"><i class="fa fa-google-plus-square"></i> Share on Google+</a></li>
+		</ul>
+	</section>
+</div>
+<div id="search" class="dialog hidden">
+	<section>
+		<a class="close"><i class="fa fa-times"></i></a>
+		<p>Search for a place</p>
+		<form id="places-search-form">
+			<input type="search" placeholder="e.g. Clarke Quay, Bugis Junction, Ang Mo Kio">
+		</form>
+	</section>
+</div>
+<div id="intro" class="dialog hidden">
+	<section>
+		<h3>Welcome to Singapore Bus Routes&nbsp;Explorer.</h3>
+		<p>Singapore Bus Routes Explorer lets you explore bus stops and routes on the map for all bus services in Singapore.</p>
+		<p><strong>Start exploring</strong> by clicking on one of the listed bus services.</p>
+		<div style="text-align: center"><a class="button explore">Explore <i class="fa fa-arrow-circle-o-right"></i></a></div>
+	</section>
+</div>
+<aside id="sidebar">
+	<section id="bus-services-section">
+		<h1>Bus Services</h1>
+		<div id="bus-services"></div>
+	</section>
+	<section id="bus-routes-section" class="extra hidden">
+		<h1>Routes for Bus Service <b></b> <a href="#/" class="back"><i class="fa fa-angle-left"></i></a></h1>
+		<div id="bus-routes"></div>
+	</section>
+	<section id="bus-stops-section" class="extra hidden">
+		<h1>Bus Stops <a href="#" class="close"><i class="fa fa-times"></i></a></h1>
+		<div id="bus-stops"></div>
+	</section>
+	<section id="bus-stop-routes-section" class="extra hidden">
+		<h1>Routes for Bus Stop <b></b> <a href="#/" class="close"><i class="fa fa-times"></i></a></h1>
+		<div id="bus-stop-routes"></div>
+	</section>
+</aside>
+<div id="map"></div>
+<div id="bounds-warning">Looks like you're lost. <a href="#" id="back-sg">Go back to Singapore</a>.</div>
+<script src="js/scripts.js" async></script>
+<script>
+WebFontConfig = {
+	google: { families: [ 'Roboto:300,400,500,700' ] },
+	custom: {
+		families: [ 'FontAwesome' ],
+		urls: [ 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css' ]
+	}
+};
+(function(){
+	var wf = document.createElement('script');
+	wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+		'://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+	wf.type = 'text/javascript';
+	wf.async = 'true';
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(wf, s);
+})();
+
+if ('serviceWorker' in navigator){
+	navigator.serviceWorker.register('service-worker.js').then(function(registration){
+		console.log('ServiceWorker registration successful with scope: ',		registration.scope);
+	}).catch(function(err){
+		console.log('ServiceWorker registration failed: ', err);
+	});
+}
+</script>
+</body>
+</html>
