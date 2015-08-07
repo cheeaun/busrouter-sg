@@ -262,6 +262,10 @@
 					}
 				});
 
+				if (!lscache.get('busrouter-intro')){
+					$('#intro').removeClass('hidden');
+				}
+
 				callback(null, map);
 			};
 		}
@@ -840,6 +844,10 @@
 	$('#header-search').on('click', function(){
 		$('#search').removeClass('hidden');
 		$('#places-search-form input').focus();
+	});
+	$('#intro .explore').on('click', function(){
+		lscache.set('busrouter-intro', true);
+		$('#intro').addClass('hidden');
 	});
 	$('#about .close').on('click', function(){
 		$('#about').addClass('hidden');

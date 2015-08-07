@@ -14,7 +14,7 @@ input{
 	font-size: 14px;
 }
 a{
-	color: #1155CC;
+	color: #4272DB;
 	text-decoration: none;
 }
 a:hover{
@@ -185,6 +185,11 @@ header h1 a:hover{
 	-webkit-transform: translate3d(0, -40px, -30px) rotate3d(1, 0, 0, -10deg);
 	transform: translate3d(0, -40px, -30px) rotate3d(1, 0, 0, -10deg);
 	opacity: 0;
+}
+.dialog section h3{
+	font-weight: normal;
+	margin-top: 0;
+	padding-top: 0;
 }
 .dialog section p{
 	margin-top: 0;
@@ -647,6 +652,23 @@ aside section.hidden{
 }
 .share-buttons li a{
 	padding: 2px 5px;
+	white-space: nowrap;
+}
+
+.dialog .button{
+	font-weight: 500;
+	color: #4272DB;
+	background-color: #fff;
+	border: 1px solid #4272DB;
+	padding: 10px 25px;
+	display: inline-block;
+	cursor: pointer;
+	border-radius: 3px;
+}
+.dialog .button:hover{
+	color: #fff;
+	background-color: #4272DB;
+	text-decoration: none;
 }
 
 @media screen and (max-width: 640px){
