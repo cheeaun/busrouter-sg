@@ -58,6 +58,22 @@ module.exports = function(grunt) {
 		},
 		connect: {
 			server: {
+				options: {
+					middleware: function(connect, options, middlewares){
+						middlewares.unshift(function(req, res, next){
+							if (grunt.option('service-worker')){
+								return next();
+							}
+							if (/service-worker\.js/i.test(req.url)){
+								grunt.log.writeln('service-worker.js returns 404');
+								res.writeHead(404, {'content-type': 'text/plain'});
+								res.end();
+							}
+							return next();
+						});
+						return middlewares;
+					}
+				}
 			}
 		},
 		swPrecache: {
