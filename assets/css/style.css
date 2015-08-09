@@ -327,6 +327,7 @@ aside section div h2{
 	position: -webkit-sticky;
 	position: sticky;
 	top: 0;
+	z-index: 1;
 }
 aside section div ul{
 	margin: 0;
@@ -346,6 +347,8 @@ aside section div ul li a{
 	border-bottom: 1px solid #ededed;
 	overflow: hidden;
 	cursor: pointer;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 	-webkit-transition: background-color .3s;
 	-moz-transition: background-color .3s;
 	transition: background-color .3s;
@@ -369,6 +372,11 @@ aside section div ul li a.hidden{
 #sidebar section#bus-stops-section div ul li a.selected .tag{
 	color: #fff;
 	background-color: #f78da3;
+}
+#sidebar section#bus-services-section div ul li a span{
+	opacity: .65;
+	font-size: 12px;
+	margin-left: 1em;
 }
 aside section div ul li a.stop-a i,
 aside section div ul li a.stop-b i,

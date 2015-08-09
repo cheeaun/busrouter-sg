@@ -312,7 +312,7 @@
 			for (var i=0, l=services.length; i<l; i++){
 				var service = services[i];
 				var no = service.no;
-				html += '<li><a href="#/services/' + no + '" id="service-' + no + '">' + no + '</a></li>';
+				html += '<li><a href="#/services/' + no + '" id="service-' + no + '">' + no + ' <span>' + service.name + '</span></a></li>';
 			}
 			html += '</ul>';
 		}
