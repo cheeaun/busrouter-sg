@@ -26,6 +26,21 @@ module.exports = function(grunt) {
 				}]
 			}
 		},
+		svg_sprite: {
+			options: {
+				mode: {
+					symbol: {
+						inline: true
+					}
+				}
+			},
+			icons: {
+				expand: true,
+				cwd: 'assets/svg',
+				src: ['*.svg'],
+				dest: 'assets/svg_sprite'
+			}
+		},
 		inline: {
 			options: {
 				cssmin: true,
@@ -45,8 +60,12 @@ module.exports = function(grunt) {
 				files: 'assets/js/*.js',
 				tasks: ['uglify']
 			},
+			svg_sprite: {
+				files: 'assets/svg/*.svg',
+				tasks: ['svg_sprite']
+			},
 			index: {
-				files: 'assets/css/style.css',
+				files: ['assets/html/index.html', 'assets/css/style.css', 'assets/svg_sprite/**/*.svg'],
 				tasks: ['inline:index']
 			},
 			arrival: {
@@ -120,6 +139,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-inline');
+	grunt.loadNpmTasks('grunt-svg-sprite');
 	grunt.loadNpmTasks('grunt-aws');
 	grunt.loadTasks('tasks');
 

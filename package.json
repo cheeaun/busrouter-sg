@@ -13,6 +13,7 @@
     "grunt-contrib-uglify": "~0.9.1",
     "grunt-contrib-watch": "~0.6.1",
     "grunt-inline": "^0.3.6",
+    "grunt-svg-sprite": "~1.2.7",
     "sw-precache": "~2.0.0",
     "tokml": "~0.3.0"
   },

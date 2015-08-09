@@ -31,23 +31,6 @@ hr{
 	border: 0;
 	border-top: 1px solid #F0F0E7;
 }
-.icon-circle{
-	vertical-align: middle;
-	width: 24px;
-	height: 24px;
-	border: 1px solid;
-	border-radius: 12px;
-	line-height: 22px !important;
-	text-align: center;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	display: inline-block;
-	font-size: 12px !important;
-}
-.icon-circle:hover{
-	text-decoration: none;
-}
 #logo{
 	position: absolute;
 	opacity: 0;
@@ -63,7 +46,7 @@ hr{
 	color: #444;
 	border-color: #444;
 }
-#logo .fa{
+#logo .icon{
 	background-color: rgba(255,255,255,.7);
 }
 header{
@@ -92,6 +75,7 @@ header h1{
 	font-weight: normal;
 	margin: 0;
 	padding: 0;
+	letter-spacing: -0.01em;
 }
 header h1 a{
 	color: #333;
@@ -149,8 +133,6 @@ header h1 a:hover{
 	height: 100%;
 	z-index: 100;
 	background-color: rgba(0,0,0,.5);
-	-webkit-backdrop-filter: blur(5px);
-	backdrop-filter: blur(5px);
 	-webkit-transition: background-color .3s;
 	-moz-transition: background-color .3s;
 	transition: background-color .3s;
@@ -200,13 +182,12 @@ header h1 a:hover{
 	font-weight: 400;
 }
 .dialog section .close{
-	display: inline-block;
 	position: absolute;
 	top: -12px;
 	right: -12px;
 	width: 24px;
 	height: 24px;
-	line-height: 24px;
+	padding: 4px;
 	text-align: center;
 	font-weight: 500;
 	color: #fff;
@@ -214,6 +195,10 @@ header h1 a:hover{
 	border-radius: 50%;
 	cursor: pointer;
 	opacity: .75;
+	box-sizing: border-box;
+}
+.dialog section .close .icon{
+	display: block;
 }
 .dialog section .close:hover{
 	text-decoration: none;
@@ -226,8 +211,8 @@ header h1 a:hover{
 	display: none;
 	padding: 5px 10px;
 	background-color: rgba(0,0,0,.7);
-	-webkit-backdrop-filter: blur(5px);
-	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(1px);
+	backdrop-filter: blur(1px);
 	color: #fff;
 }
 #bounds-warning a{
@@ -441,11 +426,11 @@ aside section #bus-stop-routes ul li a:hover .tag{
 	height: 32px;
 	display: block;
 }
-#bus-services-section .search-field .fa-search{
+#bus-services-section .search-field .icon{
 	opacity: .5;
 	position: absolute;
-	top: 9px;
-	left: 9px;
+	top: 8px;
+	left: 8px;
 }
 #bus-services-section .search-field input{
 	padding: 0 30px 0 30px;
@@ -631,14 +616,14 @@ aside section.hidden{
 	cursor: pointer;
 	outline: 0;
 }
-#geolocation-control i{
+#geolocation-control .icon{
 	border-color: transparent;
 	color: #7F7F7F;
-	background-color: rgba(255,255,255,.5);
+	background-color: rgba(255,255,255,.7);
 }
-#geolocation-control.active i{
+#geolocation-control.active .icon{
 	color: #1DB4D0;
-	background-color: rgba(255,255,255,.75);
+	background-color: rgba(255,255,255,.85);
 }
 
 .share-buttons{
@@ -668,6 +653,25 @@ aside section.hidden{
 .dialog .button:hover{
 	color: #fff;
 	background-color: #4272DB;
+	text-decoration: none;
+}
+
+.icon{
+	width: 16px;
+	height: 16px;
+	vertical-align: -10%;
+	fill: currentColor;
+	box-sizing: border-box;
+}
+.icon-circle{
+	vertical-align: middle;
+	width: 24px;
+	height: 24px;
+	border: 1px solid;
+	border-radius: 12px;
+	padding: 4px;
+}
+.icon-circle:hover{
 	text-decoration: none;
 }
 

@@ -45,28 +45,28 @@ ga('send', 'pageview');
 	</div>
 <![endif]-->
 <header>
-	<h1><i class="fa fa-bus"></i>&nbsp;&nbsp;<span itemprop="name">Singapore Bus Routes Explorer</span></h1>
-	<a id="header-about"><i class="fa fa-info icon-circle"></i></a>
-	<a id="header-search"><i class="fa fa-search icon-circle"></i></a>
+	<h1><svg class="icon"><use xlink:href="#bus"></use></svg>&nbsp;&nbsp;<span itemprop="name">Singapore Bus Routes Explorer</span></h1>
+	<a id="header-about" title="About"><svg class="icon icon-circle"><use xlink:href="#info"></use></svg></a>
+	<a id="header-search" title="Search"><svg class="icon icon-circle"><use xlink:href="#search-icon"></use></svg></a>
 </header>
 <a id="logo">
-	<i class="fa fa-bus icon-circle"></i>
+	<svg class="icon icon-circle"><use xlink:href="#bus"></use></svg>
 </a>
 <div id="about" class="dialog hidden">
 	<section>
-		<a class="close"><i class="fa fa-times"></i></a>
+		<a class="close"><svg class="icon"><use xlink:href="#times"></use></svg></a>
 		<p><b>Singapore Bus Routes Explorer</b> (or <b>BusRouter SG</b>) lets you explore bus stops and routes on the map for all bus services in Singapore.</p>
 		<p>This is <a href="https://github.com/cheeaun/busrouter-sg" target="_blank">yet another project</a> by <a href="http://twitter.com/cheeaun" target="_blank" itemprop="creator">@cheeaun</a>, works best on <strong>modern web browsers</strong> and the data is <em>extracted</em> from the <a href="http://www.mytransport.sg/">Land Transport Authority</a>. Feel free to <a href="http://twitter.com/cheeaun" target="_blank">send feedback</a>, <a href="https://github.com/cheeaun/busrouter-sg/issues" target="_blank">report any issues</a> and share this with your friends and family.</p>
 		<ul class="share-buttons">
-			<li><a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fbusrouter.sg%2F&t=Singapore%20Bus%20Routes%20Explorer" target="_blank"><i class="fa fa-facebook-square"></i> Share on Facebook</a></li>
-			<li><a href="https://twitter.com/intent/tweet?source=http%3A%2F%2Fbusrouter.sg%2F&text=Singapore%20Bus%20Routes%20Explorer:%20http%3A%2F%2Fbusrouter.sg%2F&via=cheeaun" target="_blank"><i class="fa fa-twitter-square"></i> Tweet</a></li>
-			<li><a href="https://plus.google.com/share?url=http%3A%2F%2Fbusrouter.sg%2F" target="_blank"><i class="fa fa-google-plus-square"></i> Share on Google+</a></li>
+			<li><a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fbusrouter.sg%2F&t=Singapore%20Bus%20Routes%20Explorer" target="_blank"><svg class="icon"><use xlink:href="#facebook-square"></use></svg> Share on Facebook</a></li>
+			<li><a href="https://twitter.com/intent/tweet?source=http%3A%2F%2Fbusrouter.sg%2F&text=Singapore%20Bus%20Routes%20Explorer:%20http%3A%2F%2Fbusrouter.sg%2F&via=cheeaun" target="_blank"><svg class="icon"><use xlink:href="#twitter-square"></use></svg> Tweet</a></li>
+			<li><a href="https://plus.google.com/share?url=http%3A%2F%2Fbusrouter.sg%2F" target="_blank"><svg class="icon"><use xlink:href="#google-plus-square"></use></svg> Share on Google+</a></li>
 		</ul>
 	</section>
 </div>
 <div id="search" class="dialog hidden">
 	<section>
-		<a class="close"><i class="fa fa-times"></i></a>
+		<a class="close"><svg class="icon"><use xlink:href="#times"></use></svg></a>
 		<p>Search for a place</p>
 		<form id="places-search-form">
 			<input type="search" placeholder="e.g. Clarke Quay, Bugis Junction, Ang Mo Kio">
@@ -78,7 +78,7 @@ ga('send', 'pageview');
 		<h3>Welcome to Singapore Bus Routes&nbsp;Explorer.</h3>
 		<p>Singapore Bus Routes Explorer lets you explore bus stops and routes on the map for all bus services in Singapore.</p>
 		<p><strong>Start exploring</strong> by clicking on one of the listed bus services.</p>
-		<div style="text-align: center"><a class="button explore">Explore <i class="fa fa-arrow-circle-o-right"></i></a></div>
+		<div style="text-align: center"><a class="button explore">Explore <svg class="icon"><use xlink:href="#arrow-circle-o-right"></use></svg></a></div>
 	</section>
 </div>
 <aside id="sidebar">
@@ -87,28 +87,25 @@ ga('send', 'pageview');
 		<div id="bus-services"></div>
 	</section>
 	<section id="bus-routes-section" class="extra hidden">
-		<h1>Routes for Bus Service <b></b> <a href="#/" class="back"><i class="fa fa-angle-left"></i></a></h1>
+		<h1>Routes for Bus Service <b></b> <a href="#/" class="back"><svg class="icon"><use xlink:href="#angle-left"></use></svg></a></h1>
 		<div id="bus-routes"></div>
 	</section>
 	<section id="bus-stops-section" class="extra hidden">
-		<h1>Bus Stops <a href="#" class="close"><i class="fa fa-times"></i></a></h1>
+		<h1>Bus Stops <a href="#" class="close"><svg class="icon"><use xlink:href="#times"></use></svg></a></h1>
 		<div id="bus-stops"></div>
 	</section>
 	<section id="bus-stop-routes-section" class="extra hidden">
-		<h1>Routes for Bus Stop <b></b> <a href="#/" class="close"><i class="fa fa-times"></i></a></h1>
+		<h1>Routes for Bus Stop <b></b> <a href="#/" class="close"><svg class="icon"><use xlink:href="#times"></use></svg></a></h1>
 		<div id="bus-stop-routes"></div>
 	</section>
 </aside>
 <div id="map"></div>
 <div id="bounds-warning">Looks like you're lost. <a href="#" id="back-sg">Go back to Singapore</a>.</div>
+<inline src="../svg_sprite/symbol/svg/sprite.symbol.svg" />
 <script src="js/scripts.js" async></script>
 <script>
 WebFontConfig = {
 	google: { families: [ 'Roboto:300,400,500,700' ] },
-	custom: {
-		families: [ 'FontAwesome' ],
-		urls: [ 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css' ]
-	}
 };
 (function(){
 	var wf = document.createElement('script');
@@ -122,7 +119,7 @@ WebFontConfig = {
 
 if ('serviceWorker' in navigator){
 	navigator.serviceWorker.register('service-worker.js').then(function(registration){
-		console.log('ServiceWorker registration successful with scope: ',		registration.scope);
+		console.log('ServiceWorker registration successful with scope: ', registration.scope);
 	}).catch(function(err){
 		console.log('ServiceWorker registration failed: ', err);
 	});

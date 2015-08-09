@@ -153,7 +153,7 @@
 					var geolocationControl = document.createElement('a');
 					geolocationControl.id = 'geolocation-control';
 					geolocationControl.href = '#';
-					geolocationControl.innerHTML = '<i class="fa fa-location-arrow icon-circle"></i>';
+					geolocationControl.innerHTML = '<svg class="icon icon-circle"><use xlink:href="#location-arrow"></use></svg>';
 					map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(geolocationControl);
 
 					var locationMarker = new google.maps.Marker({
@@ -302,9 +302,9 @@
 
 		var $busServices = $('#bus-services');
 		var html = '<label class="search-field">'
-				+ '<i class="fa fa-search"></i>'
+				+ '<svg class="icon"><use xlink:href="#search-icon"></use></svg>'
 				+ '<input type="number" placeholder="Bus service number e.g.: 133" required>'
-				+ '<a href="#" class="close"><i class="fa fa-times"></i></a>'
+				+ '<a href="#" class="close"><svg class="icon"><use xlink:href="#times"></use></svg></a>'
 			+ '</label>';
 		for (type in busServicesByType){
 			var services = busServicesByType[type];
@@ -393,10 +393,10 @@
 			});
 
 			html += '<div class="infofooter">';
-			html += '<a href="bus-arrival/#' + stop + '" target="_blank" class="show-arrivals"><i class="fa fa-clock-o fa-fw"></i> Show bus arrival times here</a>';
+			html += '<a href="bus-arrival/#' + stop + '" target="_blank" class="show-arrivals"><svg class="icon"><use xlink:href="#clock-o"></use></svg> Show bus arrival times here</a>';
 
 			if (services.length > 1 && !hideShowRoutesLink){
-				html += '<a href="#/stops/' + stop + '" class="show-routes"><i class="fa fa-code-fork fa-fw"></i> Show all routes passing here</a>';
+				html += '<a href="#/stops/' + stop + '" class="show-routes"><svg class="icon"><use xlink:href="#code-fork"></use></svg> Show all routes passing here</a>';
 			}
 			html += '</div></div>';
 
@@ -555,7 +555,7 @@
 					if (provider){
 						// Only SBS or SMRT, for now.
 						var url = provider == 'sbs' ? 'http://www.sbstransit.com.sg/journeyplan/servicedetails.aspx?serviceno=' : 'http://www.transitlink.com.sg/eservice/eguide/service_route.php?service=';
-						html += '<a href="' + url + no + '" target="_blank" class="details"><i class="fa fa-list-alt"></i> Bus schedules</a>';
+						html += '<a href="' + url + no + '" target="_blank" class="details"><svg class="icon"><use xlink:href="#list-alt"></use></svg> Bus schedules</a>';
 					}
 					html += '</div>';
 					html += '<ul>';
