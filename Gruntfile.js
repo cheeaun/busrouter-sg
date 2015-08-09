@@ -50,7 +50,7 @@ module.exports = function(grunt) {
 				tasks: ['inline:index']
 			},
 			arrival: {
-				files: ['assets/css/arrival.css', 'assets/js/lscache.js', 'assets/js/arrival.js'],
+				files: ['assets/html/arrival.html', 'assets/css/arrival.css', 'assets/js/lscache.js', 'assets/js/arrival.js'],
 				tasks: ['inline:arrival']
 			}
 		},
