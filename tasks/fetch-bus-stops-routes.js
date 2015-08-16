@@ -1,6 +1,7 @@
 'use strict';
 
 var needle = require('needle');
+var request = require('request');
 var cheerio = require('cheerio');
 
 module.exports = function(grunt){
@@ -51,7 +52,7 @@ module.exports = function(grunt){
 						});
 					},
 					function(done){
-						needle.get('http://www.mytransport.sg/kml/busroutes/' + service + '-1.kml', function(err, res, body){
+						request('http://www.mytransport.sg/kml/busroutes/' + service + '-1.kml', function(err, res, body){
 							if (err) throw err;
 							if (res.statusCode != 200) throw new Error('Status code: ' + res.statusCode);
 
@@ -78,7 +79,7 @@ module.exports = function(grunt){
 							done(null, []);
 							return;
 						}
-						needle.get('http://www.mytransport.sg/kml/busroutes/' + service + '-2.kml', function(err, res, body){
+						request('http://www.mytransport.sg/kml/busroutes/' + service + '-2.kml', function(err, res, body){
 							if (err) throw err;
 							if (res.statusCode != 200) throw new Error('Status code: ' + res.statusCode);
 

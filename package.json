@@ -4,7 +4,8 @@
   "description": "Singapore Bus Routes Explorer",
   "dependencies": {
     "cheerio": "~0.19.0",
-    "needle": "~0.9.2"
+    "needle": "~0.10.0",
+    "request": "^2.60.0"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
@@ -13,7 +14,7 @@
     "grunt-contrib-uglify": "~0.9.1",
     "grunt-contrib-watch": "~0.6.1",
     "grunt-inline": "^0.3.6",
-    "grunt-svg-sprite": "~1.2.7",
+    "grunt-svg-sprite": "~1.2.8",
     "sw-precache": "~2.0.0",
     "tokml": "~0.3.0"
   },
