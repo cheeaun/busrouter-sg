@@ -262,7 +262,7 @@
 					}
 				});
 
-				if (!lscache.get('busrouter-intro')){
+				if (!lscache.get('busrouter-intro') && !/\w/i.test(location.hash)){
 					$('#intro').removeClass('hidden');
 				}
 
