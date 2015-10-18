@@ -85,13 +85,8 @@
 					mapTypeId: google.maps.MapTypeId.ROADMAP,
 					disableDefaultUI: true,
 					keyboardShortcuts: true,
-					overviewMapControl: true,
-					overviewMapControlOptions: {
-						opened: true
-					},
 					zoomControl: true,
 					zoomControlOptions: {
-						style: google.maps.ZoomControlStyle.SMALL,
 						position: google.maps.ControlPosition.RIGHT_BOTTOM
 					}
 				});
