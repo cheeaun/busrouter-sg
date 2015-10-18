@@ -298,7 +298,7 @@
 		var $busServices = $('#bus-services');
 		var html = '<label class="search-field">'
 				+ '<svg class="icon"><use xlink:href="#search-icon"></use></svg>'
-				+ '<input type="number" placeholder="Bus service number e.g.: 133" required>'
+				+ '<input placeholder="Bus service number e.g.: 133" required>'
 				+ '<a href="#" class="close"><svg class="icon"><use xlink:href="#times"></use></svg></a>'
 			+ '</label>';
 		for (type in busServicesByType){
@@ -318,8 +318,8 @@
 		var updateBusList = function(){
 			var val = $busInput.val();
 			$busLinks.each(function(link){
-				var number = link.textContent.trim();
-				var hidden = number.indexOf(val) < 0;
+				var number = link.textContent.trim().toLowerCase();
+				var hidden = number.indexOf(val.toLowerCase()) < 0;
 				if (hidden){
 					$(link).addClass('hidden');
 				} else {
