@@ -296,6 +296,7 @@ aside section{
 	left: 0;
 	width: 100%;
 	background-color: #fff;
+	z-index: 1;
 }
 aside section>div{
 	position: absolute;
@@ -563,9 +564,10 @@ aside section.hidden{
 	display: none;
 }
 #bus-stop-routes-section.loading #bus-stop-routes{
-	background-image: url(../images/loader-large.gif?__inline=true);
+	background-image: url(../images/loader.svg?__inline=true);
 	background-repeat: no-repeat;
 	background-position: center;
+	background-size: 32px 32px;
 }
 .infowindow{
 	font-size: 13px;
