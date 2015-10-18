@@ -18,6 +18,7 @@ module.exports = function(grunt){
 			return function(allDone){
 				grunt.util.async.parallel([
 					function(done){
+						console.log('http://www.mytransport.sg/content/mytransport/ajax_lib/map_ajaxlib.getBusRouteByServiceId.' + service + '.html');
 						needle.get('http://www.mytransport.sg/content/mytransport/ajax_lib/map_ajaxlib.getBusRouteByServiceId.' + service + '.html', function(err, res, body){
 							var $ = cheerio.load(body);
 
@@ -52,6 +53,7 @@ module.exports = function(grunt){
 						});
 					},
 					function(done){
+						console.log('http://www.mytransport.sg/kml/busroutes/' + service + '-1.kml');
 						request('http://www.mytransport.sg/kml/busroutes/' + service + '-1.kml', function(err, res, body){
 							if (err) throw err;
 							if (res.statusCode != 200) throw new Error('Status code: ' + res.statusCode);
@@ -79,9 +81,14 @@ module.exports = function(grunt){
 							done(null, []);
 							return;
 						}
+						console.log('http://www.mytransport.sg/kml/busroutes/' + service + '-2.kml');
 						request('http://www.mytransport.sg/kml/busroutes/' + service + '-2.kml', function(err, res, body){
 							if (err) throw err;
-							if (res.statusCode != 200) throw new Error('Status code: ' + res.statusCode);
+							if (res.statusCode != 200){
+								console.error('Status code: ' + res.statusCode);
+								done(); // Return empty
+								return;
+							}
 
 							var coords = [];
 							var coordsStrings = body.match(/<coordinates>[^<>]+<\/coordinates>/g);
@@ -112,7 +119,8 @@ module.exports = function(grunt){
 							stops: routeStops[1]
 						},
 						2: {
-							route: route2Coords,
+							route: route2Coords || route1Coords,
+							// Fallback to Route 1, assuming the bus goes back using same route
 							stops: routeStops[2]
 						}
 					}
