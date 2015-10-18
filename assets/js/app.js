@@ -15,10 +15,6 @@
 		lscache.set('busDataVersion', dataVersion);
 	}
 
-	var rootEndPoints = {
-		github: 'data/2/',
-		s3: 'https://busrouter-sg.s3-ap-southeast-1.amazonaws.com/v2/'
-	};
 	var dataEndPoints = {
 		busStops: 'bus-stops.json',
 		busServices: 'bus-services.json',
@@ -36,10 +32,8 @@
 			done(null, data);
 		} else {
 			var xhr = new XMLHttpRequest();
-			var useS3 = 'withCredentials' in xhr && typeof GZIP_ENABLED != 'undefined' && GZIP_ENABLED;
-			var endPoint = rootEndPoints[useS3 ? 's3' : 'github'] + dataEndPoints[key.split('-')[0]];
+			var endPoint = 'data/2/' + dataEndPoints[key.split('-')[0]];
 			for (p in params) endPoint = endPoint.replace('{{' + p + '}}', params[p]);
-			if (useS3) endPoint += '?' + (+new Date());
 			xhr.onload = function(){
 				try{
 					var data = JSON.parse(this.responseText);
@@ -811,24 +805,11 @@
 		});
 	};
 
-	queue().defer(function(cb){
-		var s = document.createElement('script');
-		s.src = 'https://busrouter-sg.s3-ap-southeast-1.amazonaws.com/js/gzip-enabled.js';
-		s.onload = function(){
-			var gzip = typeof GZIP_ENABLED != 'undefined' && GZIP_ENABLED;
-			ga('send', 'event', 'features', 'gzip', gzip ? 'enabled' : 'disabled');
-			cb();
-		};
-		document.body.appendChild(s);
-	}).await(function(){
-		var q = queue();
-
-		tasks.forEach(function(task){
-			q.defer(task);
-		});
-
-		q.awaitAll(tasksDone);
+	var q = queue();
+	tasks.forEach(function(task){
+		q.defer(task);
 	});
+	q.awaitAll(tasksDone);
 
 	$('#logo').on('click', function(){
 		$('body').toggleClass('header-collapsed');

@@ -46,10 +46,6 @@ var timeDisplay = function(ms){
 	return mins + ' mins';
 };
 
-var rootEndPoints = {
-	github: '../data/2/',
-	s3: 'https://busrouter-sg.s3-ap-southeast-1.amazonaws.com/v2/'
-};
 var dataEndPoints = {
 	busStops: 'bus-stops.json',
 	busServices: 'bus-services.json',
@@ -67,10 +63,8 @@ var getData = function(key, params, done){
 		done(null, data);
 	} else {
 		var xhr = new XMLHttpRequest();
-		var useS3 = 'withCredentials' in xhr && typeof GZIP_ENABLED != 'undefined' && GZIP_ENABLED;
-		var endPoint = rootEndPoints[useS3 ? 's3' : 'github'] + dataEndPoints[key.split('-')[0]];
+		var endPoint = '../data/2/' + dataEndPoints[key.split('-')[0]];
 		for (p in params) endPoint = endPoint.replace('{{' + p + '}}', params[p]);
-		if (useS3) endPoint += '?' + (+new Date());
 		xhr.onload = function(){
 			try{
 				var data = JSON.parse(this.responseText);
