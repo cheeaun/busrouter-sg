@@ -20,11 +20,15 @@
 // https://github.com/googlechrome/sw-precache/blob/master/demo/app/js/service-worker-registration.js
 // for an example of how you can register this script and handle various service worker events.
 
+/* eslint-env worker, serviceworker */
+/* eslint-disable indent, no-unused-vars, no-multiple-empty-lines, max-nested-callbacks, space-before-function-paren */
 'use strict';
 
 
 
-var PrecacheConfig = [["bus-arrival/index.html","78a2a897139c421e8e9ce208bb482b37"],["index.html","cd1c7bcf779ae6a104ba03102486d30a"],["js/scripts.js","17e9b39024e2a4b547368cfde2700da5"]];
+/* eslint-disable quotes, comma-spacing */
+var PrecacheConfig = [["bus-arrival/index.html","c0cae7d4618d426824d2b38e05ab9e2b"],["index.html","c4437c15fdc37ac47b2eba56ca386a85"],["js/scripts.js","bf372e4589e9d4d2343fdd870beaf725"]];
+/* eslint-enable quotes, comma-spacing */
 var CacheNamePrefix = 'sw-precache-v1--' + (self.registration ? self.registration.scope : '') + '-';
 
 
@@ -100,7 +104,7 @@ self.addEventListener('install', function(event) {
     caches.keys().then(function(allCacheNames) {
       return Promise.all(
         Object.keys(CurrentCacheNamesToAbsoluteUrl).filter(function(cacheName) {
-          return allCacheNames.indexOf(cacheName) == -1;
+          return allCacheNames.indexOf(cacheName) === -1;
         }).map(function(cacheName) {
           var url = new URL(CurrentCacheNamesToAbsoluteUrl[cacheName]);
           // Put in a cache-busting parameter to ensure we're caching a fresh response.
@@ -114,30 +118,30 @@ self.addEventListener('install', function(event) {
           return caches.open(cacheName).then(function(cache) {
             var request = new Request(urlWithCacheBusting, {credentials: 'same-origin'});
             return fetch(request.clone()).then(function(response) {
-              if (response.status == 200) {
+              if (response.ok) {
                 return cache.put(request, response);
-              } else {
-                console.error('Request for %s returned a response with status %d, so not attempting to cache it.',
-                  urlWithCacheBusting, response.status);
-                // Get rid of the empty cache if we can't add a successful response to it.
-                return caches.delete(cacheName);
               }
+
+              console.error('Request for %s returned a response with status %d, so not attempting to cache it.',
+                urlWithCacheBusting, response.status);
+              // Get rid of the empty cache if we can't add a successful response to it.
+              return caches.delete(cacheName);
             });
           });
         })
       ).then(function() {
         return Promise.all(
           allCacheNames.filter(function(cacheName) {
-            return cacheName.indexOf(CacheNamePrefix) == 0 &&
+            return cacheName.indexOf(CacheNamePrefix) === 0 &&
                    !(cacheName in CurrentCacheNamesToAbsoluteUrl);
           }).map(function(cacheName) {
             console.log('Deleting out-of-date cache "%s"', cacheName);
             return caches.delete(cacheName);
           })
-        )
+        );
       });
     }).then(function() {
-      if (typeof self.skipWaiting == 'function') {
+      if (typeof self.skipWaiting === 'function') {
         // Force the SW to transition from installing -> active state
         self.skipWaiting();
       }
@@ -145,14 +149,14 @@ self.addEventListener('install', function(event) {
   );
 });
 
-if (self.clients && (typeof self.clients.claim == 'function')) {
+if (self.clients && (typeof self.clients.claim === 'function')) {
   self.addEventListener('activate', function(event) {
     event.waitUntil(self.clients.claim());
   });
 }
 
 self.addEventListener('message', function(event) {
-  if (event.data.command == 'delete_all') {
+  if (event.data.command === 'delete_all') {
     console.log('About to delete all caches...');
     deleteAllCaches().then(function() {
       console.log('Caches deleted.');
@@ -170,7 +174,7 @@ self.addEventListener('message', function(event) {
 
 
 self.addEventListener('fetch', function(event) {
-  if (event.request.method == 'GET') {
+  if (event.request.method === 'GET') {
     var urlWithoutIgnoredParameters = stripIgnoredUrlParameters(event.request.url,
       IgnoreUrlParametersMatching);
 
@@ -179,6 +183,17 @@ self.addEventListener('fetch', function(event) {
     if (!cacheName && directoryIndex) {
       urlWithoutIgnoredParameters = addDirectoryIndex(urlWithoutIgnoredParameters, directoryIndex);
       cacheName = AbsoluteUrlToCacheName[urlWithoutIgnoredParameters];
+    }
+
+    var navigateFallback = '';
+    // Ideally, this would check for event.request.mode === 'navigate', but that is not widely
+    // supported yet:
+    // https://code.google.com/p/chromium/issues/detail?id=540967
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1209081
+    if (!cacheName && navigateFallback && event.request.headers.has('accept') &&
+        event.request.headers.get('accept').includes('text/html')) {
+      var navigateFallbackUrl = new URL(navigateFallback, self.location);
+      cacheName = AbsoluteUrlToCacheName[navigateFallbackUrl.toString()];
     }
 
     if (cacheName) {
