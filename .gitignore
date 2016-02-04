@@ -1,2 +1,3 @@
 node_modules
 aws-credentials.json
+.DS_Store
