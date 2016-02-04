@@ -27,7 +27,7 @@
 
 
 /* eslint-disable quotes, comma-spacing */
-var PrecacheConfig = [["bus-arrival/index.html","c0cae7d4618d426824d2b38e05ab9e2b"],["index.html","c4437c15fdc37ac47b2eba56ca386a85"],["js/scripts.js","bf372e4589e9d4d2343fdd870beaf725"]];
+var PrecacheConfig = [["bus-arrival/index.html","c0cae7d4618d426824d2b38e05ab9e2b"],["index.html","c4437c15fdc37ac47b2eba56ca386a85"],["js/scripts.js","e2f0de5cd9039e70b1f650c27ef78a46"]];
 /* eslint-enable quotes, comma-spacing */
 var CacheNamePrefix = 'sw-precache-v1--' + (self.registration ? self.registration.scope : '') + '-';
 
@@ -44,7 +44,17 @@ var addDirectoryIndex = function (originalUrl, index) {
     return url.toString();
   };
 
-var populateCurrentCacheNames = function (precacheConfig, cacheNamePrefix, baseUrl) {
+var getCacheBustedUrl = function (url, now) {
+    now = now || Date.now();
+
+    var urlWithCacheBusting = new URL(url);
+    urlWithCacheBusting.search += (urlWithCacheBusting.search ? '&' : '') + 'sw-precache=' + now;
+
+    return urlWithCacheBusting.toString();
+  };
+
+var populateCurrentCacheNames = function (precacheConfig,
+    cacheNamePrefix, baseUrl) {
     var absoluteUrlToCacheName = {};
     var currentCacheNamesToAbsoluteUrl = {};
 
@@ -61,7 +71,8 @@ var populateCurrentCacheNames = function (precacheConfig, cacheNamePrefix, baseU
     };
   };
 
-var stripIgnoredUrlParameters = function (originalUrl, ignoreUrlParametersMatching) {
+var stripIgnoredUrlParameters = function (originalUrl,
+    ignoreUrlParametersMatching) {
     var url = new URL(originalUrl);
 
     url.search = url.search.slice(1) // Exclude initial '?'
@@ -106,20 +117,14 @@ self.addEventListener('install', function(event) {
         Object.keys(CurrentCacheNamesToAbsoluteUrl).filter(function(cacheName) {
           return allCacheNames.indexOf(cacheName) === -1;
         }).map(function(cacheName) {
-          var url = new URL(CurrentCacheNamesToAbsoluteUrl[cacheName]);
-          // Put in a cache-busting parameter to ensure we're caching a fresh response.
-          if (url.search) {
-            url.search += '&';
-          }
-          url.search += 'sw-precache=' + now;
-          var urlWithCacheBusting = url.toString();
+          var urlWithCacheBusting = getCacheBustedUrl(CurrentCacheNamesToAbsoluteUrl[cacheName],
+            now);
 
-          console.log('Adding URL "%s" to cache named "%s"', urlWithCacheBusting, cacheName);
           return caches.open(cacheName).then(function(cache) {
             var request = new Request(urlWithCacheBusting, {credentials: 'same-origin'});
-            return fetch(request.clone()).then(function(response) {
+            return fetch(request).then(function(response) {
               if (response.ok) {
-                return cache.put(request, response);
+                return cache.put(CurrentCacheNamesToAbsoluteUrl[cacheName], response);
               }
 
               console.error('Request for %s returned a response with status %d, so not attempting to cache it.',
@@ -135,7 +140,6 @@ self.addEventListener('install', function(event) {
             return cacheName.indexOf(CacheNamePrefix) === 0 &&
                    !(cacheName in CurrentCacheNamesToAbsoluteUrl);
           }).map(function(cacheName) {
-            console.log('Deleting out-of-date cache "%s"', cacheName);
             return caches.delete(cacheName);
           })
         );
@@ -198,19 +202,20 @@ self.addEventListener('fetch', function(event) {
 
     if (cacheName) {
       event.respondWith(
-        // We can't call cache.match(event.request) since the entry in the cache will contain the
-        // cache-busting parameter. Instead, rely on the fact that each cache should only have one
-        // entry, and return that.
+        // Rely on the fact that each cache we manage should only have one entry, and return that.
         caches.open(cacheName).then(function(cache) {
           return cache.keys().then(function(keys) {
             return cache.match(keys[0]).then(function(response) {
-              return response || fetch(event.request).catch(function(e) {
-                console.error('Fetch for "%s" failed: %O', urlWithoutIgnoredParameters, e);
-              });
+              if (response) {
+                return response;
+              }
+              // If for some reason the response was deleted from the cache,
+              // raise and exception and fall back to the fetch() triggered in the catch().
+              throw Error('The cache ' + cacheName + ' is empty.');
             });
           });
         }).catch(function(e) {
-          console.error('Couldn\'t serve response for "%s" from cache: %O', urlWithoutIgnoredParameters, e);
+          console.warn('Couldn\'t serve response for "%s" from cache: %O', event.request.url, e);
           return fetch(event.request);
         })
       );
