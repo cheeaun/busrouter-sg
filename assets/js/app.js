@@ -526,14 +526,16 @@
 					var latlngs = [];
 					var locations = [];
 
-					for (var i=0, l=routes.length; i<l; i++){
-						var coord = routes[i];
-						var latlng = coord.split(',');
-						var position = new google.maps.LatLng(parseFloat(latlng[0], 10), parseFloat(latlng[1], 10));
-						latlngs.push(position);
+					if (routes && routes.length){
+						for (var i=0, l=routes.length; i<l; i++){
+							var coord = routes[i];
+							var latlng = coord.split(',');
+							var position = new google.maps.LatLng(parseFloat(latlng[0], 10), parseFloat(latlng[1], 10));
+							latlngs.push(position);
+						}
+						polyline.setPath(latlngs);
+						polyline.setMap(map);
 					}
-					polyline.setPath(latlngs);
-					polyline.setMap(map);
 
 					var html = '<div class="tab-bar">';
 					if (data[2] && data[2].route && data[2].route.length){
@@ -680,35 +682,38 @@
 					});
 
 					var routes = d.route;
-					var latlngs = [];
-					var locations = [];
+					if (routes){
+						var latlngs = [];
+						var locations = [];
 
-					for (var i=0, l=routes.length; i<l; i++){
-						var coord = routes[i];
-						var latlng = coord.split(',');
-						var position = new google.maps.LatLng(parseFloat(latlng[0], 10), parseFloat(latlng[1], 10));
-						latlngs.push(position);
+						for (var i=0, l=routes.length; i<l; i++){
+							var coord = routes[i];
+							var latlng = coord.split(',');
+							var position = new google.maps.LatLng(parseFloat(latlng[0], 10), parseFloat(latlng[1], 10));
+							latlngs.push(position);
+						}
+						var line = new google.maps.Polyline({
+							strokeColor: '#f01b48',
+							strokeWeight: 5,
+							strokeOpacity: .4,
+							path: latlngs,
+							map: map
+						});
+						google.maps.event.addListener(line, 'mouseover', function(){
+							$('#stop-service-' + service).trigger('mouseover').focus();
+						});
+						google.maps.event.addListener(line, 'mouseout', function(){
+							$('#stop-service-' + service).trigger('mouseout').blur();
+						});
+						google.maps.event.addListener(line, 'click', function(){
+							location.href = $('#stop-service-' + service).attr('href');
+						});
+						polylines[service] = line;
+
+						html += '<li><a href="#/services/' + service + '" id="stop-service-' + service + '">'
+							+ '<span class="tag">' + service + '</span> '+ busServicesMap[service].name
+							+ '</a></li>';
 					}
-					var line = new google.maps.Polyline({
-						strokeColor: '#f01b48',
-						strokeWeight: 5,
-						strokeOpacity: .4,
-						path: latlngs,
-						map: map
-					});
-					google.maps.event.addListener(line, 'mouseover', function(){
-						$('#stop-service-' + service).trigger('mouseover').focus();
-					});
-					google.maps.event.addListener(line, 'mouseout', function(){
-						$('#stop-service-' + service).trigger('mouseout').blur();
-					});
-					google.maps.event.addListener(line, 'click', function(){
-						location.href = $('#stop-service-' + service).attr('href');
-					});
-					polylines[service] = line;
-
-					html += '<li><a href="#/services/' + service + '" id="stop-service-' + service + '"><span class="tag">' + service + '</span> '+ busServicesMap[service].name
-						+ '</a></li>';
 				};
 
 				var q = queue();
