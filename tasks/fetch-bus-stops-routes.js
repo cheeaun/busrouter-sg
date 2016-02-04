@@ -8,6 +8,7 @@ module.exports = function(grunt){
 
 	grunt.registerTask('fetchBusStopsRoutes', 'Fetch bus stops and routes from mytransport.sg', function(){
 		var badlines = {}; // Store the bad route lines, report 'em
+		var nolines = []; // Store the services with NO routes (KML files)
 		var stops = {}; // Store ALL the bus stops
 		var _ = grunt.util._;
 
@@ -56,7 +57,13 @@ module.exports = function(grunt){
 						console.log('http://www.mytransport.sg/kml/busroutes/' + service + '-1.kml');
 						request('http://www.mytransport.sg/kml/busroutes/' + service + '-1.kml', function(err, res, body){
 							if (err) throw err;
-							if (res.statusCode != 200) throw new Error('Status code: ' + res.statusCode);
+							if (res.statusCode != 200){
+								// throw new Error('Status code: ' + res.statusCode);
+								console.error('Status code for ' + service + '/1: ' + res.statusCode);
+								nolines.push(service);
+								done(); // EMPTY ROUTE?!!
+								return;
+							}
 
 							var coords = [];
 							var coordsStrings = body.match(/<coordinates>[^<>]+<\/coordinates>/g);
@@ -85,7 +92,7 @@ module.exports = function(grunt){
 						request('http://www.mytransport.sg/kml/busroutes/' + service + '-2.kml', function(err, res, body){
 							if (err) throw err;
 							if (res.statusCode != 200){
-								console.error('Status code: ' + res.statusCode);
+								console.error('Status code for ' + service + '/2: ' + res.statusCode);
 								done(); // Return empty
 								return;
 							}
@@ -163,6 +170,9 @@ module.exports = function(grunt){
 
 				grunt.log.writeln('Bus service ' + service + '\t' + linesOne + '\t' + linesTwo);
 			});
+
+			grunt.log.writeln('Services with no routes?!: ' + nolines.join(', '));
+
 			var badRoutesFile = 'data/2/bad-routes.json';
 			grunt.file.write(badRoutesFile, JSON.stringify(badlines));
 			grunt.log.writeln('File "' + badRoutesFile + '" generated.');
