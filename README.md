@@ -55,4 +55,14 @@ Few more `grunt` goodies:
 
 The icon is from [The Noun Project](http://thenounproject.com/noun/bus/#icon-No97). The map is powered by [Google Maps JavaScript API](http://code.google.com/apis/maps/documentation/javascript/). The color scheme and markers are *inspired* by [Gothere.sg](http://gothere.sg/). Tested to work great on **modern** web browsers.
 
+License
+---
+
+[Source data provided by LTA](http://www.mytransport.sg/content/mytransport/home/dataMall/termOfUse.html) and partially by [StreetDirectory](http://www.streetdirectory.com/).
+
+Everything else: [MIT](http://cheeaun.mit-license.org/)
+
+Feedback
+---
+
 If you have any feedback, tweet me at [@cheeaun](http://twitter.com/cheeaun).
