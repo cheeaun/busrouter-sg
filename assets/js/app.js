@@ -260,22 +260,8 @@
 		}
 	];
 
-	var tasksDone = function(error, results){
-		if (error || !results || results.length != 4){
-			alert('Oops, an error occured.');
-			return;
-		}
-
-		var busStops = results[0];
-		var busServices = results[1];
-		var busStopsServices = results[2];
-		var map = results[3];
-
-		var busStopsMap = {};
-		busStops.forEach(function(stop){
-			busStopsMap[stop.no] = stop;
-		});
-
+	// Moved outisde for re-use in 'compare'
+	var populateBusServices = function (busServices, pathCompare) {
 		var busServicesByType = {};
 		var busServicesMap = {};
 
@@ -301,7 +287,11 @@
 			for (var i=0, l=services.length; i<l; i++){
 				var service = services[i];
 				var no = service.no;
-				html += '<li><a href="#/services/' + no + '" id="service-' + no + '">' + no + ' <span>' + service.name + '</span></a></li>';
+				if (pathCompare) {
+					html += '<li><a href="/#/compare/' + no + '/1' + pathCompare + '" id="service-' + no + '">' + no + ' <span>' + service.name + '</span></a></li>';
+				} else {
+					html += '<li><a href="#/services/' + no + '" id="service-' + no + '">' + no + ' <span>' + service.name + '</span></a></li>';
+				}
 			}
 			html += '</ul>';
 		}
@@ -328,8 +318,33 @@
 			updateBusList();
 			$busInput.focus();
 		});
+		
+		return [busServicesMap, $busServices];
+	};
+
+	var tasksDone = function(error, results){
+		if (error || !results || results.length != 4){
+			alert('Oops, an error occured.');
+			return;
+		}
+
+		var busStops = results[0];
+		var busServices = results[1];
+		var busStopsServices = results[2];
+		var map = results[3];
+
+		var busStopsMap = {};
+		busStops.forEach(function(stop){
+			busStopsMap[stop.no] = stop;
+		});
+
+		var p = populateBusServices(busServices);
+		busServicesMap = p[0];
+		$busServices = p[1];
 
 		var markers = [];
+		var markersCompare = [];
+		var markersOld; // Temporary variable to hold initial layer in case user changes url manually amidst a comparison
 		var polylines = {};
 		var infowindow = new google.maps.InfoWindow({
 			maxWidth: 260
@@ -340,6 +355,13 @@
 			strokeWeight: 5,
 			strokeOpacity: .5
 		});
+		var polylineCompare = new google.maps.Polyline({
+			clickable: false,
+			strokeColor: '#0f34b7',
+			strokeWeight: 5,
+			strokeOpacity: .5
+		});
+		var polylineOld; // Temporary variable to hold initial layer in case user changes url manually amidst a comparison
 
 		var clearMap = function(){
 			markers.forEach(function(marker){
@@ -347,6 +369,11 @@
 				google.maps.event.clearInstanceListeners(marker);
 			});
 			markers = [];
+			markersCompare.forEach(function(marker){
+				marker.setMap(null);
+				google.maps.event.clearInstanceListeners(marker);
+			});
+			markersCompare = [];
 			for (var stop in stopMarkers){
 				var marker = stopMarkers[stop];
 				marker.setMap(null);
@@ -360,6 +387,7 @@
 			}
 			polylines = {};
 			polyline.setMap(null);
+			polylineCompare.setMap(null);
 			infowindow.close();
 		};
 
@@ -461,12 +489,12 @@
 					html += '</ul>';
 					$busStops.html(html);
 				} else {
-					$busStops.html('<p>Try zoom in or pan around to see bus stops on the map.</p>');
+					$busStops.html('<p>Zoom in or pan around to see bus stops on the map.</p>');
 				}
 			} else {
 				for (var no in stopMarkers) stopMarkers[no].setMap(null);
 				stopMarkers = [];
-				$busStops.html('<p>Try zoom in or pan around to see bus stops on the map.</p>');
+				$busStops.html('<p>Zoom in or pan around to see bus stops on the map.</p>');
 			}
 		});
 
@@ -488,6 +516,181 @@
 
 		var docTitle = document.title;
 		var currentRoute = 'home';
+
+		// Moved outisde for re-use in 'compare'
+		var drawService = function (path, no, route, boundsOld) {
+			var isComparison = !!boundsOld;
+
+			var pathArray = path.split('/');
+
+			pathArray[3] = route == 2 ? 1 : 2;
+			var pathOther = pathArray.join('/');
+
+			if (isComparison) {
+				var noOld = pathArray[4];
+				var routeOld = pathArray[5];
+
+				polylineOld = polyline;
+				polyline = polylineCompare;
+				markersOld = markers;
+				markers = markersCompare;
+
+				currentRoute = 'compare';
+				document.title = 'Bus service ' + no + ' and ' + noOld + ' - ' + docTitle;
+			} else {
+				if (polylineOld) {
+					polyline = polylineOld
+					polylineOld = undefined;
+				}
+				if (markersOld) {
+					markers = markersOld;
+					markersOld = undefined;
+				}
+
+				currentRoute = 'services';
+				document.title = 'Bus service ' + no + ' - ' + docTitle;
+				if (!route) route = 1;
+			}
+
+			// reset
+			$busServices.find('a.selected').removeClass('selected');
+			$('#service-' + no).addClass('selected');
+			if (!isComparison) {
+				clearMap();
+			}
+
+			$busServicesSection = $('#bus-services-section').addClass('loading');
+
+			getData('busService-' + no, {no: no}, function(e, data){
+				$busServicesSection.removeClass('loading');
+				if (!data) return;
+
+				var one = data[route];
+				var routes = one.route;
+				var stops = one.stops;
+				var latlngs = [];
+				var locations = [];
+
+				if (routes && routes.length){
+					for (var i=0, l=routes.length; i<l; i++){
+						var coord = routes[i];
+						var latlng = coord.split(',');
+						var position = new google.maps.LatLng(parseFloat(latlng[0], 10), parseFloat(latlng[1], 10));
+						latlngs.push(position);
+					}
+					polyline.setPath(latlngs);
+					polyline.setMap(map);
+				}
+
+				var html = '<div class="tab-bar">';
+				if (data[2] && data[2].route && data[2].route.length){
+					html += '<a href="#' + (route == 1 ? path : pathOther) + '" class="tab ' + (route == 1 ? 'selected' : '') + '">Route 1</a>'
+						+ '<a href="#' + (route == 2 ? path : pathOther) + '" class="tab ' + (route == 2 ? 'selected' : '') + '">Route 2</a>';
+				}
+				if (isComparison) { // Replace with new icons? Otherwise, either adjust style to make aside wider or display with two rows
+					html += '<a href="">Home</a>';
+				} else {
+					html += '<a href="#/compare/' + no + '/' + route + '">Compare</a>';
+				}
+				var provider = busServicesMap[no].operator;
+				if (provider){
+					// Only SBS or SMRT, for now.
+					var url = provider == 'sbs' ? 'http://www.sbstransit.com.sg/journeyplan/servicedetails.aspx?serviceno=' : 'http://www.transitlink.com.sg/eservice/eguide/service_route.php?service=';
+					html += '<a href="' + url + no + '" target="_blank" class="details"><svg class="icon"><use xlink:href="#list-alt"></use></svg> Bus schedules</a>';
+				}
+				html += '</div>';
+				html += '<ul>';
+
+				var firstSameLast = false;
+				var l = stops.length;
+				bounds = new google.maps.LatLngBounds();
+
+				stops.forEach(function(stop, i){
+					var info = busStopsMap[stop];
+					var name = info.name;
+					var services = busStopsServices[stop];
+					var icon = markerImage.circle;
+					var last = l-1;
+					var className = 'stop';
+
+					if (i == 0){
+						var lastStop = stops[last];
+						var lastInfo = busStopsMap[lastStop];
+						if (name == lastInfo.name){
+							firstSameLast = true;
+							icon = markerImage.dot;
+							className = 'stop-dot';
+						} else {
+							icon = markerImage.a;
+							className = 'stop-a';
+						}
+					} else if (i == last){
+						if (firstSameLast){
+							icon = markerImage.dot;
+							className = 'stop-dot';
+						} else {
+							icon = markerImage.b;
+							className = 'stop-b';
+						}
+					}
+					if (i == last && firstSameLast){
+						// Push the first marker as the last one. MINDBLOWN!
+						markers.push(markers[0]);
+					} else {
+						var position = new google.maps.LatLng(info.lat, info.lng);
+						var marker = new google.maps.Marker({
+							position: position,
+							map: map,
+							icon: icon,
+							title: name,
+							animation: (i == 0 || i == last || isComparison) ? google.maps.Animation.DROP : null,
+							zIndex: (i == 0 || i == last) ? 5 : 1
+						});
+						google.maps.event.addListener(marker, 'click', function(){
+							google.maps.event.trigger(map, 'markerClick', {
+								marker: marker,
+								stop: stop,
+								currentService: no
+							});
+							$busRoutes.find('li a.selected').removeClass('selected');
+							$('.stop-' + stop + '[data-index="' + i + '"]').addClass('selected').focus();
+						});
+						markers.push(marker);
+
+						bounds.extend(position);
+					}
+
+					html += '<li><a tabindex="0" href="#" class="' + className + ' stop-' + stop + '" data-index="' + i + '"><i></i><span class="tag">' + stop + '</span> ' + name + '</a></li>';
+				});
+
+				if (isComparison) {
+					bounds.union(boundsOld);
+				}
+
+				$busRoutes.html(html + '</ul>');
+				$busRoutes[0].scrollTop = 0;
+				$('#bus-routes-section h1 b').text(no);
+				if (isComparison) { // made back arrow return to 'compare' instead of 'home'
+					document.getElementsByClassName('back')[0].href = '#/compare/' + noOld + '/' + routeOld;
+					// $('.back').attr('href', '#/compare/' + noOld + '/' + routeOld); // does not work
+				}
+				$('section.extra').addClass('hidden');
+				$('#bus-routes-section').removeClass('hidden');
+
+				if (no != currentNo || !bounds.contains(map.getCenter())){
+					currentNo = no;
+					map.panTo(bounds.getCenter());
+					setTimeout(function(){
+						map.fitBounds(bounds);
+					}, 400);
+				}
+
+				lscache.set('busService-' + no, data, 24*60);
+			});
+
+			return bounds;
+		};
+
 		ruto
 			.config({
 				notfound: function(){
@@ -504,131 +707,20 @@
 					$busServices.find('a.selected').removeClass('selected');
 				}, 400);
 			})
-			.add(/^\/services\/(\w+)\/?(\d)?$/i, function(path, no, route){
-				currentRoute = 'services';
-				document.title = 'Bus service ' + no + ' - ' + docTitle;
-				if (!route) route = 1;
+			.add(/^\/services\/(\w+)\/?(\d)?$/i, function (path, no, route) {
+				drawService(path, no, route);
+			})
+			.add(/^\/compare\/(\w+)\/(\d)$/i, function(path, no, route){ // url 'compare' must include route, even if it is '1'
+				drawService(path, no, route); // redraw even if referer is 'services' becuase the user might have entered the url manually
 
-				// reset
-				$busServices.find('a.selected').removeClass('selected');
-				$('#service-' + no).addClass('selected');
-				clearMap();
-
-				$busServicesSection = $('#bus-services-section').addClass('loading');
-
-				getData('busService-' + no, {no: no}, function(e, data){
-					$busServicesSection.removeClass('loading');
-					if (!data) return;
-
-					var one = data[route];
-					var routes = one.route;
-					var stops = one.stops;
-					var latlngs = [];
-					var locations = [];
-
-					if (routes && routes.length){
-						for (var i=0, l=routes.length; i<l; i++){
-							var coord = routes[i];
-							var latlng = coord.split(',');
-							var position = new google.maps.LatLng(parseFloat(latlng[0], 10), parseFloat(latlng[1], 10));
-							latlngs.push(position);
-						}
-						polyline.setPath(latlngs);
-						polyline.setMap(map);
-					}
-
-					var html = '<div class="tab-bar">';
-					if (data[2] && data[2].route && data[2].route.length){
-						html += '<a href="#/services/' + no + '" class="tab ' + (route == 1 ? 'selected' : '') + '">Route 1</a>'
-							+ '<a href="#/services/' + no + '/2" class="tab ' + (route == 2 ? 'selected' : '') + '">Route 2</a>';
-					}
-					var provider = busServicesMap[no].operator;
-					if (provider){
-						// Only SBS or SMRT, for now.
-						var url = provider == 'sbs' ? 'http://www.sbstransit.com.sg/journeyplan/servicedetails.aspx?serviceno=' : 'http://www.transitlink.com.sg/eservice/eguide/service_route.php?service=';
-						html += '<a href="' + url + no + '" target="_blank" class="details"><svg class="icon"><use xlink:href="#list-alt"></use></svg> Bus schedules</a>';
-					}
-					html += '</div>';
-					html += '<ul>';
-
-					var firstSameLast = false;
-					var l = stops.length;
-					var bounds = new google.maps.LatLngBounds();
-
-					stops.forEach(function(stop, i){
-						var info = busStopsMap[stop];
-						var name = info.name;
-						var services = busStopsServices[stop];
-						var icon = markerImage.circle;
-						var last = l-1;
-						var className = 'stop';
-
-						if (i == 0){
-							var lastStop = stops[last];
-							var lastInfo = busStopsMap[lastStop];
-							if (name == lastInfo.name){
-								firstSameLast = true;
-								icon = markerImage.dot;
-								className = 'stop-dot';
-							} else {
-								icon = markerImage.a;
-								className = 'stop-a';
-							}
-						} else if (i == last){
-							if (firstSameLast){
-								icon = markerImage.dot;
-								className = 'stop-dot';
-							} else {
-								icon = markerImage.b;
-								className = 'stop-b';
-							}
-						}
-						if (i == last && firstSameLast){
-							// Push the first marker as the last one. MINDBLOWN!
-							markers.push(markers[0]);
-						} else {
-							var position = new google.maps.LatLng(info.lat, info.lng);
-							var marker = new google.maps.Marker({
-								position: position,
-								map: map,
-								icon: icon,
-								title: name,
-								animation: (i == 0 || i == last) ? google.maps.Animation.DROP : null,
-								zIndex: (i == 0 || i == last) ? 5 : 1
-							});
-							google.maps.event.addListener(marker, 'click', function(){
-								google.maps.event.trigger(map, 'markerClick', {
-									marker: marker,
-									stop: stop,
-									currentService: no
-								});
-								$busRoutes.find('li a.selected').removeClass('selected');
-								$('.stop-' + stop + '[data-index="' + i + '"]').addClass('selected').focus();
-							});
-							markers.push(marker);
-
-							bounds.extend(position);
-						}
-
-						html += '<li><a tabindex="0" href="#" class="' + className + ' stop-' + stop + '" data-index="' + i + '"><i></i><span class="tag">' + stop + '</span> ' + name + '</a></li>';
-					});
-
-					$busRoutes.html(html + '</ul>');
-					$busRoutes[0].scrollTop = 0;
-					$('#bus-routes-section h1 b').text(no);
-					$('section.extra').addClass('hidden');
-					$('#bus-routes-section').removeClass('hidden');
-
-					if (no != currentNo || !bounds.contains(map.getCenter())){
-						currentNo = no;
-						map.panTo(bounds.getCenter());
-						setTimeout(function(){
-							map.fitBounds(bounds);
-						}, 400);
-					}
-
-					lscache.set('busService-' + no, data, 24*60);
-				});
+				$('#bus-routes-section').addClass('hidden');
+				var p = populateBusServices(busServices, path.slice('/compare'.length, Infinity));
+				busServicesMap = p[0];
+				$busServices = p[1];
+			})
+			.add(/^\/compare\/(\w+)\/(\d)\/(\w+)\/(\d)$/i, function(path, no, route, noOld, routeOld){
+				boundsOld = drawService(path, noOld, routeOld); // redraw even if referer is 'compare' becuase the user might have entered the url manually
+				drawService(path, no, route, boundsOld);
 			})
 			.add(/^\/stops\/(\w+)$/i, function(path, stop){
 				currentRoute = 'stops';
