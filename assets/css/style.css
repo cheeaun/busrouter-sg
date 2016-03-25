@@ -475,6 +475,7 @@ aside section #bus-stop-routes ul li a:hover .tag{
 }
 #bus-services-section .search-field .close *{
 	pointer-events: none;
+	position: static;
 }
 #bus-services-section .search-field .close:hover{
 	opacity: .8;
