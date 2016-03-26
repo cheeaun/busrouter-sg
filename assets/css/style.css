@@ -536,8 +536,11 @@ aside section.hidden{
 	-webkit-animation: barberpole .5s linear infinite;
 	animation: barberpole .5s linear infinite;
 }
+.infowindow{
+	font-size: 14px;
+}
 .infowindow h1{
-	font-size: 1em;
+	font-size: 1.2em;
 	font-weight: normal;
 	margin: 0 0 2px;
 	padding: 0;
