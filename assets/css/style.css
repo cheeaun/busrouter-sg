@@ -34,34 +34,34 @@ hr{
 	border-top: 1px solid #F0F0E7;
 }
 *{
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 header {
-  padding: 10px;
-  cursor: pointer;
-  position: absolute;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  position: absolute;
-  z-index: 1;
+	padding: 10px;
+	cursor: pointer;
+	position: absolute;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	position: absolute;
+	z-index: 1;
 }
 
 header:active {
-  opacity: .7;
+	opacity: .7;
 }
 
 header h1 {
-  margin: 0;
-  padding: 0;
-  -webkit-filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+	margin: 0;
+	padding: 0;
+	-webkit-filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+	filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
 }
 
 header svg {
-  vertical-align: top;
+	vertical-align: top;
 }
 
 #header-search{
@@ -128,34 +128,34 @@ header svg {
 .dialog section{
 	position: absolute;
 	top: 0;
-  left: 0;
-  width: 100%;
+	left: 0;
+	width: 100%;
 	max-height: 100%;
 	background-color: #fff;
 	padding: 14px;
 	-webkit-transition: -webkit-transform .3s cubic-bezier(0.150, 0.780, 0.180, 1.170);
-  transition: transform .3s cubic-bezier(0.150, 0.780, 0.180, 1.170);
-  -webkit-transform: translate3d(0, -100%, 0);
-  transform: translate3d(0, -100%, 0);
-  pointer-events: none;
+	transition: transform .3s cubic-bezier(0.150, 0.780, 0.180, 1.170);
+	-webkit-transform: translate3d(0, -100%, 0);
+	transform: translate3d(0, -100%, 0);
+	pointer-events: none;
 }
 .dialog.show section{
 	transform: translate3d(0, 0, 0);
-  -webkit-transform: translate3d(0, 0, 0);
-  pointer-events: auto;
-  box-shadow: 0 1px 15px rgba(0,0,0,.3);
+	-webkit-transform: translate3d(0, 0, 0);
+	pointer-events: auto;
+	box-shadow: 0 1px 15px rgba(0,0,0,.3);
 }
-@media screen and (min-width: 500px) and (min-height: 500px) {
-  .dialog.show section{
-    width: 500px;
-    left: 50%;
-    margin-left: -250px;
-    border-radius: 5px;
-  }
-  .dialog.show section{
-    transform: translate3d(0, 10px, 0);
-    -webkit-transform: translate3d(0, 10px, 0);
-  }
+@media screen and (min-width: 500px) and (min-height: 400px) {
+	.dialog section{
+		width: 500px;
+		left: 50%;
+		margin-left: -250px;
+		border-radius: 5px;
+	}
+	.dialog.show section{
+		transform: translate3d(0, 10px, 0);
+		-webkit-transform: translate3d(0, 10px, 0);
+	}
 }
 .dialog section h2{
 	font-size: 1.3em;
@@ -588,12 +588,12 @@ aside section.hidden{
 	outline: 0;
 	margin: 10px;
 	padding: 12px;
-  width: 48px;
-  height: 48px;
-  background-color: #fff;
-  border-radius: 50%;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+	width: 48px;
+	height: 48px;
+	background-color: #fff;
+	border-radius: 50%;
+	overflow: hidden;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 	vertical-align: top;
 }
 #geolocation-control svg{
