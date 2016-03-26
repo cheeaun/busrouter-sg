@@ -71,7 +71,7 @@ header svg {
 	cursor: pointer;
 	color: #000;
 	border-color: #000;
-	opacity: .5;
+	opacity: .75;
 	z-index: 1;
 }
 #header-search:hover{
