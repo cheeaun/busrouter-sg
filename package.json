@@ -15,7 +15,6 @@
     "grunt-contrib-watch": "~1.0.0",
     "grunt-inline": "~0.3.6",
     "grunt-svg-sprite": "~1.2.19",
-    "sw-precache": "~3.1.1",
     "tokml": "~0.4.0"
   },
   "author": "Lim Chee Aun",

@@ -93,17 +93,6 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		swPrecache: {
-			production: {
-				options: {
-					staticFileGlobs: [
-						'js/scripts.js',
-						'index.html',
-						'bus-arrival/index.html'
-					]
-				}
-			}
-		},
 		aws: awsCreds,
 		s3: {
 			options: {

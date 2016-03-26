@@ -50,7 +50,6 @@ Few more `grunt` goodies:
 - `grunt svg_sprite` - generate the SVG sprite
 - `grunt inline` - inline the JS and CSS files into the HTML
 - `grunt s3` - uploads data to a S3 bucket
-- `grunt swPrecache` - generate/update the Service Worker file
 - `grunt stats` - get the stats for total number of bus stops and services
 
 The icon is from [The Noun Project](http://thenounproject.com/noun/bus/#icon-No97). The color scheme and markers are *inspired* by [Gothere.sg](http://gothere.sg/).
