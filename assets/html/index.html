@@ -98,19 +98,6 @@ ga('send', 'pageview');
 <inline src="../svg_sprite/symbol/svg/sprite.symbol.svg" />
 <script src="js/scripts.js" async></script>
 <script>
-WebFontConfig = {
-	google: { families: [ 'Roboto:300,400,500,700' ] },
-};
-(function(){
-	var wf = document.createElement('script');
-	wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-		'://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-	wf.type = 'text/javascript';
-	wf.async = 'true';
-	var s = document.getElementsByTagName('script')[0];
-	s.parentNode.insertBefore(wf, s);
-})();
-
 if ('serviceWorker' in navigator){
 	navigator.serviceWorker.register('service-worker.js').then(function(registration){
 		console.log('ServiceWorker registration successful with scope: ', registration.scope);
