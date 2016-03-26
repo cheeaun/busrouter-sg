@@ -177,8 +177,8 @@ header svg {
 
 #bounds-warning{
 	position: absolute;
-	top: 45px;
-	left: 5px;
+	top: 10px;
+	left: 75px;
 	display: none;
 	padding: 5px 10px;
 	background-color: rgba(0,0,0,.7);
