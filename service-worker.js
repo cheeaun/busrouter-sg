@@ -7,7 +7,16 @@ self.addEventListener('activate', function(event){
 });
 
 var cacheName = 'busroutersg-v1';
+
+// Delete old cache
+var CacheNamePrefix = 'sw-precache-v1--' + (self.registration ? self.registration.scope : '') + '-';
+caches.keys().then(function(cacheNames){
+	cacheNames.forEach(function(cacheName){
+		if (cacheName.indexOf(CacheNamePrefix) === 0) caches.delete(cacheName);
+	});
+});
 // caches.delete('busroutersg-v1'); // Delete the old one
+
 var successResponses = /^0|([123]\d\d)|(40[14567])|410$/;
 
 function fetchAndCache(request){
