@@ -49,8 +49,6 @@
 		}
 	};
 
-	var isSmallScreen = window.innerWidth <= 640;
-
 	var markerImage;
 
 	var tasks = [
@@ -79,71 +77,51 @@
 					mapTypeId: google.maps.MapTypeId.ROADMAP,
 					disableDefaultUI: true,
 					keyboardShortcuts: true,
-					zoomControl: true,
-					zoomControlOptions: {
-						position: google.maps.ControlPosition.RIGHT_BOTTOM
-					}
 				});
-
-				if (isSmallScreen){
-					map.setOptions({
-						overviewMapControl: false,
-						zoomControl: false
-					});
-
-					google.maps.event.addListener(map, 'dragstart', function(){
-						$('body').addClass('header-collapsed');
-					});
-				}
 
 				var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(1.25352193438281, 103.62192147229632), new google.maps.LatLng(1.50129709375363, 103.99983438993593));
 				map.fitBounds(bounds);
 
-				var sprite = {
-					url: 'assets/images/bus-sprite.png',
-					scaledSize: new google.maps.Size(156/2, 168/2)
-				};
+				var spriteURL = 'assets/images/bus-sprite.png';
+				var spriteScaledSize = new google.maps.Size(156/2, 168/2);
 				markerImage = {
 					location: {
-						url: sprite.url,
-						scaledSize: sprite.scaledSize,
+						url: spriteURL,
+						scaledSize: spriteScaledSize,
 						size: new google.maps.Size(36/2, 38/2),
 						anchor: new google.maps.Point(36/4, 38/4),
 						origin: new google.maps.Point(96/2, 0)
 					},
 					circle: {
-						url: sprite.url,
-						scaledSize: sprite.scaledSize,
+						url: spriteURL,
+						scaledSize: spriteScaledSize,
 						size: new google.maps.Size(36/2, 38/2),
 						anchor: new google.maps.Point(36/4, 38/4),
 						origin: new google.maps.Point(60/2, 0)
 					},
 					dot: {
-						url: sprite.url,
-						scaledSize: sprite.scaledSize,
+						url: spriteURL,
+						scaledSize: spriteScaledSize,
 						size: new google.maps.Size(52/2, 76/2),
 						origin: new google.maps.Point(0, 92/2)
 					},
 					a: {
-						url: sprite.url,
-						scaledSize: sprite.scaledSize,
+						url: spriteURL,
+						scaledSize: spriteScaledSize,
 						size: new google.maps.Size(52/2, 76/2),
 						origin: new google.maps.Point(52/2, 92/2)
 					},
 					b: {
-						url: sprite.url,
-						scaledSize: sprite.scaledSize,
+						url: spriteURL,
+						scaledSize: spriteScaledSize,
 						size: new google.maps.Size(52/2, 76/2),
 						origin: new google.maps.Point(104/2, 92/2)
 					}
 				};
 
 				if (navigator.geolocation){
-					var geolocationControl = document.createElement('a');
-					geolocationControl.id = 'geolocation-control';
-					geolocationControl.href = '#';
-					geolocationControl.innerHTML = '<svg class="icon icon-circle"><use xlink:href="#location-arrow"></use></svg>';
-					map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(geolocationControl);
+					var geolocationControl = document.getElementById('geolocation-control');
+					map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(geolocationControl);
 
 					var locationMarker = new google.maps.Marker({
 						map: map,
@@ -230,6 +208,9 @@
 					}, 300);
 				});
 
+				var $headerSearch = document.getElementById('header-search');
+				map.controls[google.maps.ControlPosition.RIGHT_TOP].push($headerSearch);
+
 				var $form = $('#places-search-form');
 				$form.on('submit', function(e){
 					e.preventDefault();
@@ -240,7 +221,7 @@
 					componentRestrictions: {country: 'sg'}
 				});
 				google.maps.event.addListener(autocomplete, 'place_changed', function(){
-					$('#search').addClass('hidden');
+					$('#search').removeClass('show');
 					var place = autocomplete.getPlace();
 					if (!place.geometry) return;
 					if (place.geometry.viewport) {
@@ -252,7 +233,7 @@
 				});
 
 				if (!lscache.get('busrouter-intro') && !/\w/i.test(location.hash)){
-					$('#intro').removeClass('hidden');
+					$('#about').addClass('show');
 				}
 
 				callback(null, map);
@@ -838,7 +819,6 @@
 			if (map.getZoom() < 15) map.setZoom(15);
 			map.panTo(latlng);
 			google.maps.event.trigger(marker, 'click');
-			if (isSmallScreen) $('#header-sidebar').trigger('click');
 		});
 
 		$('#bus-stop-routes').on('mouseover touchstart', 'li a', function(){
@@ -908,25 +888,21 @@
 	});
 	q.awaitAll(tasksDone);
 
-	$('#logo').on('click', function(){
-		$('body').toggleClass('header-collapsed');
-	});
-	$('#header-about').on('click', function(){
-		$('#about').removeClass('hidden');
+	$('#heading').on('click', function(){
+		$('#about').addClass('show');
 	});
 	$('#header-search').on('click', function(){
-		$('#search').removeClass('hidden');
+		$('#search').addClass('show');
 		$('#places-search-form input').focus();
 	});
-	$('#intro .explore').on('click', function(){
-		lscache.set('busrouter-intro', true);
-		$('#intro').addClass('hidden');
-	});
+
 	$('#about .close').on('click', function(){
-		$('#about').addClass('hidden');
+		lscache.set('busrouter-intro', true);
+		$('#about').removeClass('show');
 	});
+
 	$('#search .close').on('click', function(){
-		$('#search').addClass('hidden');
+		$('#search').removeClass('show');
 	});
 
 	$('#map').on('click', 'a.show-arrivals', function(e){
@@ -936,17 +912,5 @@
 		var top = ((screen.availHeight || screen.height)-height)/2;
 		var left = (screen.width-width)/2;
 		window.open(this.href, 'busArrivals'+(new Date()), 'width=' + width + ',height=' + height + ',menubar=0,toolbar=0,top=' + top + ',left=' + left);
-	});
-
-	$('.share-buttons a').on('click', function(e){
-		var el = e.target;
-		if (el.href){
-			e.preventDefault();
-			var width = 500;
-			var height = 300;
-			var top = ((screen.availHeight || screen.height)-height)/2;
-			var left = (screen.width-width)/2;
-			window.open(el.href, 'window-' + Math.random(), 'width=' + width + ',height=' + height + ',menubar=0,toolbar=0,top=' + top + ',left=' + left);
-		}
 	});
 })();
