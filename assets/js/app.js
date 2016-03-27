@@ -520,7 +520,7 @@
 				document.title = 'Bus service ' + no + ' and ' + noOld + ' - ' + docTitle;
 			} else {
 				if (polylineOld) {
-					polyline = polylineOld
+					polyline = polylineOld;
 					polylineOld = undefined;
 				}
 				if (markersOld) {
