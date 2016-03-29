@@ -6,6 +6,11 @@
       "src": "assets/icons/icon.svg",
       "sizes": "144x144",
       "type": "image/svg"
+    },
+    {
+      "src": "assets/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg"
     }
   ],
   "start_url": "/",
