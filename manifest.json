@@ -3,9 +3,9 @@
   "name": "BusRouter SG",
   "icons": [
     {
-      "src": "assets/icons/icon.svg",
+      "src": "assets/icons/icon-144.png",
       "sizes": "144x144",
-      "type": "image/svg"
+      "type": "image/png"
     },
     {
       "src": "assets/icons/icon.svg",
