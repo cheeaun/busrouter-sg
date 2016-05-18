@@ -1,7 +1,7 @@
 {
-	"name": "Singapore Bus Routes Explorer",
+	"name": "BusRouter SG",
 	"description": "Show all routes and bus stops on the map for all bus services in Singapore.",
-	"version": "0.3",
+	"version": "0.4",
 	"manifest_version": 2,
 	"app": {
 		"launch": {
