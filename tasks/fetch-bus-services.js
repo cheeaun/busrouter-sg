@@ -12,7 +12,7 @@ module.exports = function(grunt){
 		grunt.util.async.parallel([
 			function(done){
 				grunt.log.writeln('Request to mytransport.sg');
-				needle.get('http://www.mytransport.sg/content/mytransport/map.html', function(err, res, body){
+				needle.get('https://www.mytransport.sg/content/mytransport/map.html', function(err, res, body){
 					var $ = cheerio.load(body);
 
 					var data = {
@@ -48,7 +48,7 @@ module.exports = function(grunt){
 
 					$('form[name=frmservice] dl dt').each(function(){
 						var dt = $(this);
-						var type = (dt.text().match(/sbs|smrt/i) || [null])[0].toLowerCase();
+						var type = (dt.text().match(/sbs|smrt|(tower transit)|(go-ahead)/i) || [null])[0].toLowerCase();
 
 						dt.next().find('select option[value]').each(function(){
 							var option = $(this);
@@ -68,7 +68,9 @@ module.exports = function(grunt){
 			var data2 = results[1];
 
 			data.services.forEach(function(service){
-				service.operator = data2[service.no] || null;
+				var serviceNo = service.no;
+				var serviceNoInt = parseInt(service.no, 10) + '';
+				service.operator = data2[serviceNo] || data2[serviceNoInt] || null;
 			});
 
 			var _ = grunt.util._;

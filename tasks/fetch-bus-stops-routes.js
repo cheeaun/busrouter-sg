@@ -19,8 +19,8 @@ module.exports = function(grunt){
 			return function(allDone){
 				grunt.util.async.parallel([
 					function(done){
-						console.log('http://www.mytransport.sg/content/mytransport/ajax_lib/map_ajaxlib.getBusRouteByServiceId.' + service + '.html');
-						needle.get('http://www.mytransport.sg/content/mytransport/ajax_lib/map_ajaxlib.getBusRouteByServiceId.' + service + '.html', function(err, res, body){
+						console.log('https://www.mytransport.sg/content/mytransport/ajax_lib/map_ajaxlib.getBusRouteByServiceId.' + service + '.html');
+						needle.get('https://www.mytransport.sg/content/mytransport/ajax_lib/map_ajaxlib.getBusRouteByServiceId.' + service + '.html', function(err, res, body){
 							var $ = cheerio.load(body);
 
 							var routeStops = { 1: [], 2: [] };
@@ -54,8 +54,8 @@ module.exports = function(grunt){
 						});
 					},
 					function(done){
-						console.log('http://www.mytransport.sg/kml/busroutes/' + service + '-1.kml');
-						request('http://www.mytransport.sg/kml/busroutes/' + service + '-1.kml', function(err, res, body){
+						console.log('https://www.mytransport.sg/kml/busroutes/' + service + '-1.kml');
+						request('https://www.mytransport.sg/kml/busroutes/' + service + '-1.kml', function(err, res, body){
 							if (err) throw err;
 							if (res.statusCode != 200){
 								// throw new Error('Status code: ' + res.statusCode);
@@ -88,8 +88,8 @@ module.exports = function(grunt){
 							done(null, []);
 							return;
 						}
-						console.log('http://www.mytransport.sg/kml/busroutes/' + service + '-2.kml');
-						request('http://www.mytransport.sg/kml/busroutes/' + service + '-2.kml', function(err, res, body){
+						console.log('https://www.mytransport.sg/kml/busroutes/' + service + '-2.kml');
+						request('https://www.mytransport.sg/kml/busroutes/' + service + '-2.kml', function(err, res, body){
 							if (err) throw err;
 							if (res.statusCode != 200){
 								console.error('Status code for ' + service + '/2: ' + res.statusCode);
