@@ -22,10 +22,10 @@ Technical stuff
 
 All data such as routes, bus stops and services are *taken* from <http://mytransport.sg/>, which means they are copyrighted by the [Land Transport Authority](http://www.lta.gov.sg/).
 
-Here's how to get the data, assuming that you have `node`, [grunt](http://gruntjs.com/) and checked out this repo:
+Here's how to get the data, assuming that you have [`node`](https://nodejs.org/en/), [`yarn`](yarnpkg.com/), [`grunt`](http://gruntjs.com/) and checked out this repo:
 
 ```
-npm install
+yarn
 grunt fetchBusServices
 grunt fetchBusStopsRoutes
 grunt fixBadRoutes
