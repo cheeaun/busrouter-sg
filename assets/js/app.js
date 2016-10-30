@@ -526,9 +526,9 @@
 					}
 					var provider = busServicesMap[no].operator;
 					if (provider){
-						// Only SBS or SMRT, for now.
+						// Bus services with 'A' and 'B' are like shorter version of the original route
 						var url = provider == 'sbs' ? 'http://www.sbstransit.com.sg/journeyplan/servicedetails.aspx?serviceno=' : 'http://www.transitlink.com.sg/eservice/eguide/service_route.php?service=';
-						html += '<a href="' + url + no + '" target="_blank" class="details"><svg class="icon"><use xlink:href="#list-alt"></use></svg> Bus schedules</a>';
+						html += '<a href="' + url + no.replace(/(A|B)$/, '') + '" target="_blank" class="details"><svg class="icon"><use xlink:href="#list-alt"></use></svg> Bus schedules</a>';
 					}
 					html += '</div>';
 					html += '<ul>';
