@@ -503,19 +503,21 @@
 					var one = data[route];
 					var routes = one.route;
 					var stops = one.stops;
-					var latlngs = [];
 					var locations = [];
 
-					if (routes && routes.length){
-						for (var i=0, l=routes.length; i<l; i++){
-							var coord = routes[i];
-							var latlng = coord.split(',');
-							var position = new google.maps.LatLng(parseFloat(latlng[0], 10), parseFloat(latlng[1], 10));
-							latlngs.push(position);
-						}
-						polyline.setPath(latlngs);
-						polyline.setMap(map);
+					if (!routes || !routes.length){
+						routes = stops.map(function(stop){
+							var info = busStopsMap[stop];
+							return info.lat + ',' + info.lng;
+						});
 					}
+
+					var latlngs = routes.map(function(route){
+						var latlng = route.split(',');
+						return new google.maps.LatLng(parseFloat(latlng[0], 10), parseFloat(latlng[1], 10));
+					});
+					polyline.setPath(latlngs);
+					polyline.setMap(map);
 
 					var html = '<div class="tab-bar">';
 					if (data[2] && data[2].route && data[2].route.length){
