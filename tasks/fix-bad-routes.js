@@ -1,52 +1,57 @@
-'use strict';
+const fs = require('fs');
+const needle = require('needle');
+const _ = require('lodash');
+const async = require('async');
 
-var needle = require('needle');
+const data = JSON.parse(fs.readFileSync('data/2/bad-routes.json', { encoding: 'utf8' }));
+var routesList = [];
 
-module.exports = function(grunt){
-
-	grunt.registerTask('fixBadRoutes', 'Fix bad route lines', function(){
-		var data = grunt.file.readJSON('data/2/bad-routes.json');
-		var routesList = [];
-		var _ = grunt.util._;
-
-		_.forEach(data, function(routes, service){
-			_.forEach(routes, function(lineCount, route){
-				routesList.push({
-					service: service,
-					route: route
-				});
-			});
+_.forEach(data, function(routes, service){
+	_.forEach(routes, function(lineCount, route){
+		routesList.push({
+			service: service,
+			route: route
 		});
-
-		var newRoutes = routesList.map(function(r){
-			var service = r.service;
-			var route = r.route;
-
-			return function(done){
-				needle.get('http://www.streetdirectory.com/asia_travel/mappage/ajax_new/get_bus_service_route.php?no=' + service.toLowerCase() + '&d=' + route + '&longlat=1', function(err, res, body){
-					var line = body[route];
-					var coords = [];
-
-					var points = line.split(',');
-					for (var i=0, l=points.length; i<l; i+=2){
-						var lng = points[i];
-						var lat = points[i+1];
-						coords.push(lat + ',' + lng);
-					}
-
-					var serviceFile = 'data/2/bus-services/' + service + '.json';
-					var serviceData = grunt.file.readJSON(serviceFile);
-					serviceData[route].route = coords;
-					grunt.file.write(serviceFile, JSON.stringify(serviceData));
-					grunt.log.writeln('File "' + serviceFile + '" modified with route ' + route + ' data.');
-
-					done();
-				});
-			};
-		});
-
-		var finish = this.async();
-		grunt.util.async.series(newRoutes, finish);
 	});
+});
 
-};
+var newRoutes = routesList.map(function(r){
+	var service = r.service;
+	var route = r.route;
+
+	const unmodifiedRoutes = [];
+
+	return function(done){
+		const url = 'http://www.streetdirectory.com/asia_travel/mappage/ajax_new/get_bus_service_route.php?no=' + service.toLowerCase() + '&d=' + route + '&longlat=1';
+		console.log('➡️ ', url);
+		needle.get(url, function(err, res, body){
+			if (err) throw err;
+			if (!body){
+				unmodifiedRoutes.push(service);
+				return;
+			}
+			var line = body[route];
+			var coords = [];
+
+			var points = line.split(',');
+			for (var i=0, l=points.length; i<l; i+=2){
+				var lng = points[i];
+				var lat = points[i+1];
+				coords.push(lat + ',' + lng);
+			}
+
+			var serviceFile = 'data/2/bus-services/' + service + '.json';
+			var serviceData = JSON.parse(fs.readFileSync(serviceFile, { encoding: 'utf8' }));
+			serviceData[route].route = coords;
+			fs.writeFileSync(serviceFile, JSON.stringify(serviceData));
+			console.log('File "' + serviceFile + '" modified with route ' + route + ' data.');
+
+			done();
+		});
+	};
+});
+
+async.series(newRoutes, () => {
+	console.log('DONE');
+	console.log('These routes are NOT fixed: ' + unmodifiedRoutes.join(', '));
+});

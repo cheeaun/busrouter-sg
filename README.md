@@ -24,12 +24,12 @@ Here's how to get the data, assuming that you have [`node`](https://nodejs.org/e
 
 ```
 yarn
-grunt fetchBusServices
-grunt fetchBusStopsRoutes
-grunt fixBadRoutes
-grunt mapServicesStops
-grunt populateServicesName
-grunt busStopsGeoJSONKML
+yarn fetchBusServices
+yarn fetchBusStopsRoutes
+yarn fixBadRoutes
+yarn mapServicesStops
+yarn populateServicesName
+yarn busStopsGeoJSONKML
 ```
 
 The data you'll get are:
