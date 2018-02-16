@@ -193,6 +193,7 @@
 				var $boundsWarning = $('#bounds-warning');
 				google.maps.event.addListener(map, 'bounds_changed', function(){
 					var mapBounds = map.getBounds();
+					if (!mapBounds) return;
 					if (mapBounds.intersects(bounds)){
 						$boundsWarning.removeClass('visible');
 					} else {
