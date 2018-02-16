@@ -20,7 +20,8 @@
   "author": "Lim Chee Aun",
   "license": "MIT",
   "scripts": {
-    "start": "grunt server",
+    "start": "npx serve",
+    "grunt": "grunt",
     "deploy": "git checkout gh-pages && git merge master && git push origin gh-pages && git checkout master",
     "fetchBusServices": "node tasks/fetch-bus-services",
     "fetchBusStopsRoutes": "node tasks/fetch-bus-stops-routes",
