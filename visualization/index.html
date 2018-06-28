@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Singapore Bus Routes &amp; Stops Visualization</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.css">
+<style>
+  body { margin:0; padding:0; }
+  #map { position:absolute; top:0; bottom:0; width:100%; }
+  details { position:absolute; bottom:0; left:0; background:rgba(255,255,255,.5); padding:10px; font-family:sans-serif; }
+  summary { cursor:pointer; }
+</style>
+<div id="map"></div>
+<details>
+  <summary>Info</summary>
+  <p>This is a 3D/2d visualization of all bus routes and stops in Singapore. Data © <a href="https://www.mytransport.sg/">Land Transport Authority</a>. Code by <a href="https://twitter.com/cheeaun/status/1010542298810085376">@cheeaun</a>.</p>
+  <ul>
+    <li>All bus routes are stacked on top of one another, in the air.</li>
+    <li>On desktop browsers, <kbd>Ctrl+click</kbd> and drag to change the pitch of the map.</li>
+    <li>2D stops' radius and 3D stops' heights are based on number of bus services passing through them.</li>
+  </ul>
+</details>
+<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.js"></script>
+<script src="https://unpkg.com/dat.gui@0.7.2/build/dat.gui.min.js"></script>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlZWF1biIsImEiOiIwMTkyNjRiOWUzOTMyZThkYTE3YjMyMWFiZGU2OTZlNiJ9.XsOEKtyctGiNGNsmVhetYg';
+var map = new mapboxgl.Map({
+  container: 'map',
+  style: 'https://maps.tilehosting.com/styles/darkmatter/style.json?key=xjrAbdVfXA48AYcOS16e',
+  boxZoom: false,
+  minZoom: 9,
+});
+var maxBoundsLike = [
+  [ 103.6016626883025, 1.233357600011331 ], // sw
+  [ 104.0381760444838, 1.473818072475055 ] // ne
+];
+var maxBounds = mapboxgl.LngLatBounds.convert(maxBoundsLike);
+map.fitBounds(maxBounds, { animate: false });
+
+var config = {
+  pitch: 0,
+  height: 20,
+  gap: 0,
+  rainbowRoutes: false,
+  hideRoutes: false,
+  display3DStops: true,
+  display2DStops: false,
+};
+var gui = new dat.GUI();
+var pitchController = gui.add(config, 'pitch', 0, 60, 15);
+var heightController = gui.add(config, 'height', 10, 40, 10);
+var gapController = gui.add(config, 'gap', 0, 200, 10);
+var rainbowController = gui.add(config, 'rainbowRoutes');
+var routesController = gui.add(config, 'hideRoutes');
+var stops3DController = gui.add(config, 'display3DStops');
+var stops2DController = gui.add(config, 'display2DStops');
+
+map.on('load', function(){
+  pitchController.onFinishChange(function(pitch){
+    map.setPitch(pitch);
+  });
+  map.on('pitch', function(e){
+    config.pitch = map.getPitch();
+    pitchController.updateDisplay();
+  });
+
+  map.addSource('routes', { type: 'geojson', data: 'data/routes.geojson' });
+  map.addLayer({
+    id: 'routes',
+    type: 'fill-extrusion',
+    source: 'routes',
+    paint: {
+      'fill-extrusion-opacity': [
+        'interpolate', ['linear'], ['zoom'],
+        10, 1,
+        12, .75
+      ],
+      'fill-extrusion-color': [
+        'case',
+        ['boolean', ['feature-state', 'hover'], false], '#fff',
+        [
+          'match',
+          ['get', 'operator'],
+          'sbs', '#6A1367',
+          'smrt', '#E7243C',
+          'tower transit', '#157040',
+          'go-ahead', '#FCCC44',
+          'orange',
+        ]
+      ],
+      'fill-extrusion-height': ['+', ['*', ['get', 'level'], config.height + config.gap], config.height],
+      'fill-extrusion-base': ['*', ['get', 'level'], config.height + config.gap],
+    },
+  });
+
+  map.addSource('stops', { type: 'geojson', data: 'data/stops.geojson' });
+  map.addLayer({
+    id: 'stops',
+    type: 'fill-extrusion',
+    source: 'stops',
+    paint: {
+      'fill-extrusion-opacity': [
+        'interpolate', ['linear'], ['zoom'],
+        10, 0,
+        13, .5
+      ],
+      'fill-extrusion-color': '#fff',
+      'fill-extrusion-height': ['+', ['*', ['get', 'level'], config.height], 2],
+    },
+  });
+
+  stops3DController.onFinishChange(function(value){
+    map.setLayoutProperty('stops', 'visibility', value ? 'visible' : 'none');
+  });
+
+  heightController.onFinishChange(function(height){
+    console.log(height, config.gap);
+    map.setPaintProperty('routes', 'fill-extrusion-height', ['+', ['*', ['get', 'level'], height + config.gap], height]);
+    map.setPaintProperty('routes', 'fill-extrusion-base', ['*', ['get', 'level'], height + config.gap]);
+    map.setPaintProperty('stops', 'fill-extrusion-height', ['+', ['*', ['get', 'level'], height + config.gap], 2]);
+  });
+
+  gapController.onFinishChange(function(gap){
+    console.log(config.height, gap);
+    map.setPaintProperty('routes', 'fill-extrusion-height', ['+', ['*', ['get', 'level'], config.height + gap], config.height]);
+    map.setPaintProperty('routes', 'fill-extrusion-base', ['*', ['get', 'level'], config.height + gap]);
+    map.setPaintProperty('stops', 'fill-extrusion-height', ['+', ['*', ['get', 'level'], config.height + gap], 2]);
+  });
+
+  rainbowController.onFinishChange(function(value){
+    map.setPaintProperty('routes', 'fill-extrusion-color', value ? ['concat',
+      'hsl(',
+      ['to-string', ['*', 360, ['/', ['get', 'level'], 50]]],
+      ',100%,50%)'
+    ] : [
+      'match',
+      ['get', 'operator'],
+      'sbs', '#6A1367',
+      'smrt', '#E7243C',
+      'tower transit', '#157040',
+      'go-ahead', '#FCCC44',
+      'orange',
+    ]);
+  });
+
+  routesController.onFinishChange(function(hide){
+    map.setLayoutProperty('routes', 'visibility', hide ? 'none' : 'visible');
+    map.setPaintProperty('stops', 'fill-extrusion-opacity', hide ? 1 : .5);
+  });
+
+  map.addSource('stops-2d', { type: 'geojson', data: 'data/stops-2d.geojson' });
+  map.addLayer({
+    id: 'stops-2d',
+    type: 'circle',
+    source: 'stops-2d',
+    paint: {
+      'circle-color': [
+        'interpolate', ['linear'], ['get', 'routesCount'],
+        0, 'brown',
+        36, 'yellow'
+      ],
+      'circle-radius': [
+        'interpolate', ['linear'], ['zoom'],
+        11, ['max', 1, ['/', ['get', 'routesCount'], 6]],
+        15, ['max', 5, ['/', ['get', 'routesCount'], 2]]
+      ],
+    },
+    layout: {
+      visibility: 'none',
+    },
+  });
+
+  stops2DController.onFinishChange(function(value){
+    map.setLayoutProperty('stops-2d', 'visibility', value ? 'visible' : 'none');
+  });
+
+  // var hoveredFeature;
+  // map.on('mousemove', function(e){
+  //   const features = map.queryRenderedFeatures(e.point, {
+  //     layers: ['routes', 'stops'],
+  //   });
+  //   if (features.length){
+  //     var firstFeature = features[0];
+  //     var id = firstFeature.properties.service || firstFeature.properties.number;
+  //     if (hoveredFeature){
+  //       if (hoveredFeature.id == id) return;
+  //       map.setFeatureState(hoveredFeature, { hover: false });
+  //     }
+  //     hoveredFeature = {
+  //       id: id,
+  //       source: firstFeature.source,
+  //     };
+  //     console.log(hoveredFeature);
+  //     map.setFeatureState(hoveredFeature, { hover: true });
+  //   } else if (hoveredFeature){
+  //     map.setFeatureState(hoveredFeature, { hover: false });
+  //     hoveredFeature = null;
+  //   }
+  // });
+});
+</script>
+<!--
+level   base  height (base + 10)
+0       0     10
+1       20    30
+2       40    50
+-->
