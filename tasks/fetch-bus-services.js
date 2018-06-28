@@ -39,7 +39,7 @@ async.parallel([
 
 	function(done){
 		console.log('Request to transitlink.com.sg');
-		needle.get('http://www.transitlink.com.sg/eservice/eguide/service_idx.php', function(err, res, body){
+		needle.get('https://www.transitlink.com.sg/eservice/eguide/service_idx.php', function(err, res, body){
 			var $ = cheerio.load(body);
 
 			var data = {};
