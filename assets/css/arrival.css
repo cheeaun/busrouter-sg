@@ -110,3 +110,27 @@ tfoot td{
   padding: 10px;
   text-align: center;
 }
+
+#💰 {
+  border-top: 1px solid rgba(0,0,0,.2);
+}
+#carbonads {
+  position: relative;
+  padding: 10px;
+  line-height: 1.4;
+  overflow: hidden;
+}
+#carbonads a {
+	color: #4285f4;
+	text-decoration: none;
+  display: block;
+}
+#carbonads .carbon-img {
+  float: left;
+  margin-right: 10px;
+}
+#carbonads .carbon-poweredby {
+	margin-top: 10px;
+  font-size: .8em;
+  letter-spacing: 1px;
+}
