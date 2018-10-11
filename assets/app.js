@@ -148,6 +148,13 @@ class App extends Component {
       padding: BREAKPOINT() ? 120 : {top: 40, bottom: window.innerHeight/2, left: 40, right: 40},
     });
 
+    map.once('zoomstart', () => {
+      $logo.classList.add('fadeout');
+      this.setState({
+        shrinkSearch: true,
+      });
+    });
+
     let labelLayerId;
     map.once('styledata', () => {
       const layers = map.getStyle().layers;
