@@ -1,4 +1,4 @@
-[BusRouter SG](https://busrouter.sg/)
+[BusRouter SG](https://busrouter.sg/) - Singapore Bus Routes Explorer
 ===
 
 [![Screenshot of Singapore Bus Routes Explorer](screenshots/screenshot-1.png)](https://busrouter.sg/)
