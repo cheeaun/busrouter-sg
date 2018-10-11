@@ -248,6 +248,10 @@ a:active {
   -webkit-overflow-scrolling: touch;
   overflow: auto;
 }
+.popover-list.loading {
+  opacity: .5;
+  pointer-events: none;
+}
 .popover-list li a {
   padding: 14px;
   border-bottom: 1px solid rgba(0,0,0,.1);
@@ -262,6 +266,20 @@ a:active {
 .popover-list li a:target {
   background-color: #007aff;
   color: #fff;
+}
+
+.placeholder {
+  color: #aaa;
+  letter-spacing: -1px;
+  animation: glowing infinite alternate 1s linear both;
+}
+@keyframes glowing {
+  0% {
+    opacity: .2;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .service-tag {

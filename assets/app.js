@@ -1077,14 +1077,25 @@ class App extends Component {
             />
             <button type="button" onclick={this._handleSearchClose}>Cancel</button>
           </div>
-          <ul id="services-list" class="popover-list" ref={c => this._servicesList = c} onScroll={this._handleServicesScroll}>
-            {services.map(s => (
-              <li key={s.number}>
-                <a href={`#/services/${s.number}`}>
-                  <b class="service-tag">{s.number}</b> {s.name}
-                </a>
-              </li>
-            ))}
+          <ul id="services-list" class={`popover-list ${services.length ? '' : 'loading'}`} ref={c => this._servicesList = c} onScroll={this._handleServicesScroll}>
+            {services.length ? (
+              services.map(s => (
+                <li key={s.number}>
+                  <a href={`#/services/${s.number}`}>
+                    <b class="service-tag">{s.number}</b> {s.name}
+                  </a>
+                </li>
+              ))
+            ) : (
+              [1,2,3,4,5,6,7,8].map((s, i) => (
+                <li key={s}>
+                  <a href="#">
+                    <b class="service-tag">&nbsp;&nbsp;&nbsp;</b>
+                    <span class="placeholder">█████{i % 3 == 0 ? '███' : ''} ███{i % 2 == 0 ? '████' : ''}</span>
+                  </a>
+                </li>
+              ))
+            )}
           </ul>
         </div>
         <div id="stop-popover" ref={c => this._stopPopover = c} class={`popover ${showStopPopover ? 'expand' : ''}`}>
