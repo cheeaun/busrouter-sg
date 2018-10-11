@@ -357,7 +357,6 @@ class App extends Component {
           }, { hover: false });
         }
         hoveredStopID = e.features[0].id;
-        // console.log(hoveredStopID);
         map.setFeatureState({
           source: 'stops',
           id: hoveredStopID,
