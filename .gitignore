@@ -1,3 +1,6 @@
 node_modules
-aws-credentials.json
 .DS_Store
+dist
+tmp
+_*
+.cache
