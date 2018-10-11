@@ -1099,20 +1099,20 @@ class App extends Component {
           </ul>
         </div>
         <div id="stop-popover" ref={c => this._stopPopover = c} class={`popover ${showStopPopover ? 'expand' : ''}`}>
-          {showStopPopover && (
-            <div>
-              <a href="#/" onClick={this._hideStopPopover} class="popover-close">&times;</a>
-              <header>
-                <h1><b class="stop-tag">{showStopPopover.number}</b> {showStopPopover.name}</h1>
-                <h2>{showStopPopover.services.length} service{showStopPopover.services.length == 1 ? '' : 's'}</h2>
-              </header>
+          {showStopPopover && [
+            <a href="#/" onClick={this._hideStopPopover} class="popover-close">&times;</a>,
+            <header>
+              <h1><b class="stop-tag">{showStopPopover.number}</b> {showStopPopover.name}</h1>
+              <h2>{showStopPopover.services.length} service{showStopPopover.services.length == 1 ? '' : 's'}</h2>
+            </header>,
+            <div class="popover-scroll">
               <BusServicesArrival id={showStopPopover.number} services={showStopPopover.services}/>
               <div class="popover-buttons">
                 <a href={`/bus-arrival/#${showStopPopover.number}`} target="_blank" onClick={this._openBusArrival} class="popover-button">Bus arrivals <img src={openNewWindowImagePath} width="16" height="16" alt=""/></a>
                 <a href={`#/stops/${showStopPopover.number}`} class="popover-button">Passing routes <img src={passingRoutesImagePath} width="16" height="16" alt=""/></a>
               </div>
             </div>
-          )}
+          ]}
         </div>
       </div>
     );

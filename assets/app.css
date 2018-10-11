@@ -120,7 +120,6 @@ a:active {
   background-color: rgba(255,255,255,.8);
   backdrop-filter: blur(10px) saturate(3);
   border-radius: 7px 7px 0 0;
-  padding-bottom: 20px;
   box-shadow: 0 0 5px rgba(0,0,0,.3);
   z-index: 2;
 }
@@ -144,7 +143,6 @@ a:active {
 #stop-popover {
   top: 100%;
   transition: transform .3s .5s ease-in-out;
-  padding: 12px;
   max-height: 50vh;
   display: flex;
   flex-direction: column;
@@ -152,9 +150,9 @@ a:active {
 #stop-popover.expand {
   transform: translateY(-100%);
 }
-
 #stop-popover header {
   flex-shrink: 0;
+  padding: 12px 12px 0;
 }
 #stop-popover h1 {
   font-size: 1em;
@@ -164,7 +162,7 @@ a:active {
 #stop-popover h2 {
   font-size: .8em;
   font-weight: normal;
-  margin: .5em 0 .3em;
+  margin: .5em 0 0;
   padding: 0;
   color: #999;
   text-transform: uppercase;
@@ -177,10 +175,7 @@ a:active {
   flex: 1;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
-  width: calc(100% + 24px);
-  margin-left: -12px;
-  margin-bottom: -12px;
-  border-top: 1px solid rgba(0,0,0,.1);
+  padding: 12px;
 }
 #stop-popover .service-tag {
   margin-bottom: 4px;
