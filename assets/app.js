@@ -360,9 +360,13 @@ class App extends Component {
     map.on('mouseenter', 'stops', () => {
       map.getCanvas().style.cursor = 'pointer';
     });
-    map.on('click', 'stops', (e) => {
-      if (e.features.length){
-        this._showStopPopover(e.features[0]);
+    map.on('click', (e) => {
+      const { point } = e;
+      const features = map.queryRenderedFeatures(point, { layers: ['stops', 'stops-highlight'] });
+      if (features.length){
+        this._showStopPopover(features[0]);
+      } else {
+        this._hideStopPopover();
       }
     });
     map.on('mousemove', 'stops', (e) => {
@@ -433,11 +437,6 @@ class App extends Component {
 
     map.on('mouseenter', 'stops-highlight', () => {
       map.getCanvas().style.cursor = 'pointer';
-    });
-    map.on('click', 'stops-highlight', (e) => {
-      if (e.features.length){
-        this._showStopPopover(e.features[0]);
-      }
     });
     map.on('mouseleave', 'stops-highlight', () => {
       map.getCanvas().style.cursor = '';
@@ -774,7 +773,7 @@ class App extends Component {
     });
   }
   _hideStopPopover = (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     this.setState({
       showStopPopover: false,
     });
