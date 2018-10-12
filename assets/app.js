@@ -322,7 +322,7 @@ class App extends Component {
         'text-anchor': 'top-left',
         'text-offset': [1, -.6],
         'text-padding': .5,
-        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
+        'text-font': ['DIN Offc Pro Medium', 'Open Sans Semibold', 'Arial Unicode MS Bold'],
       },
       paint: {
         'text-color': '#f01b48',
@@ -608,7 +608,7 @@ class App extends Component {
       layout: {
         'symbol-placement': 'line',
         'symbol-spacing': 100,
-        'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+        'text-font': ['DIN Offc Pro Medium', 'Open Sans Semibold', 'Arial Unicode MS Bold'],
         'text-field': '{service}',
         'text-size': 10,
         'text-rotation-alignment': 'viewport',
