@@ -52,6 +52,15 @@ class BusServicesArrival extends Component {
   componentDidMount(){
     this._fetchServices();
   }
+  componentDidUpdate(prevProps){
+    if (prevProps.id !== this.props.id){
+      clearTimeout(this._arrivalsTimeout);
+      this.setState({
+        servicesArrivals: {},
+      });
+      this._fetchServices();
+    }
+  }
   _arrivalsTimeout = null;
   _fetchServices = () => {
     const { id } = this.props;
@@ -73,7 +82,7 @@ class BusServicesArrival extends Component {
     clearTimeout(this._arrivalsTimeout);
   }
   render(props, state){
-    const { id, services } = props;
+    const { services } = props;
     const { isLoading, servicesArrivals } = state;
     const route = getRoute();
     return (
