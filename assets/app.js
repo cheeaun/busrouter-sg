@@ -535,7 +535,7 @@ class App extends Component {
         'text-offset': [
           'interpolate', ['linear'], ['zoom'],
           12, ['literal', [0, 0]],
-          22, ['literal', [0, -3]]
+          22, ['literal', [0, -2]]
         ],
       },
       paint: {
