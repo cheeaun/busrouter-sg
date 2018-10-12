@@ -345,7 +345,6 @@ class App extends Component {
         ],
         'icon-size': [
           'interpolate', ['linear'], ['zoom'],
-          0, .05,
           10, .05,
           15, .6
         ],
@@ -461,7 +460,6 @@ class App extends Component {
       source: 'routes',
       layout: {
         'line-cap': 'round',
-        'line-join': 'round'
       },
       paint: {
         'line-color': '#fff',
@@ -486,7 +484,6 @@ class App extends Component {
       source: 'routes',
       layout: {
         'line-cap': 'round',
-        'line-join': 'round'
       },
       paint: {
         'line-color': '#f01b48',
@@ -562,7 +559,6 @@ class App extends Component {
       source: 'routes-path',
       layout: {
         'line-cap': 'round',
-        'line-join': 'round'
       },
       paint: {
         'line-color': '#f01b48',
@@ -593,7 +589,6 @@ class App extends Component {
       source: 'routes-path',
       layout: {
         'line-cap': 'round',
-        'line-join': 'round'
       },
       maxzoom: 14,
       paint: {
