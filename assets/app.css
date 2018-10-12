@@ -113,6 +113,9 @@ a:active {
   height: 0;
   padding: 0;
 }
+#about a {
+  text-decoration: none;
+}
 
 .popover {
   position: fixed;
