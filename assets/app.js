@@ -255,6 +255,7 @@ class App extends Component {
 
     map.addSource('stop-selected', {
       type: 'geojson',
+      tolerance: 3.5,
       data: {
         type: 'FeatureCollection',
         features: [],
@@ -282,6 +283,7 @@ class App extends Component {
 
     map.addSource('stops', {
       type: 'geojson',
+      tolerance: 3.5,
       data: {
         type: 'FeatureCollection',
         features: stopsDataArr.map(stop => ({
@@ -392,6 +394,7 @@ class App extends Component {
 
     map.addSource('stops-highlight', {
       type: 'geojson',
+      tolerance: 3.5,
       data: {
         type: 'FeatureCollection',
         features: [],
@@ -444,6 +447,7 @@ class App extends Component {
     // Bus service routes
     map.addSource('routes', {
       type: 'geojson',
+      tolerance: 1.5,
       lineMetrics: true,
       data: {
         type: 'FeatureCollection',
@@ -544,6 +548,7 @@ class App extends Component {
     // Bus service routes (passing, overlapping)
     map.addSource('routes-path', {
       type: 'geojson',
+      tolerance: 1.5,
       lineMetrics: true,
       data: {
         type: 'FeatureCollection',
