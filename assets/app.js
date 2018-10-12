@@ -535,7 +535,8 @@ class App extends Component {
         ],
       },
       paint: {
-        'text-opacity': .75,
+        'text-color': '#5301a4',
+        'text-opacity': .9,
         'text-halo-color': '#fff',
         'text-halo-width': 2,
       },
@@ -615,6 +616,7 @@ class App extends Component {
         'text-line-height': 1,
       },
       paint: {
+        'text-color': '#3f5711',
         'text-halo-color': 'rgba(255,255,255,.9)',
         'text-halo-width': 2,
         'text-opacity': ['case',
