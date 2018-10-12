@@ -721,9 +721,8 @@ class App extends Component {
     this.setState({ services: this.state.servicesDataArr });
   }
   _handleServicesScroll = () => {
-    this.setState({
-      expandSearch: true,
-    });
+    this.setState({ expandSearch: true });
+    $map.classList.add('fade-out');
   }
   _showStopPopover = (stop) => {
     const map = this.map;
