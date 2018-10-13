@@ -447,7 +447,7 @@ class App extends Component {
     // Bus service routes
     map.addSource('routes', {
       type: 'geojson',
-      tolerance: 1.5,
+      tolerance: 1,
       lineMetrics: true,
       data: {
         type: 'FeatureCollection',
@@ -547,7 +547,7 @@ class App extends Component {
     // Bus service routes (passing, overlapping)
     map.addSource('routes-path', {
       type: 'geojson',
-      tolerance: 1.5,
+      tolerance: 1,
       lineMetrics: true,
       data: {
         type: 'FeatureCollection',
@@ -612,7 +612,7 @@ class App extends Component {
         'symbol-spacing': 100,
         'text-font': ['DIN Offc Pro Medium', 'Open Sans Semibold', 'Arial Unicode MS Bold'],
         'text-field': '{service}',
-        'text-size': 10,
+        'text-size': 12,
         'text-rotation-alignment': 'viewport',
         'text-padding': 0,
         'text-line-height': 1,
@@ -620,7 +620,7 @@ class App extends Component {
       paint: {
         'text-color': '#3f5711',
         'text-halo-color': 'rgba(255,255,255,.9)',
-        'text-halo-width': 2,
+        'text-halo-width': 3,
         'text-opacity': ['case',
           ['boolean', ['feature-state', 'fadein'], false],
           .1,
