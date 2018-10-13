@@ -113,6 +113,7 @@ class App extends Component {
     this.state = {
       route: getRoute(),
       services: [],
+      searching: false,
       expandSearch: false,
       shrinkSearch: false,
       showStopPopover: false,
@@ -250,6 +251,7 @@ class App extends Component {
         });
       });
     });
+    servicesDataArr.sort((a, b) => sortServices(a.number, b.number));
 
     this.setState({ servicesData, stopsData, routesData, servicesDataArr });
 
@@ -703,14 +705,20 @@ class App extends Component {
     const { value } = e.target;
     if (value){
       const services = this._fuse.search(value);
-      this.setState({ services });
+      this.setState({
+        services,
+        searching: true,
+      });
       // Scroll to top, with hack for momentum scrolling
       // https://popmotion.io/blog/20170704-manually-set-scroll-while-ios-momentum-scroll-bounces/
       this._servicesList.style['-webkit-overflow-scrolling'] = 'auto';
       this._servicesList.scrollTop = 0;
       this._servicesList.style['-webkit-overflow-scrolling'] = null;
     } else {
-      this.setState({ services: this.state.servicesDataArr });
+      this.setState({
+        services: this.state.servicesDataArr,
+        searching: false,
+      });
     }
   }
   _handleSearchClose = () => {
@@ -1021,6 +1029,7 @@ class App extends Component {
     const {
       route,
       services,
+      searching,
       expandSearch,
       servicesData,
       stopsData,
@@ -1095,7 +1104,7 @@ class App extends Component {
                   </a>
                 </li>
               ))
-            ) : (
+            ) : !searching && (
               [1,2,3,4,5,6,7,8].map((s, i) => (
                 <li key={s}>
                   <a href="#">
