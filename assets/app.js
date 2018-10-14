@@ -1128,7 +1128,9 @@ class App extends Component {
               <BusServicesArrival id={showStopPopover.number} services={showStopPopover.services}/>
               <div class="popover-buttons">
                 <a href={`/bus-arrival/#${showStopPopover.number}`} target="_blank" onClick={this._openBusArrival} class="popover-button">Bus arrivals <img src={openNewWindowImagePath} width="16" height="16" alt=""/></a>
-                <a href={`#/stops/${showStopPopover.number}`} class="popover-button">Passing routes <img src={passingRoutesImagePath} width="16" height="16" alt=""/></a>
+                {showStopPopover.services.length > 1 && (
+                  <a href={`#/stops/${showStopPopover.number}`} class="popover-button">Passing routes <img src={passingRoutesImagePath} width="16" height="16" alt=""/></a>
+                )}
               </div>
             </div>
           ]}
