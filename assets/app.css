@@ -43,6 +43,13 @@ a:active {
 .mapboxgl-ctrl-group button {
   opacity: .8;
 }
+.mapboxgl-ctrl-attrib.mapboxgl-compact {
+  min-height: 24px;
+  margin-top: 5px;
+}
+.mapboxgl-ctrl-attrib.mapboxgl-compact:not(:hover) {
+  background-color: transparent;
+}
 
 #logo {
   position: fixed;
