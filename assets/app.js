@@ -731,6 +731,7 @@ class App extends Component {
     this.setState({ services: this.state.servicesDataArr });
   }
   _handleServicesScroll = () => {
+    if (this.state.expandSearch) return;
     this.setState({ expandSearch: true });
     $map.classList.add('fade-out');
   }
