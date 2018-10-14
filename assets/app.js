@@ -331,7 +331,7 @@ class App extends Component {
       paint: {
         'text-color': '#f01b48',
         'text-halo-width': 1,
-        'text-halo-color': '#fff',
+        'text-halo-color': 'rgba(255,255,255,.9)',
       },
     };
 
@@ -523,7 +523,7 @@ class App extends Component {
         'symbol-placement': 'line',
         'symbol-spacing': 100,
         'text-field': '→',
-        'text-size': 24,
+        'text-size': 26,
         'text-allow-overlap': true,
         'text-ignore-placement': true,
         'text-keep-upright': false,
@@ -599,7 +599,7 @@ class App extends Component {
           'transparent',
           '#fff'
         ],
-        'line-width': 8,
+        'line-width': 6,
       },
     }, 'routes-path');
 
@@ -619,8 +619,8 @@ class App extends Component {
       },
       paint: {
         'text-color': '#3f5711',
-        'text-halo-color': 'rgba(255,255,255,.9)',
-        'text-halo-width': 3,
+        'text-halo-color': '#eeffd1',
+        'text-halo-width': 2,
         'text-opacity': ['case',
           ['boolean', ['feature-state', 'fadein'], false],
           .1,
