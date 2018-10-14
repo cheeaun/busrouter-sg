@@ -36,7 +36,7 @@ a:active {
 .mapboxgl-ctrl-attrib {
   margin-top: 5px !important;
 }
-.mapboxgl-ctrl-group {
+.mapboxgl-ctrl {
   background-color: rgba(255,255,255,.5);
   backdrop-filter: blur(10px) saturate(3);
 }
@@ -483,5 +483,31 @@ a.service-tag:hover {
   .float-pill {
     right: 0;
     margin-left: 0;
+  }
+}
+
+@media (min-width: 640px) {
+  .mapboxgl-ctrl-logo {
+    position: fixed;
+    left: 10px;
+    bottom: 34px;
+  }
+  .mapboxgl-ctrl-attrib {
+    position: fixed !important;
+    left: 0;
+    bottom: 0;
+    margin: 0 !important;
+    background-color: rgba(255,255,255,.5) !important;
+    padding: 2px 10px !important;
+  }
+  .mapboxgl-ctrl-attrib > a {
+    display: inline !important;
+  }
+  .mapboxgl-ctrl-attrib:after {
+    content: '' !important;
+    display: none !important;
+  }
+  .mapboxgl-ctrl-top-right .mapboxgl-ctrl:first-child {
+    margin: 0 !important;
   }
 }
