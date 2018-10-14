@@ -12,27 +12,35 @@ const BUSES = {
   sd: {
     alt: 'Single deck bus',
     src: busSingleImagePath,
-    width: 16,
+    width: 18,
   },
   dd: {
     alt: 'Double deck bus',
     src: busDoubleImagePath,
-    width: 16,
+    width: 18,
   },
   bd: {
     alt: 'Bendy bus',
     src: busBendyImagePath,
-    width: 21,
+    width: 24,
   },
-};
-const busDisplay = (type) => {
-  const bus = BUSES[type.toLowerCase()];
-  return <img {...bus}/>;
 };
 
 const WheelChair = () => (
   <img src={wheelchairImagePath} width="10" height="10" alt="Wheelchair accessible"/>
 );
+
+const Bus = (props) => {
+  const { duration_ms, type, load, feature } = props;
+  const busImage = BUSES[type.toLowerCase()];
+  return (
+    <span class="bus" style={{transform: `translateX(${Math.max(0, duration_ms/1000/60)*10}px)`}}>
+      <img {...busImage}/><br/>
+      <span class={`time-${load.toLowerCase()}`}>{timeDisplay(duration_ms)}</span>
+      {feature.toLowerCase() === 'wab' && <WheelChair/>}
+    </span>
+  );
+};
 
 let arrivalsTimeout;
 class ArrivalTimes extends Component {
@@ -94,7 +102,6 @@ class ArrivalTimes extends Component {
       }, 15*1000); // 15 seconds
     });
   }
-  _pinnedServices = []
   _togglePin = (no) => {
     const { pinnedServices } = this.state;
     if (pinnedServices.includes(no)){
@@ -150,13 +157,7 @@ class ArrivalTimes extends Component {
                     <td class="bus-lane-cell">
                       <div class="bus-lane">
                         {[next, next2, next3].map((n, i) => (
-                          n.duration_ms ? (
-                            <span class="bus" style={{transform: `translateX(${Math.max(0, n.duration_ms/1000/60)*10}px)`}}>
-                              {busDisplay(n.type)}<br/>
-                              <span class={`time-${n.load.toLowerCase()}`}>{timeDisplay(n.duration_ms)}</span>
-                              {n.feature.toLowerCase() === 'wab' && <WheelChair/>}
-                            </span>
-                          ) : null
+                          n.duration_ms ? <Bus {...n}/> : null
                         ))}
                       </div>
                     </td>
