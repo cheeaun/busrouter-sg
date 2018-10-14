@@ -19,6 +19,6 @@ export const sortServicesPinned = (pinnedServices) => (a, b) => {
   } else if (pinB && !pinA){
     return 1;
   } else {
-    return sortServices(a, b);
+    return sortServices(a.no, b.no);
   }
 };
