@@ -286,7 +286,7 @@ class App extends Component {
 
     map.addSource('stops', {
       type: 'geojson',
-      tolerance: 3.5,
+      tolerance: 10,
       data: {
         type: 'FeatureCollection',
         features: stopsDataArr.map(stop => ({
@@ -353,7 +353,7 @@ class App extends Component {
         ],
         'icon-padding': .5,
         'icon-allow-overlap': true,
-        'icon-ignore-placement': true,
+        // 'icon-ignore-placement': true,
         ...stopText.layout,
       },
       paint: stopText.paint,
@@ -425,7 +425,7 @@ class App extends Component {
         'icon-anchor': ['case', ['==', ['get', 'type'], 'end'], 'bottom', 'center'],
         'icon-padding': .5,
         'icon-allow-overlap': true,
-        'icon-ignore-placement': true,
+        // 'icon-ignore-placement': true,
         ...stopText.layout,
       },
       paint: {
