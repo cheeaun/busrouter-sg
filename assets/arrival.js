@@ -34,7 +34,7 @@ const Bus = (props) => {
   const { duration_ms, type, load, feature } = props;
   const busImage = BUSES[type.toLowerCase()];
   return (
-    <span class="bus" style={{transform: `translateX(${Math.max(0, duration_ms/1000/60)*10}px)`}}>
+    <span class="bus" style={{transform: `translateX(${(duration_ms/1000/60)*10}px)`}}>
       <img {...busImage}/><br/>
       <span class={`time-${load.toLowerCase()}`}>{timeDisplay(duration_ms)}</span>
       {feature.toLowerCase() === 'wab' && <WheelChair/>}

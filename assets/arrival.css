@@ -11,6 +11,7 @@ main {
   box-shadow: 0 0 100px rgba(0,0,0,.1);
   background-color: #fff;
   min-height: 100vh;
+  overflow: hidden;
 }
 
 .stops-list {
@@ -107,7 +108,9 @@ table tbody {
 }
 table tbody th{
   width: 5ex;
-  cursor: pointer;
+  z-index: 10;
+  position: relative;
+  background-color: rgba(255,255,255,.5);
 }
 table tbody tr:nth-child(2n) {
   background-color: #fafafa;
@@ -117,6 +120,7 @@ table tbody tr.pin {
 }
 table tbody th:hover,
 table tbody tr.pin th {
+  cursor: pointer;
   color: darkorange;
 }
 tfoot {
@@ -182,7 +186,6 @@ footer {
   }
   main {
     max-width: 800px;
-    overflow: hidden;
     min-height: auto;
   }
   header, table {
@@ -217,7 +220,6 @@ footer {
 .bus-lane {
   position: relative;
   height: 1.7em;
-  overflow: hidden;
 }
 .bus-lane .bus {
   left: 0;
