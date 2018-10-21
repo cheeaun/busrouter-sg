@@ -348,7 +348,7 @@ class App extends Component {
         ],
         'icon-size': [
           'interpolate', ['linear'], ['zoom'],
-          10, .05,
+          10, .1,
           15, .6
         ],
         'icon-padding': .5,
@@ -425,8 +425,15 @@ class App extends Component {
         'icon-anchor': ['case', ['==', ['get', 'type'], 'end'], 'bottom', 'center'],
         'icon-padding': .5,
         'icon-allow-overlap': true,
-        // 'icon-ignore-placement': true,
+        'icon-ignore-placement': true,
         ...stopText.layout,
+        'text-field': [
+          'step', ['zoom'],
+          ['case', ['==', ['get', 'type'], 'end'], ['concat', ['get', 'number'], '\n', ['get', 'name']], ''],
+          14, ['case', ['==', ['get', 'type'], 'end'], ['concat', ['get', 'number'], '\n', ['get', 'name']], ['get', 'number']],
+          16, ['concat', ['get', 'number'], '\n', ['get', 'name']]
+        ],
+        'text-offset': ['case', ['==', ['get', 'type'], 'end'], ['literal', [1, -1.8]], ['literal', [1, -.6]]],
       },
       paint: {
         'icon-opacity': [
