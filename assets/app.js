@@ -109,6 +109,25 @@ const raqScrollTop = () => {
   raqST = requestAnimationFrame(raqScrollTop);
 };
 
+const $tooltip = document.getElementById('tooltip');
+function showStopTooltip(data){
+  $tooltip.innerHTML = `<span class="stop-tag">${data.number}</span> ${data.name}`;
+  $tooltip.classList.add('show');
+  $tooltip.style.top = data.y + 'px';
+  const winWidth = window.innerWidth;
+  const x = data.x;
+  if (x > (winWidth - $tooltip.offsetWidth - 5)){
+    $tooltip.style.left = '';
+    $tooltip.style.right = '5px';
+  } else {
+    $tooltip.style.left = (x-5) + 'px';
+    $tooltip.style.right = '';
+  }
+}
+function hideStopTooltip(){
+  $tooltip.classList.remove('show');
+}
+
 class App extends Component {
   constructor(){
     super();
@@ -386,6 +405,17 @@ class App extends Component {
           source: 'stops',
           id: hoveredStopID,
         }, { hover: true });
+
+        if (map.getZoom() <= 16) {
+          const { point } = e;
+          const data = stopsData[decode(hoveredStopID)];
+          showStopTooltip({
+            ...data,
+            ...point,
+          });
+        }
+      } else {
+        hideStopTooltip();
       }
     });
     map.on('mouseleave', 'stops', () => {
@@ -397,7 +427,9 @@ class App extends Component {
         }, { hover: false });
         hoveredStopID = null;
       }
+      hideStopTooltip();
     });
+    map.on('movestart', hideStopTooltip);
 
     map.addSource('stops-highlight', {
       type: 'geojson',
