@@ -1,6 +1,7 @@
 import { h, render, Component } from 'preact';
 import { toGeoJSON } from '@mapbox/polyline';
 import Fuse from 'fuse.js';
+import intersect from 'just-intersect';
 import { encode, decode } from '../utils/specialID';
 import { timeDisplay, sortServices } from '../utils/bus';
 import { MAPBOX_ACCESS_TOKEN } from './config';
@@ -41,7 +42,7 @@ try {
 const getRoute = () => {
   const path = location.hash.replace(/^#/, '') || '/';
   if (path === '/') return { page: 'home' };
-  let [_, page, value] = path.match(/(service|stop)s\/([^\/]+)/) || [];
+  let [_, page, value] = path.match(/(service|stop|between)s?\/([^\/]+)/) || [];
   return { page, value, path };
 };
 
@@ -254,7 +255,7 @@ class App extends Component {
     });
     servicesDataArr.sort((a, b) => sortServices(a.number, b.number));
 
-    this.setState({ servicesData, stopsData, routesData, servicesDataArr });
+    this.setState({ servicesData, stopsData, stopsDataArr, routesData, servicesDataArr });
 
     map.addSource('stop-selected', {
       type: 'geojson',
@@ -850,7 +851,7 @@ class App extends Component {
 		window.open(e.target.href, 'busArrivals'+(new Date()), `width=${width},height=${height},menubar=0,toolbar=0,top=${top},left=${left}`);
   }
   _renderRoute = () => {
-    const { servicesData, stopsData, routesData, route } = this.state;
+    const { servicesData, stopsData, stopsDataArr, routesData, route } = this.state;
     const map = this.map;
     console.log('Route', route);
 
@@ -1022,6 +1023,107 @@ class App extends Component {
             left: 40,
           },
         });
+        break;
+      }
+      case 'between': {
+        const coords = route.value;
+        const [startStopNumber, endStopNumber] = coords.split(/[,-]/).map(String);
+        console.log(startStopNumber, endStopNumber);
+        // Reset
+        this.setState({
+          expandSearch: false,
+          shrinkSearch: true,
+        });
+
+        // Hide all stops
+        map.setLayoutProperty('stops', 'visibility', 'none');
+
+        function findRoutesBetween(startStopNumber, endStopNumber){
+          const results = [];
+          const startStop = stopsData[startStopNumber];
+          const endStop = stopsData[endStopNumber];
+
+          const endServicesStops = endStop.routes.map(route => {
+            const [service, routeIndex] = route.split('-');
+            let serviceStops = servicesData[service].routes[routeIndex];
+            serviceStops = serviceStops.slice(0, serviceStops.indexOf(endStopNumber)+1);
+            return { service, stops: serviceStops, route };
+          });
+
+          startStop.routes.forEach(route => {
+            const [service, routeIndex] = route.split('-');
+            let serviceStops = servicesData[service].routes[routeIndex];
+            serviceStops = serviceStops.slice(serviceStops.indexOf(startStopNumber));
+
+            // This service already can go straight to the end stop,
+            // there's no need to find any connections from end stop
+            if (serviceStops.includes(endStopNumber)){
+              results.push({
+                startService: service,
+                startRoute: route,
+                stopsBetween: [],
+              });
+            } else {
+              endServicesStops.forEach(({ service:s, stops, route:r}) => {
+                // console.log(serviceStops, stops);
+                const intersectedStops = intersect(stops, serviceStops);
+                if (intersectedStops.length){
+                  const startIndex = intersectedStops.indexOf(startStopNumber);
+                  if (startIndex > -1) intersectedStops.splice(startIndex, 1);
+                  const endIndex = intersectedStops.indexOf(endStopNumber);
+                  if (endIndex > -1) intersectedStops.splice(endIndex, 1);
+
+                  results.push({
+                    startService: service,
+                    startRoute: route,
+                    stopsBetween: intersectedStops,
+                    endService: s,
+                    endRoute: r,
+                  });
+                }
+              });
+            }
+          });
+
+          return results;
+        };
+
+        function getDistance(x1, y1, x2, y2){
+          let xs = x2 - x1;
+          let ys = y2 - y1;
+          xs *= xs;
+          ys *= ys;
+          return Math.sqrt(xs + ys);
+        };
+
+        function findNearestStops(stopNumber){
+          const stop = stopsData[stopNumber];
+          let distance = Infinity;
+          let nearestStop = null;
+          for (let i=0, l=stopsDataArr.length; i<l; i++){
+            const s = stopsDataArr[i];
+            if (s.number !== stopNumber){
+              const d = getDistance(...stop.coordinates, ...s.coordinates);
+              if (d < distance){
+                distance = d;
+                nearestStop = s;
+              }
+            }
+          }
+          return nearestStop.number;
+        };
+
+        let results = findRoutesBetween(startStopNumber, endStopNumber);
+        console.log(1, startStopNumber, endStopNumber, results);
+        const nearestEndStopNumber = findNearestStops(endStopNumber);
+        results = findRoutesBetween(startStopNumber, nearestEndStopNumber);
+        console.log(2, startStopNumber, nearestEndStopNumber, results);
+        const nearestStartStopNumber = findNearestStops(startStopNumber);
+        results = findRoutesBetween(nearestStartStopNumber, endStopNumber);
+        console.log(3, nearestStartStopNumber, endStopNumber, results);
+        results = findRoutesBetween(nearestStartStopNumber, nearestEndStopNumber);
+        console.log(4, results);
+
         break;
       }
       default: {
