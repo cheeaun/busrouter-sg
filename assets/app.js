@@ -392,6 +392,7 @@ class App extends Component {
         this._hideStopPopover();
       }
     });
+    const supportsHover = window.matchMedia && window.matchMedia('(hover: hover)').matches;
     map.on('mousemove', 'stops', (e) => {
       if (e.features.length){
         if (hoveredStopID){
@@ -406,7 +407,7 @@ class App extends Component {
           id: hoveredStopID,
         }, { hover: true });
 
-        if (map.getZoom() <= 16) {
+        if (supportsHover && map.getZoom() <= 16) {
           const { point } = e;
           const data = stopsData[decode(hoveredStopID)];
           showStopTooltip({
