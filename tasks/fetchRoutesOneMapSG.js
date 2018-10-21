@@ -2,7 +2,6 @@ const fs = require('fs');
 const got = require('got');
 const { decode } = require('@mapbox/polyline');
 
-const stops = JSON.parse(fs.readFileSync('data/3/stops2.json'));
 const serviceStops = JSON.parse(fs.readFileSync('data/3/serviceStops.json'));
 
 const TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMsInVzZXJfaWQiOjMsImVtYWlsIjoicHVibGljQXBpUm9sZUBzbGEuZ292LnNnIiwiZm9yZXZlciI6ZmFsc2UsImlzcyI6Imh0dHA6XC9cL29tMi5kZmUub25lbWFwLnNnXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNTMxNDU0ODUxLCJleHAiOjE1MzE4ODY4NTEsIm5iZiI6MTUzMTQ1NDg1MSwianRpIjoiYWFjMTI1MzRlMWI5ZDM0MWUwNjg4NWRmZjlhY2QwMGIifQ.vVhsYedCV6FGBcfh_iDFBgYrsP-TXA8mLEcTtsHIgKk';

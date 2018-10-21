@@ -42,6 +42,8 @@ for (let i=0, l=services.length; i<l; i++){
   });
 
   serviceStops[service.no] = routeStops.map(rs => rs.filter(Boolean));
+
+  await new Promise(res => setTimeout(res, 1000));
 }
 
 let filePath = 'data/3/serviceStops.json';

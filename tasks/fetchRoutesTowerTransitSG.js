@@ -1,7 +1,6 @@
 const fs = require('fs');
 const got = require('got');
 
-const stops = JSON.parse(fs.readFileSync('data/3/stops2.json'));
 const serviceStops = JSON.parse(fs.readFileSync('data/3/serviceStops.json'));
 
 (async() => {
@@ -17,13 +16,13 @@ while ((matches = re.exec(body)) !== null){
 let runCount = 1;
 for (let i=0, l=services.length; i<l; i++){
   const service = services[i];
-  try {
-    try {
-      fs.accessSync(`data/3/routes/mytransportsg/${service}.json`);
-    } catch (e){
-      fs.accessSync(`data/3/routes/towertransitsg/${service}.json`);
-    }
-  } catch (e) {
+  // try {
+  //   try {
+  //     fs.accessSync(`data/3/routes/mytransportsg/${service}.json`);
+  //   } catch (e){
+  //     fs.accessSync(`data/3/routes/towertransitsg/${service}.json`);
+  //   }
+  // } catch (e) {
     console.log(`${runCount++})  🚌  ${service}`);
     const routes = serviceStops[service];
     if (!routes) continue;
@@ -46,12 +45,13 @@ for (let i=0, l=services.length; i<l; i++){
       }
     }
 
-    if (serviceRoutes.length == routes.length){
+    // if (serviceRoutes.length == routes.length){
+    if (serviceRoutes.length){
       const filePath = `data/3/routes/towertransitsg/${service}.json`;
       fs.writeFileSync(filePath, JSON.stringify(serviceRoutes, null, '\t'));
       console.log(`Generated ${filePath}`);
     }
-  }
+  // }
 }
 
 })();

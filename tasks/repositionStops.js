@@ -79,23 +79,29 @@ allStops.forEach(s => {
     };
   }
 
-  const shortestOSMDistance = OSMdistances[0] || {};
+  const shortestOSMDistance = OSMdistances[0] || { distance: Infinity };
   if (shortestOSMDistance.distance || OneMapDistance.distance){
     let shortestDistance;
-    if (shortestOSMDistance.distance <= 0){
-      shortestDistance = OneMapDistance;
-    } else if (OneMapDistance.distance <= 0){
+    if (OneMapDistance.distance <= 0){
       shortestDistance = shortestOSMDistance;
+    } else if (shortestOSMDistance.distance <= 0){
+      shortestDistance = OneMapDistance;
     } else if (shortestOSMDistance.distance > OneMapDistance.distance){
       shortestDistance = OneMapDistance;
     } else if (OneMapDistance.distance > shortestOSMDistance.distance){
       shortestDistance = shortestOSMDistance;
     }
-    if (shortestDistance && shortestDistance.distance >= 1 && shortestDistance.distance <= 80){ // 1-min walk distance, meters
+    if (!shortestDistance || !isFinite(shortestDistance.distance)) return;
+    const maxDistance = 80*5; // 5-min walk distance, meters
+    if (shortestDistance.distance >= 1 && shortestDistance.distance <= maxDistance){
       console.log(`${++finalCount}\) Reposition distance for stop ${s}: ${shortestDistance.distance.toFixed(3)} m`);
       stops[s].lng = shortestDistance.coordinates[0];
       stops[s].lat = shortestDistance.coordinates[1];
       changedStops.push(s);
+    } else if (shortestDistance.distance > maxDistance){
+      console.log(`😱  Stop ${s} is too far: ${shortestDistance.distance.toFixed(3)} m`);
+    } else {
+      // console.log(`Ignored: ${s} - ${shortestOSMDistance.distance} || ${OneMapDistance.distance}`);
     }
   }
 });

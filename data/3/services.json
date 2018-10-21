@@ -770,6 +770,16 @@
 		"category": "Trunk Bus Services"
 	},
 	{
+		"no": "96A",
+		"routes": 1,
+		"category": "Trunk Bus Services"
+	},
+	{
+		"no": "96B",
+		"routes": 1,
+		"category": "Trunk Bus Services"
+	},
+	{
 		"no": "97",
 		"routes": 2,
 		"category": "Trunk Bus Services"
@@ -1410,13 +1420,13 @@
 		"category": "Trunk Bus Services"
 	},
 	{
-		"no": "188E",
-		"routes": 1,
+		"no": "188R",
+		"routes": 2,
 		"category": "Trunk Bus Services"
 	},
 	{
-		"no": "188R",
-		"routes": 2,
+		"no": "188e",
+		"routes": 1,
 		"category": "Trunk Bus Services"
 	},
 	{
@@ -1690,7 +1700,7 @@
 		"category": "Trunk Bus Services"
 	},
 	{
-		"no": "854E",
+		"no": "854e",
 		"routes": 1,
 		"category": "Trunk Bus Services"
 	},
@@ -1755,7 +1765,7 @@
 		"category": "Trunk Bus Services"
 	},
 	{
-		"no": "868",
+		"no": "868E",
 		"routes": 1,
 		"category": "Trunk Bus Services"
 	},
@@ -1840,12 +1850,12 @@
 		"category": "Trunk Bus Services"
 	},
 	{
-		"no": "963E",
+		"no": "963R",
 		"routes": 2,
 		"category": "Trunk Bus Services"
 	},
 	{
-		"no": "963R",
+		"no": "963e",
 		"routes": 2,
 		"category": "Trunk Bus Services"
 	},
@@ -1930,11 +1940,6 @@
 		"category": "Trunk Bus Services"
 	},
 	{
-		"no": "979M",
-		"routes": 1,
-		"category": "Trunk Bus Services"
-	},
-	{
 		"no": "980",
 		"routes": 2,
 		"category": "Trunk Bus Services"
@@ -1955,12 +1960,32 @@
 		"category": "Trunk Bus Services"
 	},
 	{
+		"no": "983A",
+		"routes": 1,
+		"category": "Trunk Bus Services"
+	},
+	{
 		"no": "985",
 		"routes": 2,
 		"category": "Trunk Bus Services"
 	},
 	{
 		"no": "990",
+		"routes": 1,
+		"category": "Trunk Bus Services"
+	},
+	{
+		"no": "991",
+		"routes": 2,
+		"category": "Trunk Bus Services"
+	},
+	{
+		"no": "991A",
+		"routes": 1,
+		"category": "Trunk Bus Services"
+	},
+	{
+		"no": "991B",
 		"routes": 1,
 		"category": "Trunk Bus Services"
 	},
@@ -2190,11 +2215,6 @@
 		"category": "Feeder Bus Services"
 	},
 	{
-		"no": "308",
-		"routes": 1,
-		"category": "Feeder Bus Services"
-	},
-	{
 		"no": "315",
 		"routes": 1,
 		"category": "Feeder Bus Services"
@@ -2346,7 +2366,7 @@
 	},
 	{
 		"no": "812",
-		"routes": 2,
+		"routes": 1,
 		"category": "Feeder Bus Services"
 	},
 	{

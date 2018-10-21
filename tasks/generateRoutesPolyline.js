@@ -35,6 +35,7 @@ const encodeRoute = (lngLatCoords) => {
 };
 
 services.forEach(({ no:service }) => {
+  console.log('service', service);
   const routes =
     readFile(`data/3/routes/mytransportsg/${service}.json`) ||
     readFile(`data/3/routes/towertransitsg/${service}.json`) ||
