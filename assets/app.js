@@ -810,8 +810,8 @@ class App extends Component {
       },
     }, () => {
       const offset = BREAKPOINT() ? [0, 0] : [0, -this._stopPopover.offsetHeight/2];
-      if (zoom < 15){
-        map.flyTo({ zoom: 15, center, offset });
+      if (zoom < 16){
+        map.flyTo({ zoom: 16, center, offset });
       } else {
         map.easeTo({ center, offset });
       }
