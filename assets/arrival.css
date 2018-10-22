@@ -176,17 +176,16 @@ footer {
 }
 
 @media (min-width: 720px) {
-  html, body {
-    height: 100%;
-  }
   body {
-    display: flex;
-    align-content: center;
-    align-items: center;
+    display: grid;
+    height: 100vh;
+    margin: 0;
+    grid-template-rows: 1fr min-content 1fr;
   }
   main {
     max-width: 800px;
     min-height: auto;
+    grid-row: 2;
   }
   header, table {
     width: 50%;
