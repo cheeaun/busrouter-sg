@@ -21,6 +21,7 @@ const APP_NAME = 'BusRouter SG';
 const $map = document.getElementById('map');
 const STORE = {};
 const BREAKPOINT = () => window.innerWidth > 640 && window.innerHeight > 640;
+const supportsHover = window.matchMedia && window.matchMedia('(hover: hover)').matches;
 
 mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
 
@@ -379,7 +380,6 @@ class App extends Component {
       paint: stopText.paint,
     }, 'place-neighbourhood');
 
-    let hoveredStopID;
     map.on('mouseenter', 'stops', () => {
       map.getCanvas().style.cursor = 'pointer';
     });
@@ -392,42 +392,21 @@ class App extends Component {
         this._hideStopPopover();
       }
     });
-    const supportsHover = window.matchMedia && window.matchMedia('(hover: hover)').matches;
-    map.on('mousemove', 'stops', (e) => {
-      if (e.features.length){
-        if (hoveredStopID){
-          map.setFeatureState({
-            source: 'stops',
-            id: hoveredStopID,
-          }, { hover: false });
-        }
-        hoveredStopID = e.features[0].id;
-        map.setFeatureState({
-          source: 'stops',
-          id: hoveredStopID,
-        }, { hover: true });
-
-        if (supportsHover && map.getZoom() <= 16) {
-          const { point } = e;
-          const data = stopsData[decode(hoveredStopID)];
-          showStopTooltip({
-            ...data,
-            ...point,
-          });
-        }
+    if (supportsHover) map.on('mousemove', 'stops', (e) => {
+      if (e.features.length && map.getZoom() <= 16){
+        const stopID = decode(e.features[0].id);
+        const { point } = e;
+        const data = stopsData[stopID];
+        showStopTooltip({
+          ...data,
+          ...point,
+        });
       } else {
         hideStopTooltip();
       }
     });
     map.on('mouseleave', 'stops', () => {
       map.getCanvas().style.cursor = '';
-      if (hoveredStopID){
-        map.setFeatureState({
-          source: 'stops',
-          id: hoveredStopID,
-        }, { hover: false });
-        hoveredStopID = null;
-      }
       hideStopTooltip();
     });
     map.on('movestart', hideStopTooltip);
@@ -482,8 +461,22 @@ class App extends Component {
     map.on('mouseenter', 'stops-highlight', () => {
       map.getCanvas().style.cursor = 'pointer';
     });
+    if (supportsHover) map.on('mousemove', 'stops-highlight', (e) => {
+      if (e.features.length && map.getZoom() <= 16){
+        const stopID = decode(e.features[0].id);
+        const { point } = e;
+        const data = stopsData[stopID];
+        showStopTooltip({
+          ...data,
+          ...point,
+        });
+      } else {
+        hideStopTooltip();
+      }
+    });
     map.on('mouseleave', 'stops-highlight', () => {
       map.getCanvas().style.cursor = '';
+      hideStopTooltip();
     });
 
     // Bus service routes
