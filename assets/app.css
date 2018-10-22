@@ -503,6 +503,12 @@ a.service-tag:hover {
   }
 }
 
+@media (min-height: 550px) {
+  #stop-popover {
+    max-height: 70vh;
+  }
+}
+
 @media (min-width: 640px) {
   .mapboxgl-ctrl-logo {
     position: fixed;
