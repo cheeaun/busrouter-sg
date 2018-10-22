@@ -728,6 +728,14 @@ class App extends Component {
 
     this._renderRoute();
   }
+  _handleKeys = (e) => {
+    const { services } = this.state;
+    if (/enter/i.test(e.key || e.code)){ // Enter
+      if (services.length){
+        location.hash = `#/services/${services[0].number}`;
+      }
+    }
+  }
   _handleSearchFocus = (e) => {
     this.setState({ expandSearch: true });
     $map.classList.add('fade-out');
@@ -1233,6 +1241,7 @@ class App extends Component {
               ref={c => this._searchField = c}
               onfocus={this._handleSearchFocus}
               oninput={this._handleSearch}
+              onkeydown={this._handleKeys}
             />
             <button type="button" onclick={this._handleSearchClose}>Cancel</button>
           </div>
