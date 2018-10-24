@@ -13,7 +13,7 @@
     "@turf/helpers": "~6.1.4",
     "@turf/length": "~6.0.2",
     "@turf/simplify": "~5.1.5",
-    "autoprefixer": "~9.1.5",
+    "autoprefixer": "~9.3.1",
     "cheerio": "~1.0.0-rc.2",
     "cpy-cli": "~2.0.0",
     "dotenv": "~6.1.0",
@@ -30,7 +30,8 @@
   },
   "dependencies": {
     "@babel/runtime": "~7.1.2",
-    "fuse.js": "~3.2.1",
+    "cheap-ruler": "~2.5.1",
+    "fuse.js": "~3.3.0",
     "just-intersect": "~3.1.0",
     "preact": "~8.3.1"
   }

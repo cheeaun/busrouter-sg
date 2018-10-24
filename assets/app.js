@@ -2,6 +2,7 @@ import { h, render, Component } from 'preact';
 import { toGeoJSON } from '@mapbox/polyline';
 import Fuse from 'fuse.js';
 import intersect from 'just-intersect';
+import cheapRuler from 'cheap-ruler';
 import { encode, decode } from '../utils/specialID';
 import { timeDisplay, sortServices } from '../utils/bus';
 import { MAPBOX_ACCESS_TOKEN } from './config';
@@ -22,6 +23,7 @@ const $map = document.getElementById('map');
 const STORE = {};
 const BREAKPOINT = () => window.innerWidth > 640 && window.innerHeight > 640;
 const supportsHover = window.matchMedia && window.matchMedia('(hover: hover)').matches;
+const ruler = cheapRuler(1.3);
 
 mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
 
@@ -129,6 +131,53 @@ function hideStopTooltip(){
   $tooltip.classList.remove('show');
 }
 
+function getWalkingMinutes(distance){ // meters
+  const walkingSpeed = 1.4; // meter/second
+  return Math.ceil(distance / walkingSpeed / 60);
+}
+
+function getDistance(x1, y1, x2, y2){
+  let xs = x2 - x1;
+  let ys = y2 - y1;
+  xs *= xs;
+  ys *= ys;
+  return Math.sqrt(xs + ys);
+};
+
+class BetweenRoutes extends Component {
+  render(props, state) {
+    const { results, nearbyStart, nearbyEnd, onClickRoute } = props;
+    if (!results.length){
+      return (<div class="between-block between-nada">😔 No routes available.</div>);
+    }
+
+    return (
+      <div class="between-block">
+        {results.map(result => {
+          const { stopsBetween } = result;
+          return (
+            <div class={`between-item ${nearbyStart ? 'nearby-start' : ''}  ${nearbyEnd ? 'nearby-end' : ''}`} onClick={(e) => onClickRoute(e, result)}>
+              <div class="between-inner">
+                <div class="between-services">
+                  <span class="start">{result.startService}</span>
+                  <span class="end">{result.endService}</span>
+                </div>
+                <div class="between-stops">
+                  <span class="start">{result.startStop.number}</span>
+                  <span class="betweens">
+                    {stopsBetween.length === 1 ? stopsBetween[0] : `${stopsBetween.length} stops`}
+                  </span>
+                  <span class="end">{result.endStop.number}</span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+}
+
 class App extends Component {
   constructor(){
     super();
@@ -139,6 +188,7 @@ class App extends Component {
       expandSearch: false,
       shrinkSearch: false,
       showStopPopover: false,
+      showBetweenPopover: false,
     };
     window.onhashchange = () => {
       this.setState({
@@ -251,11 +301,7 @@ class App extends Component {
         services: [],
         routes: [],
       };
-      stopsDataArr.push({
-        number,
-        name,
-        coordinates: [lng, lat],
-      });
+      stopsDataArr.push(stopsData[number]);
     });
 
     Object.keys(servicesData).forEach(number => {
@@ -719,6 +765,110 @@ class App extends Component {
       }
     });
 
+    // Between routes
+    map.addSource('routes-between', {
+      type: 'geojson',
+      tolerance: 1,
+      lineMetrics: true,
+      data: {
+        type: 'FeatureCollection',
+        features: [],
+      },
+    });
+
+    map.addLayer({
+      id: 'routes-between',
+      type: 'line',
+      source: 'routes-between',
+      filter: ['!=', ['get', 'type'], 'walk'],
+      layout: {
+        'line-cap': 'round',
+      },
+      paint: {
+        'line-color': ['match',
+          ['get', 'type'],
+          'start', '#f01b48',
+          'end', '#972FFE',
+          '#f01b48'
+        ],
+        'line-opacity': .7,
+        'line-width': [
+          'interpolate', ['linear'], ['zoom'],
+          12, 2,
+          16, 5,
+          22, 10
+        ],
+        'line-offset': [
+          'interpolate', ['linear'], ['zoom'],
+          12, 0,
+          16, -3,
+          22, ['*', ['zoom'], -3]
+        ],
+      },
+    }, labelLayerId);
+
+    map.addLayer({
+      id: 'routes-between-walk',
+      type: 'line',
+      source: 'routes-between',
+      filter: ['==', ['get', 'type'], 'walk'],
+      paint: {
+        'line-color': '#007aff',
+        'line-dasharray': [10, 10],
+        'line-opacity': .7,
+        'line-width': [
+          'interpolate', ['linear'], ['zoom'],
+          12, 2,
+          16, 5,
+          22, 10
+        ],
+      },
+    }, 'stops-highlight');
+
+    map.addLayer({
+      id: 'routes-between-bg',
+      type: 'line',
+      source: 'routes-between',
+      layout: {
+        'line-cap': 'round',
+      },
+      maxzoom: 14,
+      paint: {
+        'line-color': '#fff',
+        'line-width': 6,
+      },
+    }, 'routes-between');
+
+    map.addLayer({
+      id: 'route-between-arrows',
+      type: 'symbol',
+      source: 'routes-between',
+      minzoom: 12,
+      layout: {
+        'symbol-placement': 'line',
+        'symbol-spacing': 100,
+        'text-field': '→',
+        'text-size': 26,
+        'text-allow-overlap': true,
+        'text-ignore-placement': true,
+        'text-keep-upright': false,
+        'text-anchor': 'bottom',
+        'text-padding': 0,
+        'text-line-height': 1,
+        'text-offset': [
+          'interpolate', ['linear'], ['zoom'],
+          12, ['literal', [0, 0]],
+          22, ['literal', [0, -2]]
+        ],
+      },
+      paint: {
+        'text-color': '#5301a4',
+        'text-opacity': .9,
+        'text-halo-color': '#fff',
+        'text-halo-width': 2,
+      },
+    });
+
     // Popover search field
     this._fuse = new Fuse(servicesDataArr, {
       threshold: .3,
@@ -884,6 +1034,102 @@ class App extends Component {
     const left = (screen.width - width) / 2;
 		window.open(e.target.href, 'busArrivals'+(new Date()), `width=${width},height=${height},menubar=0,toolbar=0,top=${top},left=${left}`);
   }
+  _showBetweenPopover = (data) => {
+    this.setState({
+      shrinkSearch: true,
+      showBetweenPopover: data,
+    }, () => {
+      // Auto-select first result
+      const firstResult = this._betweenPopover.querySelector('.between-item');
+      firstResult.click();
+    });
+  }
+  _renderBetweenRoute = ({ e, startStop, endStop, result }) => {
+    const { target } = e;
+    [...target.parentElement.children].forEach(el => {
+      if (el === target){
+        target.classList.add('selected');
+      } else {
+        el.classList.remove('selected')
+      }
+    });
+
+    const map = this.map;
+    const { stopsData, routesData } = this.state;
+    const stops = [{...startStop, end: true}, {...endStop, end: true}];
+    if (result.startStop.number != startStop.number) stops.push({...result.startStop, end: true});
+    if (result.endStop.number != endStop.number) stops.push({...result.endStop, end: true});
+    if (result.stopsBetween.length){
+      result.stopsBetween.forEach(number => stops.push(stopsData[number]));
+    }
+
+    // Render stops
+    map.getSource('stops-highlight').setData({
+      type: 'FeatureCollection',
+      features: stops.map(stop => ({
+        type: 'Feature',
+        id: encode(stop.number),
+        properties: {
+          name: stop.name,
+          number: stop.number,
+          type: stop.end ? 'end' : null,
+        },
+        geometry: {
+          type: 'Point',
+          coordinates: stop.coordinates,
+        },
+      })),
+    });
+
+    requestAnimationFrame(() => {
+      // Render routes
+      const geometries = [result.startRoute, result.endRoute].map(route => {
+        const [service, index] = route.split('-')
+        return toGeoJSON(routesData[service][index]);
+      });
+      if (result.startStop.number != startStop.number){
+        geometries.push({
+          type: 'LineString',
+          coordinates: [result.startStop.coordinates, startStop.coordinates],
+        });
+      };
+      if (result.endStop.number != endStop.number){
+        geometries.push({
+          type: 'LineString',
+          coordinates: [result.endStop.coordinates, endStop.coordinates],
+        });
+      };
+      map.getSource('routes-between').setData({
+        type: 'FeatureCollection',
+        features: geometries.map((geometry, i) => ({
+          type: 'Feature',
+          properties: {
+            type: i === 0 ? 'start' : i === 1 ? 'end' : 'walk',
+          },
+          geometry,
+        })),
+      });
+
+      // Fit map to stops bounds
+      const bounds = new mapboxgl.LngLatBounds();
+      stops.forEach(stop => {
+        bounds.extend(stop.coordinates);
+      });
+      map.fitBounds(bounds, {
+        padding: BREAKPOINT() ? {
+          top: 40,
+          right: this._betweenPopover.offsetWidth + 40,
+          bottom: 40,
+          left: 40,
+        } : {
+          top: 40,
+          right: 40,
+          bottom: this._betweenPopover.offsetHeight + 40,
+          left: 40,
+        },
+      });
+    });
+  }
   _renderRoute = () => {
     const { servicesData, stopsData, stopsDataArr, routesData, route } = this.state;
     const map = this.map;
@@ -893,12 +1139,14 @@ class App extends Component {
     $map.classList.remove('fade-out');
     this.setState({
       showStopPopover: false,
+      showBetweenPopover: false,
     });
     [
       'stops-highlight',
       'stop-selected',
       'routes',
       'routes-path',
+      'routes-between',
     ].forEach(source => {
       map.getSource(source).setData({
         type: 'FeatureCollection',
@@ -1072,26 +1320,24 @@ class App extends Component {
         // Hide all stops
         map.setLayoutProperty('stops', 'visibility', 'none');
 
-        function findRoutesBetween(startStopNumber, endStopNumber){
+        function findRoutesBetween(startStop, endStop){
           const results = [];
-          const startStop = stopsData[startStopNumber];
-          const endStop = stopsData[endStopNumber];
 
           const endServicesStops = endStop.routes.map(route => {
             const [service, routeIndex] = route.split('-');
             let serviceStops = servicesData[service].routes[routeIndex];
-            serviceStops = serviceStops.slice(0, serviceStops.indexOf(endStopNumber)+1);
+            serviceStops = serviceStops.slice(0, serviceStops.indexOf(endStop.number)+1);
             return { service, stops: serviceStops, route };
           });
 
           startStop.routes.forEach(route => {
             const [service, routeIndex] = route.split('-');
             let serviceStops = servicesData[service].routes[routeIndex];
-            serviceStops = serviceStops.slice(serviceStops.indexOf(startStopNumber));
+            serviceStops = serviceStops.slice(serviceStops.indexOf(startStop.number));
 
             // This service already can go straight to the end stop,
             // there's no need to find any connections from end stop
-            if (serviceStops.includes(endStopNumber)){
+            if (serviceStops.includes(endStop.number)){
               results.push({
                 startService: service,
                 startRoute: route,
@@ -1102,17 +1348,19 @@ class App extends Component {
                 // console.log(serviceStops, stops);
                 const intersectedStops = intersect(stops, serviceStops);
                 if (intersectedStops.length){
-                  const startIndex = intersectedStops.indexOf(startStopNumber);
+                  const startIndex = intersectedStops.indexOf(startStop.number);
                   if (startIndex > -1) intersectedStops.splice(startIndex, 1);
-                  const endIndex = intersectedStops.indexOf(endStopNumber);
+                  const endIndex = intersectedStops.indexOf(endStop.number);
                   if (endIndex > -1) intersectedStops.splice(endIndex, 1);
 
                   results.push({
+                    startStop,
                     startService: service,
                     startRoute: route,
                     stopsBetween: intersectedStops,
-                    endService: s,
                     endRoute: r,
+                    endService: s,
+                    endStop,
                   });
                 }
               });
@@ -1122,21 +1370,12 @@ class App extends Component {
           return results;
         };
 
-        function getDistance(x1, y1, x2, y2){
-          let xs = x2 - x1;
-          let ys = y2 - y1;
-          xs *= xs;
-          ys *= ys;
-          return Math.sqrt(xs + ys);
-        };
-
-        function findNearestStops(stopNumber){
-          const stop = stopsData[stopNumber];
+        function findNearestStops(stop){
           let distance = Infinity;
           let nearestStop = null;
           for (let i=0, l=stopsDataArr.length; i<l; i++){
             const s = stopsDataArr[i];
-            if (s.number !== stopNumber){
+            if (s.number !== stop.number){
               const d = getDistance(...stop.coordinates, ...s.coordinates);
               if (d < distance){
                 distance = d;
@@ -1144,19 +1383,28 @@ class App extends Component {
               }
             }
           }
-          return nearestStop.number;
+          return nearestStop;
         };
 
-        let results = findRoutesBetween(startStopNumber, endStopNumber);
-        console.log(1, startStopNumber, endStopNumber, results);
-        const nearestEndStopNumber = findNearestStops(endStopNumber);
-        results = findRoutesBetween(startStopNumber, nearestEndStopNumber);
-        console.log(2, startStopNumber, nearestEndStopNumber, results);
-        const nearestStartStopNumber = findNearestStops(startStopNumber);
-        results = findRoutesBetween(nearestStartStopNumber, endStopNumber);
-        console.log(3, nearestStartStopNumber, endStopNumber, results);
-        results = findRoutesBetween(nearestStartStopNumber, nearestEndStopNumber);
-        console.log(4, results);
+        const startStop = stopsData[startStopNumber];
+        const endStop = stopsData[endStopNumber];
+        const nearestEndStop = findNearestStops(endStop);
+        const nearestStartStop = findNearestStops(startStop);
+        console.log(startStop, endStop, nearestEndStop, nearestStartStop);
+        this._showBetweenPopover({
+          startStop,
+          endStop,
+          nearestStartStop,
+          nearestEndStop,
+          startWalkMins: getWalkingMinutes(ruler.distance(startStop.coordinates, nearestStartStop.coordinates) * 1000),
+          endWalkMins: getWalkingMinutes(ruler.distance(endStop.coordinates, nearestEndStop.coordinates) * 1000),
+          results: [
+            findRoutesBetween(startStop, endStop),
+            findRoutesBetween(startStop, nearestEndStop),
+            findRoutesBetween(nearestStartStop, endStop),
+            findRoutesBetween(nearestStartStop, nearestEndStop)
+          ],
+        });
 
         break;
       }
@@ -1184,6 +1432,7 @@ class App extends Component {
       stopsData,
       shrinkSearch,
       showStopPopover,
+      showBetweenPopover,
     } = state;
 
     return (
@@ -1265,6 +1514,48 @@ class App extends Component {
               ))
             )}
           </ul>
+        </div>
+        <div id="between-popover" ref={c => this._betweenPopover = c} class={`popover ${showBetweenPopover ? 'expand' : ''}`}>
+          {showBetweenPopover && [
+            <a href="#/" class="popover-close">&times;</a>,
+            <header>
+              <h1>
+                <small>Routes between</small><br/>
+                <b class="stop-tag">{showBetweenPopover.startStop.number}</b> and <b class="stop-tag">{showBetweenPopover.endStop.number}</b>
+              </h1>
+            </header>,
+            <div class="popover-scroll">
+              <h2>Direct routes</h2>
+              <BetweenRoutes results={showBetweenPopover.results[0]} onClickRoute={(e, result) => this._renderBetweenRoute({
+                e,
+                startStop: showBetweenPopover.startStop,
+                endStop: showBetweenPopover.endStop,
+                result,
+              })}/>
+              <h2>Alternative routes</h2>
+              <h3>Nearby arrival stop: {showBetweenPopover.nearestEndStop.number} ({showBetweenPopover.endWalkMins}-min walk)</h3>
+              <BetweenRoutes results={showBetweenPopover.results[1]} nearbyEnd={true} onClickRoute={(e, result) => this._renderBetweenRoute({
+                e,
+                startStop: showBetweenPopover.startStop,
+                endStop: showBetweenPopover.endStop,
+                result,
+              })}/>
+              <h3>Nearby departure stop: {showBetweenPopover.nearestStartStop.number} ({showBetweenPopover.startWalkMins}-min walk)</h3>
+              <BetweenRoutes results={showBetweenPopover.results[2]} nearbyStart={true} onClickRoute={(e, result) => this._renderBetweenRoute({
+                e,
+                startStop: showBetweenPopover.startStop,
+                endStop: showBetweenPopover.endStop,
+                result,
+              })}/>
+              <h3>Nearby departure &amp; arrival stops: {showBetweenPopover.nearestStartStop.number} - {showBetweenPopover.nearestEndStop.number}</h3>
+              <BetweenRoutes results={showBetweenPopover.results[3]} nearbyStart={true} nearbyEnd={true} onClickRoute={(e, result) => this._renderBetweenRoute({
+                e,
+                startStop: showBetweenPopover.startStop,
+                endStop: showBetweenPopover.endStop,
+                result,
+              })}/>
+            </div>
+          ]}
         </div>
         <div id="stop-popover" ref={c => this._stopPopover = c} class={`popover ${showStopPopover ? 'expand' : ''}`}>
           {showStopPopover && [
