@@ -230,9 +230,9 @@ footer {
   transition: all 1s;
   z-index: 3;
   filter: drop-shadow(1px 0 0 #fff) drop-shadow(1px -1px #fff);
-  animation: appear 3s both;
+  animation: show 3s both;
 }
-@keyframes appear {
+@keyframes show {
   0% {
     margin-left: 12px;
     opacity: 0;
