@@ -6,7 +6,7 @@ body {
 }
 
 main {
-  max-width: 420px;
+  max-width: 480px;
   margin: 0 auto;
   box-shadow: 0 0 100px rgba(0,0,0,.1);
   background-color: #fff;
@@ -111,6 +111,7 @@ table tbody th{
   z-index: 10;
   position: relative;
   background-color: rgba(255,255,255,.5);
+  cursor: pointer;
 }
 table tbody tr:nth-child(2n) {
   background-color: #fafafa;
@@ -118,10 +119,13 @@ table tbody tr:nth-child(2n) {
 table tbody tr.pin {
   background-color: lightyellow;
 }
-table tbody th:hover,
 table tbody tr.pin th {
-  cursor: pointer;
   color: darkorange;
+}
+@media (hover: hover) {
+  table tbody th:hover {
+    color: darkorange;
+  }
 }
 tfoot {
   font-size: 11px;
@@ -200,9 +204,6 @@ footer {
   table {
     float: right;
   }
-  #bus-stop-map:before {
-    animation: appear .3s .5s ease-in-out both;
-  }
 }
 
 .bus-lane-cell {
@@ -229,6 +230,26 @@ footer {
   transition: all 1s;
   z-index: 3;
   filter: drop-shadow(1px 0 0 #fff) drop-shadow(1px -1px #fff);
+  animation: appear 3s both;
+}
+@keyframes appear {
+  0% {
+    margin-left: 12px;
+    opacity: 0;
+  }
+  100% {
+    margin-left: 0;
+    opacity: 1;
+  }
+}
+.bus-lane .bus.left {
+  animation: left 3s both;
+}
+@keyframes left {
+  100% {
+    margin-left: -12px;
+    opacity: 0;
+  }
 }
 .bus-lane .bus + .bus {
   opacity: .75;

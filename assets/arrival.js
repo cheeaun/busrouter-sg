@@ -31,17 +31,61 @@ const WheelChair = () => (
 );
 
 const Bus = (props) => {
-  const { duration_ms, type, load, feature } = props;
+  const { duration_ms, type, load, feature, left } = props;
   const busImage = BUSES[type.toLowerCase()];
   const px = (duration_ms / 1000 / 60) * (duration_ms > 0 ? 10 : 2.5);
   return (
-    <span class="bus" style={{transform: `translateX(${px}px)`}}>
+    <span class={`bus ${left ? 'left' : ''}`} style={{transform: `translateX(${px}px)`}}>
       <img {...busImage}/><br/>
       <span class={`time-${load.toLowerCase()}`}>{timeDisplay(duration_ms)}</span>
       {feature.toLowerCase() === 'wab' && <WheelChair/>}
     </span>
   );
 };
+
+let BUSID = 0;
+const busID = () => BUSID++;
+
+class BusLane extends Component {
+  constructor(props) {
+    super(props);
+    const { buses } = props;
+    this.state = {
+      buses: buses.filter(b => typeof b.duration_ms === 'number').map(b => {
+        b._id = busID();
+        return b;
+      }),
+    };
+  }
+  componentWillReceiveProps(nextProps) {
+    const buses = this.state.buses.filter(b => !b.left);
+    const { buses: nextBuses } = nextProps;
+    const nBuses = nextBuses.filter(b => typeof b.duration_ms === 'number');
+    if (buses[0].duration_ms <= 30*1000 && nBuses[0].duration_ms > 60*1000){
+      nBuses.forEach((b, i) => {
+        const prevBus = buses[i+1];
+        b._id = (prevBus && prevBus._id) || busID();
+      });
+      const ghostBus = buses[0];
+      ghostBus.left = true;
+      nBuses.unshift(ghostBus);
+      // console.log(nBuses);
+    } else {
+      nBuses.forEach((b, i) => {
+        const prevBus = buses[i];
+        b._id = (prevBus && prevBus._id) || busID();
+      });
+    }
+    this.setState({ buses: nBuses });
+  }
+  render(_, state) {
+    return (
+      <div class="bus-lane">
+        {state.buses.map(b => <Bus key={b._id} {...b}/>)}
+      </div>
+    );
+  }
+}
 
 let arrivalsTimeout;
 class ArrivalTimes extends Component {
@@ -155,13 +199,12 @@ class ArrivalTimes extends Component {
                 const pinned = pinnedServices.includes(no);
                 return (
                   <tr class={pinned ? 'pin' : ''}>
-                    <th onClick={() => this._togglePin(no)}>{no}</th>
+                    <th onClick={(e) => {
+                      e.preventDefault();
+                      this._togglePin(no);
+                    }}>{no}</th>
                     <td class="bus-lane-cell">
-                      <div class="bus-lane">
-                        {[next, next2, next3].map((n, i) => (
-                          n.duration_ms ? <Bus {...n}/> : null
-                        ))}
-                      </div>
+                      <BusLane buses={[next, next2, next3]}/>
                     </td>
                   </tr>
                 );
