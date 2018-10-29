@@ -245,6 +245,7 @@ class App extends Component {
     });
 
     let labelLayerId;
+    const mapCanvas = map.getCanvas();
     map.once('styledata', () => {
       const layers = map.getStyle().layers;
       console.log(layers);
@@ -434,7 +435,7 @@ class App extends Component {
     }, 'place-neighbourhood');
 
     map.on('mouseenter', 'stops', () => {
-      map.getCanvas().style.cursor = 'pointer';
+      mapCanvas.style.cursor = 'pointer';
     });
     map.on('click', (e) => {
       const { point } = e;
@@ -491,7 +492,7 @@ class App extends Component {
       });
     }
     map.on('mouseleave', 'stops', () => {
-      map.getCanvas().style.cursor = '';
+      mapCanvas.style.cursor = '';
       hideStopTooltip();
     });
     map.on('movestart', hideStopTooltip);
@@ -544,10 +545,10 @@ class App extends Component {
     });
 
     map.on('mouseenter', 'stops-highlight', () => {
-      map.getCanvas().style.cursor = 'pointer';
+      mapCanvas.style.cursor = 'pointer';
     });
     map.on('mouseleave', 'stops-highlight', () => {
-      map.getCanvas().style.cursor = '';
+      mapCanvas.style.cursor = '';
     });
 
     // Bus service routes
@@ -737,7 +738,7 @@ class App extends Component {
 
     let hoveredRouteID;
     map.on('mouseenter', 'routes-path', () => {
-      map.getCanvas().style.cursor = 'pointer';
+      mapCanvas.style.cursor = 'pointer';
     });
     map.on('click', 'routes-path', (e) => {
       if (e.features.length) {
@@ -776,7 +777,7 @@ class App extends Component {
       }
     });
     map.on('mouseleave', 'routes-path', () => {
-      map.getCanvas().style.cursor = '';
+      mapCanvas.style.cursor = '';
       if (hoveredRouteID) {
         STORE.routesPathServices.forEach(service => {
           const id = encode(service);
