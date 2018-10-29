@@ -35,12 +35,12 @@ $closeAbout.onclick = $logo.onclick = () => {
   $about.hidden = !$about.hidden;
   try {
     localStorage.setItem('busroutersg.about', 'true');
-  } catch(e){}
+  } catch (e) { }
 }
 try {
   const intro = localStorage.getItem('busroutersg.about');
   if (intro !== 'true') $about.hidden = false;
-} catch(e){}
+} catch (e) { }
 
 const getRoute = () => {
   const path = location.hash.replace(/^#/, '') || '/';
@@ -54,11 +54,11 @@ class BusServicesArrival extends Component {
     isLoading: false,
     servicesArrivals: {},
   }
-  componentDidMount(){
+  componentDidMount() {
     this._fetchServices();
   }
-  componentDidUpdate(prevProps){
-    if (prevProps.id !== this.props.id){
+  componentDidUpdate(prevProps) {
+    if (prevProps.id !== this.props.id) {
       clearTimeout(this._arrivalsTimeout);
       this.setState({
         servicesArrivals: {},
@@ -80,13 +80,13 @@ class BusServicesArrival extends Component {
       });
       this._arrivalsTimeout = setTimeout(() => {
         requestAnimationFrame(this._fetchServices);
-      }, 15*1000); // 15 seconds
+      }, 15 * 1000); // 15 seconds
     });
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     clearTimeout(this._arrivalsTimeout);
   }
-  render(props, state){
+  render(props, state) {
     const { services } = props;
     const { isLoading, servicesArrivals } = state;
     const route = getRoute();
@@ -113,30 +113,23 @@ const raqScrollTop = () => {
 };
 
 const $tooltip = document.getElementById('tooltip');
-function showStopTooltip(data){
+function showStopTooltip(data) {
   $tooltip.innerHTML = `<span class="stop-tag">${data.number}</span> ${data.name}`;
   $tooltip.classList.add('show');
-  $tooltip.style.top = data.y + 'px';
-  const winWidth = window.innerWidth;
-  const x = data.x;
-  if (x > (winWidth - $tooltip.offsetWidth - 5)){
-    $tooltip.style.left = '';
-    $tooltip.style.right = '5px';
-  } else {
-    $tooltip.style.left = (x-5) + 'px';
-    $tooltip.style.right = '';
-  }
+  const { x, y: top } = data;
+  const left = Math.max(5, Math.min(window.innerWidth - $tooltip.offsetWidth - 5, x - 5));
+  $tooltip.style.transform = `translate(${left}px, ${top}px)`;
 }
-function hideStopTooltip(){
+function hideStopTooltip() {
   $tooltip.classList.remove('show');
 }
 
-function getWalkingMinutes(distance){ // meters
+function getWalkingMinutes(distance) { // meters
   const walkingSpeed = 1.4; // meter/second
   return Math.ceil(distance / walkingSpeed / 60);
 }
 
-function getDistance(x1, y1, x2, y2){
+function getDistance(x1, y1, x2, y2) {
   let xs = x2 - x1;
   let ys = y2 - y1;
   xs *= xs;
@@ -147,7 +140,7 @@ function getDistance(x1, y1, x2, y2){
 class BetweenRoutes extends Component {
   render(props, state) {
     const { results, nearbyStart, nearbyEnd, onClickRoute } = props;
-    if (!results.length){
+    if (!results.length) {
       return (<div class="between-block between-nada">😔 No routes available.</div>);
     }
 
@@ -179,7 +172,7 @@ class BetweenRoutes extends Component {
 }
 
 class App extends Component {
-  constructor(){
+  constructor() {
     super();
     this.state = {
       route: getRoute(),
@@ -189,6 +182,7 @@ class App extends Component {
       shrinkSearch: false,
       showStopPopover: false,
       showBetweenPopover: false,
+      showArrivalsPopover: false,
     };
     window.onhashchange = () => {
       this.setState({
@@ -196,7 +190,7 @@ class App extends Component {
       });
     };
   }
-  async componentDidMount(){
+  async componentDidMount() {
     const map = this.map = window._map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v10?optimized=true',
@@ -227,7 +221,7 @@ class App extends Component {
     const lowerLat = 1.2, upperLat = 1.48, lowerLong = 103.59, upperLong = 104.05;
     map.fitBounds([lowerLong, lowerLat, upperLong, upperLat], {
       animate: false,
-      padding: BREAKPOINT() ? 120 : {top: 40, bottom: window.innerHeight/2, left: 40, right: 40},
+      padding: BREAKPOINT() ? 120 : { top: 40, bottom: window.innerHeight / 2, left: 40, right: 40 },
     });
 
     map.once('zoomstart', () => {
@@ -312,9 +306,9 @@ class App extends Component {
       });
       routes.forEach((route, i) => {
         route.forEach(stop => {
-          if (!stopsData[stop].services.includes(number)){
+          if (!stopsData[stop].services.includes(number)) {
             stopsData[stop].services.push(number);
-            stopsData[stop].routes.push(number+'-'+i);
+            stopsData[stop].routes.push(number + '-' + i);
           }
         });
       });
@@ -432,25 +426,38 @@ class App extends Component {
     map.on('click', (e) => {
       const { point } = e;
       const features = map.queryRenderedFeatures(point, { layers: ['stops', 'stops-highlight'] });
-      if (features.length){
+      if (features.length) {
         this._showStopPopover(features[0]);
       } else {
         this._hideStopPopover();
       }
     });
-    if (supportsHover) map.on('mousemove', 'stops', (e) => {
-      if (e.features.length && map.getZoom() <= 16){
-        const stopID = decode(e.features[0].id);
+    if (supportsHover) {
+      let lastFeature = null;
+      let lastFrame = null;
+      map.on('mousemove', (e) => {
         const { point } = e;
-        const data = stopsData[stopID];
-        showStopTooltip({
-          ...data,
-          ...point,
-        });
-      } else {
-        hideStopTooltip();
-      }
-    });
+        const features = map.queryRenderedFeatures(point, { layers: ['stops', 'stops-highlight'] });
+        if (features.length && map.getZoom() < 16) {
+          if (lastFeature && features[0].id === lastFeature.id) {
+            return;
+          }
+          lastFeature = features[0];
+          const stopID = decode(features[0].id);
+          const data = stopsData[stopID];
+          if (lastFrame) cancelAnimationFrame(lastFrame);
+          lastFrame = requestAnimationFrame(() => {
+            showStopTooltip({
+              ...data,
+              ...point,
+            });
+          });
+        } else {
+          lastFeature = null;
+          hideStopTooltip();
+        }
+      });
+    }
     map.on('mouseleave', 'stops', () => {
       map.getCanvas().style.cursor = '';
       hideStopTooltip();
@@ -478,8 +485,8 @@ class App extends Component {
         'icon-size': [
           'interpolate', ['linear'], ['zoom'],
           0, .1,
-          10, ['case', ['==', ['get', 'type'], 'end'], .3, .1 ],
-          15, ['case', ['==', ['get', 'type'], 'end'], .45, .6 ]
+          10, ['case', ['==', ['get', 'type'], 'end'], .3, .1],
+          15, ['case', ['==', ['get', 'type'], 'end'], .45, .6]
         ],
         'icon-anchor': ['case', ['==', ['get', 'type'], 'end'], 'bottom', 'center'],
         'icon-padding': .5,
@@ -507,22 +514,8 @@ class App extends Component {
     map.on('mouseenter', 'stops-highlight', () => {
       map.getCanvas().style.cursor = 'pointer';
     });
-    if (supportsHover) map.on('mousemove', 'stops-highlight', (e) => {
-      if (e.features.length && map.getZoom() <= 16){
-        const stopID = decode(e.features[0].id);
-        const { point } = e;
-        const data = stopsData[stopID];
-        showStopTooltip({
-          ...data,
-          ...point,
-        });
-      } else {
-        hideStopTooltip();
-      }
-    });
     map.on('mouseleave', 'stops-highlight', () => {
       map.getCanvas().style.cursor = '';
-      hideStopTooltip();
     });
 
     // Bus service routes
@@ -715,17 +708,17 @@ class App extends Component {
       map.getCanvas().style.cursor = 'pointer';
     });
     map.on('click', 'routes-path', (e) => {
-      if (e.features.length){
+      if (e.features.length) {
         const { id } = e.features[0];
         location.hash = `/services/${decode(id)}`;
       }
     });
     map.on('mousemove', 'routes-path', (e) => {
-      if (e.features.length){
+      if (e.features.length) {
         const currentHoveredRouteID = e.features[0].id;
         if (hoveredRouteID && hoveredRouteID === currentHoveredRouteID) return;
 
-        if (hoveredRouteID){
+        if (hoveredRouteID) {
           map.setFeatureState({
             source: 'routes-path',
             id: hoveredRouteID,
@@ -752,7 +745,7 @@ class App extends Component {
     });
     map.on('mouseleave', 'routes-path', () => {
       map.getCanvas().style.cursor = '';
-      if (hoveredRouteID){
+      if (hoveredRouteID) {
         STORE.routesPathServices.forEach(service => {
           const id = encode(service);
           map.setFeatureState({
@@ -880,8 +873,8 @@ class App extends Component {
   }
   _handleKeys = (e) => {
     const { services } = this.state;
-    if (/enter/i.test(e.key || e.code)){ // Enter
-      if (services.length){
+    if (/enter/i.test(e.key || e.code)) { // Enter
+      if (services.length) {
         location.hash = `#/services/${services[0].number}`;
       }
     }
@@ -896,7 +889,7 @@ class App extends Component {
   }
   _handleSearch = (e) => {
     const { value } = e.target;
-    if (value){
+    if (value) {
       const services = this._fuse.search(value);
       this.setState({
         services,
@@ -934,7 +927,7 @@ class App extends Component {
 
     const zoom = map.getZoom();
     const center = geometry.coordinates;
-    if (zoom < 12){
+    if (zoom < 12) {
       // Slowly zoom in first
       map.flyTo({ zoom: map.getZoom() + 2, center });
       this.setState({
@@ -967,8 +960,8 @@ class App extends Component {
         services,
       },
     }, () => {
-      const offset = BREAKPOINT() ? [0, 0] : [0, -this._stopPopover.offsetHeight/2];
-      if (zoom < 16){
+      const offset = BREAKPOINT() ? [0, 0] : [0, -this._stopPopover.offsetHeight / 2];
+      if (zoom < 16) {
         map.flyTo({ zoom: 16, center, offset });
       } else {
         map.easeTo({ center, offset });
@@ -988,10 +981,10 @@ class App extends Component {
   _highlightRouteTag = (service) => {
     const $servicesList = this._floatPill.querySelector('.services-list');
     if (!$servicesList) return;
-    if (service){
+    if (service) {
       const otherServices = $servicesList.querySelectorAll('.service-tag');
       otherServices.forEach(el => {
-        if (el.textContent.trim() === service.trim()){
+        if (el.textContent.trim() === service.trim()) {
           el.style.opacity = '';
         } else {
           el.style.opacity = .3;
@@ -1026,13 +1019,35 @@ class App extends Component {
       }, { fadein: false, hover: false });
     });
   }
-  _openBusArrival = (e) => {
-    e.preventDefault();
+  _openBusArrival = (e, showPopup = false) => {
+    if (e) e.preventDefault();
     const width = 360;
-		const height = 480;
-		const top = ((screen.availHeight || screen.height) - height) / 2;
-    const left = (screen.width - width) / 2;
-		window.open(e.target.href, 'busArrivals'+(new Date()), `width=${width},height=${height},menubar=0,toolbar=0,top=${top},left=${left}`);
+    const height = 480;
+    const url = e.target.href;
+    const stopNumber = url.match(/[^#]+$/)[0];
+    showPopup = showPopup || (window.innerWidth > width * 2 && window.innerHeight > height);
+    if (showPopup) {
+      const top = ((screen.availHeight || screen.height) - height) / 2;
+      const left = (screen.width - width) / 2;
+      window.open(url, `busArrivals-${stopNumber}`, `width=${width},height=${height},menubar=0,toolbar=0,top=${top},left=${left}`);
+    } else {
+      this.setState({
+        showArrivalsPopover: {
+          webviewURL: url,
+          number: stopNumber,
+        },
+      }, () => {
+        $map.classList.add('fade-out');
+      });
+    }
+  }
+  _closeBusArrival = (e) => {
+    if (e) e.preventDefault();
+    this.setState({
+      showArrivalsPopover: false,
+    }, () => {
+      $map.classList.remove('fade-out');
+    });
   }
   _showBetweenPopover = (data) => {
     this.setState({
@@ -1047,7 +1062,7 @@ class App extends Component {
   _renderBetweenRoute = ({ e, startStop, endStop, result }) => {
     const { target } = e;
     [...target.parentElement.children].forEach(el => {
-      if (el === target){
+      if (el === target) {
         target.classList.add('selected');
       } else {
         el.classList.remove('selected')
@@ -1056,10 +1071,10 @@ class App extends Component {
 
     const map = this.map;
     const { stopsData, routesData } = this.state;
-    const stops = [{...startStop, end: true}, {...endStop, end: true}];
-    if (result.startStop.number != startStop.number) stops.push({...result.startStop, end: true});
-    if (result.endStop.number != endStop.number) stops.push({...result.endStop, end: true});
-    if (result.stopsBetween.length){
+    const stops = [{ ...startStop, end: true }, { ...endStop, end: true }];
+    if (result.startStop.number != startStop.number) stops.push({ ...result.startStop, end: true });
+    if (result.endStop.number != endStop.number) stops.push({ ...result.endStop, end: true });
+    if (result.stopsBetween.length) {
       result.stopsBetween.forEach(number => stops.push(stopsData[number]));
     }
 
@@ -1087,13 +1102,13 @@ class App extends Component {
         const [service, index] = route.split('-')
         return toGeoJSON(routesData[service][index]);
       });
-      if (result.startStop.number != startStop.number){
+      if (result.startStop.number != startStop.number) {
         geometries.push({
           type: 'LineString',
           coordinates: [result.startStop.coordinates, startStop.coordinates],
         });
       };
-      if (result.endStop.number != endStop.number){
+      if (result.endStop.number != endStop.number) {
         geometries.push({
           type: 'LineString',
           coordinates: [result.endStop.coordinates, endStop.coordinates],
@@ -1122,11 +1137,11 @@ class App extends Component {
           bottom: 40,
           left: 40,
         } : {
-          top: 40,
-          right: 40,
-          bottom: this._betweenPopover.offsetHeight + 40,
-          left: 40,
-        },
+            top: 40,
+            right: 40,
+            bottom: this._betweenPopover.offsetHeight + 40,
+            left: 40,
+          },
       });
     });
   }
@@ -1154,7 +1169,7 @@ class App extends Component {
       });
     });
 
-    switch (route.page){
+    switch (route.page) {
       case 'service': {
         const service = route.value;
         document.title = `Bus service ${service} - ${APP_NAME}`;
@@ -1170,8 +1185,8 @@ class App extends Component {
 
         // Show stops of the selected service
         const { routes } = servicesData[service];
-        const endStops = [routes[0][0], routes[0][routes[0].length-1]];
-        if (routes[1]) endStops.push(routes[1][0], routes[1][routes[1].length-1]);
+        const endStops = [routes[0][0], routes[0][routes[0].length - 1]];
+        if (routes[1]) endStops.push(routes[1][0], routes[1][routes[1].length - 1]);
         let routeStops = [...routes[0], ...(routes[1] || [])].filter((el, pos, arr) => {
           return arr.indexOf(el) == pos;
         }); // Merge and unique
@@ -1320,13 +1335,13 @@ class App extends Component {
         // Hide all stops
         map.setLayoutProperty('stops', 'visibility', 'none');
 
-        function findRoutesBetween(startStop, endStop){
+        function findRoutesBetween(startStop, endStop) {
           const results = [];
 
           const endServicesStops = endStop.routes.map(route => {
             const [service, routeIndex] = route.split('-');
             let serviceStops = servicesData[service].routes[routeIndex];
-            serviceStops = serviceStops.slice(0, serviceStops.indexOf(endStop.number)+1);
+            serviceStops = serviceStops.slice(0, serviceStops.indexOf(endStop.number) + 1);
             return { service, stops: serviceStops, route };
           });
 
@@ -1337,17 +1352,17 @@ class App extends Component {
 
             // This service already can go straight to the end stop,
             // there's no need to find any connections from end stop
-            if (serviceStops.includes(endStop.number)){
+            if (serviceStops.includes(endStop.number)) {
               results.push({
                 startService: service,
                 startRoute: route,
                 stopsBetween: [],
               });
             } else {
-              endServicesStops.forEach(({ service:s, stops, route:r}) => {
+              endServicesStops.forEach(({ service: s, stops, route: r }) => {
                 // console.log(serviceStops, stops);
                 const intersectedStops = intersect(stops, serviceStops);
-                if (intersectedStops.length){
+                if (intersectedStops.length) {
                   const startIndex = intersectedStops.indexOf(startStop.number);
                   if (startIndex > -1) intersectedStops.splice(startIndex, 1);
                   const endIndex = intersectedStops.indexOf(endStop.number);
@@ -1370,14 +1385,14 @@ class App extends Component {
           return results;
         };
 
-        function findNearestStops(stop){
+        function findNearestStops(stop) {
           let distance = Infinity;
           let nearestStop = null;
-          for (let i=0, l=stopsDataArr.length; i<l; i++){
+          for (let i = 0, l = stopsDataArr.length; i < l; i++) {
             const s = stopsDataArr[i];
-            if (s.number !== stop.number){
+            if (s.number !== stop.number) {
               const d = getDistance(...stop.coordinates, ...s.coordinates);
-              if (d < distance){
+              if (d < distance) {
                 distance = d;
                 nearestStop = s;
               }
@@ -1416,13 +1431,13 @@ class App extends Component {
       }
     }
   }
-  componentDidUpdate(_, prevState){
+  componentDidUpdate(_, prevState) {
     const { route } = this.state;
-    if (route.path != prevState.route.path){
+    if (route.path != prevState.route.path) {
       this._renderRoute();
     }
   }
-  render(_, state){
+  render(_, state) {
     const {
       route,
       services,
@@ -1433,6 +1448,7 @@ class App extends Component {
       shrinkSearch,
       showStopPopover,
       showBetweenPopover,
+      showArrivalsPopover,
     } = state;
 
     return (
@@ -1491,6 +1507,7 @@ class App extends Component {
               onfocus={this._handleSearchFocus}
               oninput={this._handleSearch}
               onkeydown={this._handleKeys}
+              disabled={!services.length}
             />
             <button type="button" onclick={this._handleSearchClose}>Cancel</button>
           </div>
@@ -1504,7 +1521,7 @@ class App extends Component {
                 </li>
               ))
             ) : !searching && (
-              [1,2,3,4,5,6,7,8].map((s, i) => (
+              [1, 2, 3, 4, 5, 6, 7, 8].map((s, i) => (
                 <li key={s}>
                   <a href="#">
                     <b class="service-tag">&nbsp;&nbsp;&nbsp;</b>
@@ -1520,7 +1537,7 @@ class App extends Component {
             <a href="#/" class="popover-close">&times;</a>,
             <header>
               <h1>
-                <small>Routes between</small><br/>
+                <small>Routes between</small><br />
                 <b class="stop-tag">{showBetweenPopover.startStop.number}</b> and <b class="stop-tag">{showBetweenPopover.endStop.number}</b>
               </h1>
             </header>,
@@ -1531,7 +1548,7 @@ class App extends Component {
                 startStop: showBetweenPopover.startStop,
                 endStop: showBetweenPopover.endStop,
                 result,
-              })}/>
+              })} />
               <h2>Alternative routes</h2>
               <h3>Nearby arrival stop: {showBetweenPopover.nearestEndStop.number} ({showBetweenPopover.endWalkMins}-min walk)</h3>
               <BetweenRoutes results={showBetweenPopover.results[1]} nearbyEnd={true} onClickRoute={(e, result) => this._renderBetweenRoute({
@@ -1539,21 +1556,21 @@ class App extends Component {
                 startStop: showBetweenPopover.startStop,
                 endStop: showBetweenPopover.endStop,
                 result,
-              })}/>
+              })} />
               <h3>Nearby departure stop: {showBetweenPopover.nearestStartStop.number} ({showBetweenPopover.startWalkMins}-min walk)</h3>
               <BetweenRoutes results={showBetweenPopover.results[2]} nearbyStart={true} onClickRoute={(e, result) => this._renderBetweenRoute({
                 e,
                 startStop: showBetweenPopover.startStop,
                 endStop: showBetweenPopover.endStop,
                 result,
-              })}/>
+              })} />
               <h3>Nearby departure &amp; arrival stops: {showBetweenPopover.nearestStartStop.number} - {showBetweenPopover.nearestEndStop.number}</h3>
               <BetweenRoutes results={showBetweenPopover.results[3]} nearbyStart={true} nearbyEnd={true} onClickRoute={(e, result) => this._renderBetweenRoute({
                 e,
                 startStop: showBetweenPopover.startStop,
                 endStop: showBetweenPopover.endStop,
                 result,
-              })}/>
+              })} />
             </div>
           ]}
         </div>
@@ -1565,13 +1582,25 @@ class App extends Component {
               <h2>{showStopPopover.services.length} service{showStopPopover.services.length == 1 ? '' : 's'}</h2>
             </header>,
             <div class="popover-scroll">
-              <BusServicesArrival id={showStopPopover.number} services={showStopPopover.services}/>
+              <BusServicesArrival id={showStopPopover.number} services={showStopPopover.services} />
               <div class="popover-buttons">
-                <a href={`/bus-arrival/#${showStopPopover.number}`} target="_blank" onClick={this._openBusArrival} class="popover-button">Bus arrivals <img src={openNewWindowImagePath} width="16" height="16" alt=""/></a>
+                <a href={`/bus-arrival/#${showStopPopover.number}`} target="_blank" onClick={this._openBusArrival} class="popover-button">Bus arrivals <img src={openNewWindowImagePath} width="16" height="16" alt="" /></a>
                 {showStopPopover.services.length > 1 && (
-                  <a href={`#/stops/${showStopPopover.number}`} class="popover-button">Passing routes <img src={passingRoutesImagePath} width="16" height="16" alt=""/></a>
+                  <a href={`#/stops/${showStopPopover.number}`} class="popover-button">Passing routes <img src={passingRoutesImagePath} width="16" height="16" alt="" /></a>
                 )}
               </div>
+            </div>
+          ]}
+        </div>
+        <div id="arrivals-popover" class={`popover ${showArrivalsPopover ? 'expand' : ''}`}>
+          {showArrivalsPopover && [
+            <a href="#/" onClick={this._closeBusArrival} class="popover-close">&times;</a>,
+            <a href={`/bus-arrival/#${showArrivalsPopover.number}`} onClick={(e) => {
+              this._openBusArrival(e, true);
+              this._closeBusArrival(e);
+            }} class="popover-popout popover-close">Pop out <img src={openNewWindowImagePath} width="16" height="16" alt="" /></a>,
+            <div class="popover-scroll">
+              <iframe src={showArrivalsPopover.webviewURL}></iframe>
             </div>
           ]}
         </div>
