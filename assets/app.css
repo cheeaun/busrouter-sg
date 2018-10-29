@@ -95,14 +95,19 @@ a:active {
   position: absolute;
   bottom: 0;
   line-height: 1.4;
-  background-color: rgba(255,255,255,.7);
-  backdrop-filter: blur(10px) saturate(3);
+  background-color: rgba(255,255,255,.9);
   padding: 12px;
   border-radius: 7px 7px 0 0;
   box-shadow: 0 -1px 200px rgba(0,0,0,.3);
   font-size: .9em;
   transition: all .3s ease-in-out;
   opacity: 1;
+}
+@supports (backdrop-filter: blur(10px)){
+  #about section {
+    background-color: rgba(255,255,255,.7);
+    backdrop-filter: blur(10px) saturate(3);
+  }
 }
 #about[hidden] section {
   opacity: 0;
