@@ -3,6 +3,7 @@ import { toGeoJSON } from '@mapbox/polyline';
 import Fuse from 'fuse.js';
 import intersect from 'just-intersect';
 import cheapRuler from 'cheap-ruler';
+import lscache from 'lscache';
 import { encode, decode } from '../utils/specialID';
 import { timeDisplay, sortServices } from '../utils/bus';
 import { MAPBOX_ACCESS_TOKEN } from './config';
@@ -171,6 +172,18 @@ class BetweenRoutes extends Component {
   }
 }
 
+const fetchCache = (url) => {
+  const data = lscache.get(url);
+  if (data) {
+    return Promise.resolve(data);
+  } else {
+    return fetch(url).then(r => r.json()).then(r => {
+      lscache.set(url, r, 24 * 60);
+      return r;
+    });
+  }
+};
+
 class App extends Component {
   constructor() {
     super();
@@ -278,9 +291,9 @@ class App extends Component {
 
     let stops;
     [stops, servicesData, routesData] = await Promise.all([
-      fetch(stopsJSONPath).then(r => r.json()),
-      fetch(servicesJSONPath).then(r => r.json()),
-      fetch(routesJSONPath).then(r => r.json()),
+      fetchCache(stopsJSONPath),
+      fetchCache(servicesJSONPath),
+      fetchCache(routesJSONPath),
       new Promise((resolve, reject) => {
         map.on('load', resolve);
       }),
