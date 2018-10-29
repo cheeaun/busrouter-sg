@@ -11,7 +11,6 @@ main {
   box-shadow: 0 0 100px rgba(0,0,0,.1);
   background-color: #fff;
   min-height: 100vh;
-  overflow: hidden;
 }
 
 .stops-list {
@@ -67,16 +66,20 @@ main {
     transform: translate(-50%, 0) scale(1);
   }
 }
-header h1 {
+h1 {
+  position: sticky;
+  top: 0;
   color: #000;
   font-size: .7em;
   font-weight: normal;
   padding: 10px;
   margin: 0;
   z-index: 1;
-  background-color: #fafafa;
+  background-color: rgba(240,240,240,.75);
+  z-index: 11;
+  backdrop-filter: blur(1px) saturate(3);
 }
-header h1 b {
+h1 b {
   margin-top: 5px;
   display: block;
   font-size: 1.35em;
@@ -88,6 +91,7 @@ table {
   border-spacing: 0;
   border: 0;
   margin: 0;
+  overflow: hidden;
 }
 table thead * {
   font-weight: normal;
