@@ -3,6 +3,8 @@ body {
   padding: 0;
   margin: 0;
   background-color: #F7F7F7;
+  pointer-events: none;
+  user-select: none;
 }
 
 main {
@@ -116,6 +118,7 @@ table tbody th{
   position: relative;
   background-color: rgba(255,255,255,.5);
   cursor: pointer;
+  pointer-events: auto;
 }
 table tbody tr:nth-child(2n) {
   background-color: #fafafa;
