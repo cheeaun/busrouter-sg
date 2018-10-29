@@ -27,7 +27,7 @@ const BUSES = {
 };
 
 const WheelChair = () => (
-  <img src={wheelchairImagePath} width="10" height="10" alt="Wheelchair accessible"/>
+  <img src={wheelchairImagePath} width="10" height="10" alt="Wheelchair accessible" />
 );
 
 const Bus = (props) => {
@@ -35,10 +35,10 @@ const Bus = (props) => {
   const busImage = BUSES[type.toLowerCase()];
   const px = (duration_ms / 1000 / 60) * (duration_ms > 0 ? 10 : 2.5);
   return (
-    <span class={`bus ${left ? 'left' : ''}`} style={{transform: `translateX(${px}px)`}}>
-      <img {...busImage}/><br/>
+    <span class={`bus ${left ? 'left' : ''}`} style={{ transform: `translateX(${px}px)` }}>
+      <img {...busImage} /><br />
       <span class={`time-${load.toLowerCase()}`}>{timeDisplay(duration_ms)}</span>
-      {feature.toLowerCase() === 'wab' && <WheelChair/>}
+      {feature.toLowerCase() === 'wab' && <WheelChair />}
     </span>
   );
 };
@@ -61,9 +61,9 @@ class BusLane extends Component {
     const buses = this.state.buses.filter(b => !b.left);
     const { buses: nextBuses } = nextProps;
     const nBuses = nextBuses.filter(b => typeof b.duration_ms === 'number');
-    if (buses[0].duration_ms <= 30*1000 && nBuses[0].duration_ms > 60*1000){
+    if (buses[0].duration_ms <= 30 * 1000 && nBuses[0].duration_ms > 60 * 1000) {
       nBuses.forEach((b, i) => {
-        const prevBus = buses[i+1];
+        const prevBus = buses[i + 1];
         b._id = (prevBus && prevBus._id) || busID();
       });
       const ghostBus = buses[0];
@@ -81,7 +81,7 @@ class BusLane extends Component {
   render(_, state) {
     return (
       <div class="bus-lane">
-        {state.buses.map(b => <Bus key={b._id} {...b}/>)}
+        {state.buses.map(b => <Bus key={b._id} {...b} />)}
       </div>
     );
   }
@@ -95,7 +95,7 @@ class ArrivalTimes extends Component {
     let pinnedServices = [];
     try {
       pinnedServices = JSON.parse(localStorage.getItem('busroutersg.arrival.pinnedServices') || []);
-    } catch (e) {}
+    } catch (e) { }
 
     this.state = {
       stopsData: null,
@@ -104,7 +104,7 @@ class ArrivalTimes extends Component {
       pinnedServices,
     };
   }
-  async componentDidMount(){
+  async componentDidMount() {
     const stopsData = await fetch(stopsJSONPath).then(r => r.json());
     this.setState({ stopsData });
 
@@ -112,9 +112,9 @@ class ArrivalTimes extends Component {
       const code = location.hash.slice(1);
       clearTimeout(arrivalsTimeout);
 
-      if (code){
+      if (code) {
         const stop = stopsData[code];
-        if (stop){
+        if (stop) {
           const [lng, lat, name] = stop;
           document.title = `Bus arrival times for ${code + ' - ' + name}`;
           this.setState({
@@ -130,7 +130,7 @@ class ArrivalTimes extends Component {
     }
     window.onhashchange();
   }
-  componentWillReceiveProps(props){
+  componentWillReceiveProps(props) {
     clearTimeout(arrivalsTimeout);
     this._fetchServices();
   }
@@ -144,12 +144,12 @@ class ArrivalTimes extends Component {
       });
       arrivalsTimeout = setTimeout(() => {
         requestAnimationFrame(this._fetchServices);
-      }, 15*1000); // 15 seconds
+      }, 15 * 1000); // 15 seconds
     });
   }
   _togglePin = (no) => {
     const { pinnedServices } = this.state;
-    if (pinnedServices.includes(no)){
+    if (pinnedServices.includes(no)) {
       const index = pinnedServices.indexOf(no);
       pinnedServices.splice(index, 1);
     } else {
@@ -158,12 +158,12 @@ class ArrivalTimes extends Component {
     this.setState({ pinnedServices });
     try {
       localStorage.setItem('busroutersg.arrival.pinnedServices', JSON.stringify(pinnedServices));
-    } catch (e) {}
+    } catch (e) { }
   }
-  render(_, state){
+  render(_, state) {
     const { busStop, stopsData, services, pinnedServices } = state;
-    if (!busStop){
-      if (stopsData){
+    if (!busStop) {
+      if (stopsData) {
         return (
           <ul class="stops-list">
             {Object.keys(stopsData).map(stop => (
@@ -180,67 +180,65 @@ class ArrivalTimes extends Component {
 
     return (
       <div>
-        <header id="bus-stop-header">
-          <div id="bus-stop-map">
-            <img src={`https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/${lng},${lat},17,0,60/400x200@2x?access_token=${MAPBOX_ACCESS_TOKEN}`} alt="Bus stop map"/>
-          </div>
-          <h1>
-            Bus arrival times for
-            <b id="bus-stop-name">
-              <span class="stop-tag">{code}</span> {name}
-            </b>
-          </h1>
-        </header>
+        <div id="bus-stop-map">
+          <img src={`https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/${lng},${lat},17,0,60/400x200@2x?access_token=${MAPBOX_ACCESS_TOKEN}`} alt="Bus stop map" />
+        </div>
+        <h1>
+          Bus arrival times for
+          <b id="bus-stop-name">
+            <span class="stop-tag">{code}</span> {name}
+          </b>
+        </h1>
         <table>
           {services ?
             services.length ? [
-            <tbody class={!services.length ? 'loading' : ''}>
-              {services.map(({ no, next, next2, next3 }) => {
-                const pinned = pinnedServices.includes(no);
-                return (
-                  <tr class={pinned ? 'pin' : ''}>
-                    <th onClick={(e) => {
-                      e.preventDefault();
-                      this._togglePin(no);
-                    }}>{no}</th>
-                    <td class="bus-lane-cell">
-                      <BusLane buses={[next, next2, next3]}/>
-                    </td>
+              <tbody class={!services.length ? 'loading' : ''}>
+                {services.map(({ no, next, next2, next3 }) => {
+                  const pinned = pinnedServices.includes(no);
+                  return (
+                    <tr class={pinned ? 'pin' : ''}>
+                      <th onClick={(e) => {
+                        e.preventDefault();
+                        this._togglePin(no);
+                      }}>{no}</th>
+                      <td class="bus-lane-cell">
+                        <BusLane buses={[next, next2, next3]} />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>,
+              <tfoot>
+                <tr>
+                  <td colspan="2">
+                    <span>
+                      <span class="load load-sea" /> Seats available
+                    </span>
+                    <span>
+                      <span class="load load-sda" /> Standing available
+                    </span>
+                    <span>
+                      <span class="load load-lsd" /> Limited standing
+                    </span>
+                    <span>
+                      <WheelChair /> Wheelchair accessible
+                    </span>
+                  </td>
+                </tr>
+              </tfoot>
+            ] : (
+                <tbody>
+                  <tr>
+                    <td>No arrival times available.</td>
                   </tr>
-                );
-              })}
-            </tbody>,
-            <tfoot>
-              <tr>
-                <td colspan="2">
-                  <span>
-                    <span class="load load-sea"/> Seats available
-                  </span>
-                  <span>
-                    <span class="load load-sda"/> Standing available
-                  </span>
-                  <span>
-                    <span class="load load-lsd"/> Limited standing
-                  </span>
-                  <span>
-                    <WheelChair/> Wheelchair accessible
-                  </span>
-                </td>
-              </tr>
-            </tfoot>
-          ] : (
-            <tbody>
-              <tr>
-                <td>No arrival times available.</td>
-              </tr>
-            </tbody>
-          ) : (
-            <tbody class="loading">
-              <tr>
-                <td>Loading&hellip;</td>
-              </tr>
-            </tbody>
-          )}
+                </tbody>
+              ) : (
+              <tbody class="loading">
+                <tr>
+                  <td>Loading&hellip;</td>
+                </tr>
+              </tbody>
+            )}
         </table>
         <footer>
           <small><b>Note</b>: Arrival times refresh every 15 seconds.</small>
