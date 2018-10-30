@@ -198,6 +198,8 @@ class App extends Component {
       showStopPopover: false,
       showBetweenPopover: false,
       showArrivalsPopover: false,
+      betweenStartStop: null,
+      betweenEndStop: null,
     };
     window.onhashchange = () => {
       this.setState({
@@ -841,7 +843,7 @@ class App extends Component {
       filter: ['==', ['get', 'type'], 'walk'],
       paint: {
         'line-color': '#007aff',
-        'line-dasharray': [10, 10],
+        'line-dasharray': [2, 2],
         'line-opacity': .7,
         'line-width': [
           'interpolate', ['linear'], ['zoom'],
@@ -904,6 +906,21 @@ class App extends Component {
     this.setState({ services: servicesDataArr });
 
     this._renderRoute();
+
+    // Alt mode
+    let altKeyDown = false;
+    document.onkeydown = (e) => {
+      if (e.altKey) {
+        altKeyDown = true;
+        document.body.classList.add('alt-mode');
+      }
+    };
+    document.onkeyup = () => {
+      if (altKeyDown) {
+        altKeyDown = false;
+        document.body.classList.remove('alt-mode');
+      }
+    };
   }
   _handleKeys = (e) => {
     const { services } = this.state;
@@ -1080,8 +1097,10 @@ class App extends Component {
       showBetweenPopover: data,
     }, () => {
       // Auto-select first result
-      const firstResult = this._betweenPopover.querySelector('.between-item');
-      firstResult.click();
+      setTimeout(() => {
+        const firstResult = this._betweenPopover.querySelector('.between-item');
+        firstResult.click();
+      }, 300);
     });
   }
   _renderBetweenRoute = ({ e, startStop, endStop, result }) => {
@@ -1482,6 +1501,28 @@ class App extends Component {
       this._renderRoute();
     }
   }
+  _setStartStop = (number) => {
+    const { betweenEndStop } = this.state;
+    if (betweenEndStop && betweenEndStop != number) {
+      location.hash = `/between/${number}-${betweenEndStop}`;
+    } else {
+      this.setState({
+        betweenStartStop: number,
+        betweenEndStop: null,
+      });
+    }
+  }
+  _setEndStop = (number) => {
+    const { betweenStartStop } = this.state;
+    if (betweenStartStop && betweenStartStop != number) {
+      location.hash = `/between/${betweenStartStop}-${number}`;
+    } else {
+      this.setState({
+        betweenStartStop: null,
+        betweenEndStop: number,
+      });
+    }
+  }
   render(_, state) {
     const {
       route,
@@ -1628,11 +1669,15 @@ class App extends Component {
             </header>,
             <div class="popover-scroll">
               <BusServicesArrival id={showStopPopover.number} services={showStopPopover.services} />
-              <div class="popover-buttons">
+              <div class="popover-buttons alt-hide">
                 <a href={`/bus-arrival/#${showStopPopover.number}`} target="_blank" onClick={this._openBusArrival} class="popover-button">Bus arrivals <img src={openNewWindowImagePath} width="16" height="16" alt="" /></a>
                 {showStopPopover.services.length > 1 && (
                   <a href={`#/stops/${showStopPopover.number}/routes`} class="popover-button">Passing routes <img src={passingRoutesImagePath} width="16" height="16" alt="" /></a>
                 )}
+              </div>
+              <div class="popover-buttons alt-show-flex">
+                <button onClick={() => this._setStartStop(showStopPopover.number)} class="popover-button">Set as Start</button>
+                <button onClick={() => this._setEndStop(showStopPopover.number)} class="popover-button">Set as End</button>
               </div>
             </div>
           ]}

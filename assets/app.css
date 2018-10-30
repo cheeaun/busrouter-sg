@@ -792,3 +792,21 @@ a.service-tag:hover {
     margin: 0 !important;
   }
 }
+
+/* Fancy pants features */
+
+[class*="alt-show"] {
+  display: none;
+}
+.alt-mode .alt-show-inline {
+  display: none;
+}
+.alt-mode .alt-show-block {
+  display: block;
+}
+.alt-mode .alt-show-flex {
+  display: flex;
+}
+.alt-mode .alt-hide {
+  display: none;
+}
