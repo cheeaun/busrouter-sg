@@ -238,11 +238,12 @@ a:active {
   border-radius: 12px;
   padding: 12px;
   border: 2px solid transparent;
-  transition: background-color .3s ease-in-out;
+  transition: all .3s ease-in-out;
   margin-bottom: 6px;
   cursor: pointer;
 }
 #between-popover .between-item:hover {
+  border-color: #a4d0ff;
   background-color: #fff;
 }
 #between-popover .between-item.selected {
@@ -280,6 +281,14 @@ a:active {
   padding-bottom: 2px;
   left: 5px;
   background-image: linear-gradient(to left, transparent 0%, #f01b48 30%);
+}
+#between-popover .between-services.full .start {
+  width: auto;
+  right: 5px;
+}
+#between-popover .between-services.full .start {
+  background-image: linear-gradient(to left, #972FFE, #f01b48);
+  padding-right: 0;
 }
 #between-popover .between-services .end {
   padding-left: 2em;
@@ -332,6 +341,9 @@ a:active {
   margin-top: 4px;
   margin-left: 24px;
 }
+#between-popover .between-stops.nada:after {
+  margin-top: 0;
+}
 #between-popover .between-stops .start,
 #between-popover .between-stops .end {
   display: none;
@@ -368,6 +380,9 @@ a:active {
   padding-top: 3px;
   flex-grow: 1;
 }
+#between-popover .between-stops.nada .betweens {
+  visibility: hidden;
+}
 #between-popover .between-stops .betweens:before {
   content: '';
   display: block;
@@ -378,6 +393,21 @@ a:active {
   border-color: #f01b48 #972FFE #972FFE #f01b48;
   background-color: #fff;
   border-radius: 100px;
+}
+#between-popover .between-stops .betweens-2:before {
+  width: 15px;
+}
+#between-popover .between-stops .betweens-3:before {
+  width: 20px;
+}
+#between-popover .between-stops .betweens-4:before {
+  width: 25px;
+}
+#between-popover .between-stops .betweens-5:before {
+  width: 30px;
+}
+#between-popover .between-stops .betweens-6:before {
+  width: 35px;
 }
 
 #arrivals-popover {

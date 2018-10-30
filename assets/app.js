@@ -152,16 +152,18 @@ class BetweenRoutes extends Component {
           return (
             <div class={`between-item ${nearbyStart ? 'nearby-start' : ''}  ${nearbyEnd ? 'nearby-end' : ''}`} onClick={(e) => onClickRoute(e, result)}>
               <div class="between-inner">
-                <div class="between-services">
+                <div class={`between-services ${result.endService ? '' : 'full'}`}>
                   <span class="start">{result.startService}</span>
-                  <span class="end">{result.endService}</span>
+                  {!!result.endService && <span class="end">{result.endService}</span>}
                 </div>
-                <div class="between-stops">
-                  <span class="start">{result.startStop.number}</span>
-                  <span class="betweens">
-                    {stopsBetween.length === 1 ? stopsBetween[0] : `${stopsBetween.length} stops`}
+                <div class={`between-stops ${stopsBetween.length ? '' : 'nada'}`}>
+                  {result.startStop && <span class="start">{result.startStop.number}</span>}
+                  <span class={`betweens betweens-${Math.min(6, stopsBetween.length)}`}>
+                    {!!stopsBetween.length && (
+                      stopsBetween.length === 1 ? stopsBetween[0] : `${stopsBetween.length} stops`
+                    )}
                   </span>
-                  <span class="end">{result.endStop.number}</span>
+                  {result.endStop && <span class="end">{result.endStop.number}</span>}
                 </div>
               </div>
             </div>
@@ -795,7 +797,6 @@ class App extends Component {
     map.addSource('routes-between', {
       type: 'geojson',
       tolerance: 1,
-      lineMetrics: true,
       data: {
         type: 'FeatureCollection',
         features: [],
@@ -1096,8 +1097,12 @@ class App extends Component {
     const map = this.map;
     const { stopsData, routesData } = this.state;
     const stops = [{ ...startStop, end: true }, { ...endStop, end: true }];
-    if (result.startStop.number != startStop.number) stops.push({ ...result.startStop, end: true });
-    if (result.endStop.number != endStop.number) stops.push({ ...result.endStop, end: true });
+    if (result.startStop && result.startStop.number != startStop.number) {
+      stops.push({ ...result.startStop, end: true });
+    }
+    if (result.endStop && result.endStop.number != endStop.number) {
+      stops.push({ ...result.endStop, end: true });
+    }
     if (result.stopsBetween.length) {
       result.stopsBetween.forEach(number => stops.push(stopsData[number]));
     }
@@ -1122,17 +1127,23 @@ class App extends Component {
 
     requestAnimationFrame(() => {
       // Render routes
-      const geometries = [result.startRoute, result.endRoute].map(route => {
-        const [service, index] = route.split('-')
-        return toGeoJSON(routesData[service][index]);
-      });
-      if (result.startStop.number != startStop.number) {
+      const geometries = [];
+
+      let [service, index] = result.startRoute.split('-');
+      geometries.push(toGeoJSON(routesData[service][index]));
+
+      if (result.endRoute) {
+        let [service, index] = result.endRoute.split('-');
+        geometries.push(toGeoJSON(routesData[service][index]));
+      }
+
+      if (result.startStop && result.startStop.number != startStop.number) {
         geometries.push({
           type: 'LineString',
           coordinates: [result.startStop.coordinates, startStop.coordinates],
         });
       };
-      if (result.endStop.number != endStop.number) {
+      if (result.endStop && result.endStop.number != endStop.number) {
         geometries.push({
           type: 'LineString',
           coordinates: [result.endStop.coordinates, endStop.coordinates],
