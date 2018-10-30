@@ -1221,7 +1221,8 @@ class App extends Component {
     switch (route.page) {
       case 'service': {
         const service = route.value;
-        document.title = `Bus service ${service} - ${APP_NAME}`;
+        const { name, routes } = servicesData[service];
+        document.title = `Bus service ${service}: ${name} - ${APP_NAME}`;
         // Reset
         this.setState({
           expandSearch: false,
@@ -1233,7 +1234,6 @@ class App extends Component {
         map.setLayoutProperty('stops', 'visibility', 'none');
 
         // Show stops of the selected service
-        const { routes } = servicesData[service];
         const endStops = [routes[0][0], routes[0][routes[0].length - 1]];
         if (routes[1]) endStops.push(routes[1][0], routes[1][routes[1].length - 1]);
         let routeStops = [...routes[0], ...(routes[1] || [])].filter((el, pos, arr) => {
@@ -1289,7 +1289,6 @@ class App extends Component {
       }
       case 'stop': {
         const stop = route.value;
-        document.title = `Bus stop ${stop} - ${APP_NAME}`;
 
         // Reset
         this.setState({
@@ -1297,15 +1296,15 @@ class App extends Component {
           shrinkSearch: true,
         });
 
+        const { routes, name, coordinates } = stopsData[stop];
         if (route.subpage === 'routes') {
-          document.title = `Routes passing Bus stop ${stop} - ${APP_NAME}`;
+          document.title = `Routes passing Bus stop ${stop}: ${name} - ${APP_NAME}`;
 
           // Hide all stops
           map.setLayoutProperty('stops', 'visibility', 'none');
 
           // Show the all stops in all routes
           const allStopsCoords = [];
-          const { routes, name, coordinates } = stopsData[stop];
           allStopsCoords.push(coordinates);
           const otherStops = new Set();
           routes.forEach(route => {
@@ -1374,6 +1373,7 @@ class App extends Component {
             },
           });
         } else {
+          document.title = `Bus stop ${stop}: ${name} - ${APP_NAME}`;
           map.setLayoutProperty('stops', 'visibility', 'visible');
           this._showStopPopover(stop);
         }
@@ -1383,6 +1383,8 @@ class App extends Component {
         const coords = route.value;
         const [startStopNumber, endStopNumber] = coords.split(/[,-]/).map(String);
         console.log(startStopNumber, endStopNumber);
+
+        document.title = `Routes between ${startStopNumber} and ${endStopNumber} - ${APP_NAME}`;
         // Reset
         this.setState({
           expandSearch: false,
