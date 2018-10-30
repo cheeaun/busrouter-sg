@@ -7,6 +7,7 @@ import lscache from 'lscache';
 import { encode, decode } from '../utils/specialID';
 import { timeDisplay, sortServices } from '../utils/bus';
 import { MAPBOX_ACCESS_TOKEN } from './config';
+import Ad from './ad';
 
 import stopImagePath from './images/stop.png';
 import stopSmallImagePath from './images/stop-small.png';
@@ -1603,6 +1604,7 @@ class App extends Component {
             <button type="button" onclick={this._handleSearchClose}>Cancel</button>
           </div>
           <ul id="services-list" class={`popover-list ${services.length || searching ? '' : 'loading'} ${searching ? 'searching' : ''}`} ref={c => this._servicesList = c} onScroll={this._handleServicesScroll}>
+            <Ad key="ad" />
             {services.length ? (
               services.map(s => (
                 <li key={s.number}>

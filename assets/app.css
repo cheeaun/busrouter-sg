@@ -522,6 +522,12 @@ a:active {
   opacity: .5;
   pointer-events: none;
 }
+.popover-list.loading #carbonads {
+  pointer-events: auto;
+}
+.popover-list.searching #carbonads {
+  display: none;
+}
 .popover-list li a {
   padding: 14px;
   border-bottom: 1px solid rgba(0,0,0,.1);

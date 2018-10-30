@@ -197,6 +197,10 @@ footer {
   color: firebrick;
 }
 
+#carbonads {
+  pointer-events: auto;
+}
+
 @media (min-width: 720px) {
   body {
     display: grid;
@@ -209,10 +213,16 @@ footer {
     min-height: auto;
     grid-row: 2;
   }
-  header, table {
+  #bus-stop-map {
+    padding-top: 0;
+  }
+  #bus-stop-map img {
+    position: static;
+  }
+  #bus-stop-map, h1, table, #carbonads {
     width: 50%;
   }
-  header, footer {
+  #bus-stop-map, h1, footer, #carbonads {
     float: left;
   }
   header {
