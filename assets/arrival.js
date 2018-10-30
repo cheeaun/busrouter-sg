@@ -1,6 +1,8 @@
 import { h, render, Component } from 'preact';
 import { timeDisplay, sortServicesPinned } from '../utils/bus';
 import { MAPBOX_ACCESS_TOKEN } from './config';
+import fetchCache from '../utils/fetchCache';
+import Ad from './ad';
 
 import wheelchairImagePath from './images/wheelchair.svg';
 import busSingleImagePath from './images/bus-single.svg';
@@ -105,7 +107,7 @@ class ArrivalTimes extends Component {
     };
   }
   async componentDidMount() {
-    const stopsData = await fetch(stopsJSONPath).then(r => r.json());
+    const stopsData = await fetchCache(stopsJSONPath, 24 * 60);
     this.setState({ stopsData });
 
     window.onhashchange = () => {
@@ -138,7 +140,7 @@ class ArrivalTimes extends Component {
     const { busStop } = this.state;
     if (!busStop) return;
     const id = busStop.code;
-    fetch(`https://arrivelah.appspot.com/?id=${id}`).then(res => res.json()).then(results => {
+    fetchCache(`https://arrivelah.appspot.com/?id=${id}`, 5).then(results => {
       this.setState({
         services: results.services,
       });
