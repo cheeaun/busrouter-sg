@@ -1411,15 +1411,17 @@ class App extends Component {
                   const endIndex = intersectedStops.indexOf(endStop.number);
                   if (endIndex > -1) intersectedStops.splice(endIndex, 1);
 
-                  results.push({
-                    startStop,
-                    startService: service,
-                    startRoute: route,
-                    stopsBetween: intersectedStops,
-                    endRoute: r,
-                    endService: s,
-                    endStop,
-                  });
+                  if (intersectedStops.length) {
+                    results.push({
+                      startStop,
+                      startService: service,
+                      startRoute: route,
+                      stopsBetween: intersectedStops,
+                      endRoute: r,
+                      endService: s,
+                      endStop,
+                    });
+                  }
                 }
               });
             }
