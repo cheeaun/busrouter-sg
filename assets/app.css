@@ -37,8 +37,13 @@ a:active {
   margin-top: 5px !important;
 }
 .mapboxgl-ctrl-group {
-  background-color: rgba(255,255,255,.5);
-  backdrop-filter: blur(10px) saturate(3);
+  background-color: rgba(255,255,255,.8);
+}
+@supports (backdrop-filter: blur(10px)){
+  .mapboxgl-ctrl-group {
+    background-color: rgba(255,255,255,.5);
+    backdrop-filter: blur(10px) saturate(3);
+  }
 }
 .mapboxgl-ctrl-group button {
   opacity: .8;
@@ -132,11 +137,16 @@ a:active {
 .popover {
   position: fixed;
   width: 100%;
-  background-color: rgba(255,255,255,.8);
-  backdrop-filter: blur(10px) saturate(3);
+  background-color: rgba(255,255,255,.9);
   border-radius: 7px 7px 0 0;
   box-shadow: 0 0 5px rgba(0,0,0,.3);
   z-index: 2;
+}
+@supports (backdrop-filter: blur(10px)){
+  .popover {
+    background-color: rgba(255,255,255,.7);
+    backdrop-filter: blur(10px) saturate(3);
+  }
 }
 
 #search-popover {
@@ -607,14 +617,19 @@ a.service-tag:hover {
 }
 
 .float-pill {
-  backdrop-filter: blur(10px) saturate(3);
-  background-color: rgba(255,255,255,.8);
+  background-color: rgba(255,255,255,.9);
   padding: 8px 44px 8px 8px;
   border-radius: 7px;
   box-shadow: 0 1px 10px rgba(0,0,0,.25);
   position: absolute;
   right: 12px;
   margin-left: 12px;
+}
+@supports (backdrop-filter: blur(10px)){
+  .float-pill {
+    background-color: rgba(255,255,255,.7);
+    backdrop-filter: blur(10px) saturate(3);
+  }
 }
 .float-pill .service-flex {
   display: flex;
@@ -714,14 +729,19 @@ a.service-tag:hover {
   top: 0;
   pointer-events: none;
   opacity: 0;
-  background-color: rgba(255,255,255,.7);
-  backdrop-filter: blur(1px) saturate(3);
+  background-color: rgba(255,255,255,.9);
   padding: 5px;
   border-radius: 8px;
   transition: opacity .3s ease-in-out;
   margin-top: 1.5em;
   white-space: nowrap;
   font-size: 80%;
+}
+@supports (backdrop-filter: blur(10px)){
+  #tooltip {
+    background-color: rgba(255,255,255,.7);
+    backdrop-filter: blur(10px) saturate(3);
+  }
 }
 #tooltip.show {
   opacity: 1;
