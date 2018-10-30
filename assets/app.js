@@ -1382,7 +1382,6 @@ class App extends Component {
       case 'between': {
         const coords = route.value;
         const [startStopNumber, endStopNumber] = coords.split(/[,-]/).map(String);
-        console.log(startStopNumber, endStopNumber);
 
         document.title = `Routes between ${startStopNumber} and ${endStopNumber} - ${APP_NAME}`;
         // Reset
