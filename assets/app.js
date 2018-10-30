@@ -959,13 +959,18 @@ class App extends Component {
     }
   }
   _handleSearchClose = () => {
-    this.setState({ expandSearch: false });
+    this.setState({
+      expandSearch: false,
+    });
     $map.classList.remove('fade-out');
     this._resetSearch();
   }
   _resetSearch = () => {
     this._searchField.value = '';
-    this.setState({ services: this.state.servicesDataArr });
+    this.setState({
+      searching: false,
+      services: this.state.servicesDataArr,
+    });
   }
   _handleServicesScroll = () => {
     if (this.state.expandSearch) return;
@@ -1593,11 +1598,11 @@ class App extends Component {
               onfocus={this._handleSearchFocus}
               oninput={this._handleSearch}
               onkeydown={this._handleKeys}
-              disabled={!services.length}
+              disabled={!searching && !services.length}
             />
             <button type="button" onclick={this._handleSearchClose}>Cancel</button>
           </div>
-          <ul id="services-list" class={`popover-list ${services.length ? '' : 'loading'}`} ref={c => this._servicesList = c} onScroll={this._handleServicesScroll}>
+          <ul id="services-list" class={`popover-list ${services.length || searching ? '' : 'loading'} ${searching ? 'searching' : ''}`} ref={c => this._servicesList = c} onScroll={this._handleServicesScroll}>
             {services.length ? (
               services.map(s => (
                 <li key={s.number}>

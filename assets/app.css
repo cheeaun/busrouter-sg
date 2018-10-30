@@ -727,7 +727,7 @@ a.service-tag:hover {
   opacity: 1;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 481px) {
   #about {
     display: flex;
     align-items: start;
@@ -760,14 +760,14 @@ a.service-tag:hover {
   }
 }
 
-@media (min-width: 480px) and (min-height: 550px) {
+@media (min-width: 481px) and (min-height: 551px) {
   #stop-popover,
   #between-popover {
     max-height: 70vh;
   }
 }
 
-@media (min-width: 640px) {
+@media (min-width: 641px) {
   .mapboxgl-ctrl-logo {
     position: fixed;
     left: 10px;

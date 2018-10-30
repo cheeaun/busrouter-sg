@@ -7,6 +7,10 @@ body {
   user-select: none;
 }
 
+*, *:before, *:after{
+  box-sizing: border-box;
+}
+
 main {
   max-width: 480px;
   margin: 0 auto;
@@ -20,9 +24,9 @@ main {
   padding: 0;
   list-style: none;
   display: block;
-  max-height: 90vh;
   overflow: auto;
   text-align: center;
+  pointer-events: auto;
 }
 .stops-list li {
   margin: 0;
@@ -48,7 +52,6 @@ main {
 }
 #bus-stop-map:after {
   opacity: 0;
-  pointer-events: none;
   content: '';
   position: absolute;
   top: 50%;
@@ -116,8 +119,8 @@ table td * {
 table tbody {
   transition: opacity .3s;
 }
-table tbody th{
-  width: 5ex;
+table tbody th {
+  width: 8ex;
   z-index: 10;
   position: relative;
   background-color: rgba(255,255,255,.5);
@@ -137,6 +140,10 @@ table tbody tr.pin th {
   table tbody th:hover {
     color: darkorange;
   }
+}
+table tbody td.blank {
+  text-align: center;
+  padding: 3em;
 }
 tfoot {
   font-size: 11px;

@@ -229,7 +229,7 @@ class ArrivalTimes extends Component {
             ] : (
                 <tbody>
                   <tr>
-                    <td>No arrival times available.</td>
+                    <td class="blank">No arrival times available.</td>
                   </tr>
                 </tbody>
               ) : (
@@ -240,9 +240,12 @@ class ArrivalTimes extends Component {
               </tbody>
             )}
         </table>
-        <footer>
-          <small><b>Note</b>: Arrival times refresh every 15 seconds.</small>
-        </footer>
+        {!!services && !!services.length && (
+          <footer>
+            <small><b>Note</b>: Arrival times refresh every 15 seconds.</small>
+          </footer>
+        )}
+        <Ad />
       </div>
     );
   }
