@@ -15,7 +15,7 @@ export default () => {
           font-size: 14px;
           line-height: 1.4;
           padding: 14px;
-          background-color: rgba(0,0,0,.05);
+          background-color: rgba(0,0,0,.03);
         }
         #carbonads span {
           position: relative;
