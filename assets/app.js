@@ -181,6 +181,7 @@ class App extends Component {
     this.state = {
       route: getRoute(),
       services: [],
+      stops: [],
       searching: false,
       expandSearch: false,
       shrinkSearch: false,
@@ -889,7 +890,11 @@ class App extends Component {
     });
 
     // Popover search field
-    this._fuse = new Fuse(servicesDataArr, {
+    this._fuseServices = new Fuse(servicesDataArr, {
+      threshold: .3,
+      keys: ['number', 'name'],
+    });
+    this._fuseStops = new Fuse(stopsDataArr, {
       threshold: .3,
       keys: ['number', 'name'],
     });
@@ -931,9 +936,14 @@ class App extends Component {
   _handleSearch = (e) => {
     const { value } = e.target;
     if (value) {
-      const services = this._fuse.search(value);
+      const services = this._fuseServices.search(value);
+      let stops = [];
+      if (services.length < 20) {
+        stops = this._fuseStops.search(value);
+      }
       this.setState({
         services,
+        stops,
         searching: true,
       });
       // Scroll to top, with hack for momentum scrolling
@@ -944,6 +954,7 @@ class App extends Component {
     } else {
       this.setState({
         services: this.state.servicesDataArr,
+        stops: [],
         searching: false,
       });
     }
@@ -960,6 +971,7 @@ class App extends Component {
     this.setState({
       searching: false,
       services: this.state.servicesDataArr,
+      stops: [],
     });
   }
   _handleServicesScroll = () => {
@@ -1522,6 +1534,7 @@ class App extends Component {
   render(_, state) {
     const {
       route,
+      stops,
       services,
       searching,
       expandSearch,
@@ -1580,7 +1593,7 @@ class App extends Component {
           <div class="popover-search">
             <input
               type="search"
-              placeholder="Search for bus service"
+              placeholder="Search for bus service or stop"
               autocomplete="off"
               autocorrect="off"
               autocapitalize="off"
@@ -1593,7 +1606,7 @@ class App extends Component {
             />
             <button type="button" onclick={this._handleSearchClose}>Cancel</button>
           </div>
-          <ul id="services-list" class={`popover-list ${services.length || searching ? '' : 'loading'} ${searching ? 'searching' : ''}`} ref={c => this._servicesList = c} onScroll={this._handleServicesScroll}>
+          <ul class={`popover-list ${services.length || searching ? '' : 'loading'} ${searching ? 'searching' : ''}`} ref={c => this._servicesList = c} onScroll={this._handleServicesScroll}>
             <Ad key="ad" />
             {services.length ? (
               services.map(s => (
@@ -1612,6 +1625,18 @@ class App extends Component {
                   </a>
                 </li>
               ))
+            )}
+            {searching && !!stops.length && (
+              stops.map(s => (
+                <li key={s.number}>
+                  <a href={`#/stops/${s.number}`}>
+                    <b class="stop-tag">{s.number}</b> {s.name}
+                  </a>
+                </li>
+              ))
+            )}
+            {searching && !stops.length && !services.length && (
+              <li class="nada">No results.</li>
             )}
           </ul>
         </div>

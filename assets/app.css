@@ -528,6 +528,10 @@ a:active {
 .popover-list.searching #carbonads {
   display: none;
 }
+.popover-list li.nada {
+  padding: 14px;
+  pointer-events: none;
+}
 .popover-list li a {
   padding: 14px;
   border-bottom: 1px solid rgba(0,0,0,.1);
