@@ -140,7 +140,7 @@ class ArrivalTimes extends Component {
     const { busStop } = this.state;
     if (!busStop) return;
     const id = busStop.code;
-    fetchCache(`https://arrivelah.appspot.com/?id=${id}`, 5).then(results => {
+    fetch(`https://arrivelah.appspot.com/?id=${id}`).then(r => r.json()).then(results => {
       this.setState({
         services: results.services,
       });
