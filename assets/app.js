@@ -918,7 +918,7 @@ class App extends Component {
     });
     this.setState({ services: servicesDataArr });
 
-    this._renderRoute();
+    requestAnimationFrame(this._renderRoute);
 
     // Global shortcuts
     let keydown = null;
