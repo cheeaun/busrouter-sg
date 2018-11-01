@@ -37,9 +37,6 @@ workbox.routing.registerRoute(
   workbox.strategies.staleWhileRevalidate({
     cacheName: 'mapbox-fonts',
     plugins: [
-      new workbox.expiration.Plugin({
-        maxEntries: 10,
-      }),
       new workbox.cacheableResponse.Plugin({
         statuses: [0, 200]
       }),
