@@ -948,9 +948,17 @@ class App extends Component {
   }
   _handleKeys = (e) => {
     const { services } = this.state;
-    if (/enter/i.test(e.key || e.code)) { // Enter
-      if (services.length) {
-        location.hash = `#/services/${services[0].number}`;
+    switch (e.key.toLowerCase()) {
+      case 'enter': {
+        if (services.length) {
+          location.hash = `#/services/${services[0].number}`;
+        }
+        break;
+      }
+      case 'escape': {
+        this._searchField.blur();
+        this._handleSearchClose();
+        break;
       }
     }
   }
