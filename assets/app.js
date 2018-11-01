@@ -923,6 +923,9 @@ class App extends Component {
     // Global shortcuts
     let keydown = null;
     document.addEventListener('keydown', (e) => {
+      if (e.target && e.target.tagName && /input|textarea|button|select/i.test(e.target.tagName)) {
+        return;
+      }
       keydown = e.key.toLowerCase();
       switch (keydown) {
         case '/': {
