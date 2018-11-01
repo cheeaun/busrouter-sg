@@ -33,6 +33,18 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
+  /\/.*\.(?:json)$/,
+  workbox.strategies.networkFirst({
+    cacheName: 'data',
+    plugins: [
+      new workbox.cacheableResponse.Plugin({
+        statuses: [0, 200]
+      }),
+    ],
+  }),
+);
+
+workbox.routing.registerRoute(
   /.*api\.mapbox\.com\/fonts/,
   workbox.strategies.staleWhileRevalidate({
     cacheName: 'mapbox-fonts',
