@@ -523,7 +523,7 @@ class App extends Component {
         'icon-image': [
           'step', ['zoom'],
           ['case', ['==', ['get', 'type'], 'end'], 'stop-end', 'stop-small'],
-          14, ['case', ['==', ['get', 'type'], 'end'], 'stop-end', 'stop']
+          12, ['case', ['==', ['get', 'type'], 'end'], 'stop-end', 'stop']
         ],
         'icon-size': [
           'interpolate', ['linear'], ['zoom'],
@@ -539,7 +539,7 @@ class App extends Component {
         'text-field': [
           'step', ['zoom'],
           ['case', ['==', ['get', 'type'], 'end'], ['concat', ['get', 'number'], '\n', ['get', 'name']], ''],
-          14, ['case', ['==', ['get', 'type'], 'end'], ['concat', ['get', 'number'], '\n', ['get', 'name']], ['get', 'number']],
+          12, ['case', ['==', ['get', 'type'], 'end'], ['concat', ['get', 'number'], '\n', ['get', 'name']], ['get', 'number']],
           16, ['concat', ['get', 'number'], '\n', ['get', 'name']]
         ],
         'text-offset': ['case', ['==', ['get', 'type'], 'end'], ['literal', [1, -1.8]], ['literal', [1, -.6]]],
