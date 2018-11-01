@@ -954,6 +954,7 @@ class App extends Component {
     switch (e.key.toLowerCase()) {
       case 'enter': {
         if (services.length) {
+          this._searchField.blur();
           location.hash = `#/services/${services[0].number}`;
         }
         break;
