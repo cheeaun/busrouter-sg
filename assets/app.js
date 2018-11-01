@@ -425,7 +425,7 @@ class App extends Component {
         'icon-size': [
           'interpolate', ['linear'], ['zoom'],
           10, ['case', ['get', 'interchange'], .4, .05],
-          12, ['case', ['get', 'interchange'], .6, .05],
+          12, ['case', ['get', 'interchange'], .6, .075],
           16, .6
         ],
         'icon-padding': .5,
