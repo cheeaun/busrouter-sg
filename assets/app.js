@@ -300,12 +300,14 @@ class App extends Component {
       stopsData[number] = {
         name,
         number,
+        interchange: /\sint$/i.test(name) && !/^(bef|aft|opp|bet)\s/i.test(name),
         coordinates: [lng, lat],
         services: [],
         routes: [],
       };
       stopsDataArr.push(stopsData[number]);
     });
+    stopsDataArr.sort((a, b) => a.interchange ? 1 : b.interchange ? -1 : 0);
 
     Object.keys(servicesData).forEach(number => {
       const { name, routes } = servicesData[number];
@@ -365,6 +367,7 @@ class App extends Component {
           properties: {
             number: stop.number,
             name: stop.name,
+            interchange: stop.interchange,
           },
           geometry: {
             type: 'Point',
@@ -411,22 +414,31 @@ class App extends Component {
       type: 'symbol',
       source: 'stops',
       layout: {
+        'symbol-z-order': 'source',
         'icon-image': [
           'step', ['zoom'],
-          'stop-small',
+          ['case', ['get', 'interchange'], 'stop', 'stop-small'],
           14, 'stop'
         ],
         'icon-size': [
           'interpolate', ['linear'], ['zoom'],
-          10, .1,
-          15, .6
+          10, ['case', ['get', 'interchange'], .4, .05],
+          12, ['case', ['get', 'interchange'], .6, .05],
+          16, .6
         ],
         'icon-padding': .5,
         'icon-allow-overlap': true,
         // 'icon-ignore-placement': true,
         ...stopText.layout,
       },
-      paint: stopText.paint,
+      paint: {
+        'icon-opacity': [
+          'interpolate', ['linear'], ['zoom'],
+          8, 0,
+          9, 1,
+        ],
+        ...stopText.paint,
+      },
     }, 'place-neighbourhood');
 
     map.on('mouseenter', 'stops', () => {
