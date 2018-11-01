@@ -20,6 +20,7 @@
     "got": "~9.3.0",
     "parcel-bundler": "~1.10.3",
     "parcel-plugin-json-url-loader": "~0.1.1",
+    "postcss-import-url": "~3.0.4",
     "postcss-modules": "~1.4.1"
   },
   "author": "Lim Chee Aun",
