@@ -1762,3 +1762,9 @@ class App extends Component {
 }
 
 render(<App />, document.getElementById('app'));
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('../service-worker.js');
+  });
+}
