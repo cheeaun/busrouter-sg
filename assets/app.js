@@ -396,7 +396,7 @@ class App extends Component {
         'text-size': [
           'interpolate', ['linear'], ['zoom'],
           14, 11,
-          22, 20
+          16, 16
         ],
         'text-justify': 'left',
         'text-anchor': 'top-left',
