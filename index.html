@@ -61,6 +61,12 @@
 <div id="tooltip"></div>
 <div id="app"></div>
 <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.js"></script>
+<script>
+  if (!mapboxgl.supported()) {
+    const redirect = confirm('Looks like your browser is a little old. Redirecting you to the older version of BusRouter SG.');
+    if (redirect) location.href = 'https://v1.busrouter.sg/';
+  }
+</script>
 <script src="assets/app.js"></script>
 <!-- <script>
 if ('serviceWorker' in navigator){
