@@ -3150,7 +3150,7 @@
 		]
 	},
 	"35": {
-		"name": "Bedok Int ⟲ Opp Db Schenker",
+		"name": "Bedok Int ⟲ Opp DB Schenker",
 		"routes": [
 			[
 				"84009",
@@ -8171,7 +8171,7 @@
 		]
 	},
 	"94": {
-		"name": "Eunos Int ⟲ St Aero",
+		"name": "Eunos Int ⟲ ST Aero",
 		"routes": [
 			[
 				"82009",
@@ -8972,7 +8972,7 @@
 		]
 	},
 	"106": {
-		"name": "Bt Batok Int ⇄ Opp Mas Bldg / Shenton Way Ter",
+		"name": "Bt Batok Int ⇄ Opp MAS Bldg / Shenton Way Ter",
 		"routes": [
 			[
 				"43009",
@@ -11742,7 +11742,7 @@
 		]
 	},
 	"150": {
-		"name": "Eunos Int ⟲ Opp Chij Katong Convent",
+		"name": "Eunos Int ⟲ Opp CHIJ Katong Convent",
 		"routes": [
 			[
 				"82009",
@@ -12669,7 +12669,7 @@
 		]
 	},
 	"160": {
-		"name": "Jurong East Temp Int ⟲ Jb Sentral Bus Ter",
+		"name": "Jurong East Temp Int ⟲ JB Sentral Bus Ter",
 		"routes": [
 			[
 				"28009",
@@ -16105,7 +16105,7 @@
 		]
 	},
 	"199": {
-		"name": "Boon Lay Int ⟲ Nie Lib",
+		"name": "Boon Lay Int ⟲ NIE Lib",
 		"routes": [
 			[
 				"22009",
@@ -16646,7 +16646,7 @@
 		]
 	},
 	"248": {
-		"name": "Tuas Ter ⟲ Aft Tuas Sth St 7",
+		"name": "Tuas Ter ⟲ AFT Tuas Sth ST 7",
 		"routes": [
 			[
 				"25009",
@@ -17396,7 +17396,7 @@
 		]
 	},
 	"298": {
-		"name": "Tampines Concourse Int ⟲ Aft Tampines Ave 5",
+		"name": "Tampines Concourse Int ⟲ AFT Tampines Ave 5",
 		"routes": [
 			[
 				"75019",
@@ -17966,7 +17966,7 @@
 		]
 	},
 	"381": {
-		"name": "Punggol Temp Int ⟲ Waterway Pr Sch",
+		"name": "Punggol Temp Int ⟲ Waterway PR Sch",
 		"routes": [
 			[
 				"65009",
@@ -18431,7 +18431,7 @@
 		]
 	},
 	"513": {
-		"name": "Darul Ghufran Mque / Opp Darul Ghufran Mque ⇄ Opp Mas Bldg / Hub Synergy Pt",
+		"name": "Darul Ghufran Mque / Opp Darul Ghufran Mque ⇄ Opp MAS Bldg / Hub Synergy Pt",
 		"routes": [
 			[
 				"75129",
@@ -18560,7 +18560,7 @@
 		]
 	},
 	"700": {
-		"name": "Bt Panjang Temp Bus Pk / Blk 183 ⇄ Opp Mas Bldg / Shenton Way Ter",
+		"name": "Bt Panjang Temp Bus Pk / Blk 183 ⇄ Opp MAS Bldg / Shenton Way Ter",
 		"routes": [
 			[
 				"00481",
@@ -20026,7 +20026,7 @@
 		]
 	},
 	"911": {
-		"name": "W'lands Temp Int ⟲ Blk 891c Cp",
+		"name": "W'lands Temp Int ⟲ Blk 891c CP",
 		"routes": [
 			[
 				"46009",
@@ -20110,7 +20110,7 @@
 		]
 	},
 	"913": {
-		"name": "W'lands Temp Int ⟲ Blk 891c Cp",
+		"name": "W'lands Temp Int ⟲ Blk 891c CP",
 		"routes": [
 			[
 				"46009",
@@ -20787,7 +20787,7 @@
 		]
 	},
 	"962": {
-		"name": "W'lands Temp Int ⟲ Bef Acacia Hme",
+		"name": "W'lands Temp Int ⟲ BEF Acacia Hme",
 		"routes": [
 			[
 				"46009",
@@ -21154,7 +21154,7 @@
 		]
 	},
 	"970": {
-		"name": "Bt Panjang Int ⇄ Opp Mas Bldg / Shenton Way Ter",
+		"name": "Bt Panjang Int ⇄ Opp MAS Bldg / Shenton Way Ter",
 		"routes": [
 			[
 				"45009",
@@ -22973,7 +22973,7 @@
 		]
 	},
 	"58A": {
-		"name": "S'goon Stn Exit H → Bef Tpe",
+		"name": "S'goon Stn Exit H → Bef TPE",
 		"routes": [
 			[
 				"62131",
@@ -23783,7 +23783,7 @@
 		]
 	},
 	"75A": {
-		"name": "Bt Panjang Temp Bus Pk → Opp Sim Hq",
+		"name": "Bt Panjang Temp Bus Pk → Opp SIM HQ",
 		"routes": [
 			[
 				"00481",
@@ -24003,7 +24003,7 @@
 		]
 	},
 	"89e": {
-		"name": "Hougang Ctrl Int ⇄ Sats Cargo Ter / 3rd Cargo Agents",
+		"name": "Hougang Ctrl Int ⇄ SATS Cargo Ter / 3rd Cargo Agents",
 		"routes": [
 			[
 				"64009",
@@ -24165,7 +24165,7 @@
 		]
 	},
 	"94A": {
-		"name": "Eunos Int → Bef Rsaf Roundabout",
+		"name": "Eunos Int → Bef RSAF Roundabout",
 		"routes": [
 			[
 				"82009",
@@ -24205,7 +24205,7 @@
 		]
 	},
 	"96A": {
-		"name": "Clementi Int → Nus Raffles Hall",
+		"name": "Clementi Int → NUS Raffles Hall",
 		"routes": [
 			[
 				"17009",
@@ -24615,7 +24615,7 @@
 		]
 	},
 	"118A": {
-		"name": "Aft Punggol Rd → Ite Coll East Adm Blk",
+		"name": "Aft Punggol Rd → ITE Coll East Adm Blk",
 		"routes": [
 			[
 				"65199",
@@ -24638,7 +24638,7 @@
 		]
 	},
 	"118B": {
-		"name": "Opp Ite Coll East Adm Blk → Bef Punggol Rd",
+		"name": "Opp ITE Coll East Adm Blk → Bef Punggol Rd",
 		"routes": [
 			[
 				"96111",
@@ -25494,7 +25494,7 @@
 		]
 	},
 	"170X": {
-		"name": "Opp Kranji Stn / Kranji Stn ⇄ Jb Sentral Bus Ter",
+		"name": "Opp Kranji Stn / Kranji Stn ⇄ JB Sentral Bus Ter",
 		"routes": [
 			[
 				"45131",
@@ -26033,7 +26033,7 @@
 		]
 	},
 	"196A": {
-		"name": "Bedok Int → Opp Mas Bldg",
+		"name": "Bedok Int → Opp MAS Bldg",
 		"routes": [
 			[
 				"84009",
@@ -26074,7 +26074,7 @@
 		]
 	},
 	"196e": {
-		"name": "Lagoon View / Hua Xin Ct ⇄ Opp Mas Bldg / Hub Synergy Pt",
+		"name": "Lagoon View / Hua Xin Ct ⇄ Opp MAS Bldg / Hub Synergy Pt",
 		"routes": [
 			[
 				"93049",
@@ -26338,7 +26338,7 @@
 		]
 	},
 	"850E": {
-		"name": "Blk 432c / Blk 456 ⇄ Opp Mas Bldg / Hub Synergy Pt",
+		"name": "Blk 432c / Blk 456 ⇄ Opp MAS Bldg / Hub Synergy Pt",
 		"routes": [
 			[
 				"59581",
@@ -26849,7 +26849,7 @@
 		]
 	},
 	"951E": {
-		"name": "Blk 875 / Blk 816 ⇄ Opp Mas Bldg / Hub Synergy Pt",
+		"name": "Blk 875 / Blk 816 ⇄ Opp MAS Bldg / Hub Synergy Pt",
 		"routes": [
 			[
 				"46449",
@@ -27757,7 +27757,7 @@
 		]
 	},
 	"243W": {
-		"name": "Boon Lay Int ⟲ Blk 844a Cp",
+		"name": "Boon Lay Int ⟲ Blk 844a CP",
 		"routes": [
 			[
 				"22009",
@@ -27811,7 +27811,7 @@
 		]
 	},
 	"268B": {
-		"name": "Opp Amk Police Div Hq → Ang Mo Kio Stn",
+		"name": "Opp AMK Police Div HQ → Ang Mo Kio Stn",
 		"routes": [
 			[
 				"55309",
@@ -27829,7 +27829,7 @@
 		]
 	},
 	"268C": {
-		"name": "Opp Ang Mo Kio Stn → Amk Police Div Hq",
+		"name": "Opp Ang Mo Kio Stn → AMK Police Div HQ",
 		"routes": [
 			[
 				"54269",
@@ -27906,7 +27906,7 @@
 		]
 	},
 	"382G": {
-		"name": "Punggol Temp Int ⟲ Opp Blk 259 Cp",
+		"name": "Punggol Temp Int ⟲ Opp Blk 259 CP",
 		"routes": [
 			[
 				"65009",
@@ -27926,7 +27926,7 @@
 		]
 	},
 	"382W": {
-		"name": "Punggol Temp Int ⟲ Blk 259 Cp",
+		"name": "Punggol Temp Int ⟲ Blk 259 CP",
 		"routes": [
 			[
 				"65009",
