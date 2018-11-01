@@ -10,14 +10,14 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-  /\.(?:js|css)$/,
+  /\/.*\.(?:js|css)$/,
   workbox.strategies.staleWhileRevalidate({
     cacheName: 'static-resources',
   }),
 );
 
 workbox.routing.registerRoute(
-  /\.(?:png|gif|jpg|jpeg|svg)$/,
+  /\/.*\.(?:png|gif|jpg|jpeg|svg)$/,
   workbox.strategies.staleWhileRevalidate({
     cacheName: 'images',
     plugins: [
