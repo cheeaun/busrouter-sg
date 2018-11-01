@@ -746,6 +746,7 @@ a.service-tag:hover {
   margin-top: 1.5em;
   white-space: nowrap;
   font-size: 80%;
+  box-shadow: 0 0 0 2px rgba(0,0,0,.1);
 }
 @supports (backdrop-filter: blur(10px)){
   #tooltip {
