@@ -923,18 +923,28 @@ class App extends Component {
     // Global shortcuts
     let keydown = null;
     document.addEventListener('keydown', (e) => {
-      if (e.target && e.target.tagName && /input|textarea|button|select/i.test(e.target.tagName)) {
-        return;
-      }
+      const isFormField = e.target && e.target.tagName && /input|textarea|button|select/i.test(e.target.tagName);
       keydown = e.key.toLowerCase();
       switch (keydown) {
         case '/': {
+          if (isFormField) return;
           e.preventDefault();
           this._searchField.focus();
           break;
         }
         case 'alt': {
           document.body.classList.add('alt-mode');
+          break;
+        }
+        case 'escape': {
+          const { expandSearch, showStopPopover, showBetweenPopover } = this.state;
+          if (expandSearch) {
+            this._handleSearchClose();
+          } else if (showStopPopover) {
+            this._hideStopPopover();
+          } else if (showBetweenPopover) {
+            location.hash = '/';
+          }
           break;
         }
       }
@@ -957,11 +967,6 @@ class App extends Component {
           this._searchField.blur();
           location.hash = `#/services/${services[0].number}`;
         }
-        break;
-      }
-      case 'escape': {
-        this._searchField.blur();
-        this._handleSearchClose();
         break;
       }
     }
@@ -1008,6 +1013,7 @@ class App extends Component {
     this._resetSearch();
   }
   _resetSearch = () => {
+    this._searchField.blur();
     this._searchField.value = '';
     this.setState({
       searching: false,
@@ -1590,6 +1596,8 @@ class App extends Component {
       showArrivalsPopover,
     } = state;
 
+    const popoverIsUp = !!showStopPopover || !!showBetweenPopover || !!showArrivalsPopover;
+
     return (
       <div>
         <div
@@ -1646,7 +1654,7 @@ class App extends Component {
               onfocus={this._handleSearchFocus}
               oninput={this._handleSearch}
               onkeydown={this._handleKeys}
-              disabled={!searching && !services.length}
+              disabled={(!searching && !services.length) || popoverIsUp}
             />
             <button type="button" onclick={this._handleSearchClose}>Cancel</button>
           </div>
