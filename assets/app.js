@@ -330,7 +330,8 @@ class App extends Component {
 
     map.addSource('stop-selected', {
       type: 'geojson',
-      tolerance: 3.5,
+      tolerance: 10,
+      buffer: 0,
       data: {
         type: 'FeatureCollection',
         features: [],
@@ -359,6 +360,7 @@ class App extends Component {
     map.addSource('stops', {
       type: 'geojson',
       tolerance: 10,
+      buffer: 0,
       data: {
         type: 'FeatureCollection',
         features: stopsDataArr.map(stop => ({
@@ -428,7 +430,7 @@ class App extends Component {
         ],
         'icon-padding': .5,
         'icon-allow-overlap': true,
-        // 'icon-ignore-placement': true,
+        'icon-ignore-placement': true,
         ...stopText.layout,
       },
       paint: {
@@ -492,7 +494,7 @@ class App extends Component {
               ...point,
             });
           });
-        } else {
+        } else if (lastFeature) {
           lastFeature = null;
           hideStopTooltip();
         }
@@ -506,7 +508,8 @@ class App extends Component {
 
     map.addSource('stops-highlight', {
       type: 'geojson',
-      tolerance: 3.5,
+      tolerance: 10,
+      buffer: 0,
       data: {
         type: 'FeatureCollection',
         features: [],
@@ -562,6 +565,7 @@ class App extends Component {
     map.addSource('routes', {
       type: 'geojson',
       tolerance: 1,
+      buffer: 0,
       lineMetrics: true,
       data: {
         type: 'FeatureCollection',
@@ -662,6 +666,7 @@ class App extends Component {
     map.addSource('routes-path', {
       type: 'geojson',
       tolerance: 1,
+      buffer: 0,
       lineMetrics: true,
       data: {
         type: 'FeatureCollection',
@@ -802,6 +807,7 @@ class App extends Component {
     map.addSource('routes-between', {
       type: 'geojson',
       tolerance: 1,
+      buffer: 0,
       data: {
         type: 'FeatureCollection',
         features: [],
