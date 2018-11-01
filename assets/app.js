@@ -920,20 +920,31 @@ class App extends Component {
 
     this._renderRoute();
 
-    // Alt mode
-    let altKeyDown = false;
-    document.onkeydown = (e) => {
-      if (e.altKey) {
-        altKeyDown = true;
-        document.body.classList.add('alt-mode');
+    // Global shortcuts
+    let keydown = null;
+    document.addEventListener('keydown', (e) => {
+      keydown = e.key.toLowerCase();
+      switch (keydown) {
+        case '/': {
+          e.preventDefault();
+          this._searchField.focus();
+          break;
+        }
+        case 'alt': {
+          document.body.classList.add('alt-mode');
+          break;
+        }
       }
-    };
-    document.onkeyup = () => {
-      if (altKeyDown) {
-        altKeyDown = false;
-        document.body.classList.remove('alt-mode');
+    });
+    document.addEventListener('keyup', () => {
+      switch (keydown) {
+        case 'alt': {
+          document.body.classList.remove('alt-mode');
+          break;
+        }
       }
-    };
+      keydown = null;
+    });
   }
   _handleKeys = (e) => {
     const { services } = this.state;
