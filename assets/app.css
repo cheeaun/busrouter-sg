@@ -516,7 +516,7 @@ a:active {
 .popover-list {
   flex-grow: 1;
   margin: 0;
-  padding: 0;
+  padding: 0 0 60px;
   list-style: none;
   -webkit-overflow-scrolling: touch;
   overflow: auto;
