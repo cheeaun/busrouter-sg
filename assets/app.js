@@ -1056,10 +1056,13 @@ class App extends Component {
       requestAnimationFrame(() => {
         const offset = BREAKPOINT() ? [0, 0] : [0, -this._stopPopover.offsetHeight / 2];
         const zoom = map.getZoom();
-        if (zoom < 12) {
-          map.jumpTo({ zoom: 16, center: coordinates, offset });
-        } else if (zoom < 16) {
-          map.flyTo({ zoom: 16, center: coordinates, offset });
+        if (zoom < 16) {
+          map.flyTo({
+            zoom: 16,
+            center: coordinates,
+            offset,
+            animate: zoom >= 12,
+          });
         } else {
           map.easeTo({ center: coordinates, offset });
         }
