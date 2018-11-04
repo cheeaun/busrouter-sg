@@ -805,6 +805,7 @@ a.service-tag:hover {
     max-width: 480px;
     position: static;
     border-radius: 0 0 7px 7px;
+    padding-bottom: 12px; /* Reset safe-area padding */
   }
   #about[hidden] section {
     transform: translate3d(0, -100%, -50px) rotateX(-35deg);
