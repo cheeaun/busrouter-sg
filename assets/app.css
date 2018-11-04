@@ -182,7 +182,7 @@ a:active {
 #search-popover.shrink {
   transform: translateY(100%);
 }
-#search-popover.shrink .popover-list {
+#search-popover.shrink:not(.expand) .popover-list {
   opacity: .5;
 }
 #search-popover.expand {
