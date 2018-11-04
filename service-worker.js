@@ -18,7 +18,7 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   /\/.*\.(?:png|gif|jpg|jpeg|svg)$/,
-  workbox.strategies.staleWhileRevalidate({
+  workbox.strategies.cacheFirst({
     cacheName: 'images',
     plugins: [
       new workbox.expiration.Plugin({
@@ -34,7 +34,7 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   /\/.*\.(?:json)$/,
-  workbox.strategies.networkFirst({
+  workbox.strategies.staleWhileRevalidate({
     cacheName: 'data',
     plugins: [
       new workbox.cacheableResponse.Plugin({
@@ -46,9 +46,12 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   /.*api\.mapbox\.com\/fonts/,
-  workbox.strategies.staleWhileRevalidate({
+  workbox.strategies.cacheFirst({
     cacheName: 'mapbox-fonts',
     plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+      }),
       new workbox.cacheableResponse.Plugin({
         statuses: [0, 200]
       }),
