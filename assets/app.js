@@ -1360,6 +1360,7 @@ class App extends Component {
           expandSearch: false,
           shrinkSearch: true,
         });
+        this._resetSearch();
 
         const { routes, name, coordinates } = stopsData[stop];
         if (route.subpage === 'routes') {
