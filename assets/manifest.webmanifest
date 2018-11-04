@@ -1,10 +1,10 @@
 {
   "name": "BusRouter SG",
-  "short_name": "🚌🇸🇬",
+  "short_name": "BusRouter SG",
   "description": "Explore bus stops and routes on the map for all bus services in Singapore, with realtime bus arrival times and per-bus-stop passing routes overview.",
   "display": "standalone",
-  "background_color": "#00454d",
-  "theme_color": "#00454d",
+  "background_color": "#F9F5ED",
+  "theme_color": "#F9F5ED",
   "scope": "/",
   "start_url": "/",
   "icons": [

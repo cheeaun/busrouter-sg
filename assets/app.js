@@ -15,6 +15,7 @@ import stopStartImagePath from './images/stop-start.png';
 import stopEndImagePath from './images/stop-end.png';
 import openNewWindowImagePath from './images/open-new-window.svg';
 import passingRoutesImagePath from './images/passing-routes.svg';
+import iconSVGPath from '../icons/icon.svg';
 
 import routesJSONPath from '../data/3/routes.polyline.json';
 import stopsJSONPath from '../data/3/stops.final.json';
@@ -23,7 +24,7 @@ import servicesJSONPath from '../data/3/services.final.json';
 const APP_NAME = 'BusRouter SG';
 const $map = document.getElementById('map');
 const STORE = {};
-const BREAKPOINT = () => window.innerWidth > 640 && window.innerHeight > 640;
+const BREAKPOINT = () => window.innerWidth > 640;
 const supportsHover = window.matchMedia && window.matchMedia('(hover: hover)').matches;
 const ruler = cheapRuler(1.3);
 
@@ -1127,7 +1128,7 @@ class App extends Component {
     const height = 480;
     const url = e.target.href;
     const stopNumber = url.match(/[^#]+$/)[0];
-    showPopup = showPopup || (window.innerWidth > width * 2 && window.innerHeight > height);
+    showPopup = showPopup || (window.innerWidth > width * 2 && window.innerHeight > height) || window.innerWidth > window.innerHeight; // landscape is weird
     if (showPopup) {
       const top = ((screen.availHeight || screen.height) - height) / 2;
       const left = (screen.width - width) / 2;
@@ -1763,7 +1764,7 @@ class App extends Component {
         <div id="arrivals-popover" class={`popover ${showArrivalsPopover ? 'expand' : ''}`}>
           {showArrivalsPopover && [
             <a href="#/" onClick={this._closeBusArrival} class="popover-close">&times;</a>,
-            <a href={`/bus-arrival/#${showArrivalsPopover.number}`} onClick={(e) => {
+            <a href={`/bus-arrival/#${showArrivalsPopover.number}`} target="_blank" onClick={(e) => {
               this._openBusArrival(e, true);
               this._closeBusArrival(e);
             }} class="popover-popout popover-close">Pop out <img src={openNewWindowImagePath} width="16" height="16" alt="" /></a>,
@@ -1783,4 +1784,37 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('../service-worker.js');
   });
+}
+
+if (window.navigator.standalone) {
+  document.body.classList.add('standalone');
+
+  // Refresh map size when dimissing software keyboard
+  // https://stackoverflow.com/a/19464029/20838
+  document.addEventListener('focusout', () => {
+    map.resize();
+  });
+}
+
+const isSafari = navigator.vendor && navigator.vendor.indexOf('Apple') !== -1;
+if (isSafari) {
+  setTimeout(function(){
+    const ratio = window.devicePixelRatio;
+    const canvas = document.createElement('canvas');
+    const w = canvas.width = window.screen.width * ratio;
+    const h = canvas.height = window.screen.height * ratio;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#F9F5ED';
+    ctx.fillRect(0, 0, w, h);
+    const icon = new Image();
+    icon.onload = () => {
+      const aspectRatio = icon.width / icon.height;
+      icon.width = w/2;
+      icon.height = w/2/aspectRatio;
+      ctx.drawImage(icon, (w - icon.width)/2, (h - icon.height)/2, icon.width, icon.height);
+      document.head.insertAdjacentHTML('beforeend', `<link rel="apple-touch-startup-image" href="${canvas.toDataURL()}">`);
+      console.log(canvas.toDataURL())
+    };
+    icon.src = iconSVGPath;
+  }, 5000);
 }

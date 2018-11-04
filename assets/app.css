@@ -1,9 +1,19 @@
 @import 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css';
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+  min-height: 100%;
+  min-height: calc(100% + constant(safe-area-inset-top));
+  min-height: calc(100% + env(safe-area-inset-top));
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  text-size-adjust: none;
+  background-color: #F9F5ED;
 }
 
 *, *:before, *:after{
@@ -29,6 +39,7 @@ a:active {
   bottom: 0;
   width: 100%;
   transition: filter .3s ease-in-out;
+  background-color: #F9F5ED;
 }
 #map.fade-out {
   pointer-events: none;
@@ -57,11 +68,17 @@ a:active {
 .mapboxgl-ctrl-attrib.mapboxgl-compact:not(:hover) {
   background-color: transparent;
 }
+.mapboxgl-ctrl-top-right {
+  top: max(0px, env(safe-area-inset-top));
+  right: max(0px, env(safe-area-inset-right));
+}
 
 #logo {
   position: fixed;
   top: 12px;
+  top: calc(12px + env(safe-area-inset-top));
   left: 12px;
+  left: max(12px, env(safe-area-inset-left));
   z-index: 1;
   cursor: pointer;
   filter: drop-shadow(0 1px 3px rgba(0,0,0,.3));
@@ -104,6 +121,7 @@ a:active {
   line-height: 1.4;
   background-color: rgba(255,255,255,.9);
   padding: 12px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
   border-radius: 7px 7px 0 0;
   box-shadow: 0 -1px 200px rgba(0,0,0,.3);
   font-size: .9em;
@@ -153,6 +171,7 @@ a:active {
 
 #search-popover {
   top: -60px;
+  top: min(-60px, calc(-60px - env(safe-area-inset-bottom) + 14px));
   height: 100%;
   bottom: 0;
   transform: translateY(55%);
@@ -163,8 +182,12 @@ a:active {
 #search-popover.shrink {
   transform: translateY(100%);
 }
+#search-popover.shrink .popover-list {
+  opacity: .5;
+}
 #search-popover.expand {
   transform: translateY(80px);
+  transform: translateY(calc(80px + env(safe-area-inset-top) + env(safe-area-inset-bottom)));
 }
 
 #stop-popover,
@@ -220,6 +243,9 @@ a:active {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   padding: 12px;
+  padding-left: max(12px, env(safe-area-inset-left));
+  padding-right: max(12px, env(safe-area-inset-right));
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
 }
 #stop-popover .service-tag {
   margin-bottom: 4px;
@@ -425,6 +451,7 @@ a:active {
 #arrivals-popover {
   max-height: none;
   height: calc(100% - 20px);
+  height: calc(100% - env(safe-area-inset-top) - 20px);
   overflow: hidden;
   background-color: #fff;
   transition: transform .15s ease-in-out;
@@ -466,6 +493,9 @@ a:active {
 }
 #arrivals-popover .popover-popout:hover img {
   filter: brightness(.2);
+}
+.standalone #arrivals-popover .popover-popout {
+  display: none;
 }
 
 .popover-search {
@@ -783,6 +813,14 @@ a.service-tag:hover {
   .popover {
     max-width: 320px;
     right: 16px;
+    right: max(16px, env(safe-area-inset-right));
+  }
+
+  /* Reset the safe area paddings */
+  #stop-popover .popover-scroll,
+  #between-popover .popover-scroll {
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
   #popover-float {
@@ -806,11 +844,13 @@ a.service-tag:hover {
   .mapboxgl-ctrl-logo {
     position: fixed;
     left: 10px;
+    left: max(10px, env(safe-area-inset-left));
     bottom: 34px;
   }
   .mapboxgl-ctrl-attrib {
     position: fixed !important;
     left: 0;
+    left: max(0px, env(safe-area-inset-left));
     bottom: 0;
     margin: 0 !important;
     background-color: rgba(255,255,255,.5) !important;
@@ -844,4 +884,25 @@ a.service-tag:hover {
 }
 .alt-mode .alt-hide {
   display: none;
+}
+
+/* Standalone-mode styles */
+
+.standalone:before {
+  content: '';
+  display: block;
+  height: env(safe-area-inset-top);
+  background: linear-gradient(to bottom, rgba(0,0,0,.5), rgba(0,0,0,0));
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.standalone {
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
 }
