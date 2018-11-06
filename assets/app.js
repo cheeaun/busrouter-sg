@@ -295,12 +295,6 @@ class App extends Component {
       fetchCache(stopsJSONPath, CACHE_TIME),
       fetchCache(servicesJSONPath, CACHE_TIME),
       fetchCache(routesJSONPath, CACHE_TIME),
-      new Promise((resolve, reject) => {
-        map.on('load', resolve);
-      }),
-      loadImage(stopSmallImagePath, 'stop-small'),
-      loadImage(stopImagePath, 'stop'),
-      loadImage(stopEndImagePath, 'stop-end'),
     ]);
 
     Object.keys(stops).forEach(number => {
@@ -336,6 +330,16 @@ class App extends Component {
 
     this.setState({ servicesData, stopsData, stopsDataArr, routesData, servicesDataArr });
     window._data = { servicesData, stopsData, stopsDataArr, routesData, servicesDataArr };
+
+    await new Promise((resolve, reject) => {
+      map.on('load', () => {
+        Promise.all([
+          loadImage(stopSmallImagePath, 'stop-small'),
+          loadImage(stopImagePath, 'stop'),
+          loadImage(stopEndImagePath, 'stop-end'),
+        ]).then(resolve);
+      });
+    });
 
     map.addSource('stop-selected', {
       type: 'geojson',
