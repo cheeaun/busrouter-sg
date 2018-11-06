@@ -1836,7 +1836,7 @@ if (window.navigator.standalone) {
 }
 
 const isSafari = navigator.vendor && navigator.vendor.indexOf('Apple') !== -1;
-if (isSafari) {
+if (isSafari && !window.navigator.standalone) {
   setTimeout(function(){
     const ratio = window.devicePixelRatio;
     const canvas = document.createElement('canvas');
