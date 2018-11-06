@@ -229,7 +229,7 @@ class App extends Component {
     const lowerLat = 1.2, upperLat = 1.48, lowerLong = 103.59, upperLong = 104.05;
     map.fitBounds([lowerLong, lowerLat, upperLong, upperLat], {
       animate: false,
-      padding: BREAKPOINT() ? 120 : { top: 40, bottom: window.innerHeight / 2, left: 40, right: 40 },
+      padding: BREAKPOINT() ? 120 : { top: 80, bottom: window.innerHeight / 2, left: 80, right: 80 },
     });
 
     map.once('zoomstart', () => {
@@ -328,6 +328,7 @@ class App extends Component {
     servicesDataArr.sort((a, b) => sortServices(a.number, b.number));
 
     this.setState({ servicesData, stopsData, stopsDataArr, routesData, servicesDataArr });
+    window._data = { servicesData, stopsData, stopsDataArr, routesData, servicesDataArr };
 
     map.addSource('stop-selected', {
       type: 'geojson',
@@ -1281,15 +1282,15 @@ class App extends Component {
       });
       map.fitBounds(bounds, {
         padding: BREAKPOINT() ? {
-          top: 40,
-          right: this._betweenPopover.offsetWidth + 40,
-          bottom: 40,
-          left: 40,
+          top: 80,
+          right: this._betweenPopover.offsetWidth + 80,
+          bottom: 80,
+          left: 80,
         } : {
-            top: 40,
-            right: 40,
-            bottom: this._betweenPopover.offsetHeight + 40,
-            left: 40,
+            top: 80,
+            right: 80,
+            bottom: this._betweenPopover.offsetHeight + 80,
+            left: 80,
           },
       });
     });
@@ -1377,11 +1378,11 @@ class App extends Component {
           bounds.extend(coordinates);
         });
         map.fitBounds(bounds, {
-          padding: BREAKPOINT() ? 40 : {
-            top: 40,
-            right: 40,
-            bottom: 60 + 54 + 40, // height of search bar + float pill
-            left: 40,
+          padding: BREAKPOINT() ? 80 : {
+            top: 80,
+            right: 80,
+            bottom: 60 + 54 + 80, // height of search bar + float pill
+            left: 80,
           },
         });
 
@@ -1464,13 +1465,13 @@ class App extends Component {
           allStopsCoords.forEach(coordinates => {
             bounds.extend(coordinates);
           });
-          const bottom = this._floatPill ? (this._floatPill.offsetHeight + 60 + 40) : 40;
+          const bottom = this._floatPill ? (this._floatPill.offsetHeight + 60 + 80) : 80;
           map.fitBounds(bounds, {
-            padding: BREAKPOINT() ? 40 : {
-              top: 40,
-              right: 40,
+            padding: BREAKPOINT() ? 80 : {
+              top: 80,
+              right: 80,
               bottom,
-              left: 40,
+              left: 80,
             },
           });
         } else {
