@@ -1,0 +1,15 @@
+[Settings]
+
+ID = "busrouter-sg"
+
+[context.production]
+  publish = ""
+  command = ""
+
+[context.v1]
+  publish = ""
+  command = ""
+
+[context.next]
+  publish = "dist/"
+  command = "npm run build"
