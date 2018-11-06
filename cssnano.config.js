@@ -3,6 +3,7 @@ module.exports = {
     'default',
     {
       convertValues: false,
+      mergeLonghand: false,
     }
   ]
 }
