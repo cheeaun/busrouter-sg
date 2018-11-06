@@ -293,6 +293,9 @@ class App extends Component {
       new Promise((resolve, reject) => {
         map.on('load', resolve);
       }),
+      loadImage(stopSmallImagePath, 'stop-small'),
+      loadImage(stopImagePath, 'stop'),
+      loadImage(stopEndImagePath, 'stop-end'),
     ]);
 
     Object.keys(stops).forEach(number => {
@@ -379,9 +382,6 @@ class App extends Component {
         })),
       },
     });
-
-    await loadImage(stopSmallImagePath, 'stop-small');
-    await loadImage(stopImagePath, 'stop');
 
     const stopText = {
       layout: {
@@ -506,8 +506,6 @@ class App extends Component {
       });
       map.on('movestart', hideStopTooltip);
     });
-
-    await loadImage(stopEndImagePath, 'stop-end');
 
     map.addSource('stops-highlight', {
       type: 'geojson',
