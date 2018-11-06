@@ -11,7 +11,6 @@ import Ad from './ad';
 
 import stopImagePath from './images/stop.png';
 import stopSmallImagePath from './images/stop-small.png';
-import stopStartImagePath from './images/stop-start.png';
 import stopEndImagePath from './images/stop-end.png';
 import openNewWindowImagePath from './images/open-new-window.svg';
 import passingRoutesImagePath from './images/passing-routes.svg';
@@ -383,8 +382,6 @@ class App extends Component {
 
     await loadImage(stopSmallImagePath, 'stop-small');
     await loadImage(stopImagePath, 'stop');
-    await loadImage(stopStartImagePath, 'stop-start');
-    await loadImage(stopEndImagePath, 'stop-end');
 
     const stopText = {
       layout: {
@@ -445,68 +442,72 @@ class App extends Component {
       },
     }, 'place-neighbourhood');
 
-    map.on('mouseenter', 'stops', () => {
-      mapCanvas.style.cursor = 'pointer';
-    });
-    map.on('click', (e) => {
-      const { point } = e;
-      const features = map.queryRenderedFeatures(point, { layers: ['stops', 'stops-highlight'] });
-      if (features.length) {
-        const zoom = map.getZoom();
-        const feature = features[0];
-        const center = feature.geometry.coordinates;
-        if (zoom < 12) {
-          // Slowly zoom in first
-          map.flyTo({ zoom: zoom + 2, center });
-          this.setState({
-            shrinkSearch: true,
-          });
-        } else {
-          if (feature.source == 'stops') {
-            location.hash = `/stops/${feature.properties.number}`
-          } else {
-            this._showStopPopover(feature.properties.number);
-          }
-        }
-      } else {
-        if (this.state.route.page == 'stop') {
-          location.hash = '/'
-        } else {
-          this._hideStopPopover();
-        }
-      }
-    });
-    if (supportsHover) {
-      let lastFeature = null;
-      let lastFrame = null;
-      map.on('mousemove', (e) => {
+    requestAnimationFrame(() => {
+      map.on('mouseenter', 'stops', () => {
+        mapCanvas.style.cursor = 'pointer';
+      });
+      map.on('click', (e) => {
         const { point } = e;
         const features = map.queryRenderedFeatures(point, { layers: ['stops', 'stops-highlight'] });
-        if (features.length && map.getZoom() < 16) {
-          if (lastFeature && features[0].id === lastFeature.id) {
-            return;
-          }
-          lastFeature = features[0];
-          const stopID = decode(features[0].id);
-          const data = stopsData[stopID];
-          if (lastFrame) cancelAnimationFrame(lastFrame);
-          lastFrame = requestAnimationFrame(() => {
-            showStopTooltip({
-              ...data,
-              ...point,
+        if (features.length) {
+          const zoom = map.getZoom();
+          const feature = features[0];
+          const center = feature.geometry.coordinates;
+          if (zoom < 12) {
+            // Slowly zoom in first
+            map.flyTo({ zoom: zoom + 2, center });
+            this.setState({
+              shrinkSearch: true,
             });
-          });
-        } else if (lastFeature) {
-          lastFeature = null;
-          hideStopTooltip();
+          } else {
+            if (feature.source == 'stops') {
+              location.hash = `/stops/${feature.properties.number}`
+            } else {
+              this._showStopPopover(feature.properties.number);
+            }
+          }
+        } else {
+          if (this.state.route.page == 'stop') {
+            location.hash = '/'
+          } else {
+            this._hideStopPopover();
+          }
         }
       });
-    }
-    map.on('mouseleave', 'stops', () => {
-      mapCanvas.style.cursor = '';
-      hideStopTooltip();
+      if (supportsHover) {
+        let lastFeature = null;
+        let lastFrame = null;
+        map.on('mousemove', (e) => {
+          const { point } = e;
+          const features = map.queryRenderedFeatures(point, { layers: ['stops', 'stops-highlight'] });
+          if (features.length && map.getZoom() < 16) {
+            if (lastFeature && features[0].id === lastFeature.id) {
+              return;
+            }
+            lastFeature = features[0];
+            const stopID = decode(features[0].id);
+            const data = stopsData[stopID];
+            if (lastFrame) cancelAnimationFrame(lastFrame);
+            lastFrame = requestAnimationFrame(() => {
+              showStopTooltip({
+                ...data,
+                ...point,
+              });
+            });
+          } else if (lastFeature) {
+            lastFeature = null;
+            hideStopTooltip();
+          }
+        });
+      }
+      map.on('mouseleave', 'stops', () => {
+        mapCanvas.style.cursor = '';
+        hideStopTooltip();
+      });
+      map.on('movestart', hideStopTooltip);
     });
-    map.on('movestart', hideStopTooltip);
+
+    await loadImage(stopEndImagePath, 'stop-end');
 
     map.addSource('stops-highlight', {
       type: 'geojson',
@@ -556,11 +557,13 @@ class App extends Component {
       }
     });
 
-    map.on('mouseenter', 'stops-highlight', () => {
-      mapCanvas.style.cursor = 'pointer';
-    });
-    map.on('mouseleave', 'stops-highlight', () => {
-      mapCanvas.style.cursor = '';
+    requestAnimationFrame(() => {
+      map.on('mouseenter', 'stops-highlight', () => {
+        mapCanvas.style.cursor = 'pointer';
+      });
+      map.on('mouseleave', 'stops-highlight', () => {
+        mapCanvas.style.cursor = '';
+      });
     });
 
     // Bus service routes
@@ -750,59 +753,61 @@ class App extends Component {
       },
     });
 
-    let hoveredRouteID;
-    map.on('mouseenter', 'routes-path', () => {
-      mapCanvas.style.cursor = 'pointer';
-    });
-    map.on('click', 'routes-path', (e) => {
-      if (e.features.length) {
-        const { id } = e.features[0];
-        location.hash = `/services/${decode(id)}`;
-      }
-    });
-    map.on('mousemove', 'routes-path', (e) => {
-      if (e.features.length) {
-        const currentHoveredRouteID = e.features[0].id;
-        if (hoveredRouteID && hoveredRouteID === currentHoveredRouteID) return;
+    requestAnimationFrame(() => {
+      let hoveredRouteID;
+      map.on('mouseenter', 'routes-path', () => {
+        mapCanvas.style.cursor = 'pointer';
+      });
+      map.on('click', 'routes-path', (e) => {
+        if (e.features.length) {
+          const { id } = e.features[0];
+          location.hash = `/services/${decode(id)}`;
+        }
+      });
+      map.on('mousemove', 'routes-path', (e) => {
+        if (e.features.length) {
+          const currentHoveredRouteID = e.features[0].id;
+          if (hoveredRouteID && hoveredRouteID === currentHoveredRouteID) return;
 
-        if (hoveredRouteID) {
+          if (hoveredRouteID) {
+            map.setFeatureState({
+              source: 'routes-path',
+              id: hoveredRouteID,
+            }, { hover: false, fadein: false });
+          }
+
+          hoveredRouteID = currentHoveredRouteID;
           map.setFeatureState({
             source: 'routes-path',
             id: hoveredRouteID,
-          }, { hover: false, fadein: false });
+          }, { hover: true, fadein: false });
+
+          STORE.routesPathServices.forEach(service => {
+            const id = encode(service);
+            if (hoveredRouteID === id) return;
+            map.setFeatureState({
+              source: 'routes-path',
+              id,
+            }, { hover: false, fadein: true });
+          });
+
+          this._highlightRouteTag(decode(hoveredRouteID));
         }
-
-        hoveredRouteID = currentHoveredRouteID;
-        map.setFeatureState({
-          source: 'routes-path',
-          id: hoveredRouteID,
-        }, { hover: true, fadein: false });
-
-        STORE.routesPathServices.forEach(service => {
-          const id = encode(service);
-          if (hoveredRouteID === id) return;
-          map.setFeatureState({
-            source: 'routes-path',
-            id,
-          }, { hover: false, fadein: true });
-        });
-
-        this._highlightRouteTag(decode(hoveredRouteID));
-      }
-    });
-    map.on('mouseleave', 'routes-path', () => {
-      mapCanvas.style.cursor = '';
-      if (hoveredRouteID) {
-        STORE.routesPathServices.forEach(service => {
-          const id = encode(service);
-          map.setFeatureState({
-            source: 'routes-path',
-            id,
-          }, { fadein: false, hover: false });
-        });
-        hoveredRouteID = null;
-        this._highlightRouteTag();
-      }
+      });
+      map.on('mouseleave', 'routes-path', () => {
+        mapCanvas.style.cursor = '';
+        if (hoveredRouteID) {
+          STORE.routesPathServices.forEach(service => {
+            const id = encode(service);
+            map.setFeatureState({
+              source: 'routes-path',
+              id,
+            }, { fadein: false, hover: false });
+          });
+          hoveredRouteID = null;
+          this._highlightRouteTag();
+        }
+      });
     });
 
     // Between routes
@@ -909,56 +914,58 @@ class App extends Component {
       },
     });
 
-    // Popover search field
-    this._fuseServices = new Fuse(servicesDataArr, {
-      threshold: .3,
-      keys: ['number', 'name'],
-    });
-    this._fuseStops = new Fuse(stopsDataArr, {
-      threshold: .3,
-      keys: ['number', 'name'],
-    });
-    this.setState({ services: servicesDataArr });
+    this._renderRoute();
 
-    requestAnimationFrame(this._renderRoute);
+    requestAnimationFrame(() => {
+      // Popover search field
+      this._fuseServices = new Fuse(servicesDataArr, {
+        threshold: .3,
+        keys: ['number', 'name'],
+      });
+      this._fuseStops = new Fuse(stopsDataArr, {
+        threshold: .3,
+        keys: ['number', 'name'],
+      });
+      this.setState({ services: servicesDataArr });
 
-    // Global shortcuts
-    let keydown = null;
-    document.addEventListener('keydown', (e) => {
-      const isFormField = e.target && e.target.tagName && /input|textarea|button|select/i.test(e.target.tagName);
-      keydown = e.key.toLowerCase();
-      switch (keydown) {
-        case '/': {
-          if (isFormField) return;
-          e.preventDefault();
-          this._searchField.focus();
-          break;
-        }
-        case 'alt': {
-          document.body.classList.add('alt-mode');
-          break;
-        }
-        case 'escape': {
-          const { expandSearch, showStopPopover, showBetweenPopover } = this.state;
-          if (expandSearch) {
-            this._handleSearchClose();
-          } else if (showStopPopover) {
-            this._hideStopPopover();
-          } else if (showBetweenPopover) {
-            location.hash = '/';
+      // Global shortcuts
+      let keydown = null;
+      document.addEventListener('keydown', (e) => {
+        const isFormField = e.target && e.target.tagName && /input|textarea|button|select/i.test(e.target.tagName);
+        keydown = e.key.toLowerCase();
+        switch (keydown) {
+          case '/': {
+            if (isFormField) return;
+            e.preventDefault();
+            this._searchField.focus();
+            break;
           }
-          break;
+          case 'alt': {
+            document.body.classList.add('alt-mode');
+            break;
+          }
+          case 'escape': {
+            const { expandSearch, showStopPopover, showBetweenPopover } = this.state;
+            if (expandSearch) {
+              this._handleSearchClose();
+            } else if (showStopPopover) {
+              this._hideStopPopover();
+            } else if (showBetweenPopover) {
+              location.hash = '/';
+            }
+            break;
+          }
         }
-      }
-    });
-    document.addEventListener('keyup', () => {
-      switch (keydown) {
-        case 'alt': {
-          document.body.classList.remove('alt-mode');
-          break;
+      });
+      document.addEventListener('keyup', () => {
+        switch (keydown) {
+          case 'alt': {
+            document.body.classList.remove('alt-mode');
+            break;
+          }
         }
-      }
-      keydown = null;
+        keydown = null;
+      });
     });
   }
   _handleKeys = (e) => {
