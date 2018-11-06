@@ -734,7 +734,8 @@ a.service-tag:hover {
   height: 24px;
   width: 24px;
   display: inline-block;
-  line-height: 22px;
+  font-family: Arial, sans-serif;
+  line-height: 24px;
   text-align: center;
   font-size: 18px;
   border-radius: 123123px;
