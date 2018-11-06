@@ -231,7 +231,7 @@ class App extends Component {
     const lowerLat = 1.2, upperLat = 1.48, lowerLong = 103.59, upperLong = 104.05;
     map.fitBounds([lowerLong, lowerLat, upperLong, upperLat], {
       animate: false,
-      padding: BREAKPOINT() ? 120 : { top: 80, bottom: window.innerHeight / 2, left: 80, right: 80 },
+      padding: BREAKPOINT() ? 120 : { top: 40, bottom: window.innerHeight / 2, left: 40, right: 40 },
     });
 
     map.once('zoomstart', () => {
