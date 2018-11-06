@@ -271,6 +271,9 @@ class App extends Component {
 
       // The road shields are quite annoying at low zoom levels
       map.setLayerZoomRange('road-shields-black', 12, 24);
+
+      // Make all other airport symbols insignificant except SIN
+      map.setFilter('airport-label', ['==', 'ref', 'SIN']);
     });
 
     const loadImage = async (path, name) => {
