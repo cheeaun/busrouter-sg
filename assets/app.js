@@ -219,6 +219,9 @@ class App extends Component {
       showCompass: false,
     }), 'top-right');
     map.addControl(new mapboxgl.GeolocateControl({
+      fitBoundsOptions: {
+        maxZoom: 16,
+      },
       positionOptions: {
         enableHighAccuracy: true,
       },
