@@ -45,6 +45,9 @@ a:active {
   pointer-events: none;
   filter: brightness(.7);
 }
+#map.fade-out + header {
+  pointer-events: none;
+}
 
 .mapboxgl-ctrl-attrib {
   margin-top: 5px !important;
