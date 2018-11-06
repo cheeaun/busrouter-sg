@@ -448,6 +448,16 @@ a:active {
   width: 35px;
 }
 
+.disclaimer {
+  padding: 12px;
+  background-color: papayawhip;
+  color: saddlebrown;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: .9em;
+  line-height: 1.3;
+}
+
 #arrivals-popover {
   max-height: none;
   height: calc(100% - 20px);
@@ -609,13 +619,26 @@ a:active {
   white-space: nowrap;
   flex-shrink: 0;
 }
+a.service-tag:hover {
+  background-color: #7ac000;
+}
 .service-tag.current {
   border-color: #729e1f;
   background-color: #7ac000;
   pointer-events: none;
+  animation: currenting infinite linear 1s alternate both;
 }
-a.service-tag:hover {
-  background-color: #7ac000;
+.service-tag.highlight {
+  border-color: #729e1f;
+  animation: currenting infinite linear .5s alternate both;
+}
+@keyframes currenting {
+  0% {
+    border-color: #729e1f;
+  }
+  100% {
+    border: 2px solid #fff;
+  }
 }
 .service-tag span {
   font-weight: normal;

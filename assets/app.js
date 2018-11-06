@@ -1087,6 +1087,7 @@ class App extends Component {
     if (service) {
       const otherServices = $servicesList.querySelectorAll('.service-tag');
       otherServices.forEach(el => {
+        el.classList.remove('highlight');
         if (el.textContent.trim() === service.trim()) {
           el.style.opacity = '';
         } else {
@@ -1097,9 +1098,19 @@ class App extends Component {
       $servicesList.querySelectorAll('.service-tag').forEach(el => el.style.opacity = '');
     }
   }
-  _highlightRoute = (service) => {
+  _clickRoute = (e, service) => {
+    const { target } = e;
+    if (target.classList.contains('highlight')) return;
+    e.preventDefault();
+    target.classList.add('highlight');
+    this._highlightRoute(null, service, true);
+  }
+  _highlightRoute = (e, service, zoomIn) => {
+    const map = this.map;
+
+    if (e) e.target.classList.remove('highlight');
     const hoveredRouteID = encode(service);
-    this.map.setFeatureState({
+    map.setFeatureState({
       source: 'routes-path',
       id: hoveredRouteID,
     }, { hover: true, fadein: false });
@@ -1107,13 +1118,36 @@ class App extends Component {
     STORE.routesPathServices.forEach(service => {
       const id = encode(service);
       if (hoveredRouteID === id) return;
-      this.map.setFeatureState({
+      map.setFeatureState({
         source: 'routes-path',
         id,
       }, { hover: false, fadein: true });
     });
+
+    if (zoomIn) {
+      // Fit map to route bounds
+      requestAnimationFrame(() => {
+        const { servicesData, stopsData } = this.state;
+        const { routes } = servicesData[service];
+        const coordinates = routes[0].concat(routes[1] || []).map(stop => stopsData[stop].coordinates);
+        const bounds = new mapboxgl.LngLatBounds();
+        coordinates.forEach(c => {
+          bounds.extend(c);
+        });
+        const bottom = this._floatPill ? (this._floatPill.offsetHeight + 60 + 80) : 80;
+        map.fitBounds(bounds, {
+          padding: BREAKPOINT() ? 80 : {
+            top: 80,
+            right: 80,
+            bottom,
+            left: 80,
+          },
+        });
+      });
+    }
   }
-  _unhighlightRoute = () => {
+  _unhighlightRoute = (e) => {
+    if (e) e.target.classList.remove('highlight');
     STORE.routesPathServices.forEach(service => {
       const id = encode(service);
       this.map.setFeatureState({
@@ -1629,14 +1663,15 @@ class App extends Component {
                   <span class="stop-tag">{route.value}</span>
                   <div>
                     <h1>{stopsData[route.value].name}</h1>
-                    <p>{stopsData[route.value].services.length} service{stopsData[route.value].routes.length > 1 ? 's' : ''}</p>
+                    <p>{stopsData[route.value].services.length} passing routes</p>
                   </div>
                 </div>
                 <div class="services-list">
                   {stopsData[route.value].services.sort(sortServices).map(service => (
                     <a
                       href={`#/services/${service}`}
-                      onMouseEnter={() => this._highlightRoute(service)}
+                      onClick={(e) => this._clickRoute(e, service)}
+                      onMouseEnter={(e) => this._highlightRoute(e, service)}
                       onMouseLeave={this._unhighlightRoute}
                       class="service-tag"
                     >
@@ -1707,6 +1742,9 @@ class App extends Component {
               </h1>
             </header>,
             <div class="popover-scroll">
+              <div class="disclaimer">
+                This is a beta feature. Directions and routes may not be correct.
+              </div>
               <h2>Direct routes</h2>
               <BetweenRoutes results={showBetweenPopover.results[0]} onClickRoute={(e, result) => this._renderBetweenRoute({
                 e,
