@@ -175,6 +175,8 @@ class BetweenRoutes extends Component {
   }
 }
 
+window.requestIdleCallback = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
+
 class App extends Component {
   constructor() {
     super();
@@ -445,7 +447,7 @@ class App extends Component {
       },
     }, 'place-neighbourhood');
 
-    requestAnimationFrame(() => {
+    requestIdleCallback(() => {
       map.on('mouseenter', 'stops', () => {
         mapCanvas.style.cursor = 'pointer';
       });
@@ -558,7 +560,7 @@ class App extends Component {
       }
     });
 
-    requestAnimationFrame(() => {
+    requestIdleCallback(() => {
       map.on('mouseenter', 'stops-highlight', () => {
         mapCanvas.style.cursor = 'pointer';
       });
@@ -754,7 +756,7 @@ class App extends Component {
       },
     });
 
-    requestAnimationFrame(() => {
+    requestIdleCallback(() => {
       let hoveredRouteID;
       map.on('mouseenter', 'routes-path', () => {
         mapCanvas.style.cursor = 'pointer';
@@ -917,7 +919,7 @@ class App extends Component {
 
     this._renderRoute();
 
-    requestAnimationFrame(() => {
+    requestIdleCallback(() => {
       // Popover search field
       this._fuseServices = new Fuse(servicesDataArr, {
         threshold: .3,
