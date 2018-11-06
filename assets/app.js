@@ -1707,7 +1707,7 @@ class App extends Component {
             <button type="button" onclick={this._handleSearchClose}>Cancel</button>
           </div>
           <ul class={`popover-list ${services.length || searching ? '' : 'loading'} ${searching ? 'searching' : ''}`} ref={c => this._servicesList = c} onScroll={this._handleServicesScroll}>
-            <Ad key="ad" />
+            {!!services.length && <Ad key="ad" />}
             {services.length ? (
               services.map(s => (
                 <li key={s.number}>
