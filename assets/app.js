@@ -1714,7 +1714,7 @@ class App extends Component {
             {services.length ? (
               services.map(s => (
                 <li key={s.number}>
-                  <a href={`#/services/${s.number}`}>
+                  <a href={`#/services/${s.number}`} class={route.page === 'service' && s.number === route.value ? 'current' : ''}>
                     <b class="service-tag">{s.number}</b> {s.name}
                   </a>
                 </li>

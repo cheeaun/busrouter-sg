@@ -589,9 +589,9 @@ a:active {
 .popover-list li a [class*="-tag"] {
   margin-right: 1em;
 }
-.popover-list li a:target {
-  background-color: #007aff;
-  color: #fff;
+.popover-list li a.current {
+  background-color: #dbefb7;
+  pointer-events: none;
 }
 
 .placeholder {
@@ -625,7 +625,8 @@ a:active {
 a.service-tag:hover {
   background-color: #7ac000;
 }
-.service-tag.current {
+.service-tag.current,
+.current .service-tag {
   border-color: #729e1f;
   background-color: #7ac000;
   pointer-events: none;
