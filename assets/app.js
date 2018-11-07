@@ -186,6 +186,7 @@ class App extends Component {
       stops: [],
       searching: false,
       expandSearch: false,
+      expandedSearchOnce: false,
       shrinkSearch: false,
       showStopPopover: false,
       showBetweenPopover: false,
@@ -994,7 +995,7 @@ class App extends Component {
     }
   }
   _handleSearchFocus = (e) => {
-    this.setState({ expandSearch: true });
+    this.setState({ expandSearch: true, expandedSearchOnce: true });
     $map.classList.add('fade-out');
     raqScrollTop();
     this._searchPopover.addEventListener('transitionend', (e) => {
@@ -1045,7 +1046,7 @@ class App extends Component {
   }
   _handleServicesScroll = () => {
     if (this.state.expandSearch) return;
-    this.setState({ expandSearch: true });
+    this.setState({ expandSearch: true, expandedSearchOnce: true });
     $map.classList.add('fade-out');
   }
   _showStopPopover = (number) => {
@@ -1654,6 +1655,7 @@ class App extends Component {
       services,
       searching,
       expandSearch,
+      expandedSearchOnce,
       servicesData,
       stopsData,
       shrinkSearch,
@@ -1731,7 +1733,7 @@ class App extends Component {
           <ul class={`popover-list ${services.length || searching ? '' : 'loading'} ${searching ? 'searching' : ''}`} ref={c => this._servicesList = c} onScroll={this._handleServicesScroll}>
             {!!services.length && <Ad key="ad" />}
             {services.length ? (
-              services.map(s => (
+              (expandedSearchOnce ? services : services.slice(0, 10)).map(s => (
                 <li key={s.number}>
                   <a href={`#/services/${s.number}`} class={route.page === 'service' && s.number === route.value ? 'current' : ''}>
                     <b class="service-tag">{s.number}</b> {s.name}
