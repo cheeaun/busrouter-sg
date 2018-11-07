@@ -1670,7 +1670,10 @@ class App extends Component {
                   <span class="service-tag">{route.value}</span>
                   <div class="service-info">
                     <h1>{servicesData[route.value].name}</h1>
-                    <p>{servicesData[route.value].routes.length} route{servicesData[route.value].routes.length > 1 ? 's' : ''}</p>
+                    <p>
+                      {servicesData[route.value].routes.length} route{servicesData[route.value].routes.length > 1 ? 's' : ''} ∙&nbsp;
+                      {servicesData[route.value].routes.map(r => `${r.length} stop${r.length > 1 ? 's' : ''}`).join(' ∙ ')}
+                    </p>
                   </div>
                 </div>
               </div>
