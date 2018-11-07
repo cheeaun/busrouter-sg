@@ -1339,6 +1339,7 @@ class App extends Component {
     switch (route.page) {
       case 'service': {
         const service = route.value;
+        if (!servicesData[service]) return;
         const { name, routes } = servicesData[service];
         document.title = `Bus service ${service}: ${name} - ${APP_NAME}`;
         // Reset
@@ -1407,6 +1408,7 @@ class App extends Component {
       }
       case 'stop': {
         const stop = route.value;
+        if (!stopsData[stop]) return;
 
         // Reset
         this.setState({
@@ -1501,6 +1503,10 @@ class App extends Component {
       case 'between': {
         const coords = route.value;
         const [startStopNumber, endStopNumber] = coords.split(/[,-]/).map(String);
+        if (!stopsData[startStopNumber] || !stopsData[endStopNumber]) {
+          alert('One of the stop numbers are not found.');
+          return;
+        }
 
         document.title = `Routes between ${startStopNumber} and ${endStopNumber} - ${APP_NAME}`;
         // Reset
