@@ -286,54 +286,6 @@ class App extends Component {
       });
     };
 
-    let routesData = {},
-      stopsData = {},
-      stopsDataArr = [],
-      servicesData = {},
-      servicesDataArr = [];
-
-    let stops;
-    const CACHE_TIME = 24 * 60; // 1 day
-    [stops, servicesData, routesData] = await Promise.all([
-      fetchCache(stopsJSONPath, CACHE_TIME),
-      fetchCache(servicesJSONPath, CACHE_TIME),
-      fetchCache(routesJSONPath, CACHE_TIME),
-    ]);
-
-    Object.keys(stops).forEach(number => {
-      const [lng, lat, name] = stops[number];
-      stopsData[number] = {
-        name,
-        number,
-        interchange: /\sint$/i.test(name) && !/^(bef|aft|opp|bet)\s/i.test(name),
-        coordinates: [lng, lat],
-        services: [],
-        routes: [],
-      };
-      stopsDataArr.push(stopsData[number]);
-    });
-    stopsDataArr.sort((a, b) => a.interchange ? 1 : b.interchange ? -1 : 0);
-
-    Object.keys(servicesData).forEach(number => {
-      const { name, routes } = servicesData[number];
-      servicesDataArr.push({
-        number,
-        name,
-      });
-      routes.forEach((route, i) => {
-        route.forEach(stop => {
-          if (!stopsData[stop].services.includes(number)) {
-            stopsData[stop].services.push(number);
-            stopsData[stop].routes.push(number + '-' + i);
-          }
-        });
-      });
-    });
-    servicesDataArr.sort((a, b) => sortServices(a.number, b.number));
-
-    this.setState({ servicesData, stopsData, stopsDataArr, routesData, servicesDataArr });
-    window._data = { servicesData, stopsData, stopsDataArr, routesData, servicesDataArr };
-
     await new Promise((resolve, reject) => {
       map.on('load', () => {
         Promise.all([
@@ -379,19 +331,7 @@ class App extends Component {
       buffer: 0,
       data: {
         type: 'FeatureCollection',
-        features: stopsDataArr.map(stop => ({
-          type: 'Feature',
-          id: encode(stop.number),
-          properties: {
-            number: stop.number,
-            name: stop.name,
-            interchange: stop.interchange,
-          },
-          geometry: {
-            type: 'Point',
-            coordinates: stop.coordinates,
-          },
-        })),
+        features: [],
       },
     });
 
@@ -924,7 +864,70 @@ class App extends Component {
       },
     });
 
-    this._renderRoute();
+    let routesData = {},
+      stopsData = {},
+      stopsDataArr = [],
+      servicesData = {},
+      servicesDataArr = [];
+
+    let stops;
+    const CACHE_TIME = 24 * 60; // 1 day
+    [stops, servicesData, routesData] = await Promise.all([
+      fetchCache(stopsJSONPath, CACHE_TIME),
+      fetchCache(servicesJSONPath, CACHE_TIME),
+      fetchCache(routesJSONPath, CACHE_TIME),
+    ]);
+
+    Object.keys(stops).forEach(number => {
+      const [lng, lat, name] = stops[number];
+      stopsData[number] = {
+        name,
+        number,
+        interchange: /\sint$/i.test(name) && !/^(bef|aft|opp|bet)\s/i.test(name),
+        coordinates: [lng, lat],
+        services: [],
+        routes: [],
+      };
+      stopsDataArr.push(stopsData[number]);
+    });
+    stopsDataArr.sort((a, b) => a.interchange ? 1 : b.interchange ? -1 : 0);
+
+    Object.keys(servicesData).forEach(number => {
+      const { name, routes } = servicesData[number];
+      servicesDataArr.push({
+        number,
+        name,
+      });
+      routes.forEach((route, i) => {
+        route.forEach(stop => {
+          if (!stopsData[stop].services.includes(number)) {
+            stopsData[stop].services.push(number);
+            stopsData[stop].routes.push(number + '-' + i);
+          }
+        });
+      });
+    });
+    servicesDataArr.sort((a, b) => sortServices(a.number, b.number));
+
+    map.getSource('stops').setData({
+      type: 'FeatureCollection',
+      features: stopsDataArr.map(stop => ({
+        type: 'Feature',
+        id: encode(stop.number),
+        properties: {
+          number: stop.number,
+          name: stop.name,
+          interchange: stop.interchange,
+        },
+        geometry: {
+          type: 'Point',
+          coordinates: stop.coordinates,
+        },
+      })),
+    });
+
+    const data = window._data = { servicesData, stopsData, stopsDataArr, routesData, servicesDataArr };
+    this.setState(data, this._renderRoute);
 
     requestIdleCallback(() => {
       // Popover search field
