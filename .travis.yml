@@ -1,6 +1,0 @@
-language: node_js
-sudo: false
-install:
-  - npm i https://github.com/ebidel/lighthouse-ci
-after_success:
-  - npm run lh -- https://next.busrouter.sg
