@@ -201,6 +201,7 @@ class App extends Component {
     };
   }
   async componentDidMount() {
+    const lowerLat = 1.2, upperLat = 1.48, lowerLong = 103.59, upperLong = 104.05;
     const map = this.map = window._map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v10?optimized=true',
@@ -211,6 +212,7 @@ class App extends Component {
       attributionControl: false,
       pitchWithRotate: false,
       dragRotate: false,
+      bounds: [lowerLong, lowerLat, upperLong, upperLat],
     });
     map.touchZoomRotate.disableRotation();
 
@@ -231,7 +233,6 @@ class App extends Component {
       trackUserLocation: true,
     }));
 
-    const lowerLat = 1.2, upperLat = 1.48, lowerLong = 103.59, upperLong = 104.05;
     map.fitBounds([lowerLong, lowerLat, upperLong, upperLat], {
       animate: false,
       padding: BREAKPOINT() ? 120 : { top: 40, bottom: window.innerHeight / 2, left: 40, right: 40 },
