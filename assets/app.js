@@ -71,7 +71,7 @@ class BusServicesArrival extends Component {
     const { id } = this.props;
     if (!id) return;
     this.setState({ isLoading: true });
-    fetch(`https://arrivelah.appspot.com/?id=${id}`).then(res => res.json()).then(results => {
+    fetch(`https://arrivelah.busrouter.sg/?id=${id}`).then(res => res.json()).then(results => {
       const servicesArrivals = {};
       results.services.forEach(service => servicesArrivals[service.no] = service.next.duration_ms);
       this.setState({
