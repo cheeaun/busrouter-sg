@@ -27,8 +27,6 @@ const BREAKPOINT = () => window.innerWidth > 640;
 const supportsHover = window.matchMedia && window.matchMedia('(hover: hover)').matches;
 const ruler = cheapRuler(1.3);
 
-mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
-
 const $logo = document.getElementById('logo');
 const $about = document.getElementById('about');
 const $closeAbout = document.getElementById('close-about');
@@ -193,6 +191,7 @@ class App extends Component {
       showArrivalsPopover: false,
       betweenStartStop: null,
       betweenEndStop: null,
+      showAd: false,
     };
     window.onhashchange = () => {
       this.setState({
@@ -201,6 +200,68 @@ class App extends Component {
     };
   }
   async componentDidMount() {
+    const mapboxScriptP = new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.onload = resolve;
+      s.src = 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js';
+      document.getElementsByTagName('head')[0].appendChild(s);
+    });
+
+    const CACHE_TIME = 24 * 60; // 1 day
+    const fetchStopsP = fetchCache(stopsJSONPath, CACHE_TIME);
+    const fetchServicesP = fetchCache(servicesJSONPath, CACHE_TIME);
+    const fetchRoutesP = fetchCache(routesJSONPath, CACHE_TIME);
+
+    // Init data
+
+    const stops = await fetchStopsP;
+    const stopsData = {};
+    const stopsDataArr = [];
+    Object.keys(stops).forEach(number => {
+      const [lng, lat, name] = stops[number];
+      stopsData[number] = {
+        name,
+        number,
+        interchange: /\sint$/i.test(name) && !/^(bef|aft|opp|bet)\s/i.test(name),
+        coordinates: [lng, lat],
+        services: [],
+        routes: [],
+      };
+      stopsDataArr.push(stopsData[number]);
+    });
+    stopsDataArr.sort((a, b) => a.interchange ? 1 : b.interchange ? -1 : 0);
+
+    const servicesData = await fetchServicesP;
+    const servicesDataArr = [];
+    Object.keys(servicesData).forEach(number => {
+      const { name, routes } = servicesData[number];
+      servicesDataArr.push({
+        number,
+        name,
+      });
+      routes.forEach((route, i) => {
+        route.forEach(stop => {
+          if (!stopsData[stop].services.includes(number)) {
+            stopsData[stop].services.push(number);
+            stopsData[stop].routes.push(number + '-' + i);
+          }
+        });
+      });
+    });
+    servicesDataArr.sort((a, b) => sortServices(a.number, b.number));
+
+    const routesData = await fetchRoutesP;
+    const data = window._data = { servicesData, stopsData, stopsDataArr, routesData, servicesDataArr };
+    this.setState({ ...data, services: servicesDataArr });
+
+    // Init map
+    await mapboxScriptP;
+    if (!mapboxgl.supported()) {
+      const redirect = confirm('Looks like your browser is a little old. Redirecting you to the older version of BusRouter SG.');
+      if (redirect) location.href = 'https://v1.busrouter.sg/';
+    }
+
+    mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
     const lowerLat = 1.2, upperLat = 1.48, lowerLong = 103.59, upperLong = 104.05;
     const map = this.map = window._map = new mapboxgl.Map({
       container: 'map',
@@ -236,6 +297,26 @@ class App extends Component {
     map.fitBounds([lowerLong, lowerLat, upperLong, upperLat], {
       animate: false,
       padding: BREAKPOINT() ? 120 : { top: 40, bottom: window.innerHeight / 2, left: 40, right: 40 },
+    });
+
+    const loadImage = async (path, name) => {
+      await new Promise((resolve, reject) => {
+        map.loadImage(path, (e, img) => {
+          if (e) reject(e);
+          map.addImage(name, img);
+          resolve();
+        });
+      });
+    };
+
+    const mapboxLoadP = new Promise((resolve, reject) => {
+      map.on('load', () => {
+        Promise.all([
+          loadImage(stopSmallImagePath, 'stop-small'),
+          loadImage(stopImagePath, 'stop'),
+          loadImage(stopEndImagePath, 'stop-end'),
+        ]).then(resolve);
+      });
     });
 
     map.once('zoomstart', () => {
@@ -278,25 +359,7 @@ class App extends Component {
       map.setFilter('airport-label', ['==', 'ref', 'SIN']);
     });
 
-    const loadImage = async (path, name) => {
-      await new Promise((resolve, reject) => {
-        map.loadImage(path, (e, img) => {
-          if (e) reject(e);
-          map.addImage(name, img);
-          resolve();
-        });
-      });
-    };
-
-    await new Promise((resolve, reject) => {
-      map.on('load', () => {
-        Promise.all([
-          loadImage(stopSmallImagePath, 'stop-small'),
-          loadImage(stopImagePath, 'stop'),
-          loadImage(stopEndImagePath, 'stop-end'),
-        ]).then(resolve);
-      });
-    });
+    await mapboxLoadP;
 
     map.addSource('stop-selected', {
       type: 'geojson',
@@ -333,7 +396,19 @@ class App extends Component {
       buffer: 0,
       data: {
         type: 'FeatureCollection',
-        features: [],
+        features: stopsDataArr.map(stop => ({
+          type: 'Feature',
+          id: encode(stop.number),
+          properties: {
+            number: stop.number,
+            name: stop.name,
+            interchange: stop.interchange,
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: stop.coordinates,
+          },
+        })),
       },
     });
 
@@ -866,70 +941,7 @@ class App extends Component {
       },
     });
 
-    let routesData = {},
-      stopsData = {},
-      stopsDataArr = [],
-      servicesData = {},
-      servicesDataArr = [];
-
-    let stops;
-    const CACHE_TIME = 24 * 60; // 1 day
-    [stops, servicesData, routesData] = await Promise.all([
-      fetchCache(stopsJSONPath, CACHE_TIME),
-      fetchCache(servicesJSONPath, CACHE_TIME),
-      fetchCache(routesJSONPath, CACHE_TIME),
-    ]);
-
-    Object.keys(stops).forEach(number => {
-      const [lng, lat, name] = stops[number];
-      stopsData[number] = {
-        name,
-        number,
-        interchange: /\sint$/i.test(name) && !/^(bef|aft|opp|bet)\s/i.test(name),
-        coordinates: [lng, lat],
-        services: [],
-        routes: [],
-      };
-      stopsDataArr.push(stopsData[number]);
-    });
-    stopsDataArr.sort((a, b) => a.interchange ? 1 : b.interchange ? -1 : 0);
-
-    Object.keys(servicesData).forEach(number => {
-      const { name, routes } = servicesData[number];
-      servicesDataArr.push({
-        number,
-        name,
-      });
-      routes.forEach((route, i) => {
-        route.forEach(stop => {
-          if (!stopsData[stop].services.includes(number)) {
-            stopsData[stop].services.push(number);
-            stopsData[stop].routes.push(number + '-' + i);
-          }
-        });
-      });
-    });
-    servicesDataArr.sort((a, b) => sortServices(a.number, b.number));
-
-    map.getSource('stops').setData({
-      type: 'FeatureCollection',
-      features: stopsDataArr.map(stop => ({
-        type: 'Feature',
-        id: encode(stop.number),
-        properties: {
-          number: stop.number,
-          name: stop.name,
-          interchange: stop.interchange,
-        },
-        geometry: {
-          type: 'Point',
-          coordinates: stop.coordinates,
-        },
-      })),
-    });
-
-    const data = window._data = { servicesData, stopsData, stopsDataArr, routesData, servicesDataArr };
-    this.setState(data, this._renderRoute);
+    this._renderRoute();
 
     requestIdleCallback(() => {
       // Popover search field
@@ -941,7 +953,6 @@ class App extends Component {
         threshold: .3,
         keys: ['number', 'name'],
       });
-      this.setState({ services: servicesDataArr });
 
       // Global shortcuts
       let keydown = null;
@@ -981,6 +992,13 @@ class App extends Component {
         }
         keydown = null;
       });
+
+      // Finally, show ad
+      setTimeout(() => {
+        this.setState({
+          showAd: true,
+        });
+      }, 1000);
     });
   }
   _handleKeys = (e) => {
@@ -1663,6 +1681,7 @@ class App extends Component {
       showStopPopover,
       showBetweenPopover,
       showArrivalsPopover,
+      showAd,
     } = state;
 
     const popoverIsUp = !!showStopPopover || !!showBetweenPopover || !!showArrivalsPopover;
@@ -1732,7 +1751,7 @@ class App extends Component {
             <button type="button" onclick={this._handleSearchClose}>Cancel</button>
           </div>
           <ul class={`popover-list ${services.length || searching ? '' : 'loading'} ${searching ? 'searching' : ''}`} ref={c => this._servicesList = c} onScroll={this._handleServicesScroll}>
-            {!!services.length && <Ad key="ad" />}
+            {(!!services.length && showAd) && <Ad key="ad" />}
             {services.length ? (
               (expandedSearchOnce ? services : services.slice(0, 10)).map(s => (
                 <li key={s.number}>
@@ -1884,7 +1903,6 @@ if (isSafari && !window.navigator.standalone) {
       icon.height = w/2/aspectRatio;
       ctx.drawImage(icon, (w - icon.width)/2, (h - icon.height)/2, icon.width, icon.height);
       document.head.insertAdjacentHTML('beforeend', `<link rel="apple-touch-startup-image" href="${canvas.toDataURL()}">`);
-      console.log(canvas.toDataURL())
     };
     icon.src = iconSVGPath;
   }, 5000);
