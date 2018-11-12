@@ -10,7 +10,6 @@ import { MAPBOX_ACCESS_TOKEN } from './config';
 import Ad from './ad';
 
 import stopImagePath from './images/stop.png';
-import stopSmallImagePath from './images/stop-small.png';
 import stopEndImagePath from './images/stop-end.png';
 import openNewWindowImagePath from './images/open-new-window.svg';
 import passingRoutesImagePath from './images/passing-routes.svg';
@@ -312,7 +311,6 @@ class App extends Component {
     const mapboxLoadP = new Promise((resolve, reject) => {
       map.on('load', () => {
         Promise.all([
-          loadImage(stopSmallImagePath, 'stop-small'),
           loadImage(stopImagePath, 'stop'),
           loadImage(stopEndImagePath, 'stop-end'),
         ]).then(resolve);
@@ -360,35 +358,6 @@ class App extends Component {
     });
 
     await mapboxLoadP;
-
-    map.addSource('stop-selected', {
-      type: 'geojson',
-      tolerance: 10,
-      buffer: 0,
-      data: {
-        type: 'FeatureCollection',
-        features: [],
-      },
-    });
-    map.addLayer({
-      id: 'stop-selected',
-      type: 'circle',
-      source: 'stop-selected',
-      paint: {
-        'circle-opacity': .5,
-        'circle-blur': [
-          'interpolate', ['linear'], ['zoom'],
-          10, 0,
-          14, .9
-        ],
-        'circle-radius': [
-          'interpolate', ['linear'], ['zoom'],
-          10, 2.5,
-          14, 44
-        ],
-        'circle-color': '#f01b48',
-      },
-    }, 'place-neighbourhood');
 
     map.addSource('stops', {
       type: 'geojson',
@@ -440,20 +409,16 @@ class App extends Component {
     };
 
     map.addLayer({
-      id: 'stops',
+      id: 'stops-icon',
       type: 'symbol',
       source: 'stops',
+      filter: ['any', ['>=', ['zoom'], 14], ['get', 'interchange']],
       layout: {
         'symbol-z-order': 'source',
-        'icon-image': [
-          'step', ['zoom'],
-          ['case', ['get', 'interchange'], 'stop', 'stop-small'],
-          14, 'stop'
-        ],
+        'icon-image': 'stop',
         'icon-size': [
           'interpolate', ['linear'], ['zoom'],
-          10, ['case', ['get', 'interchange'], .4, .05],
-          12, ['case', ['get', 'interchange'], .6, .075],
+          14, .4,
           16, .6
         ],
         'icon-padding': .5,
@@ -464,12 +429,41 @@ class App extends Component {
       paint: {
         'icon-opacity': [
           'interpolate', ['linear'], ['zoom'],
-          8, 0,
-          9, 1,
+          8, ['case', ['get', 'interchange'], 1, 0],
+          14, 1
         ],
         ...stopText.paint,
       },
     }, 'place-neighbourhood');
+
+    map.addLayer({
+      id: 'stops',
+      type: 'circle',
+      source: 'stops',
+      paint: {
+        'circle-radius': [
+          'interpolate', ['linear'], ['zoom'],
+          10, ['case', ['boolean', ['feature-state', 'selected'], false], 4, .75],
+          14, 4,
+          15, ['case', ['boolean', ['feature-state', 'selected'], false], 12, 6]
+        ],
+        'circle-color': ['case', ['boolean', ['feature-state', 'selected'], false], '#fff', '#f01b48'],
+        'circle-stroke-color': ['case', ['boolean', ['feature-state', 'selected'], false], '#f01b48', '#fff'],
+        'circle-stroke-width': ['case', ['boolean', ['feature-state', 'selected'], false], 5, 1],
+        'circle-opacity': [
+          'interpolate', ['linear'], ['zoom'],
+          10, 1,
+          13.9, 1,
+          14, .5
+        ],
+        'circle-stroke-opacity': [
+          'interpolate', ['linear'], ['zoom'],
+          10, ['case', ['boolean', ['feature-state', 'selected'], false], 1, 0],
+          13.5, 1,
+          14, .5
+        ],
+      },
+    }, 'stops-icon');
 
     requestIdleCallback(() => {
       map.on('mouseenter', 'stops', () => {
@@ -477,7 +471,7 @@ class App extends Component {
       });
       map.on('click', (e) => {
         const { point } = e;
-        const features = map.queryRenderedFeatures(point, { layers: ['stops', 'stops-highlight'] });
+        const features = map.queryRenderedFeatures(point, { layers: ['stops', 'stops-icon', 'stops-highlight'] });
         if (features.length) {
           const zoom = map.getZoom();
           const feature = features[0];
@@ -1070,25 +1064,25 @@ class App extends Component {
   }
   _showStopPopover = (number) => {
     const map = this.map;
-    const { stopsData } = this.state;
+    const { stopsData, prevStopNumber } = this.state;
     const { services, coordinates, name } = stopsData[number];
 
-    map.getSource('stop-selected').setData({
-      type: 'FeatureCollection',
-      features: [
-        {
-          type: 'Feature',
-          properties: {},
-          geometry: {
-            type: 'Point',
-            coordinates,
-          },
-        },
-      ],
+    if (prevStopNumber) this.map.setFeatureState({
+      source: 'stops',
+      id: encode(prevStopNumber),
+    }, {
+      selected: false,
+    });
+    map.setFeatureState({
+      source: 'stops',
+      id: encode(number),
+    }, {
+      selected: true,
     });
 
     this.setState({
       shrinkSearch: true,
+      prevStopNumber: number,
       showStopPopover: {
         number,
         name,
@@ -1114,12 +1108,15 @@ class App extends Component {
   _hideStopPopover = (e) => {
     if (this.state.route.page === 'stop') return;
     if (e) e.preventDefault();
+    const { number } = this.state.showStopPopover;
+    this.map.setFeatureState({
+      source: 'stops',
+      id: encode(number),
+    }, {
+      selected: false,
+    });
     this.setState({
       showStopPopover: false,
-    });
-    this.map.getSource('stop-selected').setData({
-      type: 'FeatureCollection',
-      features: [],
     });
   }
   _highlightRouteTag = (service) => {
@@ -1336,7 +1333,7 @@ class App extends Component {
     });
   }
   _renderRoute = () => {
-    const { servicesData, stopsData, stopsDataArr, routesData, route } = this.state;
+    const { servicesData, stopsData, stopsDataArr, routesData, route, prevStopNumber } = this.state;
     const map = this.map;
     console.log('Route', route);
 
@@ -1348,7 +1345,6 @@ class App extends Component {
     });
     [
       'stops-highlight',
-      'stop-selected',
       'routes',
       'routes-path',
       'routes-between',
@@ -1357,6 +1353,12 @@ class App extends Component {
         type: 'FeatureCollection',
         features: [],
       });
+    });
+    if (prevStopNumber) this.map.setFeatureState({
+      source: 'stops',
+      id: encode(prevStopNumber),
+    }, {
+      selected: false,
     });
 
     switch (route.page) {
@@ -1374,6 +1376,7 @@ class App extends Component {
 
         // Hide all stops
         map.setLayoutProperty('stops', 'visibility', 'none');
+        map.setLayoutProperty('stops-icon', 'visibility', 'none');
 
         // Show stops of the selected service
         const endStops = [routes[0][0], routes[0][routes[0].length - 1]];
@@ -1446,6 +1449,7 @@ class App extends Component {
 
           // Hide all stops
           map.setLayoutProperty('stops', 'visibility', 'none');
+          map.setLayoutProperty('stops-icon', 'visibility', 'none');
 
           // Show the all stops in all routes
           const allStopsCoords = [];
@@ -1519,6 +1523,7 @@ class App extends Component {
         } else {
           document.title = `Bus stop ${stop}: ${name} - ${APP_NAME}`;
           map.setLayoutProperty('stops', 'visibility', 'visible');
+          map.setLayoutProperty('stops-icon', 'visibility', 'visible');
           this._showStopPopover(stop);
         }
         break;
@@ -1540,6 +1545,7 @@ class App extends Component {
 
         // Hide all stops
         map.setLayoutProperty('stops', 'visibility', 'none');
+        map.setLayoutProperty('stops-icon', 'visibility', 'none');
 
         function findRoutesBetween(startStop, endStop) {
           const results = [];
@@ -1636,6 +1642,7 @@ class App extends Component {
 
         // Show all stops
         map.setLayoutProperty('stops', 'visibility', 'visible');
+        map.setLayoutProperty('stops-icon', 'visibility', 'visible');
       }
     }
   }
