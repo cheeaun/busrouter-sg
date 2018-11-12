@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Singapore Bus Routes Explorer",
   "devDependencies": {
-    "@babel/core": "~7.1.2",
+    "@babel/core": "~7.1.5",
     "@babel/plugin-proposal-class-properties": "~7.1.0",
     "@babel/plugin-transform-runtime": "~7.1.0",
     "@mapbox/polyline": "~1.0.0",
@@ -17,7 +17,7 @@
     "cheerio": "~1.0.0-rc.2",
     "cpy-cli": "~2.0.0",
     "dotenv": "~6.1.0",
-    "got": "~9.3.1",
+    "got": "~9.3.2",
     "parcel-bundler": "~1.10.3",
     "parcel-plugin-json-url-loader": "~0.1.1",
     "postcss-import-url": "~3.0.4",
@@ -31,7 +31,7 @@
     "prod": "npx serve dist/"
   },
   "dependencies": {
-    "@babel/runtime": "~7.1.2",
+    "@babel/runtime": "~7.1.5",
     "cheap-ruler": "~2.5.1",
     "fuse.js": "~3.3.0",
     "just-intersect": "~3.1.0",
