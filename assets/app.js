@@ -393,7 +393,7 @@ class App extends Component {
         'text-size': [
           'interpolate', ['linear'], ['zoom'],
           14, 11,
-          16, 16
+          16, 14
         ],
         'text-justify': 'left',
         'text-anchor': 'top-left',
@@ -543,16 +543,13 @@ class App extends Component {
       id: 'stops-highlight',
       type: 'symbol',
       source: 'stops-highlight',
+      filter: ['any', ['>', ['zoom'], 10], ['==', ['get', 'type'], 'end']],
       layout: {
-        'icon-image': [
-          'step', ['zoom'],
-          ['case', ['==', ['get', 'type'], 'end'], 'stop-end', 'stop-small'],
-          12, ['case', ['==', ['get', 'type'], 'end'], 'stop-end', 'stop']
-        ],
+        'icon-image': ['case', ['==', ['get', 'type'], 'end'], 'stop-end', 'stop'],
         'icon-size': [
           'interpolate', ['linear'], ['zoom'],
-          0, .1,
-          10, ['case', ['==', ['get', 'type'], 'end'], .3, .1],
+          8, .3,
+          10, ['case', ['==', ['get', 'type'], 'end'], .3, .2],
           15, ['case', ['==', ['get', 'type'], 'end'], .45, .6]
         ],
         'icon-anchor': ['case', ['==', ['get', 'type'], 'end'], 'bottom', 'center'],
@@ -568,14 +565,7 @@ class App extends Component {
         ],
         'text-offset': ['case', ['==', ['get', 'type'], 'end'], ['literal', [1, -1.8]], ['literal', [1, -.6]]],
       },
-      paint: {
-        'icon-opacity': [
-          'interpolate', ['linear'], ['zoom'],
-          10, ['case', ['==', ['get', 'type'], 'end'], 1, 0],
-          11, 1
-        ],
-        ...stopText.paint,
-      }
+      paint: stopText.paint,
     });
 
     requestIdleCallback(() => {
