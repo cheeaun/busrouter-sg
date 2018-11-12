@@ -55,6 +55,56 @@ class BusServicesArrival extends Component {
   }
   componentDidMount() {
     this._fetchServices();
+    const { map } = this.props;
+    if (!map.getSource('buses')){
+      map.addSource('buses', {
+        type: 'geojson',
+        tolerance: 10,
+        buffer: 0,
+        data: {
+          type: 'FeatureCollection',
+          features: [],
+        },
+      });
+      map.addLayer({
+        id: 'buses',
+        type: 'circle',
+        source: 'buses',
+        minzoom: 14,
+        paint: {
+          'circle-stroke-width': 2,
+          'circle-stroke-color': '#fff',
+          'circle-radius': 4,
+          'circle-color': '#00454d',
+          'circle-opacity': .8,
+        },
+      });
+      map.addLayer({
+        id: 'buses-label',
+        type: 'symbol',
+        source: 'buses',
+        minzoom: 14,
+        layout: {
+          'text-field': ['get', 'number'],
+          'text-size': 10,
+          'text-anchor': 'left',
+          'text-offset': [.6, 0],
+          'text-font': ['DIN Offc Pro Medium', 'Open Sans Semibold', 'Arial Unicode MS Bold'],
+          'text-allow-overlap': true,
+        },
+        paint: {
+          'text-color': '#00454d',
+          'text-halo-color': 'rgba(255,255,255,.75)',
+          'text-halo-width': 1,
+          'text-opacity': .8,
+        },
+      });
+    }
+  }
+  componentWillUnmount() {
+    const { map } = this.props;
+    map.removeLayer('buses');
+    map.removeSource('buses');
   }
   componentDidUpdate(prevProps) {
     if (prevProps.id !== this.props.id) {
@@ -67,15 +117,30 @@ class BusServicesArrival extends Component {
   }
   _arrivalsTimeout = null;
   _fetchServices = () => {
-    const { id } = this.props;
+    const { id, map } = this.props;
     if (!id) return;
     this.setState({ isLoading: true });
     fetch(`https://arrivelah.busrouter.sg/?id=${id}`).then(res => res.json()).then(results => {
       const servicesArrivals = {};
-      results.services.forEach(service => servicesArrivals[service.no] = service.next.duration_ms);
+      const { services } = results;
+      services.forEach(service => servicesArrivals[service.no] = service.next.duration_ms);
       this.setState({
         isLoading: false,
         servicesArrivals,
+      });
+      map.getSource('buses').setData({
+        type: 'FeatureCollection',
+        features: services.filter(s => s.no && s.next.lat > 0).map(s => ({
+          type: 'Feature',
+          id: encode(s.no),
+          properties: {
+            number: s.no,
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [s.next.lng, s.next.lat],
+          },
+        })),
       });
       this._arrivalsTimeout = setTimeout(() => {
         requestAnimationFrame(this._fetchServices);
@@ -1834,7 +1899,7 @@ class App extends Component {
               <h2>{showStopPopover.services.length} service{showStopPopover.services.length == 1 ? '' : 's'}</h2>
             </header>,
             <div class="popover-scroll">
-              <BusServicesArrival id={showStopPopover.number} services={showStopPopover.services} />
+              <BusServicesArrival map={this.map} id={showStopPopover.number} services={showStopPopover.services} />
               <div class="popover-buttons alt-hide">
                 <a href={`/bus-arrival/#${showStopPopover.number}`} target="_blank" onClick={this._openBusArrival} class="popover-button">Bus arrivals <img src={openNewWindowImagePath} width="16" height="16" alt="" /></a>
                 {showStopPopover.services.length > 1 && (
