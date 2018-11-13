@@ -73,7 +73,11 @@ class BusServicesArrival extends Component {
         paint: {
           'circle-stroke-width': 2,
           'circle-stroke-color': '#fff',
-          'circle-radius': 4,
+          'circle-radius': [
+            'interpolate', ['linear'], ['zoom'],
+            15, 2,
+            16, 4
+          ],
           'circle-color': '#00454d',
           'circle-opacity': .8,
         },
@@ -89,7 +93,6 @@ class BusServicesArrival extends Component {
           'text-anchor': 'left',
           'text-offset': [.6, 0],
           'text-font': ['DIN Offc Pro Medium', 'Open Sans Semibold', 'Arial Unicode MS Bold'],
-          'text-allow-overlap': true,
         },
         paint: {
           'text-color': '#00454d',
