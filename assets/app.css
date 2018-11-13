@@ -246,12 +246,22 @@ a:active {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   padding: 12px;
+}
+#stop-popover .service-tag {
+  margin-bottom: 4px;
+}
+
+#between-popover .popover-scroll {
+  padding-top: 0;
   padding-left: max(12px, env(safe-area-inset-left));
   padding-right: max(12px, env(safe-area-inset-right));
   padding-bottom: max(12px, env(safe-area-inset-bottom));
 }
-#stop-popover .service-tag {
-  margin-bottom: 4px;
+#stop-popover .popover-footer {
+  padding: 12px;
+  padding-left: max(12px, env(safe-area-inset-left));
+  padding-right: max(12px, env(safe-area-inset-right));
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
 }
 
 #stop-popover .services-list span {
@@ -260,10 +270,6 @@ a:active {
 #stop-popover .services-list.loading span{
   opacity: .75;
   pointer-events: none;
-}
-
-#between-popover .popover-scroll {
-  padding-top: 0;
 }
 
 #between-popover .between-block {
@@ -760,7 +766,6 @@ a.service-tag:hover {
 
 .popover-buttons {
   display: flex;
-  margin-top: 7px;
 }
 .popover-button {
   cursor: pointer;
@@ -849,8 +854,8 @@ a.service-tag:hover {
   }
 
   /* Reset the safe area paddings */
-  #stop-popover .popover-scroll,
-  #between-popover .popover-scroll {
+  #between-popover .popover-scroll,
+  #stop-popover .popover-footer {
     padding-left: 12px;
     padding-right: 12px;
   }

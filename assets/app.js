@@ -1937,6 +1937,8 @@ class App extends Component {
             </header>,
             <div class="popover-scroll">
               <BusServicesArrival map={this.map} id={showStopPopover.number} services={showStopPopover.services} />
+            </div>,
+            <div class="popover-footer">
               <div class="popover-buttons alt-hide">
                 <a href={`/bus-arrival/#${showStopPopover.number}`} target="_blank" onClick={this._openBusArrival} class="popover-button">Bus arrivals <img src={openNewWindowImagePath} width="16" height="16" alt="" /></a>
                 {showStopPopover.services.length > 1 && (
