@@ -1981,7 +1981,7 @@ if (window.navigator.standalone) {
   // Refresh map size when dimissing software keyboard
   // https://stackoverflow.com/a/19464029/20838
   document.addEventListener('focusout', () => {
-    map.resize();
+    if (_map) _map.resize();
   });
 }
 
