@@ -20,6 +20,7 @@ import stopsJSONPath from '../data/3/stops.final.json';
 import servicesJSONPath from '../data/3/services.final.json';
 
 const APP_NAME = 'BusRouter SG';
+const APP_LONG_NAME = 'Singapore Bus Routes Explorer';
 const $map = document.getElementById('map');
 const STORE = {};
 const BREAKPOINT = () => window.innerWidth > 640;
@@ -1730,7 +1731,7 @@ class App extends Component {
         break;
       }
       default: {
-        document.title = APP_NAME;
+        document.title = `${APP_NAME} - ${APP_LONG_NAME}`;
 
         // Show all stops
         map.setLayoutProperty('stops', 'visibility', 'visible');
