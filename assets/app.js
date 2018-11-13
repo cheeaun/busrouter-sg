@@ -60,7 +60,6 @@ class BusServicesArrival extends Component {
       map.addSource('buses', {
         type: 'geojson',
         tolerance: 10,
-        buffer: 0,
         data: {
           type: 'FeatureCollection',
           features: [],
@@ -128,20 +127,55 @@ class BusServicesArrival extends Component {
         isLoading: false,
         servicesArrivals,
       });
-      map.getSource('buses').setData({
-        type: 'FeatureCollection',
-        features: services.filter(s => s.no && s.next.lat > 0).map(s => ({
-          type: 'Feature',
-          id: encode(s.no),
-          properties: {
-            number: s.no,
-          },
-          geometry: {
-            type: 'Point',
-            coordinates: [s.next.lng, s.next.lat],
-          },
-        })),
-      });
+
+      setTimeout(() => {
+        const servicesWithCoords = services.filter(s => s.no && s.next.lat > 0);
+        const pointMargin = 100;
+        const servicesWithFixedCoords = servicesWithCoords.map(s => {
+          const coords = [s.next.lng, s.next.lat];
+          const point = map.project(coords);
+          let shortestDistance = Infinity;
+          let nearestCoords;
+          if (point.x && point.y) {
+            map.queryRenderedFeatures([
+              [point.x - pointMargin, point.y - pointMargin],
+              [point.x + pointMargin, point.y + pointMargin]
+            ]).forEach(f => {
+              if (f.sourceLayer === 'road' && f.layer.type === 'line' && !/(pedestrian|sidewalk|steps)/.test(f.layer.id)) {
+                const nearestPoint = ruler.pointOnLine(f.geometry.coordinates, coords);
+                if (nearestPoint.t) {
+                  const distance = ruler.distance(coords, nearestPoint.point);
+                  if (distance < shortestDistance) {
+                    shortestDistance = distance;
+                    nearestCoords = nearestPoint.point;
+                  }
+                }
+              }
+            });
+            if (nearestCoords) console.log(`Fixed bus position: ${s.no} - ${(shortestDistance * 1000).toFixed(3)}m`)
+            if (nearestCoords) s.next = {
+              lng: nearestCoords[0],
+              lat: nearestCoords[1]
+            };
+          }
+          return s;
+        });
+        map.getSource('buses').setData({
+          type: 'FeatureCollection',
+          features: servicesWithFixedCoords.map(s => ({
+            type: 'Feature',
+            id: encode(s.no),
+            properties: {
+              number: s.no,
+            },
+            geometry: {
+              type: 'Point',
+              coordinates: [s.next.lng, s.next.lat],
+            },
+          })),
+        });
+      }, map.loaded() ? 0 : 1000);
+
       this._arrivalsTimeout = setTimeout(() => {
         requestAnimationFrame(this._fetchServices);
       }, 15 * 1000); // 15 seconds
