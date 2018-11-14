@@ -156,11 +156,13 @@ class BusServicesArrival extends Component {
                 }
               }
             });
-            if (nearestCoords) console.log(`Fixed bus position: ${s.no} - ${(shortestDistance * 1000).toFixed(3)}m`)
-            if (nearestCoords) s.next = {
-              lng: nearestCoords[0],
-              lat: nearestCoords[1]
-            };
+            if (nearestCoords && (shortestDistance * 1000 < 10)){ // Only within 10m
+              console.log(`Fixed bus position: ${s.no} - ${(shortestDistance * 1000).toFixed(3)}m`)
+              s.next = {
+                lng: nearestCoords[0],
+                lat: nearestCoords[1]
+              }
+            }
           }
           return s;
         });
