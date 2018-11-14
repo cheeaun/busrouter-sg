@@ -145,7 +145,7 @@ class BusServicesArrival extends Component {
               [point.x - pointMargin, point.y - pointMargin],
               [point.x + pointMargin, point.y + pointMargin]
             ]).forEach(f => {
-              if (f.sourceLayer === 'road' && f.layer.type === 'line' && !/(pedestrian|sidewalk|steps)/.test(f.layer.id)) {
+              if (f.sourceLayer === 'road' && f.layer.type === 'line' && f.properties.class != 'path' && !/(pedestrian|sidewalk|steps)/.test(f.layer.id)) {
                 const nearestPoint = ruler.pointOnLine(f.geometry.coordinates, coords);
                 if (nearestPoint.t) {
                   const distance = ruler.distance(coords, nearestPoint.point);
