@@ -592,8 +592,10 @@ a:active {
   align-items: center;
   color: #000;
 }
-.popover-list li a:hover {
-  background-color: rgba(255,255,255,.6);
+@media (hover: hover) {
+  .popover-list li a:hover {
+    background-color: rgba(255,255,255,.6);
+  }
 }
 .popover-list li a [class*="-tag"] {
   margin-right: 1em;
