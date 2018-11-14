@@ -1202,12 +1202,14 @@ class App extends Component {
     if (this.state.route.page === 'stop') return;
     if (e) e.preventDefault();
     const { number } = this.state.showStopPopover;
-    this.map.setFeatureState({
-      source: 'stops',
-      id: encode(number),
-    }, {
-      selected: false,
-    });
+    if (number) {
+      this.map.setFeatureState({
+        source: 'stops',
+        id: encode(number),
+      }, {
+        selected: false,
+      });
+    }
     this.setState({
       showStopPopover: false,
     });
