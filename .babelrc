@@ -11,7 +11,7 @@
             "not Android > 1"
           ]
         },
-        "useBuiltIns": true,
+        "useBuiltIns": "usage",
         "modules": false
       }
     ]
