@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Singapore Bus Routes Explorer",
   "devDependencies": {
-    "@babel/core": "~7.1.5",
+    "@babel/core": "~7.1.6",
     "@babel/plugin-proposal-class-properties": "~7.1.0",
     "@babel/plugin-transform-runtime": "~7.1.0",
     "@mapbox/polyline": "~1.0.0",
