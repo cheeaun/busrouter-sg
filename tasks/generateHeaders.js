@@ -10,8 +10,6 @@ const files = fs.readdirSync('dist');
 const homeFiles = [
   /^app\..+js$/,
   /^app\..+css$/,
-  /^stop\..+png$/,
-  /^stop\-small\..+png$/
 ];
 
 let content = '/*';
