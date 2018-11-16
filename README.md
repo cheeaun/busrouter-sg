@@ -1,13 +1,15 @@
 [BusRouter SG](https://busrouter.sg/) - Singapore Bus Routes Explorer
 ===
 
+> 🚌 🗺 🇸🇬
+
 > Explore bus stops and routes on the map for all bus services in Singapore, with realtime bus arrival times and per-bus-stop passing routes overview.
 
 [![Screenshot of BusRouter SG](screenshots/screenshot-2.png)](https://busrouter.sg/)
 
 [![Screenshot of BusRouter SG](screenshots/screenshot-3.png)](https://busrouter.sg/)
 
-Complete Feature Set
+✨ Complete Feature Set
 ---
 
 - Show **full route** with all bus stops for every bus service.
@@ -19,7 +21,7 @@ Complete Feature Set
 
 [![Screenshot of Singapore Bus Routes Explorer](screenshots/screenshot-1.png)](https://busrouter.sg/)
 
-Technicalities
+🛠 Technicalities
 ---
 
 All data such as bus stops, services and routes are mostly *scraped* from <http://mytransport.sg/>, which means they are copyrighted by the [Land Transport Authority](http://www.lta.gov.sg/).
@@ -84,19 +86,19 @@ The scripts for the web app:
 - `npm start` - start server for development
 - `npm run build` - build for production and deployment, in `./dist` folder.
 
-License
+📜 License
 ---
 
 [Data provided by LTA](http://www.mytransport.sg/content/mytransport/home/dataMall/termOfUse.html) and partially by [StreetDirectory](http://www.streetdirectory.com/).
 
 Everything else: [MIT](http://cheeaun.mit-license.org/)
 
-Feedback
+🎤 Feedback
 ---
 
 If you have any feedback, tweet me at [@cheeaun](http://twitter.com/cheeaun).
 
-Credits
+🙇‍ Credits
 ---
 
 - Inspired by [this tweet](https://twitter.com/mengwong/status/155511398653362177).
