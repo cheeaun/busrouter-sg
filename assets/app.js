@@ -1231,6 +1231,23 @@ class App extends Component {
       showStopPopover: false,
     });
   }
+  _zoomToStop = () => {
+    const map = this.map;
+    const { stopsData, showStopPopover } = this.state;
+    const { number } = showStopPopover;
+    const { coordinates } = stopsData[number];
+    const offset = BREAKPOINT() ? [0, 0] : [0, -this._stopPopover.offsetHeight / 2];
+    const zoom = map.getZoom();
+    if (zoom < 16) {
+      map.flyTo({
+        zoom: 16,
+        center: coordinates,
+        offset,
+      });
+    } else {
+      map.easeTo({ center: coordinates, offset });
+    }
+  }
   _highlightRouteTag = (service) => {
     const $servicesList = this._floatPill.querySelector('.services-list');
     if (!$servicesList) return;
@@ -1958,7 +1975,7 @@ class App extends Component {
           {showStopPopover && [
             <a href="#/" onClick={this._hideStopPopover} class="popover-close">&times;</a>,
             <header>
-              <h1><b class="stop-tag">{showStopPopover.number}</b> {showStopPopover.name}</h1>
+              <h1 onClick={this._zoomToStop}><b class="stop-tag">{showStopPopover.number}</b> {showStopPopover.name}</h1>
               <h2>{showStopPopover.services.length} service{showStopPopover.services.length == 1 ? '' : 's'}</h2>
             </header>,
             <div class="popover-scroll">

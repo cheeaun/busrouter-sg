@@ -218,6 +218,9 @@ a:active {
   margin: 0 0 .5em;
   padding: 0;
 }
+#stop-popover header h1 {
+  cursor: pointer;
+}
 #stop-popover h2,
 #between-popover h2 {
   font-size: .8em;
