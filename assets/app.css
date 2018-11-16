@@ -253,7 +253,9 @@ a:active {
 #stop-popover .service-tag {
   margin-bottom: 4px;
 }
-
+#stop-popover .popover-scroll {
+  padding-bottom: 0;
+}
 #between-popover .popover-scroll {
   padding-top: 0;
   padding-left: max(12px, env(safe-area-inset-left));
