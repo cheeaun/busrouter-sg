@@ -332,7 +332,7 @@ class App extends Component {
     const stopsData = {};
     const stopsDataArr = [];
     Object.keys(stops).forEach(number => {
-      const [lng, lat, name] = stops[number];
+      const [lng, lat, name, left] = stops[number];
       stopsData[number] = {
         name,
         number,
@@ -340,6 +340,7 @@ class App extends Component {
         coordinates: [lng, lat],
         services: [],
         routes: [],
+        left: !!left,
       };
       stopsDataArr.push(stopsData[number]);
     });
@@ -487,6 +488,7 @@ class App extends Component {
             number: stop.number,
             name: stop.name,
             interchange: stop.interchange,
+            left: stop.left,
           },
           geometry: {
             type: 'Point',
@@ -510,9 +512,9 @@ class App extends Component {
           14, 11,
           16, 14
         ],
-        'text-justify': 'left',
-        'text-anchor': 'top-left',
-        'text-offset': [1, -.6],
+        'text-justify': ['case', ['get', 'left'], 'right', 'left'],
+        'text-anchor': ['case', ['get', 'left'], 'top-right', 'top-left'],
+        'text-offset': ['case', ['get', 'left'], ['literal', [-1, -.6]], ['literal', [1, -.6]]],
         'text-padding': .5,
         'text-font': ['DIN Offc Pro Medium', 'Open Sans Semibold', 'Arial Unicode MS Bold'],
       },
