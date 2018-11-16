@@ -680,7 +680,10 @@ class App extends Component {
           12, ['case', ['==', ['get', 'type'], 'end'], ['concat', ['get', 'number'], '\n', ['get', 'name']], ['get', 'number']],
           16, ['concat', ['get', 'number'], '\n', ['get', 'name']]
         ],
-        'text-offset': ['case', ['==', ['get', 'type'], 'end'], ['literal', [1, -1.8]], ['literal', [1, -.6]]],
+        'text-offset': ['case', ['==', ['get', 'type'], 'end'],
+          ['case', ['get', 'left'], ['literal', [-1, -1.8]], ['literal', [1, -1.8]]],
+          ['case', ['get', 'left'], ['literal', [-1, -.6]], ['literal', [1, -.6]]]
+        ],
       },
       paint: stopText.paint,
     });
@@ -1378,6 +1381,7 @@ class App extends Component {
           name: stop.name,
           number: stop.number,
           type: stop.end ? 'end' : null,
+          left: stop.left,
         },
         geometry: {
           type: 'Point',
@@ -1495,19 +1499,23 @@ class App extends Component {
         }); // Merge and unique
         map.getSource('stops-highlight').setData({
           type: 'FeatureCollection',
-          features: routeStops.map((stop, i) => ({
-            type: 'Feature',
-            id: encode(stop),
-            properties: {
-              name: stopsData[stop].name,
-              number: stop,
-              type: endStops.includes(stop) ? 'end' : null,
-            },
-            geometry: {
-              type: 'Point',
-              coordinates: stopsData[stop].coordinates,
-            },
-          })),
+          features: routeStops.map((stop, i) => {
+            const { name, left } = stopsData[stop];
+            return {
+              type: 'Feature',
+              id: encode(stop),
+              properties: {
+                name,
+                number: stop,
+                type: endStops.includes(stop) ? 'end' : null,
+                left,
+              },
+              geometry: {
+                type: 'Point',
+                coordinates: stopsData[stop].coordinates,
+              },
+            };
+          }),
         });
 
         // Show routes
@@ -1581,6 +1589,7 @@ class App extends Component {
                 name,
                 number: stop,
                 type: 'end',
+                left: stop.left,
               },
               geometry: {
                 type: 'Point',
