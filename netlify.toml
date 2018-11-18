@@ -13,3 +13,5 @@ ID = "busrouter-sg"
 [[redirects]]
   from = "https://next.busrouter.sg/*"
   to = "https://busrouter.sg/:splat"
+  status = 301
+  force = true
