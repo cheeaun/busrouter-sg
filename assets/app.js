@@ -1125,9 +1125,10 @@ class App extends Component {
     const { services } = this.state;
     switch (e.key.toLowerCase()) {
       case 'enter': {
-        if (services.length) {
+        const link = this._servicesList.querySelector('li a');
+        if (link) {
           this._searchField.blur();
-          location.hash = `#/services/${services[0].number}`;
+          link.click();
         }
         break;
       }
