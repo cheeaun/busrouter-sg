@@ -2073,6 +2073,9 @@ if (window.navigator.standalone) {
   document.addEventListener('focusout', () => {
     if (_map) _map.resize();
   });
+
+  // Enable CSS active states
+  document.addEventListener('touchstart', () => {}, false);
 }
 
 const isSafari = navigator.vendor && navigator.vendor.indexOf('Apple') !== -1;
