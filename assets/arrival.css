@@ -1,0 +1,293 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  padding: 0;
+  margin: 0;
+  background-color: #F7F7F7;
+  pointer-events: none;
+  user-select: none;
+}
+
+*, *:before, *:after{
+  box-sizing: border-box;
+}
+
+main {
+  max-width: 480px;
+  margin: 0 auto;
+  box-shadow: 0 0 100px rgba(0,0,0,.1);
+  background-color: #fff;
+  min-height: 100vh;
+}
+
+.stops-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: block;
+  overflow: auto;
+  text-align: center;
+  pointer-events: auto;
+}
+.stops-list li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: inline;
+}
+.stops-list a {
+  display: inline-block;
+  padding: 10px;
+}
+
+#bus-stop-map {
+  position: relative;
+  padding-top: 50%;
+}
+#bus-stop-map img {
+  width: 100%;
+  vertical-align: top;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+#bus-stop-map:after {
+  opacity: 0;
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -150%) scale(.5);
+  transform-origin: top center;
+  width: 30px;
+  height: 40px;
+  background: transparent url(../assets/images/stop-active.svg) no-repeat bottom;
+  background-size: contain;
+  filter: drop-shadow(0 5px 10px rgba(0,0,0,.3));
+  animation: appear .3s .5s ease-in-out both;
+}
+@keyframes appear {
+  80% {
+    opacity: 1;
+    transform: translate(-50%, -100%) scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -100%) scale(1);
+  }
+}
+h1 {
+  position: sticky;
+  top: 0;
+  color: #000;
+  font-size: .7em;
+  font-weight: normal;
+  padding: 10px;
+  margin: 0;
+  z-index: 1;
+  background-color: rgba(240,240,240,.75);
+  z-index: 11;
+  backdrop-filter: blur(1px) saturate(3);
+}
+h1 b {
+  margin-top: 5px;
+  display: block;
+  font-size: 1.35em;
+}
+table {
+  text-align: left;
+  table-layout: fixed;
+  width: 100%;
+  border-spacing: 0;
+  border: 0;
+  margin: 0;
+  overflow: hidden;
+}
+table thead * {
+  font-weight: normal;
+  color: #666;
+}
+table th,
+table td {
+  padding: 6px 10px;
+  vertical-align: middle;
+  height: 1.7em;
+}
+table th *,
+table td * {
+  vertical-align: middle;
+}
+table tbody {
+  transition: opacity .3s;
+}
+table tbody th {
+  width: 8ex;
+  z-index: 10;
+  position: relative;
+  background-color: rgba(255,255,255,.5);
+  cursor: pointer;
+  pointer-events: auto;
+}
+table tbody tr:nth-child(2n) {
+  background-color: #fafafa;
+}
+table tbody tr.pin {
+  background-color: lightyellow;
+}
+table tbody tr.pin th {
+  color: darkorange;
+}
+@media (hover: hover) {
+  table tbody th:hover {
+    color: darkorange;
+  }
+}
+table tbody td.blank {
+  text-align: center;
+  padding: 3em;
+}
+tfoot {
+  font-size: 11px;
+}
+tfoot td {
+  box-shadow: inset 0 20px 20px -20px rgba(0,0,0,.1);
+}
+tfoot td > span {
+  margin-right: 5px;
+  display: inline-block;
+}
+footer {
+  margin-top: .5em;
+  opacity: .6;
+  padding: 10px;
+}
+
+.stop-tag {
+  display: inline-block;
+  padding: 3px 7px;
+  border-radius: 5px;
+  border: 2px solid #fff;
+  background-color: #f01b48;
+  color: #fff;
+  font-weight: bold;
+  box-shadow: 0 0 5px rgba(0,0,0,.15);
+}
+.load {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 6px;
+}
+.load-sea {
+  background-color: green;
+}
+.load-sda {
+  background-color: orangered;
+}
+.load-lsd {
+  background-color: firebrick;
+}
+
+.time-sea {
+  color: green;
+}
+.time-sda {
+  color: orangered;
+}
+.time-lsd {
+  color: firebrick;
+}
+
+#carbonads {
+  pointer-events: auto;
+}
+
+@media (min-width: 720px) {
+  body {
+    display: grid;
+    height: 100vh;
+    margin: 0;
+    grid-template-rows: 1fr min-content 1fr;
+  }
+  main {
+    max-width: 800px;
+    min-height: auto;
+    grid-row: 2;
+  }
+  #bus-stop-map {
+    padding-top: 0;
+  }
+  #bus-stop-map img {
+    position: static;
+  }
+  #bus-stop-map, h1, table, #carbonads {
+    width: 50%;
+  }
+  #bus-stop-map, h1, footer, #carbonads {
+    float: left;
+  }
+  header {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  table {
+    float: right;
+  }
+}
+
+.bus-lane-cell {
+  padding-left: 0;
+  padding-right: 0;
+  background: repeating-linear-gradient(
+    to right,
+    rgba(0,0,0,.05) 0,
+    rgba(0,0,0,.05) 1px,
+    transparent 1px,
+    transparent 50px
+  );
+}
+.bus-lane {
+  position: relative;
+  height: 1.7em;
+}
+.bus-lane .bus {
+  left: 0;
+  bottom: 0;
+  position: absolute;
+  font-size: 10px;
+  display: inline-block;
+  transition: all 1s;
+  z-index: 3;
+  filter: drop-shadow(1px 0 0 #fff) drop-shadow(1px -1px #fff);
+  animation: show 3s both;
+}
+@keyframes show {
+  0% {
+    margin-left: 12px;
+    opacity: 0;
+  }
+  100% {
+    margin-left: 0;
+    opacity: 1;
+  }
+}
+.bus-lane .bus.left {
+  animation: left 3s both;
+}
+@keyframes left {
+  100% {
+    margin-left: -12px;
+    opacity: 0;
+  }
+}
+.bus-lane .bus + .bus {
+  opacity: .75;
+  z-index: 2;
+}
+.bus-lane .bus + .bus + .bus {
+  opacity: .5;
+  z-index: 1;
+}
+.bus-lane .bus,
+.bus-lane .bus img {
+  vertical-align: bottom;
+}

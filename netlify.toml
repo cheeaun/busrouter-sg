@@ -3,13 +3,13 @@
 ID = "busrouter-sg"
 
 [context.production]
-  publish = ""
-  command = ""
+  publish = "dist/"
+  command = "npm run build"
 
 [context.v1]
   publish = ""
   command = ""
 
-[context.next]
-  publish = "dist/"
-  command = "npm run build"
+[[redirects]]
+  from = "https://next.busrouter.sg/*"
+  to = "https://busrouter.sg/:splat"

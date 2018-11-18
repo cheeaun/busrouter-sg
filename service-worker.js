@@ -1,68 +1,75 @@
-self.addEventListener('install', function(event){
-	console.log('Install');
-});
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js');
 
-self.addEventListener('activate', function(event){
-	console.log('Activate');
-});
+workbox.googleAnalytics.initialize();
 
-var cacheName = 'busroutersg-v1';
+workbox.routing.registerRoute(
+  /\/$/,
+  workbox.strategies.networkFirst({
+    cacheName: 'index',
+  }),
+);
 
-// Delete old cache
-var CacheNamePrefix = 'sw-precache-v1--' + (self.registration ? self.registration.scope : '') + '-';
-caches.keys().then(function(cacheNames){
-	cacheNames.forEach(function(cacheName){
-		if (cacheName.indexOf(CacheNamePrefix) === 0) caches.delete(cacheName);
-	});
-});
-// caches.delete('busroutersg-v1'); // Delete the old one
+workbox.routing.registerRoute(
+  /\/.*\.(?:js|css)$/,
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: 'static-resources',
+  }),
+);
 
-var successResponses = /^0|([123]\d\d)|(40[14567])|410$/;
+workbox.routing.registerRoute(
+  /\/.*\.(?:png|gif|jpg|jpeg|svg)$/,
+  workbox.strategies.cacheFirst({
+    cacheName: 'images',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxEntries: 60,
+        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+      }),
+      new workbox.cacheableResponse.Plugin({
+        statuses: [0, 200]
+      }),
+    ],
+  }),
+);
 
-function fetchAndCache(request){
-	return fetch(request.clone()).then(function(response){
-		if (request.method == 'GET' && response && successResponses.test(response.status) && (response.type == 'basic' && !/\.json$/.test(request.url) || /\.(js|png|ttf|woff|woff2)$/i.test(request.url) || /fonts\.googleapis\.com/i.test(request.url))){
-			console.log('Cache', request.url);
-			caches.open(cacheName).then(function(cache){
-				cache.put(request, response);
-			});
-		}
-		return response.clone();
-	});
-};
+workbox.routing.registerRoute(
+  /\/.*\.(?:json)$/,
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: 'data',
+    plugins: [
+      new workbox.cacheableResponse.Plugin({
+        statuses: [0, 200]
+      }),
+    ],
+  }),
+);
 
-function cacheOnly(request){
-	return caches.open(cacheName).then(function(cache){
-		return cache.match(request);
-	});
-};
+workbox.routing.registerRoute(
+  /.*api\.mapbox\.com\/fonts/,
+  workbox.strategies.cacheFirst({
+    cacheName: 'mapbox-fonts',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+      }),
+      new workbox.cacheableResponse.Plugin({
+        statuses: [0, 200]
+      }),
+    ],
+  }),
+);
 
-// Fastest strategy from https://github.com/GoogleChrome/sw-toolbox
-self.addEventListener('fetch', function(event){
-	var request = event.request;
-	var url = request.url;
-	event.respondWith(new Promise(function(resolve, reject){
-		var rejected = false;
-		var reasons = [];
-
-		var maybeReject = function(reason){
-			reasons.push(reason.toString());
-			if (rejected){
-				reject(new Error('Both cache and network failed: "' + reasons.join('", "') + '"'));
-			} else {
-				rejected = true;
-			}
-		};
-
-		var maybeResolve = function(result){
-			if (result instanceof Response){
-				resolve(result);
-			} else {
-				maybeReject('No result returned');
-			}
-		};
-
-		fetchAndCache(request.clone()).then(maybeResolve, maybeReject);
-		cacheOnly(request).then(maybeResolve, maybeReject);
-	}));
-});
+workbox.routing.registerRoute(
+  /.*(?:tiles\.mapbox|api\.mapbox)\.com.*$/,
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: 'mapbox',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxEntries: 50,
+      }),
+      new workbox.cacheableResponse.Plugin({
+        statuses: [0, 200]
+      }),
+    ],
+  }),
+);
