@@ -684,6 +684,24 @@ class App extends Component {
       },
       paint: stopText.paint,
     });
+    map.addLayer({
+      id: 'stops-highlight-selected',
+      type: 'circle',
+      source: 'stops-highlight',
+      filter: ['any', ['>', ['zoom'], 10], ['==', ['get', 'type'], 'end']],
+      paint: {
+        'circle-radius': [
+          'interpolate', ['linear'], ['zoom'],
+          10, 4,
+          15, 12
+        ],
+        'circle-color': '#fff',
+        'circle-stroke-color': '#f01b48',
+        'circle-stroke-width': 5,
+        'circle-opacity': ['case', ['boolean', ['feature-state', 'selected'], false], .5, 0],
+        'circle-stroke-opacity': ['case', ['boolean', ['feature-state', 'selected'], false], .5, 0],
+      }
+    }, 'stops-highlight');
 
     requestIdleCallback(() => {
       map.on('mouseenter', 'stops-highlight', () => {
@@ -1174,14 +1192,28 @@ class App extends Component {
     const { stopsData, prevStopNumber } = this.state;
     const { services, coordinates, name } = stopsData[number];
 
-    if (prevStopNumber) this.map.setFeatureState({
-      source: 'stops',
-      id: encode(prevStopNumber),
-    }, {
-      selected: false,
-    });
+    if (prevStopNumber) {
+      this.map.setFeatureState({
+        source: 'stops',
+        id: encode(prevStopNumber),
+      }, {
+        selected: false,
+      });
+      this.map.setFeatureState({
+        source: 'stops-highlight',
+        id: encode(prevStopNumber),
+      }, {
+        selected: false,
+      });
+    }
     map.setFeatureState({
       source: 'stops',
+      id: encode(number),
+    }, {
+      selected: true,
+    });
+    map.setFeatureState({
+      source: 'stops-highlight',
       id: encode(number),
     }, {
       selected: true,
