@@ -1311,6 +1311,7 @@ class App extends Component {
   }
   _clickRoute = (e, service) => {
     const { target } = e;
+    e.stopPropagation();
     if (target.classList.contains('highlight')) return;
     e.preventDefault();
     target.classList.add('highlight');
@@ -1358,7 +1359,9 @@ class App extends Component {
     }
   }
   _unhighlightRoute = (e) => {
-    if (e) e.target.classList.remove('highlight');
+    if (e && e.target && e.target.classList.contains('service-tag')) {
+      e.target.classList.remove('highlight');
+    }
     STORE.routesPathServices.forEach(service => {
       const id = encode(service);
       this.map.setFeatureState({
@@ -1901,7 +1904,7 @@ class App extends Component {
                     <p>{stopsData[route.value].services.length} passing routes</p>
                   </div>
                 </div>
-                <div class="services-list">
+                <div class="services-list" onClick={this._unhighlightRoute}>
                   {stopsData[route.value].services.sort(sortServices).map(service => (
                     <a
                       href={`#/services/${service}`}
