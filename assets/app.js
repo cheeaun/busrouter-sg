@@ -109,23 +109,20 @@ class BusServicesArrival extends Component {
   }
   _removeBuses = () => {
     const { map } = this.props;
-    map.removeLayer('buses');
-    map.removeLayer('buses-label');
-    map.removeSource('buses');
+    map.getSource('buses').setData({
+      type: 'FeatureCollection',
+      features: [],
+    });
   }
   componentDidUpdate(prevProps) {
     if (prevProps.id !== this.props.id) {
+      // Hacky fix since Preact doesn't fire componentWillUnmount
+      this._removeBuses();
       clearTimeout(this._arrivalsTimeout);
       this.setState({
         servicesArrivals: {},
       });
       this._fetchServices();
-    }
-
-    // Hacky fix since Preact doesn't fire componentWillUnmount
-    const route = getRoute();
-    if (route.page !== 'stop') {
-      this._removeBuses();
     }
   }
   _arrivalsTimeout = null;
