@@ -1647,7 +1647,7 @@ class App extends Component {
                 name,
                 number: stop,
                 type: 'end',
-                left: stop.left,
+                left: stopsData[stop].left,
               },
               geometry: {
                 type: 'Point',
