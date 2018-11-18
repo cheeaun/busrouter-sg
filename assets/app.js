@@ -604,7 +604,8 @@ class App extends Component {
             }
           }
         } else {
-          if (this.state.route.page == 'stop') {
+          const { page, subpage } = this.state.route;
+          if (page === 'stop' && subpage !== 'routes') {
             location.hash = '/'
           } else {
             this._hideStopPopover();
