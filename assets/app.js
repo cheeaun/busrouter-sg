@@ -509,9 +509,9 @@ class App extends Component {
           14, 11,
           16, 14
         ],
-        'text-justify': ['case', ['get', 'left'], 'right', 'left'],
-        'text-anchor': ['case', ['get', 'left'], 'top-right', 'top-left'],
-        'text-offset': ['case', ['get', 'left'], ['literal', [-1, -.6]], ['literal', [1, -.6]]],
+        'text-justify': ['case', ['boolean', ['get', 'left'], false], 'right', 'left'],
+        'text-anchor': ['case', ['boolean', ['get', 'left'], false], 'top-right', 'top-left'],
+        'text-offset': ['case', ['boolean', ['get', 'left'], false], ['literal', [-1, -.6]], ['literal', [1, -.6]]],
         'text-padding': .5,
         'text-font': ['DIN Offc Pro Medium', 'Open Sans Semibold', 'Arial Unicode MS Bold'],
       },
@@ -679,8 +679,8 @@ class App extends Component {
           16, ['concat', ['get', 'number'], '\n', ['get', 'name']]
         ],
         'text-offset': ['case', ['==', ['get', 'type'], 'end'],
-          ['case', ['get', 'left'], ['literal', [-1, -1.8]], ['literal', [1, -1.8]]],
-          ['case', ['get', 'left'], ['literal', [-1, -.6]], ['literal', [1, -.6]]]
+          ['case', ['boolean', ['get', 'left'], false], ['literal', [-1, -1.8]], ['literal', [1, -1.8]]],
+          ['case', ['boolean', ['get', 'left'], false], ['literal', [-1, -.6]], ['literal', [1, -.6]]]
         ],
       },
       paint: stopText.paint,
