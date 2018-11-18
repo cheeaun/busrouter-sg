@@ -1245,12 +1245,20 @@ class App extends Component {
     });
   }
   _hideStopPopover = (e) => {
-    if (this.state.route.page === 'stop') return;
+    // if (this.state.route.page === 'stop') return;
     if (e) e.preventDefault();
-    const { number } = this.state.showStopPopover;
+    const map = this.map;
+    let { number } = this.state.showStopPopover;
+    number = number || this.state.prevStopNumber;
     if (number) {
-      this.map.setFeatureState({
+      map.setFeatureState({
         source: 'stops',
+        id: encode(number),
+      }, {
+        selected: false,
+      });
+      map.setFeatureState({
+        source: 'stops-highlight',
         id: encode(number),
       }, {
         selected: false,
@@ -1258,6 +1266,12 @@ class App extends Component {
     }
     this.setState({
       showStopPopover: false,
+    });
+    // Leftovers that should be handled by <BusServicesArrival/>
+    const source = map.getSource('buses');
+    if (source) source.setData({
+      type: 'FeatureCollection',
+      features: [],
     });
   }
   _zoomToStop = () => {
@@ -1513,12 +1527,9 @@ class App extends Component {
         features: [],
       });
     });
-    if (prevStopNumber) this.map.setFeatureState({
-      source: 'stops',
-      id: encode(prevStopNumber),
-    }, {
-      selected: false,
-    });
+    if (prevStopNumber) {
+      this._hideStopPopover();
+    }
 
     switch (route.page) {
       case 'service': {
