@@ -2,7 +2,7 @@ node_modules
 .DS_Store
 dist
 tmp
-_*
+*/_*
 .cache
 .env
 data/3/route-lines

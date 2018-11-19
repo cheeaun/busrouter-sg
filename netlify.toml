@@ -10,6 +10,12 @@ ID = "busrouter-sg"
   publish = ""
   command = ""
 
+[context.next]
+  publish = "dist/"
+  command = "npm run build"
+
 [[redirects]]
-  from = "https://next.busrouter.sg/*"
-  to = "https://busrouter.sg/:splat"
+  from = "https://next.busrouter.sg/"
+  to = "https://busrouter.sg/"
+  status = 301
+  force = true
