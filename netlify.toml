@@ -11,14 +11,7 @@ ID = "busrouter-sg"
   command = ""
 
 [[redirects]]
-  from = "https://next.busrouter.sg/*"
-  to = "https://busrouter.sg/:splat"
+  from = "https://next.busrouter.sg/"
+  to = "https://busrouter.sg/"
   status = 301
   force = true
-
-[context.next]
-  [[redirects]]
-    from = "/"
-    to = "https://busrouter.sg/"
-    status = 301
-    force = true
