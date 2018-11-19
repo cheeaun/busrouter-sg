@@ -16,8 +16,9 @@ ID = "busrouter-sg"
   status = 301
   force = true
 
-[[redirects]]
-  from = "https://next.busrouter.sg/"
-  to = "https://busrouter.sg/"
-  status = 301
-  force = true
+[context.next]
+  [[redirects]]
+    from = "/"
+    to = "https://busrouter.sg/"
+    status = 301
+    force = true
