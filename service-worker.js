@@ -61,11 +61,11 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   /.*(?:tiles\.mapbox|api\.mapbox)\.com.*$/,
-  workbox.strategies.staleWhileRevalidate({
+  workbox.strategies.cacheFirst({
     cacheName: 'mapbox',
     plugins: [
       new workbox.expiration.Plugin({
-        maxEntries: 50,
+        maxAgeSeconds: 14 * 24 * 60 * 60, // 2 weeks
       }),
       new workbox.cacheableResponse.Plugin({
         statuses: [0, 200]
