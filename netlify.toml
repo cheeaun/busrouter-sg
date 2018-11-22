@@ -19,3 +19,9 @@ ID = "busrouter-sg"
   to = "https://busrouter.sg/"
   status = 301
   force = true
+
+[[redirects]]
+  from = "/staticmaps/*"
+  to = "https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/:splat"
+  status = 200
+  headers = {Cache-Control = "max-age=2592000,s-maxage=2592000"}
