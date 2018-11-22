@@ -183,7 +183,7 @@ class ArrivalTimes extends Component {
     return (
       <div>
         <div id="bus-stop-map">
-          <img src={`https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/${lng},${lat},17,0,60/400x200@2x?access_token=${MAPBOX_ACCESS_TOKEN}`} alt="Bus stop map" />
+          <img src={`https://busrouter.sg/staticmaps/${lng},${lat},17,0,60/400x200@2x?access_token=${MAPBOX_ACCESS_TOKEN}`} alt="Bus stop map" />
         </div>
         <h1>
           Bus arrival times for
