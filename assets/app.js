@@ -386,6 +386,13 @@ class App extends Component {
       pitchWithRotate: false,
       dragRotate: false,
       bounds: [lowerLong, lowerLat, upperLong, upperLat],
+      transformRequest: (url) => {
+        if (/tiles\.mapbox/.test(url)) {
+          return {
+            url: url.replace(/^.*mapbox\.com/i, 'https://busrouter.sg/mapbox-tiles'),
+          };
+        }
+      }
     });
     map.touchZoomRotate.disableRotation();
 
