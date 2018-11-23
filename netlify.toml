@@ -24,3 +24,8 @@ ID = "busrouter-sg"
   from = "/staticmaps/*"
   to = "https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/:splat"
   status = 200
+
+[[redirects]]
+  from = "/mapbox-tiles/*"
+  to = "https://a.tiles.mapbox.com/:splat"
+  status = 200
