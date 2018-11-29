@@ -42,5 +42,5 @@ export default (busNumber) => {
 
   // replace existing apple-touch-icon, assuming it already exists
   // this writes directly to the DOM (against react guidelines)
-  document.querySelectorAll('[rel="apple-touch-icon-precomposed"]')[0].setAttribute("href", c.toDataURL());
+  document.querySelectorAll('[rel="apple-touch-icon"]')[0].setAttribute("href", c.toDataURL());
 };
