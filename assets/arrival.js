@@ -3,6 +3,7 @@ import { timeDisplay, sortServicesPinned } from '../utils/bus';
 import { MAPBOX_ACCESS_TOKEN } from './config';
 import fetchCache from '../utils/fetchCache';
 import Ad from './ad';
+import setIcon from '../utils/setIcon';
 
 import wheelchairImagePath from './images/wheelchair.svg';
 import busSingleImagePath from './images/bus-single.svg';
@@ -155,6 +156,7 @@ class ArrivalTimes extends Component {
       const index = pinnedServices.indexOf(no);
       pinnedServices.splice(index, 1);
     } else {
+      setIcon(no);
       pinnedServices.push(no);
     }
     this.setState({ pinnedServices });
