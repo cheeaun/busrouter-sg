@@ -1254,8 +1254,10 @@ class App extends Component {
     });
   }
   _hideStopPopover = (e) => {
-    // if (this.state.route.page === 'stop') return;
-    if (e) e.preventDefault();
+    const { page, subpage } = this.state.route;
+    if (e && (page !== 'stop' || subpage === 'routes')) {
+      e.preventDefault();
+    }
     const map = this.map;
     let { number } = this.state.showStopPopover;
     number = number || this.state.prevStopNumber;
