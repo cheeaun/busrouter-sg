@@ -6,7 +6,7 @@ import cheapRuler from 'cheap-ruler';
 import { encode, decode } from '../utils/specialID';
 import { timeDisplay, sortServices } from '../utils/bus';
 import fetchCache from '../utils/fetchCache';
-import { MAPBOX_ACCESS_TOKEN } from './config';
+import { MAPBOX_ACCESS_TOKEN, MAPTILER_KEY } from './config';
 import Ad from './ad';
 
 import stopImagePath from './images/stop.png';
@@ -92,8 +92,8 @@ class BusServicesArrival extends Component {
           'text-field': ['get', 'number'],
           'text-size': 10,
           'text-anchor': 'left',
-          'text-offset': [.6, 0],
-          'text-font': ['DIN Offc Pro Medium', 'Open Sans Semibold', 'Arial Unicode MS Bold'],
+          'text-offset': [.6, .1],
+          'text-font': ['Roboto Medium', 'Noto Sans Regular'],
         },
         paint: {
           'text-color': '#00454d',
@@ -148,11 +148,12 @@ class BusServicesArrival extends Component {
           let shortestDistance = Infinity;
           let nearestCoords;
           if (point.x && point.y) {
-            map.queryRenderedFeatures([
+            const features = map.queryRenderedFeatures([
               [point.x - pointMargin, point.y - pointMargin],
               [point.x + pointMargin, point.y + pointMargin]
-            ]).forEach(f => {
-              if (f.sourceLayer === 'road' && f.layer.type === 'line' && f.properties.class != 'path' && !/(pedestrian|sidewalk|steps)/.test(f.layer.id)) {
+            ])
+            features.forEach(f => {
+              if (f.sourceLayer === 'transportation' && f.layer.type === 'line' && f.properties.class != 'path' && !/(pedestrian|sidewalk|steps)/.test(f.layer.id)) {
                 const nearestPoint = ruler.pointOnLine(f.geometry.coordinates, coords);
                 if (nearestPoint.t) {
                   const distance = ruler.distance(coords, nearestPoint.point);
@@ -377,7 +378,7 @@ class App extends Component {
     const lowerLat = 1.2, upperLat = 1.48, lowerLong = 103.59, upperLong = 104.05;
     const map = this.map = window._map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v10?optimized=true',
+      style: `https://maps.tilehosting.com/c/9fdb169d-8076-44bb-a5e6-3e48a4604f35/styles/busrouter-sg-1/style.json?key=${MAPTILER_KEY}`,
       renderWorldCopies: false,
       boxZoom: false,
       minZoom: 8,
@@ -386,13 +387,6 @@ class App extends Component {
       pitchWithRotate: false,
       dragRotate: false,
       bounds: [lowerLong, lowerLat, upperLong, upperLat],
-      transformRequest: (url) => {
-        if (/tiles\.mapbox/.test(url)) {
-          return {
-            url: url.replace(/^.*mapbox\.com/i, 'https://busrouter.sg/mapbox-tiles'),
-          };
-        }
-      }
     });
     map.touchZoomRotate.disableRotation();
 
@@ -451,30 +445,6 @@ class App extends Component {
       console.log(layers);
 
       labelLayerId = layers.find(l => l.type == 'symbol' && l.layout['text-field']).id;
-
-      // Apple Maps colors
-      map.setPaintProperty('background', 'background-color', '#F9F5ED');
-      map.setPaintProperty('water', 'fill-color', '#AEE1F5');
-
-      // Fade out road colors at low zoom levels
-      ['road-trunk', 'road-motorway'].forEach(l => {
-        map.setPaintProperty(l, 'line-opacity', [
-          'interpolate', ['linear'], ['zoom'],
-          10, .5,
-          15, 1
-        ]);
-      });
-
-      // Remove useless layers
-      layers.filter(l => /^(hillshade|ferry|admin)/i.test(l.id)).forEach(l => {
-        map.removeLayer(l.id);
-      });
-
-      // The road shields are quite annoying at low zoom levels
-      map.setLayerZoomRange('road-shields-black', 12, 24);
-
-      // Make all other airport symbols insignificant except SIN
-      map.setFilter('airport-label', ['==', 'ref', 'SIN']);
     });
 
     await mapboxLoadP;
@@ -518,9 +488,9 @@ class App extends Component {
         ],
         'text-justify': ['case', ['boolean', ['get', 'left'], false], 'right', 'left'],
         'text-anchor': ['case', ['boolean', ['get', 'left'], false], 'top-right', 'top-left'],
-        'text-offset': ['case', ['boolean', ['get', 'left'], false], ['literal', [-1, -.6]], ['literal', [1, -.6]]],
+        'text-offset': ['case', ['boolean', ['get', 'left'], false], ['literal', [-1, -.5]], ['literal', [1, -.5]]],
         'text-padding': .5,
-        'text-font': ['DIN Offc Pro Medium', 'Open Sans Semibold', 'Arial Unicode MS Bold'],
+        'text-font': ['Roboto Medium', 'Noto Sans Regular'],
       },
       paint: {
         'text-color': '#f01b48',
@@ -555,7 +525,7 @@ class App extends Component {
         ],
         ...stopText.paint,
       },
-    }, 'place-neighbourhood');
+    }, 'place_city');
 
     map.addLayer({
       id: 'stops',
@@ -686,8 +656,8 @@ class App extends Component {
           16, ['concat', ['get', 'number'], '\n', ['get', 'name']]
         ],
         'text-offset': ['case', ['==', ['get', 'type'], 'end'],
-          ['case', ['boolean', ['get', 'left'], false], ['literal', [-1, -1.8]], ['literal', [1, -1.8]]],
-          ['case', ['boolean', ['get', 'left'], false], ['literal', [-1, -.6]], ['literal', [1, -.6]]]
+          ['case', ['boolean', ['get', 'left'], false], ['literal', [-1, -1.5]], ['literal', [1, -1.5]]],
+          ['case', ['boolean', ['get', 'left'], false], ['literal', [-1, -.5]], ['literal', [1, -.5]]]
         ],
       },
       paint: stopText.paint,
@@ -800,7 +770,8 @@ class App extends Component {
         'symbol-placement': 'line',
         'symbol-spacing': 100,
         'text-field': '→',
-        'text-size': 26,
+        'text-size': 16,
+        'text-font': ['Roboto Medium', 'Noto Sans Regular'],
         'text-allow-overlap': true,
         'text-ignore-placement': true,
         'text-keep-upright': false,
@@ -888,7 +859,7 @@ class App extends Component {
       layout: {
         'symbol-placement': 'line',
         'symbol-spacing': 100,
-        'text-font': ['DIN Offc Pro Medium', 'Open Sans Semibold', 'Arial Unicode MS Bold'],
+        'text-font': ['Roboto Medium', 'Noto Sans Regular'],
         'text-field': '{service}',
         'text-size': 12,
         'text-rotation-alignment': 'viewport',

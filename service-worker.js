@@ -103,3 +103,18 @@ workbox.routing.registerRoute(
     ],
   }),
 );
+
+workbox.routing.registerRoute(
+  /.*maps\.tilehosting\.com.*$/,
+  workbox.strategies.cacheFirst({
+    cacheName: 'maptiler',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+      }),
+      new workbox.cacheableResponse.Plugin({
+        statuses: [0, 200]
+      }),
+    ],
+  }),
+);
