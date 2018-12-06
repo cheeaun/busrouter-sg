@@ -1918,7 +1918,9 @@ class App extends Component {
             <button type="button" onclick={this._handleSearchClose}>Cancel</button>
           </div>
           <ul class={`popover-list ${services.length || searching ? '' : 'loading'} ${searching ? 'searching' : ''}`} ref={c => this._servicesList = c} onScroll={this._handleServicesScroll}>
-            {(!!services.length && showAd) && <Ad key="ad" />}
+            <li class="carbon-li" hidden={!services.length || !showAd}>
+              <Ad key="ad" />
+            </li>
             {services.length ? (
               (expandedSearchOnce ? services : services.slice(0, 10)).map(s => (
                 <li key={s.number}>

@@ -589,7 +589,7 @@ a:active {
   padding: 14px;
   pointer-events: none;
 }
-.popover-list li a {
+.popover-list li:not(.carbon-li) a {
   padding: 14px;
   border-bottom: 1px solid rgba(0,0,0,.1);
   display: flex;
@@ -598,7 +598,7 @@ a:active {
   color: #000;
 }
 @media (hover: hover) {
-  .popover-list li a:hover {
+  .popover-list li:not(.carbon-li) a:hover {
     background-color: rgba(255,255,255,.6);
   }
 }
