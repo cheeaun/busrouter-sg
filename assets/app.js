@@ -1919,7 +1919,7 @@ class App extends Component {
           </div>
           <ul class={`popover-list ${services.length || searching ? '' : 'loading'} ${searching ? 'searching' : ''}`} ref={c => this._servicesList = c} onScroll={this._handleServicesScroll}>
             <li class="carbon-li" hidden={!services.length || !showAd}>
-              <Ad key="ad" />
+              {services.length && showAd && <Ad key="ad" />}
             </li>
             {services.length ? (
               (expandedSearchOnce ? services : services.slice(0, 10)).map(s => (
