@@ -25,11 +25,21 @@ const $map = document.getElementById('map');
 const STORE = {};
 const BREAKPOINT = () => window.innerWidth > 640;
 const supportsHover = window.matchMedia && window.matchMedia('(hover: hover)').matches;
+const supportsPromise = 'Promise' in window;
 const ruler = cheapRuler(1.3);
 
 const $logo = document.getElementById('logo');
 const $about = document.getElementById('about');
 const $closeAbout = document.getElementById('close-about');
+
+const redirectToOldSite = () => {
+  const redirect = confirm('Looks like your browser is a little old. Redirecting you to the older version of BusRouter SG.');
+  if (redirect) location.href = 'https://v1.busrouter.sg/';
+};
+
+if (!supportsPromise) {
+  redirectToOldSite();
+}
 
 $closeAbout.onclick = $logo.onclick = () => {
   $about.hidden = !$about.hidden;
@@ -370,8 +380,7 @@ class App extends Component {
     // Init map
     await mapboxScriptP;
     if (!mapboxgl.supported()) {
-      const redirect = confirm('Looks like your browser is a little old. Redirecting you to the older version of BusRouter SG.');
-      if (redirect) location.href = 'https://v1.busrouter.sg/';
+      redirectToOldSite();
     }
 
     mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
