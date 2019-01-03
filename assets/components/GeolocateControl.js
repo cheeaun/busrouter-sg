@@ -75,7 +75,7 @@ export default class GeolocateControl {
     const withinBounds = x > offsetLeft-margin && x < offsetWidth+margin && y > offsetTop-margin && y < offsetHeight+margin;
     // console.log(center, x, y, offsetLeft, offsetTop, offsetWidth, offsetHeight);
     const eventData = {
-      geolocate: true,
+      geolocateSource: true,
     };
     if (withinBounds) {
       if (map.getZoom() < 16) {
