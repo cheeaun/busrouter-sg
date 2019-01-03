@@ -54,15 +54,18 @@ a:active {
 }
 .mapboxgl-ctrl-group {
   background-color: rgba(255,255,255,.8);
+  border-radius: 123123px;
 }
 @supports (backdrop-filter: blur(10px)){
   .mapboxgl-ctrl-group {
-    background-color: rgba(255,255,255,.5);
+    background-color: rgba(255,255,255,.7);
     backdrop-filter: blur(10px) saturate(3);
   }
 }
 .mapboxgl-ctrl-group button {
   opacity: .8;
+  width: 36px;
+  height: 36px;
 }
 .mapboxgl-ctrl-attrib.mapboxgl-compact {
   min-height: 24px;
