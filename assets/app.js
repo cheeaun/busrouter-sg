@@ -3,12 +3,19 @@ import { toGeoJSON } from '@mapbox/polyline';
 import Fuse from 'fuse.js';
 import intersect from 'just-intersect';
 import cheapRuler from 'cheap-ruler';
-import { encode, decode } from '../utils/specialID';
-import { timeDisplay, sortServices } from '../utils/bus';
-import fetchCache from '../utils/fetchCache';
+
 import { MAPBOX_ACCESS_TOKEN, MAPTILER_KEY } from './config';
+import { encode, decode } from './utils/specialID';
+import { timeDisplay, sortServices } from './utils/bus';
+import fetchCache from './utils/fetchCache';
+import getRoute from './utils/getRoute';
+import getDistance from './utils/getDistance';
+import getWalkingMinutes from './utils/getWalkingMinutes';
+
 import Ad from './ad';
+import BusServicesArrival from './components/BusServicesArrival';
 import GeolocateControl from './components/GeolocateControl';
+import BetweenRoutes from './components/BetweenRoutes';
 
 import stopImagePath from './images/stop.png';
 import stopEndImagePath from './images/stop-end.png';
@@ -53,182 +60,6 @@ try {
   if (intro !== 'true') $about.hidden = false;
 } catch (e) { }
 
-const getRoute = () => {
-  const path = location.hash.replace(/^#/, '') || '/';
-  if (path === '/') return { page: 'home' };
-  let [_, page, value, subpage] = path.match(/(service|stop|between)s?\/([^\/]+)\/?([^\/]+)?/) || [];
-  return { page, value, path, subpage };
-};
-
-class BusServicesArrival extends Component {
-  state = {
-    isLoading: false,
-    servicesArrivals: {},
-  }
-  componentDidMount() {
-    this._fetchServices();
-    const { map } = this.props;
-    if (!map.getSource('buses')){
-      map.addSource('buses', {
-        type: 'geojson',
-        tolerance: 10,
-        data: {
-          type: 'FeatureCollection',
-          features: [],
-        },
-      });
-      map.addLayer({
-        id: 'buses',
-        type: 'circle',
-        source: 'buses',
-        minzoom: 14,
-        paint: {
-          'circle-stroke-width': 2,
-          'circle-stroke-color': '#fff',
-          'circle-radius': [
-            'interpolate', ['linear'], ['zoom'],
-            15, 2,
-            16, 4
-          ],
-          'circle-color': '#00454d',
-          'circle-opacity': .8,
-        },
-      });
-      map.addLayer({
-        id: 'buses-label',
-        type: 'symbol',
-        source: 'buses',
-        minzoom: 14,
-        layout: {
-          'text-field': ['get', 'number'],
-          'text-size': 10,
-          'text-anchor': 'left',
-          'text-offset': [.6, .1],
-          'text-font': ['Roboto Medium', 'Noto Sans Regular'],
-        },
-        paint: {
-          'text-color': '#00454d',
-          'text-halo-color': 'rgba(255,255,255,.75)',
-          'text-halo-width': 1,
-          'text-opacity': .8,
-        },
-      });
-    }
-  }
-  componentWillUnmount() {
-    this._removeBuses();
-  }
-  _removeBuses = () => {
-    const { map } = this.props;
-    map.getSource('buses').setData({
-      type: 'FeatureCollection',
-      features: [],
-    });
-  }
-  componentDidUpdate(prevProps) {
-    if (prevProps.id !== this.props.id) {
-      // Hacky fix since Preact doesn't fire componentWillUnmount
-      this._removeBuses();
-      clearTimeout(this._arrivalsTimeout);
-      this.setState({
-        servicesArrivals: {},
-      });
-      this._fetchServices();
-    }
-  }
-  _arrivalsTimeout = null;
-  _fetchServices = () => {
-    const { id, map } = this.props;
-    if (!id) return;
-    this.setState({ isLoading: true });
-    fetch(`https://arrivelah.busrouter.sg/?id=${id}`).then(res => res.json()).then(results => {
-      const servicesArrivals = {};
-      const { services } = results;
-      services.forEach(service => servicesArrivals[service.no] = service.next.duration_ms);
-      this.setState({
-        isLoading: false,
-        servicesArrivals,
-      });
-
-      setTimeout(() => {
-        const servicesWithCoords = services.filter(s => s.no && s.next.lat > 0);
-        const pointMargin = 100;
-        const servicesWithFixedCoords = servicesWithCoords.map(s => {
-          const coords = [s.next.lng, s.next.lat];
-          const point = map.project(coords);
-          let shortestDistance = Infinity;
-          let nearestCoords;
-          if (point.x && point.y) {
-            const features = map.queryRenderedFeatures([
-              [point.x - pointMargin, point.y - pointMargin],
-              [point.x + pointMargin, point.y + pointMargin]
-            ])
-            features.forEach(f => {
-              if (f.sourceLayer === 'transportation' && f.layer.type === 'line' && f.properties.class != 'path' && !/(pedestrian|sidewalk|steps)/.test(f.layer.id)) {
-                const nearestPoint = ruler.pointOnLine(f.geometry.coordinates, coords);
-                if (nearestPoint.t) {
-                  const distance = ruler.distance(coords, nearestPoint.point);
-                  if (distance < shortestDistance) {
-                    shortestDistance = distance;
-                    nearestCoords = nearestPoint.point;
-                  }
-                }
-              }
-            });
-            if (nearestCoords && (shortestDistance * 1000 < 10)){ // Only within 10m
-              console.log(`Fixed bus position: ${s.no} - ${(shortestDistance * 1000).toFixed(3)}m`)
-              s.next = {
-                lng: nearestCoords[0],
-                lat: nearestCoords[1]
-              }
-            }
-          }
-          return s;
-        });
-        map.getSource('buses').setData({
-          type: 'FeatureCollection',
-          features: servicesWithFixedCoords.map(s => ({
-            type: 'Feature',
-            id: encode(s.no),
-            properties: {
-              number: s.no,
-            },
-            geometry: {
-              type: 'Point',
-              coordinates: [s.next.lng, s.next.lat],
-            },
-          })),
-        });
-      }, map.loaded() ? 0 : 1000);
-
-      this._arrivalsTimeout = setTimeout(() => {
-        requestAnimationFrame(this._fetchServices);
-      }, 15 * 1000); // 15 seconds
-    });
-  }
-  componentWillUnmount() {
-    clearTimeout(this._arrivalsTimeout);
-  }
-  render(props, state) {
-    const { services } = props;
-    const { isLoading, servicesArrivals } = state;
-    const route = getRoute();
-    return (
-      <p class={`services-list ${isLoading ? 'loading' : ''}`}>
-        {services.sort(sortServices).map(service => ([
-          <a
-            href={`#/services/${service}`}
-            class={`service-tag ${route.page === 'service' && service === route.value ? 'current' : ''}`}>
-            {service}
-            {servicesArrivals[service] && <span>{timeDisplay(servicesArrivals[service])}</span>}
-          </a>,
-          ' '
-        ]))}
-      </p>
-    );
-  }
-}
-
 let raqST;
 const raqScrollTop = () => {
   window.scrollTo(0, 0);
@@ -245,55 +76,6 @@ function showStopTooltip(data) {
 }
 function hideStopTooltip() {
   $tooltip.classList.remove('show');
-}
-
-function getWalkingMinutes(distance) { // meters
-  const walkingSpeed = 1.4; // meter/second
-  return Math.ceil(distance / walkingSpeed / 60);
-}
-
-function getDistance(x1, y1, x2, y2) {
-  let xs = x2 - x1;
-  let ys = y2 - y1;
-  xs *= xs;
-  ys *= ys;
-  return Math.sqrt(xs + ys);
-};
-
-class BetweenRoutes extends Component {
-  render(props, state) {
-    const { results, nearbyStart, nearbyEnd, onClickRoute } = props;
-    if (!results.length) {
-      return (<div class="between-block between-nada">😔 No routes available.</div>);
-    }
-
-    return (
-      <div class="between-block">
-        {results.map(result => {
-          const { stopsBetween } = result;
-          return (
-            <div class={`between-item ${nearbyStart ? 'nearby-start' : ''}  ${nearbyEnd ? 'nearby-end' : ''}`} onClick={(e) => onClickRoute(e, result)}>
-              <div class="between-inner">
-                <div class={`between-services ${result.endService ? '' : 'full'}`}>
-                  <span class="start">{result.startService}</span>
-                  {!!result.endService && <span class="end">{result.endService}</span>}
-                </div>
-                <div class={`between-stops ${stopsBetween.length ? '' : 'nada'}`}>
-                  {result.startStop && <span class="start">{result.startStop.number}</span>}
-                  <span class={`betweens betweens-${Math.min(6, stopsBetween.length)}`}>
-                    {!!stopsBetween.length && (
-                      stopsBetween.length === 1 ? stopsBetween[0] : `${stopsBetween.length} stops`
-                    )}
-                  </span>
-                  {result.endStop && <span class="end">{result.endStop.number}</span>}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
 }
 
 window.requestIdleCallback = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));

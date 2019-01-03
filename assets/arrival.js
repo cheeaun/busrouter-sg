@@ -1,7 +1,7 @@
 import { h, render, Component } from 'preact';
-import { timeDisplay, sortServicesPinned } from '../utils/bus';
 import { MAPBOX_ACCESS_TOKEN } from './config';
-import fetchCache from '../utils/fetchCache';
+import { timeDisplay, sortServicesPinned } from './utils/bus';
+import fetchCache from './utils/fetchCache';
 import Ad from './ad';
 
 import wheelchairImagePath from './images/wheelchair.svg';
