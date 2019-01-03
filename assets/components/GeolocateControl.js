@@ -116,12 +116,8 @@ export default class GeolocateControl {
 
     if (this._watching) {
       this._updateButtonState('active');
-      if (this._locking) {
-        return;
-      } else {
-        this._flyToCurrentLocation();
-        this._locking = true;
-      }
+      this._flyToCurrentLocation();
+      this._locking = true;
     } else {
       this._updateButtonState('loading');
       this._buttonClicked = true;
