@@ -22,7 +22,7 @@
     "kdbush": "~3.0.0",
     "parcel-bundler": "~1.11.0",
     "parcel-plugin-json-url-loader": "~0.1.2",
-    "postcss-import-url": "~3.0.4",
+    "postcss-import-url": "~4.0.0",
     "postcss-modules": "~1.4.1"
   },
   "author": "Lim Chee Aun",
