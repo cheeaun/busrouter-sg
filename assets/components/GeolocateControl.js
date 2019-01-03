@@ -73,7 +73,7 @@ export default class GeolocateControl {
     const { offsetWidth, offsetHeight, offsetLeft, offsetTop } = map.getContainer();
     const margin = Math.max(offsetWidth, offsetHeight);
     const withinBounds = x > offsetLeft-margin && x < offsetWidth+margin && y > offsetTop-margin && y < offsetHeight+margin;
-    console.log(center, x, y, offsetLeft, offsetTop, offsetWidth, offsetHeight);
+    // console.log(center, x, y, offsetLeft, offsetTop, offsetWidth, offsetHeight);
     const eventData = {
       geolocate: true,
     };
