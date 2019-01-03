@@ -912,6 +912,93 @@ a.service-tag:hover {
   }
 }
 
+/* Geolocation */
+
+.mapboxgl-ctrl-custom-geolocate {
+  color: #333;
+  transition: color .3s;
+}
+.mapboxgl-ctrl-custom-geolocate.loading {
+  color: #007aff;
+  pointer-events: none;
+  animation: glowing infinite alternate 1s linear both;
+}
+.mapboxgl-ctrl-custom-geolocate.active {
+  color: #007aff;
+}
+.mapboxgl-ctrl-custom-geolocate svg {
+  vertical-align: middle;
+  fill: currentColor;
+}
+.user-location {
+  perspective: 20px;
+  pointer-events: none;
+}
+.user-location-dot {
+  width: 20px;
+  height: 20px;
+  padding: 4px;
+  overflow: hidden;
+  background-color: #fff;
+  border-radius: 123123px;
+  box-shadow: 0 0 15px rgba(0,0,0,.3);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+.user-location-dot:after {
+  content: '';
+  display: block;
+  width: 12px;
+  height: 12px;
+  overflow: hidden;
+  background-color: #007aff;
+  border-radius: 123123px;
+  animation: wobble 1.5s ease-out infinite alternate both;
+}
+@keyframes wobble {
+  0% {
+    transform: scale(1);
+  }
+  70% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1.2);
+  }
+}
+.user-location-compass {
+  width: 6px;
+  height: 20px;
+  background: linear-gradient(rgba(0, 122, 255, 0), #007aff);
+  position: absolute;
+  left: -3px;
+  bottom: 0;
+  transform-origin: bottom center;
+  transform: rotateX(-60deg);
+  transition: transform .3s;
+}
+.user-location-accuracy {
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  background-color: #007aff;
+  border-radius: 123123px;
+  position: absolute;
+  margin: -10px 0 0 -10px;
+  animation: pulse 2s 1s ease-out infinite both;
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: .2;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
 /* Fancy pants features */
 
 [class*="alt-show"] {

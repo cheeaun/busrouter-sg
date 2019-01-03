@@ -8,6 +8,7 @@ import { timeDisplay, sortServices } from '../utils/bus';
 import fetchCache from '../utils/fetchCache';
 import { MAPBOX_ACCESS_TOKEN, MAPTILER_KEY } from './config';
 import Ad from './ad';
+import GeolocateControl from './components/GeolocateControl';
 
 import stopImagePath from './images/stop.png';
 import stopEndImagePath from './images/stop-end.png';
@@ -406,14 +407,11 @@ class App extends Component {
     map.addControl(new mapboxgl.NavigationControl({
       showCompass: false,
     }), 'top-right');
-    map.addControl(new mapboxgl.GeolocateControl({
-      fitBoundsOptions: {
-        maxZoom: 16,
+    map.addControl(new GeolocateControl({
+      offset: () => {
+        if (BREAKPOINT() || !this.state.showStopPopover) return [0, 0];
+        return [0, -this._stopPopover.offsetHeight / 2];
       },
-      positionOptions: {
-        enableHighAccuracy: true,
-      },
-      trackUserLocation: true,
     }));
 
     map.fitBounds([lowerLong, lowerLat, upperLong, upperLat], {
