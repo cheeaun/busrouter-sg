@@ -28,7 +28,7 @@
   "author": "Lim Chee Aun",
   "license": "MIT",
   "scripts": {
-    "start": "parcel index.html bus-arrival/index.html -d tmp --no-hmr",
+    "start": "parcel index.html bus-arrival/index.html -d tmp --no-hmr --no-autoinstall",
     "prebuild": "rm -rf dist && parcel --version",
     "build": "parcel build index.html bus-arrival/index.html",
     "postbuild": "cpy favicon.ico dist && node tasks/generateHeaders",
