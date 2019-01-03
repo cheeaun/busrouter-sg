@@ -570,6 +570,9 @@ class App extends Component {
         mapCanvas.style.cursor = 'pointer';
       });
       map.on('click', (e) => {
+        if (e.originalEvent.altKey) {
+          console.log(e.lngLat);
+        }
         const { point } = e;
         const features = map.queryRenderedFeatures(point, { layers: ['stops', 'stops-icon', 'stops-highlight'] });
         if (features.length) {
