@@ -810,7 +810,7 @@ class App extends Component {
         'symbol-placement': 'line',
         'symbol-spacing': 100,
         'text-field': '→',
-        'text-size': 26,
+        'text-size': 16,
         'text-allow-overlap': true,
         'text-ignore-placement': true,
         'text-keep-upright': false,
