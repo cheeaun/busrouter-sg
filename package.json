@@ -20,15 +20,19 @@
     "geokdbush": "~1.1.0",
     "got": "~9.5.0",
     "kdbush": "~3.0.0",
+    "npm-run-all": "~4.1.5",
     "parcel-bundler": "~1.11.0",
     "parcel-plugin-json-url-loader": "~0.1.2",
     "postcss-import-url": "~4.0.0",
-    "postcss-modules": "~1.4.1"
+    "postcss-modules": "~1.4.1",
+    "serve": "~10.1.1"
   },
   "author": "Lim Chee Aun",
   "license": "MIT",
   "scripts": {
-    "start": "parcel index.html bus-arrival/index.html -d tmp --no-hmr --no-autoinstall",
+    "watch": "parcel watch index.html bus-arrival/index.html -d tmp --no-autoinstall",
+    "serve": "serve -l 1234 tmp/",
+    "start": "npm-run-all --parallel watch serve",
     "prebuild": "rm -rf dist && parcel --version",
     "build": "parcel build index.html bus-arrival/index.html",
     "postbuild": "cpy favicon.ico dist && node tasks/generateHeaders",
