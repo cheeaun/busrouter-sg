@@ -12,6 +12,13 @@ export default class BusServicesArrival extends Component {
   }
   componentDidMount() {
     this._fetchServices();
+    this._setupMap();
+  }
+  componentWillUnmount() {
+    this._removeBuses();
+    clearTimeout(this._arrivalsTimeout);
+  }
+  _setupMap = () => {
     const { map } = this.props;
     if (!map.getSource('buses')){
       map.addSource('buses', {
@@ -60,9 +67,6 @@ export default class BusServicesArrival extends Component {
       });
     }
   }
-  componentWillUnmount() {
-    this._removeBuses();
-  }
   _removeBuses = () => {
     const { map } = this.props;
     map.getSource('buses').setData({
@@ -72,9 +76,6 @@ export default class BusServicesArrival extends Component {
   }
   componentDidUpdate(prevProps) {
     if (prevProps.id !== this.props.id) {
-      // Hacky fix since Preact doesn't fire componentWillUnmount
-      this._removeBuses();
-      clearTimeout(this._arrivalsTimeout);
       this.setState({
         servicesArrivals: {},
       });
@@ -150,9 +151,6 @@ export default class BusServicesArrival extends Component {
         requestAnimationFrame(this._fetchServices);
       }, 15 * 1000); // 15 seconds
     });
-  }
-  componentWillUnmount() {
-    clearTimeout(this._arrivalsTimeout);
   }
   render(props, state) {
     const { services } = props;

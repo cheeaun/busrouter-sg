@@ -1041,12 +1041,6 @@ class App extends Component {
     this.setState({
       showStopPopover: false,
     });
-    // Leftovers that should be handled by <BusServicesArrival/>
-    const source = map.getSource('buses');
-    if (source) source.setData({
-      type: 'FeatureCollection',
-      features: [],
-    });
   }
   _zoomToStop = () => {
     const map = this.map;
