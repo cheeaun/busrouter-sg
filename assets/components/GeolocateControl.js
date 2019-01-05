@@ -157,7 +157,7 @@ export default class GeolocateControl {
         this._updateButtonState(null);
         navigator.geolocation.clearWatch(this._watching);
         if (deviceorientation) {
-          window.removeAddEventListener(deviceorientation, this._setHeading);
+          window.removeEventListener(deviceorientation, this._setHeading);
         }
 
         // Retry again
