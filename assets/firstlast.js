@@ -67,33 +67,35 @@ class FirstLastTimes extends Component {
     stopName: null,
     data: [],
   }
-  async componentDidMount() {
-    const flData = await fetchCache(firstLastJSONPath, 24 * 60);
-    const stopsData = await fetchCache(stopsJSONPath, 24 * 60);
+  componentDidMount() {
+    Promise.all([
+      fetchCache(firstLastJSONPath, 24 * 60),
+      fetchCache(stopsJSONPath, 24 * 60),
+    ]).then(([flData, stopsData]) => {
+      window.onhashchange = () => {
+        const stop = location.hash.slice(1);
+        const data = flData[stop];
+        if (!data) {
+          alert('Bus stop code not found.');
+          return;
+        }
+        const stopName = stopsData[stop][2];
+        this.setState({
+          stop,
+          stopName,
+          data: data.map(d => d.split(/\s+/)).sort((a, b) => sortServices(a[0], b[0])),
+        });
 
-    window.onhashchange = () => {
-      const stop = location.hash.slice(1);
-      const data = flData[stop];
-      if (!data) {
-        alert('Bus stop code not found.');
-        return;
+        document.title = `Approximate first & last bus arrival times for ${stop}: ${stopName}`;
       }
-      const stopName = stopsData[stop][2];
-      this.setState({
-        stop,
-        stopName,
-        data: data.map(d => d.split(/\s+/)).sort((a, b) => sortServices(a[0], b[0])),
-      });
-
-      document.title = `Approximate first & last bus arrival times for ${stop}: ${stopName}`;
-    }
-    window.onhashchange();
+      window.onhashchange();
+    });
   }
   render() {
     const { stop, stopName, data } = this.state;
     return (
       <div>
-        <Ad />
+        {!!data.length && <Ad />}
         <h1>
           Approximate first &amp; last bus arrival times&nbsp;for<br />
           <b><span class="stop-tag">{stop}</span> {stopName}</b>
