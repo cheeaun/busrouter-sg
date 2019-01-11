@@ -177,7 +177,7 @@ class FirstLastTimes extends Component {
           <tfoot>
             <tr>
               <td colspan="4">
-                {data.length ? `${data.length} service${data.length === 1 ? '' : 's'} &middot; ` : ''}
+                {data.length ? `${data.length} service${data.length === 1 ? '' : 's'} · ` : ''}
                 <a href="/">BusRouter SG</a>
               </td>
             </tr>
