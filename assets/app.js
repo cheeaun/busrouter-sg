@@ -1833,6 +1833,15 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+if (matchMedia('(display-mode: standalone)').matches || 'standalone' in navigator) {
+  gtag('event', 'pwa_load', {
+    event_category: 'PWA',
+    event_label: 'standalone',
+    value: true,
+    non_interaction: true,
+  });
+}
+
 if (window.navigator.standalone) {
   document.body.classList.add('standalone');
 
