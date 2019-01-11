@@ -205,3 +205,20 @@ tfoot td {
 tfoot a {
   color: inherit;
 }
+
+.placeholder {
+  color: #aaa;
+  letter-spacing: -1px;
+  word-spacing: 1ex;
+  animation: glowing infinite alternate 1s ease-in-out both;
+  pointer-events: none;
+  user-select: none;
+}
+@keyframes glowing {
+  0% {
+    opacity: .2;
+  }
+  100% {
+    opacity: .8;
+  }
+}
