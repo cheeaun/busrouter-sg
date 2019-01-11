@@ -233,6 +233,20 @@ a:active {
   color: #999;
   text-transform: uppercase;
 }
+#stop-popover h2 {
+  margin-top: 0;
+  margin-bottom: .5em;
+}
+#stop-popover h2 a {
+  color: inherit;
+  text-decoration: none;
+}
+#stop-popover h2 a:hover {
+  text-decoration: underline;
+}
+#stop-popover h2 img.new-window {
+  filter: invert(1) opacity(.4);
+}
 #stop-popover h3,
 #between-popover h3 {
   font-size: .7em;
@@ -258,6 +272,7 @@ a:active {
 }
 #stop-popover .popover-scroll {
   padding-bottom: 0;
+  padding-top: 0;
 }
 #between-popover .popover-scroll {
   padding-top: 0;

@@ -1789,9 +1789,9 @@ class App extends Component {
             <a href="#/" onClick={this._hideStopPopover} class="popover-close">&times;</a>,
             <header>
               <h1 onClick={this._zoomToStop}><b class="stop-tag">{showStopPopover.number}</b> {showStopPopover.name}</h1>
-              <h2>{showStopPopover.services.length} service{showStopPopover.services.length == 1 ? '' : 's'}</h2>
             </header>,
             <div class="popover-scroll">
+              <h2>{showStopPopover.services.length} service{showStopPopover.services.length == 1 ? '' : 's'} &middot; <a href={`/bus-first-last/#${showStopPopover.number}`} target="_blank">First/last bus <img src={openNewWindowImagePath} width="12" height="12" alt="" class="new-window" /></a></h2>
               <BusServicesArrival map={this.map} id={showStopPopover.number} services={showStopPopover.services} />
             </div>,
             <div class="popover-footer">
