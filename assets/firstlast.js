@@ -24,8 +24,10 @@ const formatDuration = (duration) => { // hours
   const durationMins = duration * 60;
   const hour = Math.floor(durationMins / 60);
   const minute = Math.round(durationMins % 60);
-  if (hour) return `${hour}h ${minute}m`;
-  return `${minute}m`;
+  let str = '';
+  if (hour) str = `${hour}h`;
+  if (minute) str += ` ${minute}m`;
+  return str.trim();
 };
 
 const convertTimeToNumber = (time) => {
