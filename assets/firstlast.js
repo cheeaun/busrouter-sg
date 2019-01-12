@@ -42,16 +42,16 @@ const TimeRanger = ({ values }) => {
   const [first, last] = values;
   if (!first || !/\d+/.test(first)) return nadaEl;
   const firstVal = convertTimeToNumber(first);
-  const lastVal = convertTimeToNumber(/^00/.test(first) ? last : last.replace(/^00/, '24'));
+  const lastVal = convertTimeToNumber(last);
   const left = firstVal / 24 * 100;
-  const width = (lastVal - firstVal) / 24 * 100;
-  const duration = lastVal - firstVal;
+  const duration = (lastVal < firstVal ? lastVal + 24 : lastVal) - firstVal;
+  const width = duration / 24 * 100;
   return (
     <div>
       <div class="time-ranger">
-        {/^00/.test(last) && !/^00/.test(first) && <div class="bar" style={{
+        {width + left > 100 && <div class="bar" style={{
           left: 0,
-          width: `${parseInt(last, 10) / 2400 * 100}%`
+          width: `${width + left - 100}%`
         }} />}
         <div class="bar" style={{
           left: `${left}%`,
