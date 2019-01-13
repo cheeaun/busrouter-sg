@@ -201,25 +201,6 @@ class App extends Component {
       padding: BREAKPOINT() ? 120 : { top: 40, bottom: window.innerHeight / 2, left: 40, right: 40 },
     });
 
-    const loadImage = async (path, name) => {
-      await new Promise((resolve, reject) => {
-        map.loadImage(path, (e, img) => {
-          if (e) reject(e);
-          map.addImage(name, img);
-          resolve();
-        });
-      });
-    };
-
-    const mapboxLoadP = new Promise((resolve, reject) => {
-      map.on('load', () => {
-        Promise.all([
-          loadImage(stopImagePath, 'stop'),
-          loadImage(stopEndImagePath, 'stop-end'),
-        ]).then(resolve);
-      });
-    });
-
     map.once('zoomstart', () => {
       $logo.classList.add('fadeout');
       this.setState({
@@ -236,7 +217,20 @@ class App extends Component {
       labelLayerId = layers.find(l => l.type == 'symbol' && l.layout['text-field']).id;
     });
 
-    await mapboxLoadP;
+    const [_, stopImage, stopEndImage] = await Promise.all([
+      new Promise((resolve, reject) => {
+        map.on('load', resolve);
+      }),
+      new Promise((resolve, reject) => {
+        map.loadImage(stopImagePath, (e, img) => e ? reject(e) : resolve(img));
+      }),
+      new Promise((resolve, reject) => {
+        map.loadImage(stopEndImagePath, (e, img) => e ? reject(e) : resolve(img));
+      }),
+    ]);
+
+    map.addImage('stop', stopImage);
+    map.addImage('stop-end', stopEndImage)
 
     map.addSource('stops', {
       type: 'geojson',
