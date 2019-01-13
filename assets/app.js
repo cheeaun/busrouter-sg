@@ -229,6 +229,14 @@ class App extends Component {
       }),
     ]);
 
+    if (window.performance) {
+      const timeSincePageLoad = Math.round(performance.now());
+      gtag('event', 'map_complete', {
+        'name': 'load',
+        'value': timeSincePageLoad,
+      });
+    }
+
     map.addImage('stop', stopImage);
     map.addImage('stop-end', stopEndImage)
 
