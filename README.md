@@ -125,7 +125,7 @@ The scripts for the web app:
 📜 License
 ---
 
-Data © [LTA](http://www.mytransport.sg/content/mytransport/home/dataMall/termOfUse.html). Everything else: [MIT](http://cheeaun.mit-license.org/)
+Data © [LTA](http://www.mytransport.sg/content/mytransport/home/dataMall/termOfUse.html) © [OneMap](https://www.onemap.sg/legal/termsofuse.html) © [OSM contributors](https://www.openstreetmap.org/copyright). Everything else: [MIT](http://cheeaun.mit-license.org/)
 
 🎤 Feedback
 ---
