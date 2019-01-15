@@ -3,6 +3,7 @@ import { MAPBOX_ACCESS_TOKEN } from './config';
 import { timeDisplay, sortServicesPinned } from './utils/bus';
 import fetchCache from './utils/fetchCache';
 import Ad from './ad';
+import setIcon from '../utils/setIcon';
 
 import wheelchairImagePath from './images/wheelchair.svg';
 import busSingleImagePath from './images/bus-single.svg';
@@ -131,6 +132,7 @@ class ArrivalTimes extends Component {
         if (stop) {
           const [lng, lat, name] = stop;
           document.title = `Bus arrival times for ${code + ' - ' + name}`;
+          document.querySelector('[name="apple-mobile-web-app-title"]').setAttribute('content', name);
           this.setState({
             busStop: { code, name, lat, lng },
           });
@@ -197,6 +199,7 @@ class ArrivalTimes extends Component {
     const { code, name, lat, lng } = busStop;
     if (services) services.sort(sortServicesPinned(pinnedServices));
 
+    setIcon(code);
     return (
       <div>
         <div id="bus-stop-map">
