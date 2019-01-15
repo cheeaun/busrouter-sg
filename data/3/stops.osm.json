@@ -1,9 +1,9 @@
 {
   "version": 0.6,
-  "generator": "Overpass API 0.7.55.3 9da5e7ae",
+  "generator": "Overpass API 0.7.55.5 2ca3f387",
   "osm3s": {
-    "timestamp_osm_base": "2018-06-30T15:50:02Z",
-    "timestamp_areas_base": "2018-06-30T13:50:01Z",
+    "timestamp_osm_base": "2019-01-15T03:16:02Z",
+    "timestamp_areas_base": "2019-01-15T02:17:03Z",
     "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
   },
   "elements": [
@@ -42,29 +42,14 @@
 {
   "type": "node",
   "id": 410458894,
-  "lat": 1.3348180,
-  "lon": 103.8181903,
+  "lat": 1.3349145,
+  "lon": 103.8179838,
   "tags": {
     "asset_ref": "41141",
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Adam Road",
     "name": "Before Singapore Island Country Club",
-    "public_transport": "platform",
-    "route_ref": "52;74;93;157;165;852;855"
-  }
-},
-{
-  "type": "node",
-  "id": 410458895,
-  "lat": 1.3352042,
-  "lon": 103.8188327,
-  "tags": {
-    "asset_ref": "41149",
-    "bus": "yes",
-    "highway": "bus_stop",
-    "location": "Adam Road",
-    "name": "Opposite Singapore Island Country Club",
     "public_transport": "platform",
     "route_ref": "52;74;93;157;165;852;855"
   }
@@ -1198,7 +1183,8 @@
     "highway": "bus_stop",
     "location": "Alexandra Road",
     "name": "Delta Sports Hall",
-    "route_ref": "51;122;139;186;970"
+    "route_ref": "51;122;139;186;970",
+    "shelter": "yes"
   }
 },
 {
@@ -1304,7 +1290,8 @@
     "highway": "bus_stop",
     "location": "Alexandra Road",
     "name": "Opposite Delta Sports Hall",
-    "route_ref": "51;122;139;186;970"
+    "route_ref": "51;122;139;186;970",
+    "shelter": "yes"
   }
 },
 {
@@ -1706,8 +1693,8 @@
 {
   "type": "node",
   "id": 410459633,
-  "lat": 1.3629983,
-  "lon": 103.8484413,
+  "lat": 1.3630260,
+  "lon": 103.8484567,
   "tags": {
     "asset_ref": "54089",
     "bus": "yes",
@@ -3027,7 +3014,8 @@
     "location": "Ang Mo Kio Avenue 6",
     "name": "Opposite Anderson Junior College",
     "public_transport": "platform",
-    "route_ref": "13;45;86;162;162M;269;851;852;853;853C;NR1"
+    "route_ref": "13;45;86;162;162M;269;851;852;853;853C;NR1",
+    "shelter": "yes"
   }
 },
 {
@@ -3102,7 +3090,9 @@
     "location": "Ang Mo Kio Avenue 6",
     "name": "Yio Chu Kang Station",
     "public_transport": "platform",
-    "route_ref": "45;70;70M;76;86;128;825;851;852;853;853C"
+    "route_ref": "45;70;70M;76;86;128;825;851;852;853;853C",
+    "shelter": "yes",
+    "tactile_paving": "no"
   }
 },
 {
@@ -3117,7 +3107,8 @@
     "location": "Ang Mo Kio Avenue 6",
     "name": "Opposite Yio Chu Kang Station",
     "public_transport": "platform",
-    "route_ref": "45;86;128;851;852;853;853C;NR1"
+    "route_ref": "45;86;128;851;852;853;853C;NR1",
+    "shelter": "yes"
   }
 },
 {
@@ -3162,7 +3153,8 @@
     "location": "Ang Mo Kio Avenue 6",
     "name": "Anderson Junior College",
     "public_transport": "platform",
-    "route_ref": "13;45;86;162;162M;851;852;853;853C"
+    "route_ref": "13;45;86;162;162M;851;852;853;853C",
+    "shelter": "yes"
   }
 },
 {
@@ -3877,21 +3869,6 @@
 },
 {
   "type": "node",
-  "id": 410460042,
-  "lat": 1.2902601,
-  "lon": 103.7919733,
-  "tags": {
-    "asset_ref": "18049",
-    "bus": "yes",
-    "highway": "bus_stop",
-    "location": "AYE",
-    "name": "Opposite Normanton Park",
-    "public_transport": "platform",
-    "route_ref": "14;33;97;166;197;963;963E"
-  }
-},
-{
-  "type": "node",
   "id": 410460045,
   "lat": 1.2883438,
   "lon": 103.7931917,
@@ -4210,20 +4187,8 @@
     "location": "Ayer Rajah Cresent",
     "name": "Ayer Rajah Bus Park",
     "public_transport": "platform",
-    "route_ref": "91"
-  }
-},
-{
-  "type": "node",
-  "id": 410460346,
-  "lat": 1.2963420,
-  "lon": 103.7904147,
-  "tags": {
-    "asset_ref": "18039",
-    "highway": "bus_stop",
-    "location": "Ayer Rajah Cresent",
-    "name": "Basement Food Court",
-    "route_ref": "NoServices"
+    "route_ref": "91",
+    "wikidata": "Q4831172"
   }
 },
 {
@@ -4846,8 +4811,8 @@
 {
   "type": "node",
   "id": 410460763,
-  "lat": 1.3278068,
-  "lon": 103.9265931,
+  "lat": 1.3278045,
+  "lon": 103.9266319,
   "tags": {
     "asset_ref": "84301",
     "bus": "yes",
@@ -5040,8 +5005,8 @@
 {
   "type": "node",
   "id": 410461018,
-  "lat": 1.3340548,
-  "lon": 103.9419106,
+  "lat": 1.3340363,
+  "lon": 103.9419183,
   "tags": {
     "asset_ref": "84269",
     "bus": "yes",
@@ -5160,8 +5125,8 @@
 {
   "type": "node",
   "id": 410461288,
-  "lat": 1.3333230,
-  "lon": 103.9390420,
+  "lat": 1.3332734,
+  "lon": 103.9390594,
   "tags": {
     "asset_ref": "84259",
     "bus": "yes",
@@ -5175,8 +5140,8 @@
 {
   "type": "node",
   "id": 410461336,
-  "lat": 1.3354722,
-  "lon": 103.9181359,
+  "lat": 1.3354718,
+  "lon": 103.9181452,
   "tags": {
     "asset_ref": "84451",
     "bus": "yes",
@@ -5190,8 +5155,8 @@
 {
   "type": "node",
   "id": 410461378,
-  "lat": 1.3363927,
-  "lon": 103.9183101,
+  "lat": 1.3364354,
+  "lon": 103.9183272,
   "tags": {
     "asset_ref": "84459",
     "bus": "yes",
@@ -5669,8 +5634,8 @@
 {
   "type": "node",
   "id": 410461614,
-  "lat": 1.3380571,
-  "lon": 103.9193843,
+  "lat": 1.3380845,
+  "lon": 103.9194126,
   "tags": {
     "asset_ref": "84461",
     "bus": "yes",
@@ -5729,8 +5694,8 @@
 {
   "type": "node",
   "id": 410461619,
-  "lat": 1.3380900,
-  "lon": 103.9252830,
+  "lat": 1.3381516,
+  "lon": 103.9253585,
   "tags": {
     "asset_ref": "84629",
     "bus": "yes",
@@ -5928,8 +5893,8 @@
 {
   "type": "node",
   "id": 410461641,
-  "lat": 1.3308691,
-  "lon": 103.9066067,
+  "lat": 1.3308792,
+  "lon": 103.9065919,
   "tags": {
     "asset_ref": "72029",
     "bus": "yes",
@@ -7135,8 +7100,8 @@
 {
   "type": "node",
   "id": 410461833,
-  "lat": 1.3471661,
-  "lon": 103.8545171,
+  "lat": 1.3471520,
+  "lon": 103.8545975,
   "tags": {
     "asset_ref": "53289",
     "bus": "yes",
@@ -7427,8 +7392,8 @@
 {
   "type": "node",
   "id": 410461853,
-  "lat": 1.3176540,
-  "lon": 103.8616400,
+  "lat": 1.3176148,
+  "lon": 103.8618073,
   "tags": {
     "asset_ref": "60199",
     "bus": "yes",
@@ -8365,8 +8330,8 @@
 {
   "type": "node",
   "id": 410462113,
-  "lat": 1.3433584,
-  "lon": 103.8554484,
+  "lat": 1.3435220,
+  "lon": 103.8552741,
   "tags": {
     "asset_ref": "52051",
     "bus": "yes",
@@ -8556,7 +8521,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Bras Basah Road",
-    "name": "Rendezvous Grand Hotel",
+    "name": "Bencoolen Stn Exit B",
     "public_transport": "platform",
     "route_ref": "7;14;16;36;36B;77;106;111;124;128;162;162M;167;171;174;175;190;502;502A;518;518A;700;700A;850E;951E;NR7"
   }
@@ -8704,7 +8669,8 @@
     "location": "Buangkok Green",
     "name": "Opposite Blk 579",
     "public_transport": "platform",
-    "route_ref": "43;43M;109;156;159;161;325"
+    "route_ref": "43;43M;109;156;159;161;325",
+    "wheelchair": "yes"
   }
 },
 {
@@ -8719,7 +8685,8 @@
     "location": "Buangkok Green",
     "name": "Blk 579",
     "public_transport": "platform",
-    "route_ref": "43;43M;101;109;156;159;161;325"
+    "route_ref": "43;43M;101;109;156;159;161;325",
+    "wheelchair": "yes"
   }
 },
 {
@@ -9531,8 +9498,8 @@
 {
   "type": "node",
   "id": 410462419,
-  "lat": 1.3466153,
-  "lon": 103.7516429,
+  "lat": 1.3465925,
+  "lon": 103.7516872,
   "tags": {
     "asset_ref": "43749",
     "bus": "yes",
@@ -9547,8 +9514,8 @@
 {
   "type": "node",
   "id": 410462420,
-  "lat": 1.3463178,
-  "lon": 103.7542657,
+  "lat": 1.3462521,
+  "lon": 103.7543676,
   "tags": {
     "asset_ref": "43731",
     "bus": "yes",
@@ -9563,8 +9530,8 @@
 {
   "type": "node",
   "id": 410462421,
-  "lat": 1.3464932,
-  "lon": 103.7519198,
+  "lat": 1.3464785,
+  "lon": 103.7519587,
   "tags": {
     "asset_ref": "43741",
     "bus": "yes",
@@ -9579,8 +9546,8 @@
 {
   "type": "node",
   "id": 410462422,
-  "lat": 1.3464608,
-  "lon": 103.7545725,
+  "lat": 1.3464259,
+  "lon": 103.7546181,
   "tags": {
     "asset_ref": "43739",
     "bus": "yes",
@@ -11149,8 +11116,8 @@
 {
   "type": "node",
   "id": 410462733,
-  "lat": 1.2789778,
-  "lon": 103.8478599,
+  "lat": 1.2787645,
+  "lon": 103.8477374,
   "tags": {
     "asset_ref": "03151",
     "bus": "yes",
@@ -11224,8 +11191,8 @@
 {
   "type": "node",
   "id": 410462741,
-  "lat": 1.3280464,
-  "lon": 103.9200423,
+  "lat": 1.3279646,
+  "lon": 103.9201630,
   "tags": {
     "asset_ref": "84569",
     "bus": "yes",
@@ -11457,7 +11424,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Changi Road",
-    "name": "Mjd Kassim",
+    "name": "Masjid Kassim",
     "public_transport": "platform",
     "route_ref": "2;7;24;25;26;28;30;33;67;854"
   }
@@ -14290,7 +14257,8 @@
     "name": "Buona Vista Station",
     "public_transport": "platform",
     "route_ref": "105;106;147;185;NR5;NR8",
-    "wheelchair": "yes"
+    "wheelchair": "yes",
+    "wikidata": "Q4998006"
   }
 },
 {
@@ -14521,8 +14489,8 @@
 {
   "type": "node",
   "id": 410463787,
-  "lat": 1.2983760,
-  "lon": 103.7976470,
+  "lat": 1.2984739,
+  "lon": 103.7977248,
   "tags": {
     "asset_ref": "11449",
     "bus": "yes",
@@ -14551,8 +14519,8 @@
 {
   "type": "node",
   "id": 410463789,
-  "lat": 1.3009713,
-  "lon": 103.7968776,
+  "lat": 1.3009472,
+  "lon": 103.7968736,
   "tags": {
     "asset_ref": "11459",
     "bus": "yes",
@@ -14566,8 +14534,8 @@
 {
   "type": "node",
   "id": 410463790,
-  "lat": 1.3000540,
-  "lon": 103.7970000,
+  "lat": 1.3002712,
+  "lon": 103.7970821,
   "tags": {
     "asset_ref": "11451",
     "bus": "yes",
@@ -14596,8 +14564,8 @@
 {
   "type": "node",
   "id": 410463792,
-  "lat": 1.3045505,
-  "lon": 103.7984608,
+  "lat": 1.3045009,
+  "lon": 103.7985104,
   "tags": {
     "asset_ref": "11429",
     "bus": "yes",
@@ -16344,12 +16312,14 @@
   "lon": 103.9158779,
   "tags": {
     "asset_ref": "92151",
+    "bench": "yes",
     "bus": "yes",
     "highway": "bus_stop",
     "location": "East Coast Road",
     "name": "Christ Methodist Church",
     "public_transport": "platform",
-    "route_ref": "10;12;14;32;40;155"
+    "route_ref": "10;12;14;32;40;155",
+    "shelter": "yes"
   }
 },
 {
@@ -16446,8 +16416,8 @@
 {
   "type": "node",
   "id": 410464071,
-  "lat": 1.3115160,
-  "lon": 103.9502460,
+  "lat": 1.3114912,
+  "lon": 103.9502725,
   "tags": {
     "asset_ref": "94099",
     "bus": "yes",
@@ -16744,22 +16714,6 @@
 },
 {
   "type": "node",
-  "id": 410464147,
-  "lat": 1.2787095,
-  "lon": 103.8380279,
-  "tags": {
-    "amenity": "bus_station",
-    "asset_ref": "10589",
-    "bus": "yes",
-    "highway": "bus_stop",
-    "location": "Eu Tong Sen Street",
-    "name": "New Bridge Road Terminal (Closed)",
-    "public_transport": "platform",
-    "route_ref": "2;12;54;120;121;122;174;190;CT8;CT18;CT28"
-  }
-},
-{
-  "type": "node",
   "id": 410464148,
   "lat": 1.2870225,
   "lon": 103.8454886,
@@ -16784,7 +16738,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Eu Tong Sen Street",
-    "name": "Clarke Quay Station",
+    "name": "Clarke Quay Station Exit E",
     "public_transport": "platform",
     "route_ref": "1N;2;2N;3N;4N;5N;6N;12;33;51;54;61;63;80;124;145;147;166;174;190;197;851;961;961C;NR1;NR2;NR3;NR5;NR6;NR7;NR8",
     "shelter": "yes",
@@ -17097,8 +17051,8 @@
 {
   "type": "node",
   "id": 410464274,
-  "lat": 1.3892770,
-  "lon": 103.8729982,
+  "lat": 1.3892609,
+  "lon": 103.8730250,
   "tags": {
     "asset_ref": "67281",
     "bus": "yes",
@@ -17157,8 +17111,8 @@
 {
   "type": "node",
   "id": 410464295,
-  "lat": 1.3190529,
-  "lon": 103.9242569,
+  "lat": 1.3190410,
+  "lon": 103.9242542,
   "tags": {
     "asset_ref": "83261",
     "highway": "bus_stop",
@@ -18659,7 +18613,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Henderson Road",
-    "name": "Between Blks 110/113",
+    "name": "Aft Tiong Bahru Rd",
     "public_transport": "platform",
     "route_ref": "16;132;145;851"
   }
@@ -18674,7 +18628,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Henderson Road",
-    "name": "Blk 96",
+    "name": "Bef Tiong Bahru Rd",
     "public_transport": "platform",
     "route_ref": "16;132;145;851"
   }
@@ -21296,7 +21250,7 @@
     "asset_ref": "22019",
     "highway": "bus_stop",
     "location": "Jalan Ahmad Ibrahim",
-    "name": "Opposite Jurong Bird Park (Bus No 194)",
+    "name": "Opposite Jurong Bird Park",
     "route_ref": "194"
   }
 },
@@ -21654,7 +21608,7 @@
     "asset_ref": "22011",
     "highway": "bus_stop",
     "location": "Jalan Ahmad Ibrahim",
-    "name": "Jurong Bird Park (Bus No 194)",
+    "name": "Jurong Bird Park",
     "route_ref": "194"
   }
 },
@@ -22203,8 +22157,8 @@
 {
   "type": "node",
   "id": 410465094,
-  "lat": 1.3387985,
-  "lon": 103.7095733,
+  "lat": 1.3387896,
+  "lon": 103.7096117,
   "tags": {
     "asset_ref": "21351",
     "bus": "yes",
@@ -22359,7 +22313,8 @@
     "location": "Jalan Bukit Merah",
     "name": "Opposite Blk 28",
     "public_transport": "platform",
-    "route_ref": "14;123;147;153;196;197;198;855;961;961C"
+    "route_ref": "14;123;147;153;196;197;198;855;961;961C",
+    "wheelchair": "no"
   }
 },
 {
@@ -23613,8 +23568,8 @@
 {
   "type": "node",
   "id": 410466179,
-  "lat": 1.3148500,
-  "lon": 103.9091420,
+  "lat": 1.3148775,
+  "lon": 103.9091407,
   "tags": {
     "asset_ref": "83151",
     "bus": "yes",
@@ -24612,8 +24567,8 @@
 {
   "type": "node",
   "id": 410466409,
-  "lat": 1.3296059,
-  "lon": 103.7427780,
+  "lat": 1.3297815,
+  "lon": 103.7425272,
   "tags": {
     "asset_ref": "28231",
     "bus": "yes",
@@ -24659,8 +24614,8 @@
 {
   "type": "node",
   "id": 410466413,
-  "lat": 1.3297640,
-  "lon": 103.7430940,
+  "lat": 1.3299879,
+  "lon": 103.7429156,
   "tags": {
     "asset_ref": "28239",
     "bus": "yes",
@@ -24915,8 +24870,8 @@
 {
   "type": "node",
   "id": 410466450,
-  "lat": 1.3527859,
-  "lon": 103.7048274,
+  "lat": 1.3527981,
+  "lon": 103.7049209,
   "tags": {
     "asset_ref": "27469",
     "bus": "yes",
@@ -24931,7 +24886,7 @@
   "type": "node",
   "id": 410466453,
   "lat": 1.3529306,
-  "lon": 103.7051601,
+  "lon": 103.7050947,
   "tags": {
     "asset_ref": "27461",
     "bus": "yes",
@@ -24960,8 +24915,8 @@
 {
   "type": "node",
   "id": 410466458,
-  "lat": 1.3515063,
-  "lon": 103.7039877,
+  "lat": 1.3514494,
+  "lon": 103.7040446,
   "tags": {
     "asset_ref": "27459",
     "bus": "yes",
@@ -25173,8 +25128,8 @@
 {
   "type": "node",
   "id": 410466492,
-  "lat": 1.3505324,
-  "lon": 103.7011465,
+  "lat": 1.3505175,
+  "lon": 103.7001542,
   "tags": {
     "asset_ref": "27449",
     "bus": "yes",
@@ -25188,8 +25143,8 @@
 {
   "type": "node",
   "id": 410466493,
-  "lat": 1.3503583,
-  "lon": 103.7007247,
+  "lat": 1.3503707,
+  "lon": 103.7006722,
   "tags": {
     "asset_ref": "27441",
     "bus": "yes",
@@ -25337,8 +25292,8 @@
 {
   "type": "node",
   "id": 410466688,
-  "lat": 1.3462689,
-  "lon": 103.7213226,
+  "lat": 1.3463356,
+  "lon": 103.7213693,
   "tags": {
     "asset_ref": "28381",
     "bus": "yes",
@@ -25685,21 +25640,6 @@
 },
 {
   "type": "node",
-  "id": 410466785,
-  "lat": 1.3484828,
-  "lon": 103.6980721,
-  "tags": {
-    "asset_ref": "27389",
-    "bus": "yes",
-    "highway": "bus_stop",
-    "location": "Jurong West Street 75",
-    "name": "Gek Poh Shopping Centre",
-    "public_transport": "platform",
-    "route_ref": "181;181M;243W;258;502;502A;NR5"
-  }
-},
-{
-  "type": "node",
   "id": 410466786,
   "lat": 1.3481591,
   "lon": 103.6986922,
@@ -25765,21 +25705,6 @@
     "name": "Blk 827",
     "route_ref": "243G;258",
     "shelter": "yes"
-  }
-},
-{
-  "type": "node",
-  "id": 410466791,
-  "lat": 1.3434781,
-  "lon": 103.6888305,
-  "tags": {
-    "asset_ref": "27401",
-    "bus": "yes",
-    "highway": "bus_stop",
-    "location": "Jurong West Street 81",
-    "name": "Pioneer Secondary School",
-    "public_transport": "platform",
-    "route_ref": "243W;258;NR5"
   }
 },
 {
@@ -28436,8 +28361,8 @@
 {
   "type": "node",
   "id": 410467140,
-  "lat": 1.3526230,
-  "lon": 103.8883380,
+  "lat": 1.3548777,
+  "lon": 103.8869947,
   "tags": {
     "asset_ref": "63299",
     "bus": "yes",
@@ -28541,8 +28466,8 @@
 {
   "type": "node",
   "id": 410467147,
-  "lat": 1.3614735,
-  "lon": 103.8681094,
+  "lat": 1.3614386,
+  "lon": 103.8681577,
   "tags": {
     "asset_ref": "66129",
     "bus": "yes",
@@ -28556,8 +28481,8 @@
 {
   "type": "node",
   "id": 410467148,
-  "lat": 1.3624187,
-  "lon": 103.8677111,
+  "lat": 1.3623316,
+  "lon": 103.8677956,
   "tags": {
     "asset_ref": "66121",
     "bus": "yes",
@@ -28571,8 +28496,8 @@
 {
   "type": "node",
   "id": 410467149,
-  "lat": 1.3568745,
-  "lon": 103.8681655,
+  "lat": 1.3568276,
+  "lon": 103.8682205,
   "tags": {
     "asset_ref": "66119",
     "bus": "yes",
@@ -28586,8 +28511,8 @@
 {
   "type": "node",
   "id": 410467150,
-  "lat": 1.3584917,
-  "lon": 103.8681975,
+  "lat": 1.3584032,
+  "lon": 103.8682726,
   "tags": {
     "asset_ref": "66111",
     "bus": "yes",
@@ -30195,7 +30120,6 @@
     "asset_ref": "10309",
     "highway": "bus_stop",
     "location": "Margaret Drive",
-    "name": "Blk 118",
     "route_ref": "NoServices"
   }
 },
@@ -30208,7 +30132,6 @@
     "asset_ref": "10301",
     "highway": "bus_stop",
     "location": "Margaret Drive",
-    "name": "Opposite Blk 108",
     "route_ref": "NoServices"
   }
 },
@@ -33222,7 +33145,9 @@
     "location": "Orchard Road",
     "name": "Delfi Orchard",
     "public_transport": "platform",
-    "route_ref": "7;36;36B;77;105;106;111;123;132;174;502;502A"
+    "route_ref": "7;36;36B;77;105;106;111;123;132;174;502;502A",
+    "shelter": "yes",
+    "tactile_paving": "no"
   }
 },
 {
@@ -35439,8 +35364,8 @@
 {
   "type": "node",
   "id": 410470458,
-  "lat": 1.3755720,
-  "lon": 103.9465080,
+  "lat": 1.3755680,
+  "lon": 103.9465744,
   "tags": {
     "asset_ref": "77131",
     "highway": "bus_stop",
@@ -35452,8 +35377,8 @@
 {
   "type": "node",
   "id": 410470481,
-  "lat": 1.3737799,
-  "lon": 103.9452732,
+  "lat": 1.3737491,
+  "lon": 103.9452973,
   "tags": {
     "asset_ref": "77141",
     "highway": "bus_stop",
@@ -35465,8 +35390,8 @@
 {
   "type": "node",
   "id": 410470506,
-  "lat": 1.3751469,
-  "lon": 103.9465273,
+  "lat": 1.3751027,
+  "lon": 103.9465850,
   "tags": {
     "asset_ref": "77139",
     "bus": "yes",
@@ -35557,12 +35482,15 @@
   "lon": 103.8299105,
   "tags": {
     "asset_ref": "13191",
+    "bench": "yes",
     "bus": "yes",
     "highway": "bus_stop",
+    "lit": "yes",
     "location": "Paterson Road",
     "name": "Bef Orchard Blvd",
     "public_transport": "platform",
-    "route_ref": "1N;2N;3N;4N;5;5N;6N;14;16;54;65;175;NR6;NR7"
+    "route_ref": "1N;2N;3N;4N;5;5N;6N;14;16;54;65;175;NR6;NR7",
+    "shelter": "yes"
   }
 },
 {
@@ -35572,12 +35500,15 @@
   "lon": 103.8299781,
   "tags": {
     "asset_ref": "13199",
+    "bench": "yes",
     "bus": "yes",
     "highway": "bus_stop",
+    "lit": "yes",
     "location": "Paterson Road",
     "name": "Aft Orchard Blvd",
     "public_transport": "platform",
-    "route_ref": "5;14;16;54;65;175;NR5"
+    "route_ref": "5;14;16;54;65;175;NR5",
+    "shelter": "yes"
   }
 },
 {
@@ -35608,7 +35539,8 @@
     "location": "Paya Lebar Road",
     "name": "Le Crescendo",
     "public_transport": "platform",
-    "route_ref": "8;22;24;28;43;58;70;70M;76;80;158"
+    "route_ref": "8;22;24;28;43;58;70;70M;76;80;158",
+    "wheelchair": "yes"
   }
 },
 {
@@ -35721,8 +35653,8 @@
 {
   "type": "node",
   "id": 410471106,
-  "lat": 1.2981374,
-  "lon": 103.8452455,
+  "lat": 1.2982794,
+  "lon": 103.8453201,
   "tags": {
     "asset_ref": "08031",
     "bus": "yes",
@@ -37358,23 +37290,6 @@
 },
 {
   "type": "node",
-  "id": 410472410,
-  "lat": 1.3901057,
-  "lon": 103.9016181,
-  "tags": {
-    "asset_ref": "65041;65049",
-    "bus": "yes",
-    "highway": "bus_stop",
-    "location": "Punggol Road",
-    "name": "Blk 231;Blk 126A",
-    "network": "new town",
-    "operator": "compass",
-    "public_transport": "platform",
-    "route_ref": "6N;82;88;163;163M;372"
-  }
-},
-{
-  "type": "node",
   "id": 410472411,
   "lat": 1.3949235,
   "lon": 103.9019551,
@@ -37391,14 +37306,16 @@
 {
   "type": "node",
   "id": 410472413,
-  "lat": 1.3814916,
-  "lon": 103.8974828,
+  "lat": 1.3814731,
+  "lon": 103.8974620,
   "tags": {
     "asset_ref": "65019",
+    "bench": "yes",
     "highway": "bus_stop",
     "location": "Punggol Road",
     "name": "The Rivervale",
-    "route_ref": "80;82;87;88;89;119"
+    "route_ref": "80;82;87;88;89;119",
+    "shelter": "yes"
   }
 },
 {
@@ -37457,28 +37374,17 @@
 },
 {
   "type": "node",
-  "id": 410472479,
-  "lat": 1.4140707,
-  "lon": 103.9094250,
-  "tags": {
-    "asset_ref": "65119",
-    "highway": "bus_stop",
-    "location": "Punggol Road",
-    "name": "Opposite Punggol 17th Avenue",
-    "route_ref": "84"
-  }
-},
-{
-  "type": "node",
   "id": 410472480,
   "lat": 1.3815936,
   "lon": 103.8972299,
   "tags": {
     "asset_ref": "65011",
+    "bench": "yes",
     "highway": "bus_stop",
     "location": "Punggol Road",
     "name": "Opposite The Rivervale",
     "route_ref": "80;82;87;88;89;119;NR6",
+    "shelter": "yes",
     "wheelchair": "yes"
   }
 },
@@ -37492,19 +37398,6 @@
     "highway": "bus_stop",
     "location": "Punggol Road",
     "name": "Before Punggol Drive",
-    "route_ref": "84"
-  }
-},
-{
-  "type": "node",
-  "id": 410472547,
-  "lat": 1.4135225,
-  "lon": 103.9091917,
-  "tags": {
-    "asset_ref": "65111",
-    "highway": "bus_stop",
-    "location": "Punggol Road",
-    "name": "Before Punggol 17th Avenue",
     "route_ref": "84"
   }
 },
@@ -38383,20 +38276,13 @@
   "lat": 1.2800076,
   "lon": 103.8494157,
   "tags": {
-    "addr:city": "Singapore",
-    "addr:country": "SG",
-    "addr:housenumber": "35",
-    "addr:postcode": "068876",
-    "addr:street": "Robinson Road",
     "asset_ref": "03071",
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Robinson Road",
-    "name": "Opp So Sofitel S'pore;Sofitel So",
+    "name": "Opposite Sofitel S'pore",
     "public_transport": "platform",
-    "route_ref": "10;97;106;133;196;513;850E;868;951E;982E",
-    "tourism": "hotel",
-    "website": "www.sofitel.com"
+    "route_ref": "10;97;106;133;196;513;850E;868;951E;982E"
   }
 },
 {
@@ -40360,8 +40246,8 @@
 {
   "type": "node",
   "id": 410475116,
-  "lat": 1.3637324,
-  "lon": 103.8693674,
+  "lat": 1.3635541,
+  "lon": 103.8693768,
   "tags": {
     "asset_ref": "66139",
     "bus": "yes",
@@ -40390,8 +40276,8 @@
 {
   "type": "node",
   "id": 410475118,
-  "lat": 1.3628590,
-  "lon": 103.8723866,
+  "lat": 1.3628349,
+  "lon": 103.8724322,
   "tags": {
     "asset_ref": "66149",
     "bus": "yes",
@@ -40405,8 +40291,8 @@
 {
   "type": "node",
   "id": 410475140,
-  "lat": 1.3631433,
-  "lon": 103.8723920,
+  "lat": 1.3631218,
+  "lon": 103.8724322,
   "tags": {
     "asset_ref": "66141",
     "bus": "yes",
@@ -40601,8 +40487,8 @@
 {
   "type": "node",
   "id": 410475226,
-  "lat": 1.3751253,
-  "lon": 103.8733540,
+  "lat": 1.3751106,
+  "lon": 103.8731542,
   "tags": {
     "asset_ref": "66529",
     "highway": "bus_stop",
@@ -40614,8 +40500,8 @@
 {
   "type": "node",
   "id": 410475227,
-  "lat": 1.3753006,
-  "lon": 103.8732160,
+  "lat": 1.3752242,
+  "lon": 103.8736733,
   "tags": {
     "asset_ref": "66521",
     "bus": "yes",
@@ -40629,8 +40515,8 @@
 {
   "type": "node",
   "id": 410475228,
-  "lat": 1.3757670,
-  "lon": 103.8716520,
+  "lat": 1.3757683,
+  "lon": 103.8716989,
   "tags": {
     "asset_ref": "66511",
     "bus": "yes",
@@ -40777,8 +40663,8 @@
 {
   "type": "node",
   "id": 410475268,
-  "lat": 1.2783385,
-  "lon": 103.8497312,
+  "lat": 1.2779979,
+  "lon": 103.8495113,
   "tags": {
     "asset_ref": "03129",
     "bus": "yes",
@@ -41792,13 +41678,13 @@
 {
   "type": "node",
   "id": 410475472,
-  "lat": 1.3184538,
-  "lon": 103.8804910,
+  "lat": 1.3184270,
+  "lon": 103.8805581,
   "tags": {
     "asset_ref": "80239",
     "highway": "bus_stop",
     "location": "Sims Drive",
-    "name": "Before Block 53",
+    "name": "Before Blk 53",
     "route_ref": "64;125;134",
     "source": "Kaart Ground Survey 2017"
   }
@@ -41806,15 +41692,14 @@
 {
   "type": "node",
   "id": 410475473,
-  "lat": 1.3202218,
-  "lon": 103.8797273,
+  "lat": 1.3185602,
+  "lon": 103.8801642,
   "tags": {
     "asset_ref": "80231",
     "highway": "bus_stop",
     "location": "Sims Drive",
-    "name": "Blk 59",
-    "route_ref": "64;134",
-    "source": "Kaart Ground Survey 2017"
+    "name": "Opposite Blk 53",
+    "route_ref": "64;134"
   }
 },
 {
@@ -41977,23 +41862,6 @@
     "name": "Blk 407",
     "public_transport": "platform",
     "route_ref": "52;162;162M;410W"
-  }
-},
-{
-  "type": "node",
-  "id": 410475494,
-  "lat": 1.3594982,
-  "lon": 103.8300958,
-  "tags": {
-    "asset_ref": "53369",
-    "bench": "yes",
-    "bus": "yes",
-    "highway": "bus_stop",
-    "location": "Sin Ming Avenue",
-    "name": "Opposite Blk 454",
-    "public_transport": "platform",
-    "route_ref": "52;162;162M;410G",
-    "shelter": "yes"
   }
 },
 {
@@ -43709,8 +43577,8 @@
 {
   "type": "node",
   "id": 410477151,
-  "lat": 1.3491283,
-  "lon": 103.9492282,
+  "lat": 1.3491585,
+  "lon": 103.9492134,
   "tags": {
     "asset_ref": "76089",
     "bus": "yes",
@@ -44233,8 +44101,8 @@
 {
   "type": "node",
   "id": 410477211,
-  "lat": 1.3563154,
-  "lon": 103.9532654,
+  "lat": 1.3563999,
+  "lon": 103.9534505,
   "tags": {
     "asset_ref": "76221",
     "bus": "yes",
@@ -45632,7 +45500,9 @@
     "location": "Tanglin Road",
     "name": "After Margaret Drive",
     "public_transport": "platform",
-    "route_ref": "32;111;122;132"
+    "route_ref": "32;111;122;132",
+    "shelter": "yes",
+    "tactile_paving": "no"
   }
 },
 {
@@ -45647,7 +45517,9 @@
     "location": "Tanglin Road",
     "name": "After Tomlinson Road",
     "public_transport": "platform",
-    "route_ref": "7;36;36B;77;105;106;111;123;132;174"
+    "route_ref": "7;36;36B;77;105;106;111;123;132;174",
+    "shelter": "yes",
+    "tactile_paving": "no"
   }
 },
 {
@@ -45662,7 +45534,8 @@
     "location": "Tanglin Road",
     "name": "Opposite Chatsworth Road",
     "public_transport": "platform",
-    "route_ref": "111;132"
+    "route_ref": "111;132",
+    "shelter": "yes"
   }
 },
 {
@@ -45677,7 +45550,8 @@
     "location": "Tanglin Road",
     "name": "After Rochalie Drive",
     "public_transport": "platform",
-    "route_ref": "111;132"
+    "route_ref": "111;132",
+    "shelter": "yes"
   }
 },
 {
@@ -45692,7 +45566,8 @@
     "location": "Tanglin Road",
     "name": "Crescent Girls' School",
     "public_transport": "platform",
-    "route_ref": "32;111;122;132"
+    "route_ref": "32;111;122;132",
+    "shelter": "yes"
   }
 },
 {
@@ -45707,7 +45582,8 @@
     "location": "Tanglin Road",
     "name": "Before Chatsworth Road",
     "public_transport": "platform",
-    "route_ref": "111;132"
+    "route_ref": "111;132",
+    "shelter": "yes"
   }
 },
 {
@@ -45722,7 +45598,9 @@
     "location": "Tanglin Road",
     "name": "Opposite British High Commission",
     "public_transport": "platform",
-    "route_ref": "111;132"
+    "route_ref": "111;132",
+    "shelter": "yes",
+    "tactile_paving": "no"
   }
 },
 {
@@ -45737,7 +45615,9 @@
     "location": "Tanglin Road",
     "name": "Before Rochalie Drive",
     "public_transport": "platform",
-    "route_ref": "111;132"
+    "route_ref": "111;132",
+    "shelter": "yes",
+    "tactile_paving": "no"
   }
 },
 {
@@ -45752,7 +45632,9 @@
     "location": "Tanglin Road",
     "name": "British High Commission",
     "public_transport": "platform",
-    "route_ref": "111;132"
+    "route_ref": "111;132",
+    "shelter": "yes",
+    "tactile_paving": "no"
   }
 },
 {
@@ -46857,8 +46739,8 @@
 {
   "type": "node",
   "id": 410478641,
-  "lat": 1.3176514,
-  "lon": 103.9084451,
+  "lat": 1.3176608,
+  "lon": 103.9084974,
   "tags": {
     "asset_ref": "83141",
     "bus": "yes",
@@ -47021,8 +46903,8 @@
 {
   "type": "node",
   "id": 410478656,
-  "lat": 1.2935312,
-  "lon": 103.8606408,
+  "lat": 1.2932858,
+  "lon": 103.8607280,
   "tags": {
     "asset_ref": "02169",
     "bus": "yes",
@@ -47469,8 +47351,8 @@
 {
   "type": "node",
   "id": 410478783,
-  "lat": 1.2860126,
-  "lon": 103.8274389,
+  "lat": 1.2860113,
+  "lon": 103.8274107,
   "tags": {
     "asset_ref": "10169",
     "bus": "yes",
@@ -47499,8 +47381,8 @@
 {
   "type": "node",
   "id": 410478799,
-  "lat": 1.2859105,
-  "lon": 103.8266856,
+  "lat": 1.2859427,
+  "lon": 103.8266883,
   "tags": {
     "asset_ref": "10161",
     "bus": "yes",
@@ -48194,8 +48076,8 @@
 {
   "type": "node",
   "id": 410479708,
-  "lat": 1.3317162,
-  "lon": 103.8467291,
+  "lat": 1.3320112,
+  "lon": 103.8471985,
   "tags": {
     "amenity": "bus_station",
     "asset_ref": "52009",
@@ -48210,8 +48092,8 @@
 {
   "type": "node",
   "id": 410479727,
-  "lat": 1.3311502,
-  "lon": 103.8501408,
+  "lat": 1.3311346,
+  "lon": 103.8502091,
   "tags": {
     "asset_ref": "52509",
     "bus": "yes",
@@ -48240,8 +48122,8 @@
 {
   "type": "node",
   "id": 410479732,
-  "lat": 1.3309175,
-  "lon": 103.8499917,
+  "lat": 1.3309642,
+  "lon": 103.8500080,
   "tags": {
     "asset_ref": "52501",
     "bus": "yes",
@@ -48541,7 +48423,7 @@
     "asset_ref": "28661",
     "highway": "bus_stop",
     "location": "Toh Guan Road East",
-    "name": "Opposite Jurong East WaRehabilitatione",
+    "name": "Opposite Jurong East Warehouse",
     "route_ref": "41;183;183B"
   }
 },
@@ -48554,7 +48436,7 @@
     "asset_ref": "28669",
     "highway": "bus_stop",
     "location": "Toh Guan Road East",
-    "name": "Jurong East WaRehabilitatione",
+    "name": "Jurong East Warehouse",
     "route_ref": "41;183"
   }
 },
@@ -49824,8 +49706,8 @@
 {
   "type": "node",
   "id": 410480518,
-  "lat": 1.3174174,
-  "lon": 103.6588569,
+  "lat": 1.3173758,
+  "lon": 103.6589722,
   "tags": {
     "asset_ref": "24521",
     "bus": "yes",
@@ -51882,8 +51764,8 @@
 {
   "type": "node",
   "id": 410481782,
-  "lat": 1.3139420,
-  "lon": 103.9316620,
+  "lat": 1.3138696,
+  "lon": 103.9317822,
   "tags": {
     "asset_ref": "93099",
     "bus": "yes",
@@ -51957,8 +51839,8 @@
 {
   "type": "node",
   "id": 410481809,
-  "lat": 1.3140424,
-  "lon": 103.9314726,
+  "lat": 1.3140239,
+  "lon": 103.9315127,
   "tags": {
     "asset_ref": "93091",
     "bus": "yes",
@@ -53650,8 +53532,8 @@
 {
   "type": "node",
   "id": 410483649,
-  "lat": 1.3493970,
-  "lon": 103.8374717,
+  "lat": 1.3496048,
+  "lon": 103.8374151,
   "tags": {
     "asset_ref": "53029",
     "bus": "yes",
@@ -53947,7 +53829,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "West Camp Road",
-    "name": "Opposite Seletar W Camp G 3",
+    "name": "Before Seletar Aerospace Lane",
     "public_transport": "platform",
     "route_ref": "103;117"
   }
@@ -53962,7 +53844,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "West Camp Road",
-    "name": "Seletar W Camp G 3",
+    "name": "After Seletar Aerospace Lane",
     "public_transport": "platform",
     "route_ref": "103;117"
   }
@@ -56978,8 +56860,8 @@
 {
   "type": "node",
   "id": 410485782,
-  "lat": 1.3928101,
-  "lon": 103.7541698,
+  "lat": 1.3928404,
+  "lon": 103.7543356,
   "tags": {
     "asset_ref": "45029",
     "bus": "yes",
@@ -57948,7 +57830,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Yio Chu Kang Road",
-    "name": "Opposite Motorola",
+    "name": "Opposite UE BizHub Central",
     "public_transport": "platform",
     "route_ref": "70;70M;86;163;854;857"
   }
@@ -57978,7 +57860,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Yio Chu Kang Road",
-    "name": "Motorola",
+    "name": "UE BizHub Central",
     "public_transport": "platform",
     "route_ref": "70;70M;86;163;854;857"
   }
@@ -59647,8 +59529,8 @@
 {
   "type": "node",
   "id": 410487306,
-  "lat": 1.3246191,
-  "lon": 103.9293133,
+  "lat": 1.3245337,
+  "lon": 103.9292923,
   "tags": {
     "amenity": "bus_station",
     "asset_ref": "84009",
@@ -60600,8 +60482,8 @@
 {
   "type": "node",
   "id": 1729287184,
-  "lat": 1.3067102,
-  "lon": 103.8192926,
+  "lat": 1.3068939,
+  "lon": 103.8193838,
   "tags": {
     "asset_ref": "13019",
     "bus": "yes",
@@ -60777,18 +60659,6 @@
     "name": "Opposite University Hall",
     "public_transport": "platform",
     "route_ref": "95"
-  }
-},
-{
-  "type": "node",
-  "id": 1739247171,
-  "lat": 1.3001145,
-  "lon": 103.7716929,
-  "tags": {
-    "bus": "yes",
-    "highway": "bus_stop",
-    "name": "E3A",
-    "public_transport": "platform"
   }
 },
 {
@@ -61056,13 +60926,12 @@
 {
   "type": "node",
   "id": 1845246317,
-  "lat": 1.3226623,
-  "lon": 103.8157061,
+  "lat": 1.3226194,
+  "lon": 103.8159019,
   "tags": {
     "asset_ref": "41021",
     "bus": "yes",
     "highway": "bus_stop",
-    "location": "Bukit Timah Road",
     "name": "Botanic Gardens Station",
     "public_transport": "platform",
     "route_ref": "48;66;66B;67;151;153;154;156;170;170A;171;186"
@@ -61269,7 +61138,8 @@
     "location": "Palmer Road",
     "name": "Shenton Way Bus Terminal",
     "public_transport": "platform",
-    "route_ref": "70;106;107;128;130;133;162;186;400;402;700;970"
+    "route_ref": "70;106;107;128;130;133;162;186;400;402;700;970",
+    "wikidata": "Q7494331"
   }
 },
 {
@@ -61665,8 +61535,6 @@
     "asset_ref": "65009",
     "bus": "yes",
     "highway": "bus_stop",
-    "internet_access": "no",
-    "internet_access:fee": "no",
     "location": "Punggol Place",
     "name": "Punggol Temporary Interchange",
     "public_transport": "platform",
@@ -61676,8 +61544,8 @@
 {
   "type": "node",
   "id": 1847853711,
-  "lat": 1.3342051,
-  "lon": 103.9416466,
+  "lat": 1.3341421,
+  "lon": 103.9416746,
   "tags": {
     "asset_ref": "84261",
     "bus": "yes",
@@ -63857,8 +63725,8 @@
 {
   "type": "node",
   "id": 1865254875,
-  "lat": 1.3752822,
-  "lon": 103.8700620,
+  "lat": 1.3752628,
+  "lon": 103.8700861,
   "tags": {
     "asset_ref": "66509",
     "highway": "bus_stop",
@@ -66311,7 +66179,8 @@
     "location": "Soon Lee Road",
     "name": "Soon Lee Bus Park",
     "public_transport": "platform",
-    "route_ref": "185;502;502A"
+    "route_ref": "185;502;502A",
+    "wikidata": "Q7562691"
   }
 },
 {
@@ -67090,8 +66959,8 @@
 {
   "type": "node",
   "id": 2110621991,
-  "lat": 1.3999315,
-  "lon": 103.9162534,
+  "lat": 1.3999112,
+  "lon": 103.9162493,
   "tags": {
     "asset_ref": "65329",
     "bus": "yes",
@@ -67193,8 +67062,8 @@
 {
   "type": "node",
   "id": 2391354870,
-  "lat": 1.3910934,
-  "lon": 103.8704365,
+  "lat": 1.3909888,
+  "lon": 103.8706980,
   "tags": {
     "asset_ref": "68019",
     "bus": "yes",
@@ -67208,8 +67077,8 @@
 {
   "type": "node",
   "id": 2391354871,
-  "lat": 1.3913439,
-  "lon": 103.8700759,
+  "lat": 1.3913171,
+  "lon": 103.8702543,
   "tags": {
     "asset_ref": "68011",
     "bus": "yes",
@@ -67707,6 +67576,7 @@
     "highway": "bus_stop",
     "location": "Rangoon Road",
     "name": "Opposite Farrer Park Station",
+    "operator": "Bus 141",
     "route_ref": "141"
   }
 },
@@ -67949,8 +67819,8 @@
 {
   "type": "node",
   "id": 2706536596,
-  "lat": 1.3893487,
-  "lon": 103.8709661,
+  "lat": 1.3893105,
+  "lon": 103.8710446,
   "tags": {
     "asset_ref": "67651",
     "bus": "yes",
@@ -67979,8 +67849,8 @@
 {
   "type": "node",
   "id": 2706536606,
-  "lat": 1.3900440,
-  "lon": 103.8687462,
+  "lat": 1.3898845,
+  "lon": 103.8688817,
   "tags": {
     "asset_ref": "67081",
     "bus": "yes",
@@ -67994,8 +67864,8 @@
 {
   "type": "node",
   "id": 2706536610,
-  "lat": 1.3902793,
-  "lon": 103.8692294,
+  "lat": 1.3902578,
+  "lon": 103.8692723,
   "tags": {
     "asset_ref": "67089",
     "bus": "yes",
@@ -68128,16 +67998,6 @@
 },
 {
   "type": "node",
-  "id": 2708142301,
-  "lat": 1.3966292,
-  "lon": 103.8920466,
-  "tags": {
-    "highway": "bus_stop",
-    "location": "Anchorvale Street"
-  }
-},
-{
-  "type": "node",
   "id": 2710825067,
   "lat": 1.4341197,
   "lon": 103.8440728,
@@ -68265,8 +68125,8 @@
 {
   "type": "node",
   "id": 3316956177,
-  "lat": 1.3726511,
-  "lon": 104.0047916,
+  "lat": 1.3726752,
+  "lon": 104.0047406,
   "tags": {
     "asset_ref": "95169",
     "highway": "bus_stop",
@@ -68577,6 +68437,21 @@
 },
 {
   "type": "node",
+  "id": 3535903648,
+  "lat": 1.3484841,
+  "lon": 103.6980886,
+  "tags": {
+    "asset_ref": "27389",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "Jurong West Street 75",
+    "name": "Gek Poh Shopping Centre",
+    "public_transport": "platform",
+    "route_ref": "181;181M;243W;258;502;502A;NR5"
+  }
+},
+{
+  "type": "node",
   "id": 3551060108,
   "lat": 1.4505834,
   "lon": 103.8165749,
@@ -68726,8 +68601,8 @@
 {
   "type": "node",
   "id": 3553028927,
-  "lat": 1.3952435,
-  "lon": 103.9051686,
+  "lat": 1.3952405,
+  "lon": 103.9051626,
   "tags": {
     "asset_ref": "65191",
     "bus": "yes",
@@ -69900,13 +69775,15 @@
 {
   "type": "node",
   "id": 3884190604,
-  "lat": 1.3422918,
-  "lon": 103.7756989,
+  "lat": 1.3416482,
+  "lon": 103.7759470,
   "tags": {
+    "asset_ref": "42099",
     "bench": "yes",
     "highway": "bus_stop",
-    "name": "Beauty World Stn",
-    "network": "173",
+    "location": "Upper Bukit Timah Road",
+    "name": "Beauty World Station",
+    "route_ref": "173",
     "shelter": "yes"
   }
 },
@@ -70407,19 +70284,6 @@
 },
 {
   "type": "node",
-  "id": 3941631338,
-  "lat": 1.3416102,
-  "lon": 103.7758539,
-  "tags": {
-    "asset_ref": "42099",
-    "highway": "bus_stop",
-    "location": "Upper Bukit Timah Road",
-    "name": "Beauty World Station",
-    "route_ref": "173"
-  }
-},
-{
-  "type": "node",
   "id": 3941631339,
   "lat": 1.3923790,
   "lon": 103.7442190,
@@ -70429,22 +70293,6 @@
     "location": "Choa Chu Kang North 5",
     "name": "Blk 532",
     "route_ref": "979"
-  }
-},
-{
-  "type": "node",
-  "id": 3941631340,
-  "lat": 1.3854983,
-  "lon": 103.7440677,
-  "tags": {
-    "amenity": "bus_station",
-    "asset_ref": "44009",
-    "bus": "yes",
-    "highway": "bus_stop",
-    "location": "Choa Chu Kang Loop",
-    "name": "Choa Chu Kang Bus Interchange",
-    "public_transport": "platform",
-    "route_ref": "67;172;188;188E;188R;190;300;301;302;307;308;925;927;983;985;BPS1;NR3"
   }
 },
 {
@@ -70697,13 +70545,13 @@
 {
   "type": "node",
   "id": 4426007109,
-  "lat": 1.4101547,
-  "lon": 103.8725466,
+  "lat": 1.4113667,
+  "lon": 103.8734961,
   "tags": {
     "asset_ref": "68071",
     "highway": "bus_stop",
     "location": "Piccadilly",
-    "name": "Before East Camp G",
+    "name": "Opp Seletar Camp",
     "route_ref": "NoServices"
   }
 },
@@ -71261,8 +71109,8 @@
 {
   "type": "node",
   "id": 4443169933,
-  "lat": 1.3572652,
-  "lon": 103.9419092,
+  "lat": 1.3573356,
+  "lon": 103.9417918,
   "tags": {
     "amenity": "bus_station",
     "bus": "yes",
@@ -72008,17 +71856,6 @@
 },
 {
   "type": "node",
-  "id": 4892322422,
-  "lat": 1.3185146,
-  "lon": 103.8801749,
-  "tags": {
-    "highway": "bus_stop",
-    "name": "Block 53",
-    "name:en": "Block 53"
-  }
-},
-{
-  "type": "node",
   "id": 4903036625,
   "lat": 1.3550688,
   "lon": 103.6844600,
@@ -72284,8 +72121,10 @@
   "lat": 1.3972744,
   "lon": 103.8948431,
   "tags": {
+    "bench": "yes",
     "highway": "bus_stop",
-    "name": "Opposite Block 293D"
+    "name": "Opposite Block 293D",
+    "shelter": "yes"
   }
 },
 {
@@ -72300,22 +72139,17 @@
 },
 {
   "type": "node",
-  "id": 5181420724,
-  "lat": 1.3561334,
-  "lon": 103.9552674,
+  "id": 5150758153,
+  "lat": 1.2903033,
+  "lon": 103.7921848,
   "tags": {
+    "asset_ref": "18049",
+    "bus": "yes",
     "highway": "bus_stop",
-    "name": "Tampines East station (subway/train)"
-  }
-},
-{
-  "type": "node",
-  "id": 5181436230,
-  "lat": 1.3460637,
-  "lon": 103.9384993,
-  "tags": {
-    "highway": "bus_stop",
-    "name": "Tampines West station"
+    "location": "AYE",
+    "name": "Opposite Normanton Park",
+    "public_transport": "platform",
+    "route_ref": "14;33;97;166;197;963;963E"
   }
 },
 {
@@ -72430,8 +72264,8 @@
 {
   "type": "node",
   "id": 5236049628,
-  "lat": 1.3592503,
-  "lon": 103.8304059,
+  "lat": 1.3592490,
+  "lon": 103.8304057,
   "tags": {
     "asset_ref": "53361",
     "bench": "yes",
@@ -72447,8 +72281,8 @@
 {
   "type": "node",
   "id": 5273498409,
-  "lat": 1.3063198,
-  "lon": 103.7908149,
+  "lat": 1.3062917,
+  "lon": 103.7908557,
   "tags": {
     "asset_ref": "11369",
     "bus": "yes",
@@ -72671,8 +72505,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "name": "Before Ubi Road 3",
-    "network": "SBS",
-    "public_transport": "stop_position"
+    "network": "SBS"
   }
 },
 {
@@ -72684,6 +72517,18 @@
     "bus": "yes",
     "highway": "bus_stop",
     "name": "Bedok North Station Exit B",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 5701793241,
+  "lat": 1.3299518,
+  "lon": 103.8990591,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Ubi Station Exit B",
     "public_transport": "platform"
   }
 },
@@ -72712,6 +72557,522 @@
     "name": "Opposite Redhill Station",
     "public_transport": "platform",
     "route_ref": "32;33;64;120;132;145;NR5"
+  }
+},
+{
+  "type": "node",
+  "id": 5770659913,
+  "lat": 1.3942155,
+  "lon": 103.7532489,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Bef Choa Chu Kang Nth 5",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 5841392120,
+  "lat": 1.3899044,
+  "lon": 103.9019336,
+  "tags": {
+    "asset_ref": "65049",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "Punggol Road",
+    "name": "Blk 126A",
+    "public_transport": "platform",
+    "route_ref": "6N;82;88;163;163M;372"
+  }
+},
+{
+  "type": "node",
+  "id": 5841392121,
+  "lat": 1.3899493,
+  "lon": 103.9015990,
+  "tags": {
+    "asset_ref": "65041",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "Punggol Road",
+    "name": "Blk 231",
+    "public_transport": "platform",
+    "route_ref": "6N;82;88;163;163M;372"
+  }
+},
+{
+  "type": "node",
+  "id": 5846583677,
+  "lat": 1.2928147,
+  "lon": 103.8609987,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 5853009185,
+  "lat": 1.3757058,
+  "lon": 103.7484130,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Beside Blk 816A"
+  }
+},
+{
+  "type": "node",
+  "id": 5858706682,
+  "lat": 1.3379901,
+  "lon": 103.9642571,
+  "tags": {
+    "asset_ref": "96049",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "Upper Changi Road East",
+    "name": "Eightrium",
+    "public_transport": "platform",
+    "route_ref": "2;5;24",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5858706683,
+  "lat": 1.3381974,
+  "lon": 103.9640376,
+  "tags": {
+    "asset_ref": "96049",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "Upper Changi Road East",
+    "name": "opp Eightrium",
+    "public_transport": "platform",
+    "route_ref": "2;5;24",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5858710743,
+  "lat": 1.3388756,
+  "lon": 103.9608184,
+  "tags": {
+    "asset_ref": "96049",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "Upper Changi Road East",
+    "name": "Aft Somapah Rd",
+    "public_transport": "platform",
+    "route_ref": "2;5;24",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5858710744,
+  "lat": 1.3390338,
+  "lon": 103.9604966,
+  "tags": {
+    "asset_ref": "96049",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "Upper Changi Road East",
+    "name": "Bef Simei Rd",
+    "public_transport": "platform",
+    "route_ref": "2;5;24",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5860554889,
+  "lat": 1.4114906,
+  "lon": 103.8999711,
+  "tags": {
+    "asset_ref": "65469",
+    "bench": "yes",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "Sumang Link",
+    "name": "Nibong Stn Exit A",
+    "public_transport": "platform",
+    "route_ref": "382W",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5860554890,
+  "lat": 1.4113545,
+  "lon": 103.9003431,
+  "tags": {
+    "asset_ref": "65469",
+    "bench": "yes",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "Sumang Link",
+    "name": "Nibong Stn Exit B",
+    "public_transport": "platform",
+    "route_ref": "382W",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5860554891,
+  "lat": 1.4161510,
+  "lon": 103.9021953,
+  "tags": {
+    "asset_ref": "65469",
+    "bench": "yes",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "Sumang Link",
+    "name": "Samudera Stn Exit A",
+    "public_transport": "platform",
+    "route_ref": "382W",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5860554892,
+  "lat": 1.4159298,
+  "lon": 103.9024253,
+  "tags": {
+    "asset_ref": "65469",
+    "bench": "yes",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "Sumang Link",
+    "name": "Samudera Stn Exit B",
+    "public_transport": "platform",
+    "route_ref": "382W",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5860554893,
+  "lat": 1.4174695,
+  "lon": 103.9055751,
+  "tags": {
+    "asset_ref": "65469",
+    "bench": "yes",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "Sumang Link",
+    "name": "Bef Punggol Pt Stn",
+    "public_transport": "platform",
+    "route_ref": "382W",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5860554894,
+  "lat": 1.4172094,
+  "lon": 103.9055107,
+  "tags": {
+    "asset_ref": "65469",
+    "bench": "yes",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "Sumang Link",
+    "name": "Aft Punggol Pt Stn",
+    "public_transport": "platform",
+    "route_ref": "382W",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5898711242,
+  "lat": 1.3555538,
+  "lon": 103.9880014,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "858,110",
+    "operator": "SMRT",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 5905840087,
+  "lat": 1.3564309,
+  "lon": 103.9886642,
+  "tags": {
+    "highway": "bus_stop"
+  }
+},
+{
+  "type": "node",
+  "id": 5945758092,
+  "lat": 1.3571546,
+  "lon": 103.7411935,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Opp Blk 438A",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 5945758093,
+  "lat": 1.3580109,
+  "lon": 103.7431499,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Opp Blk 465A",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 5945758094,
+  "lat": 1.3574992,
+  "lon": 103.7434579,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Blk 467 CP",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 5945919287,
+  "lat": 1.3545631,
+  "lon": 103.7388959,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Before Blk 440A",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 5945919288,
+  "lat": 1.3547754,
+  "lon": 103.7393118,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Blk 461",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 5945919289,
+  "lat": 1.3518590,
+  "lon": 103.7394644,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Dulwich College",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 5945919290,
+  "lat": 1.3509657,
+  "lon": 103.7396562,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Millenia Institute",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 5945937003,
+  "lat": 1.3726407,
+  "lon": 103.7420300,
+  "tags": {
+    "asset_ref": "44189",
+    "bench": "yes",
+    "highway": "bus_stop",
+    "location": "Keat Hong Close",
+    "name": "Blk 804B",
+    "route_ref": "301",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5945937004,
+  "lat": 1.3721261,
+  "lon": 103.7445304,
+  "tags": {
+    "asset_ref": "44189",
+    "bench": "yes",
+    "highway": "bus_stop",
+    "location": "Keat Hong Close",
+    "name": "Blk 805D",
+    "route_ref": "301",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5945937005,
+  "lat": 1.3719627,
+  "lon": 103.7441861,
+  "tags": {
+    "asset_ref": "44189",
+    "bench": "yes",
+    "highway": "bus_stop",
+    "location": "Keat Hong Close",
+    "name": "Opp Blk 805D",
+    "route_ref": "301",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5945937006,
+  "lat": 1.3726896,
+  "lon": 103.7407723,
+  "tags": {
+    "asset_ref": "44189",
+    "bench": "yes",
+    "highway": "bus_stop",
+    "location": "Keat Hong Close",
+    "name": "Aft Choa Chu Kang Ave 6",
+    "route_ref": "301",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5966414071,
+  "lat": 1.4098097,
+  "lon": 103.8727359,
+  "tags": {
+    "asset_ref": "68071",
+    "highway": "bus_stop",
+    "location": "Piccadilly",
+    "name": "Aft Seletar Camp",
+    "route_ref": "NoServices"
+  }
+},
+{
+  "type": "node",
+  "id": 5978087970,
+  "lat": 1.3350350,
+  "lon": 103.8203085,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Before Kheam Hock Road",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 5982834587,
+  "lat": 1.4142084,
+  "lon": 103.8730733,
+  "tags": {
+    "asset_ref": "68071",
+    "highway": "bus_stop",
+    "location": "Piccadilly",
+    "name": "Seletar Airport",
+    "route_ref": "NoServices"
+  }
+},
+{
+  "type": "node",
+  "id": 5986758081,
+  "lat": 1.3939696,
+  "lon": 103.7520229,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 6024566285,
+  "lat": 1.4046494,
+  "lon": 103.7893932,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Mandai-Khatib Shuttle"
+  }
+},
+{
+  "type": "node",
+  "id": 6036246597,
+  "lat": 1.3594927,
+  "lon": 103.8301527,
+  "tags": {
+    "asset_ref": "53369",
+    "bench": "yes",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "Sin Ming Avenue",
+    "name": "Opposite Blk 454",
+    "public_transport": "platform",
+    "route_ref": "52;162;162M;410G",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6070535485,
+  "lat": 1.3123964,
+  "lon": 103.8548908,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Farrer Park Station",
+    "operator": "Bus 141"
+  }
+},
+{
+  "type": "node",
+  "id": 6146967960,
+  "lat": 1.3532485,
+  "lon": 103.9454245,
+  "tags": {
+    "description": "KKKL, etc",
+    "highway": "bus_stop",
+    "name": "Tampines Private Companies Bus stop"
+  }
+},
+{
+  "type": "node",
+  "id": 6171680986,
+  "lat": 1.3041822,
+  "lon": 103.9023588,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "KKKL to Kuala Lumpur",
+    "operator": "KKKL"
+  }
+},
+{
+  "type": "node",
+  "id": 6181123754,
+  "lat": 1.3388541,
+  "lon": 103.9821959,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Changi Airport PTB4",
+    "public_transport": "platform"
   }
 }
 
