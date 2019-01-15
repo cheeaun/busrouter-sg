@@ -1,10 +1,11 @@
 const fs = require('fs');
 const got = require('got');
 const { decode } = require('@mapbox/polyline');
+const args = process.argv.splice(process.execArgv.length + 2);
 
 const serviceStops = JSON.parse(fs.readFileSync('data/3/serviceStops.json'));
 
-const TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMsInVzZXJfaWQiOjMsImVtYWlsIjoicHVibGljQXBpUm9sZUBzbGEuZ292LnNnIiwiZm9yZXZlciI6ZmFsc2UsImlzcyI6Imh0dHA6XC9cL29tMi5kZmUub25lbWFwLnNnXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNTMxNDU0ODUxLCJleHAiOjE1MzE4ODY4NTEsIm5iZiI6MTUzMTQ1NDg1MSwianRpIjoiYWFjMTI1MzRlMWI5ZDM0MWUwNjg4NWRmZjlhY2QwMGIifQ.vVhsYedCV6FGBcfh_iDFBgYrsP-TXA8mLEcTtsHIgKk';
+const TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMsInVzZXJfaWQiOjMsImVtYWlsIjoicHVibGljQXBpUm9sZUBzbGEuZ292LnNnIiwiZm9yZXZlciI6ZmFsc2UsImlzcyI6Imh0dHA6XC9cL29tMi5kZmUub25lbWFwLnNnXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNTQ3NDE2MDM4LCJleHAiOjE1NDc4NDgwMzgsIm5iZiI6MTU0NzQxNjAzOCwianRpIjoiYzU0MzY1OTE1N2NjMzNkYWRjNTgwZTNmY2IyNDA0ZWEifQ.xpLEarFjmoKfLcvh3TEsjyUWZgVQWda0AIKupdbyvzc';
 
 (async() => {
 
@@ -12,8 +13,8 @@ let runCount = 1;
 for (let service in serviceStops){
   if (
     fs.existsSync(`data/3/routes/mytransportsg/${service}.json`) ||
-    fs.existsSync(`data/3/routes/towertransitsg/${service}.json`) ||
-    fs.existsSync(`data/3/routes/onemapsg/${service}.json`)){
+    // fs.existsSync(`data/3/routes/towertransitsg/${service}.json`) ||
+    (args[0] !== '--override' && fs.existsSync(`data/3/routes/onemapsg/${service}.json`))){
     continue;
   }
 

@@ -88,6 +88,35 @@ The scripts are:
 
 Everything else are older versions of the data and being left there for legacy reasons.
 
+When there's a data update, run the scripts in these order:
+
+1. `node tasks/fetchServices`
+2. `node tasks/fetchServiceStops`
+3. Stops data
+	1. `node tasks/fetchStopsOneMap`
+	2. `node tasks/fetchStopsOverpass`
+	3. `node tasks/repositionStops`
+	4. `node tasks/repositionStopLabels`
+4. Routes data
+	1. `node tasks/fetchRoutesMyTransport --override`
+		- Mutates/updates the routes data because of `override` option
+		- Doesn't delete services/routes that are gone
+	2. `node tasks/fetchRoutesOneMapSG --override`
+		- Mutates/updates the routes data because of `override` option
+		- Doesn't delete services/routes that are gone
+5. First/last bus data
+	1. `node tasks/fetchRoutesLTA`
+6. GeoJSON data (not used in web app)
+	1. `node tasks/geojsonStops`
+	2. `node tasks/geojsonRoutes`
+7. Finalized data (used in web app)
+	1. `node tasks/fetchAbbrs`
+		- To be used for next two scripts.
+	2. `node tasks/generateStops`
+	3. `node tasks/generateServices`
+	4. `node tasks/generateRoutesPolyline`
+	5. `node tasks/generateFirstLast`
+
 The scripts for the web app:
 
 - `npm start` - start server for development
@@ -96,7 +125,7 @@ The scripts for the web app:
 📜 License
 ---
 
-Data © [LTA](http://www.mytransport.sg/content/mytransport/home/dataMall/termOfUse.html). Everything else: [MIT](http://cheeaun.mit-license.org/)
+Data © [LTA](http://www.mytransport.sg/content/mytransport/home/dataMall/termOfUse.html) © [OneMap](https://www.onemap.sg/legal/termsofuse.html) © [OSM contributors](https://www.openstreetmap.org/copyright). Everything else: [MIT](http://cheeaun.mit-license.org/)
 
 🎤 Feedback
 ---

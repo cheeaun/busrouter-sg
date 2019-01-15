@@ -1,7 +1,7 @@
 const fs = require('fs');
 const got = require('got');
+const args = process.argv.splice(process.execArgv.length + 2);
 
-const stops = JSON.parse(fs.readFileSync('data/3/stops2.json'));
 const serviceStops = JSON.parse(fs.readFileSync('data/3/serviceStops.json'));
 
 (async() => {
@@ -9,6 +9,7 @@ const serviceStops = JSON.parse(fs.readFileSync('data/3/serviceStops.json'));
 let runCount = 1;
 for (let service in serviceStops){
   try {
+    if (args[0] === '--override') throw 'OverrideException';
     fs.accessSync(`data/3/routes/mytransportsg/${service}.json`);
   } catch (e) {
     console.log(`${runCount++})  🚌  ${service}`);
