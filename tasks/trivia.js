@@ -19,15 +19,17 @@ trivias.push(`There are ${services.length} bus services in Singapore.`);
 // --------------------
 
 let lastCount = 0;
-let serviceWithMostStops;
+let servicesWithMostStops;
 Object.keys(serviceStops).forEach(service => {
   const count = new Set(serviceStops[service].flat()).size;
   if (count > lastCount){
     lastCount = count;
-    serviceWithMostStops = service;
+    servicesWithMostStops = [service];
+  } else if (count === lastCount){
+    servicesWithMostStops.push(service);
   }
 });
-trivias.push(`Bus service with most number of stops is ${serviceWithMostStops}. It passes through ${lastCount} stops.`);
+trivias.push(`Bus service(s) with most number of stops: ${servicesWithMostStops}. Passes through ${lastCount} stops.`);
 
 // --------------------
 
@@ -41,15 +43,17 @@ Object.keys(serviceStops).forEach(service => {
 });
 
 lastCount = 0;
-let stopWithMostServices;
+let stopsWithMostServices;
 stopsData.forEach((v, k) => {
   const count = v.size;
   if (count > lastCount){
     lastCount = count;
-    stopWithMostServices = k;
+    stopsWithMostServices = [k];
+  } else if (count === lastCount){
+    stopsWithMostServices.push(k);
   }
 });
-trivias.push(`Bus stop with most number of services is ${stopWithMostServices} (${stops[stopWithMostServices].name}). It serves ${lastCount} bus services.`);
+trivias.push(`Bus stop(s) with most number of services: ${stopsWithMostServices.map(s => `${s} (${stops[s].name})`)}. Serves ${lastCount} bus services.`);
 
 // --------------------
 

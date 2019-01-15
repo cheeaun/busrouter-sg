@@ -15,7 +15,7 @@ services.forEach(service => {
   const { no } = service;
   const routes =
     readFile(`data/3/routes/mytransportsg/${no}.json`) ||
-    readFile(`data/3/routes/towertransitsg/${no}.json`) ||
+    // readFile(`data/3/routes/towertransitsg/${no}.json`) ||
     readFile(`data/3/routes/onemapsg/${no}.json`) ||
     readFile(`data/3/routes/mapbox/${no}.json`);
   routes.forEach((route, i) => {

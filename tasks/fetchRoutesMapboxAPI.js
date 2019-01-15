@@ -1,5 +1,6 @@
 const fs = require('fs');
 const got = require('got');
+const args = process.argv.splice(process.execArgv.length + 2);
 
 const stops = JSON.parse(fs.readFileSync('data/3/stops2.json'));
 const serviceStops = JSON.parse(fs.readFileSync('data/3/serviceStops.json'));
@@ -69,9 +70,9 @@ let runCount = 1;
 for (let service in serviceStops){
   if (
     fs.existsSync(`data/3/routes/mytransportsg/${service}.json`) ||
-    fs.existsSync(`data/3/routes/towertransitsg/${service}.json`) ||
+    // fs.existsSync(`data/3/routes/towertransitsg/${service}.json`) ||
     fs.existsSync(`data/3/routes/onemapsg/${service}.json`) ||
-    fs.existsSync(`data/3/routes/mapbox/${service}.json`)){
+    (args[0] !== '--override' && fs.existsSync(`data/3/routes/mapbox/${service}.json`))){
     continue;
   }
 
