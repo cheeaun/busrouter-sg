@@ -132,7 +132,7 @@ class ArrivalTimes extends Component {
         if (stop) {
           const [lng, lat, name] = stop;
           document.title = `Bus arrival times for ${code + ' - ' + name}`;
-          document.querySelectorAll('[name="apple-mobile-web-app-title"]')[0].setAttribute("content", name);
+          document.querySelector('[name="apple-mobile-web-app-title"]').setAttribute('content', name);
           this.setState({
             busStop: { code, name, lat, lng },
           });
