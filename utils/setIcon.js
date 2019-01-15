@@ -1,8 +1,8 @@
-export default (busNumber) => {
+export default (iconText) => {
   let iconSize = 512;
-  let iconBackgroundColor = "#95CF29";
+  let iconBackgroundColor = "#F01B48";
   let iconPrimaryColor = "#FFFFFF";
-  let iconTextFont = `bold ${Math.round(iconSize * 0.4)}px -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Open Sans\", \"Helvetica Neue\", sans-serif`;
+  let iconTextFont = `bold ${Math.round(iconSize * 0.2)}px -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Open Sans\", \"Helvetica Neue\", sans-serif`;
 
   // canvas handles
   let c = document.createElement('canvas');
@@ -32,15 +32,14 @@ export default (busNumber) => {
   ctx.lineTo(iconInsetDistance - arcRadius, iconInsetDistance);
   ctx.fill();
 
-  // draw the text
-  // text is slightly offset to the bottom, unfortunately advanced text metrics for measuring height is still unavailable
+  // draw the icon text
+  // bus stop codes are consistently 5-characters wide
   ctx.font = iconTextFont;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.fillStyle = iconPrimaryColor;
-  ctx.fillText(busNumber, (c.width / 2), (c.height / 2));
+  ctx.fillText(iconText, (c.width / 2), (c.height / 2));
 
-  // replace existing apple-touch-icon, assuming it already exists
-  // this writes directly to the DOM (against react guidelines)
+  // replace existing apple-touch-icon
   document.querySelectorAll('[rel="apple-touch-icon"]')[0].setAttribute("href", c.toDataURL());
 };

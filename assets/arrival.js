@@ -174,7 +174,6 @@ class ArrivalTimes extends Component {
       const index = pinnedServices.indexOf(no);
       pinnedServices.splice(index, 1);
     } else {
-      setIcon(no);
       pinnedServices.push(no);
     }
     this.setState({ pinnedServices });
@@ -200,6 +199,7 @@ class ArrivalTimes extends Component {
     const { code, name, lat, lng } = busStop;
     if (services) services.sort(sortServicesPinned(pinnedServices));
 
+    setIcon(code);
     return (
       <div>
         <div id="bus-stop-map">
