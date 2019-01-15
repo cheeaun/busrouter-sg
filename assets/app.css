@@ -1,4 +1,4 @@
-@import 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css';
+@import 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css';
 
 html, body {
   max-width: 100%;
@@ -54,15 +54,18 @@ a:active {
 }
 .mapboxgl-ctrl-group {
   background-color: rgba(255,255,255,.8);
+  border-radius: 123123px;
 }
 @supports (backdrop-filter: blur(10px)){
   .mapboxgl-ctrl-group {
-    background-color: rgba(255,255,255,.5);
+    background-color: rgba(255,255,255,.7);
     backdrop-filter: blur(10px) saturate(3);
   }
 }
 .mapboxgl-ctrl-group button {
   opacity: .8;
+  width: 36px;
+  height: 36px;
 }
 .mapboxgl-ctrl-attrib.mapboxgl-compact {
   min-height: 24px;
@@ -230,6 +233,20 @@ a:active {
   color: #999;
   text-transform: uppercase;
 }
+#stop-popover h2 {
+  margin-top: 0;
+  margin-bottom: .5em;
+}
+#stop-popover h2 a {
+  color: inherit;
+  text-decoration: none;
+}
+#stop-popover h2 a:hover {
+  text-decoration: underline;
+}
+#stop-popover h2 img.new-window {
+  filter: invert(1) opacity(.4);
+}
 #stop-popover h3,
 #between-popover h3 {
   font-size: .7em;
@@ -255,6 +272,7 @@ a:active {
 }
 #stop-popover .popover-scroll {
   padding-bottom: 0;
+  padding-top: 0;
 }
 #between-popover .popover-scroll {
   padding-top: 0;
@@ -589,7 +607,7 @@ a:active {
   padding: 14px;
   pointer-events: none;
 }
-.popover-list li a {
+.popover-list li:not(.carbon-li) a {
   padding: 14px;
   border-bottom: 1px solid rgba(0,0,0,.1);
   display: flex;
@@ -598,7 +616,7 @@ a:active {
   color: #000;
 }
 @media (hover: hover) {
-  .popover-list li a:hover {
+  .popover-list li:not(.carbon-li) a:hover {
     background-color: rgba(255,255,255,.6);
   }
 }
@@ -909,6 +927,93 @@ a.service-tag:hover {
   }
   .mapboxgl-ctrl-top-right .mapboxgl-ctrl:first-child {
     margin: 0 !important;
+  }
+}
+
+/* Geolocation */
+
+.mapboxgl-ctrl-custom-geolocate {
+  color: #333;
+  transition: color .3s;
+}
+.mapboxgl-ctrl-custom-geolocate.loading {
+  color: #007aff;
+  pointer-events: none;
+  animation: glowing infinite alternate 1s linear both;
+}
+.mapboxgl-ctrl-custom-geolocate.active {
+  color: #007aff;
+}
+.mapboxgl-ctrl-custom-geolocate svg {
+  vertical-align: middle;
+  fill: currentColor;
+}
+.user-location {
+  perspective: 20px;
+  pointer-events: none;
+}
+.user-location-dot {
+  width: 20px;
+  height: 20px;
+  padding: 4px;
+  overflow: hidden;
+  background-color: #fff;
+  border-radius: 123123px;
+  box-shadow: 0 0 15px rgba(0,0,0,.3);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+.user-location-dot:after {
+  content: '';
+  display: block;
+  width: 12px;
+  height: 12px;
+  overflow: hidden;
+  background-color: #007aff;
+  border-radius: 123123px;
+  animation: wobble 1.5s ease-out infinite alternate both;
+}
+@keyframes wobble {
+  0% {
+    transform: scale(1);
+  }
+  70% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1.2);
+  }
+}
+.user-location-compass {
+  width: 6px;
+  height: 20px;
+  background: linear-gradient(rgba(0, 122, 255, 0), #007aff);
+  position: absolute;
+  left: -3px;
+  bottom: 0;
+  transform-origin: bottom center;
+  transform: rotateX(-60deg);
+  transition: transform .3s;
+}
+.user-location-accuracy {
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  background-color: #007aff;
+  border-radius: 123123px;
+  position: absolute;
+  margin: -10px 0 0 -10px;
+  animation: pulse 2s 1s ease-out infinite both;
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: .2;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
   }
 }
 

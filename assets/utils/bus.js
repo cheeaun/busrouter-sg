@@ -7,7 +7,10 @@ export const timeDisplay = (ms) => {
 export const sortServices = (a, b) => {
   const a0 = a.toString()[0];
   const b0 = b.toString()[0];
-  if (a0 !== b0) return a.toString()[0] - b.toString()[0];
+  if (isNaN(a0) && !isNaN(b0)) return 1;
+  if (!isNaN(a0) && isNaN(b0)) return -1;
+  const result = a0 - b0;
+  if (result !== 0) return result;
   return parseInt(a, 10) - parseInt(b, 10);
 };
 

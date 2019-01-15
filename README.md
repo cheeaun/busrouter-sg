@@ -58,6 +58,10 @@ The scripts are:
 	- OpenStreetMap: `node tasks/fetchStopsOverPass` - data queried via OverPass API, generated with [Overpass Turbo](https://overpass-turbo.eu/)
 	- `node tasks/repositionStops` - Generates `stops2.json` with additional stop names and (hopefully) more accurate coordinates
 	- `node tasks/repositionStopLabels` - Generates `stops3.json` with adjusted label positionings.
+- `node tasks/fetchRoutesLTA`
+	- Fetches all routes with stop information for approximate arrival times for first and last buses.
+	- The approximate arrival times are for *every single stop*. They are not the first bus that departs from first stop or last bus towards last stop. Every. Single. Stop.
+	- Generates `routes.lta.json`, a mapping of all stops to services with approximate arrival times for first and last buses.
 - For generating GeoJSON files
 	- `node tasks/geojsonRoutes`
 	- `node tasks/geojsonStops`
@@ -74,6 +78,9 @@ The scripts are:
 	- `node tasks/generateRoutesPolyline`
 		- Line coordinates are lossily compressed with [Encoded Polyline Algorithm Format](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
 		- Generates `routes.polyline.json` for usage in web app
+	- `node tasks/generateFirstLast`
+		- Approximate arrival times for first and last buses for every service in every single stop
+		- Generates `firstlast.final.json` for usage in web app
 - For fun
 	- `node tasks/trivia` - Trivia questions with answers
 

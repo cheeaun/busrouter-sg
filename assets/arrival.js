@@ -1,7 +1,7 @@
 import { h, render, Component } from 'preact';
-import { timeDisplay, sortServicesPinned } from '../utils/bus';
 import { MAPBOX_ACCESS_TOKEN } from './config';
-import fetchCache from '../utils/fetchCache';
+import { timeDisplay, sortServicesPinned } from './utils/bus';
+import fetchCache from './utils/fetchCache';
 import Ad from './ad';
 import setIcon from '../utils/setIcon';
 
@@ -34,20 +34,21 @@ const WheelChair = () => (
 );
 
 const Bus = (props) => {
-  const { duration_ms, type, load, feature, left } = props;
+  const { duration_ms, type, load, feature, _ghost, _id } = props;
   const busImage = BUSES[type.toLowerCase()];
   const px = (duration_ms / 1000 / 60) * (duration_ms > 0 ? 10 : 2.5);
   return (
-    <span class={`bus ${left ? 'left' : ''}`} style={{ transform: `translateX(${px}px)` }}>
+    <span id={_id ? `bus-${_id}` : null} class={`bus ${_ghost ? 'ghost' : ''}`} style={{ transform: `translateX(${px.toFixed(1)}px)` }}>
       <img {...busImage} /><br />
-      <span class={`time-${load.toLowerCase()}`}>{timeDisplay(duration_ms)}</span>
+      <span class={`time time-${load.toLowerCase()}`}>{timeDisplay(duration_ms)}</span>
       {feature.toLowerCase() === 'wab' && <WheelChair />}
     </span>
   );
 };
 
-let BUSID = 0;
+let BUSID = 1;
 const busID = () => BUSID++;
+const isSameBus = (b1, b2) => b1.feature === b2.feature && b1.type === b2.type;
 
 class BusLane extends Component {
   constructor(props) {
@@ -61,25 +62,36 @@ class BusLane extends Component {
     };
   }
   componentWillReceiveProps(nextProps) {
-    const buses = this.state.buses.filter(b => !b.left);
-    const { buses: nextBuses } = nextProps;
-    const nBuses = nextBuses.filter(b => typeof b.duration_ms === 'number');
-    if (buses[0].duration_ms <= 30 * 1000 && nBuses[0].duration_ms > 60 * 1000) {
-      nBuses.forEach((b, i) => {
-        const prevBus = buses[i + 1];
-        b._id = (prevBus && prevBus._id) || busID();
-      });
-      const ghostBus = buses[0];
-      ghostBus.left = true;
-      nBuses.unshift(ghostBus);
-      // console.log(nBuses);
-    } else {
-      nBuses.forEach((b, i) => {
-        const prevBus = buses[i];
-        b._id = (prevBus && prevBus._id) || busID();
+    const nextBuses = nextProps.buses.filter(nb => typeof nb.duration_ms === 'number').map(nb => {
+      delete nb._id;
+      return nb;
+    });
+    if (this.props.no === nextProps.no) {
+      const buses = this.props.buses.filter(b => !b._ghost); // Remove previously ghosted buses
+      buses.forEach((b, i) => {
+        // Next bus requirements/checks
+        // - Within range of duration_ms of current bus
+        // - Not assigned with ID (possibly from previous loop execution)
+        // - Same bus type as current bus
+        const latestNextBus = nextBuses.find(nb => {
+          if (nb._id || !isSameBus(b, nb)) return false;
+          const d = (nb.duration_ms - b.duration_ms)/1000/60;
+          return d > -5 && d < 3;
+        });
+        if (latestNextBus) {
+          latestNextBus._id = b._id; // Assign ID for marking
+        } else {
+          // Insert "ghost" bus that will dissapear into thin air
+          b._ghost = true;
+          nextBuses.splice(i, 0, b);
+        }
       });
     }
-    this.setState({ buses: nBuses });
+    // Fill up the left-overs, usually for sudden new next buses
+    nextBuses.forEach(nb => {
+      if (!nb._id) nb._id = busID();
+    });
+    this.setState({ buses: nextBuses });
   }
   render(_, state) {
     return (
@@ -149,6 +161,11 @@ class ArrivalTimes extends Component {
       arrivalsTimeout = setTimeout(() => {
         requestAnimationFrame(this._fetchServices);
       }, 15 * 1000); // 15 seconds
+    }).catch(e => {
+      console.error(e);
+      arrivalsTimeout = setTimeout(() => {
+        requestAnimationFrame(this._fetchServices);
+      }, 3 * 1000); // 3 seconds
     });
   }
   _togglePin = (no) => {
@@ -207,7 +224,7 @@ class ArrivalTimes extends Component {
                         this._togglePin(no);
                       }}>{no}</th>
                       <td class="bus-lane-cell">
-                        <BusLane buses={[next, next2, next3]} />
+                        <BusLane no={no} buses={[next, next2, next3]} />
                       </td>
                     </tr>
                   );

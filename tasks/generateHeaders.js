@@ -38,4 +38,17 @@ files.forEach(f => {
   }
 });
 
+const firstLastFiles = [
+  /^firstlast\..+js$/,
+  /^firstlast\..+css$/,
+];
+
+content += '\n/bus-first-last/*';
+
+files.forEach(f => {
+  if (firstLastFiles.some(r => r.test(f))){
+    content += `\n  Link: </${f}>; rel=preload; as=${type(f)}`;
+  }
+});
+
 fs.writeFileSync('dist/_headers', content);

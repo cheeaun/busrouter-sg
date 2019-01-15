@@ -3,11 +3,19 @@ import { toGeoJSON } from '@mapbox/polyline';
 import Fuse from 'fuse.js';
 import intersect from 'just-intersect';
 import cheapRuler from 'cheap-ruler';
-import { encode, decode } from '../utils/specialID';
-import { timeDisplay, sortServices } from '../utils/bus';
-import fetchCache from '../utils/fetchCache';
-import { MAPBOX_ACCESS_TOKEN } from './config';
+
+import { MAPBOX_ACCESS_TOKEN, MAPTILER_KEY } from './config';
+import { encode, decode } from './utils/specialID';
+import { timeDisplay, sortServices } from './utils/bus';
+import fetchCache from './utils/fetchCache';
+import getRoute from './utils/getRoute';
+import getDistance from './utils/getDistance';
+import getWalkingMinutes from './utils/getWalkingMinutes';
+
 import Ad from './ad';
+import BusServicesArrival from './components/BusServicesArrival';
+import GeolocateControl from './components/GeolocateControl';
+import BetweenRoutes from './components/BetweenRoutes';
 
 import stopImagePath from './images/stop.png';
 import stopEndImagePath from './images/stop-end.png';
@@ -25,11 +33,21 @@ const $map = document.getElementById('map');
 const STORE = {};
 const BREAKPOINT = () => window.innerWidth > 640;
 const supportsHover = window.matchMedia && window.matchMedia('(hover: hover)').matches;
+const supportsPromise = 'Promise' in window;
 const ruler = cheapRuler(1.3);
 
 const $logo = document.getElementById('logo');
 const $about = document.getElementById('about');
 const $closeAbout = document.getElementById('close-about');
+
+const redirectToOldSite = () => {
+  const redirect = confirm('Looks like your browser is a little old. Redirecting you to the older version of BusRouter SG.');
+  if (redirect) location.href = 'https://v1.busrouter.sg/';
+};
+
+if (!supportsPromise) {
+  redirectToOldSite();
+}
 
 $closeAbout.onclick = $logo.onclick = () => {
   $about.hidden = !$about.hidden;
@@ -41,181 +59,6 @@ try {
   const intro = localStorage.getItem('busroutersg.about');
   if (intro !== 'true') $about.hidden = false;
 } catch (e) { }
-
-const getRoute = () => {
-  const path = location.hash.replace(/^#/, '') || '/';
-  if (path === '/') return { page: 'home' };
-  let [_, page, value, subpage] = path.match(/(service|stop|between)s?\/([^\/]+)\/?([^\/]+)?/) || [];
-  return { page, value, path, subpage };
-};
-
-class BusServicesArrival extends Component {
-  state = {
-    isLoading: false,
-    servicesArrivals: {},
-  }
-  componentDidMount() {
-    this._fetchServices();
-    const { map } = this.props;
-    if (!map.getSource('buses')){
-      map.addSource('buses', {
-        type: 'geojson',
-        tolerance: 10,
-        data: {
-          type: 'FeatureCollection',
-          features: [],
-        },
-      });
-      map.addLayer({
-        id: 'buses',
-        type: 'circle',
-        source: 'buses',
-        minzoom: 14,
-        paint: {
-          'circle-stroke-width': 2,
-          'circle-stroke-color': '#fff',
-          'circle-radius': [
-            'interpolate', ['linear'], ['zoom'],
-            15, 2,
-            16, 4
-          ],
-          'circle-color': '#00454d',
-          'circle-opacity': .8,
-        },
-      });
-      map.addLayer({
-        id: 'buses-label',
-        type: 'symbol',
-        source: 'buses',
-        minzoom: 14,
-        layout: {
-          'text-field': ['get', 'number'],
-          'text-size': 10,
-          'text-anchor': 'left',
-          'text-offset': [.6, 0],
-          'text-font': ['DIN Offc Pro Medium', 'Open Sans Semibold', 'Arial Unicode MS Bold'],
-        },
-        paint: {
-          'text-color': '#00454d',
-          'text-halo-color': 'rgba(255,255,255,.75)',
-          'text-halo-width': 1,
-          'text-opacity': .8,
-        },
-      });
-    }
-  }
-  componentWillUnmount() {
-    this._removeBuses();
-  }
-  _removeBuses = () => {
-    const { map } = this.props;
-    map.getSource('buses').setData({
-      type: 'FeatureCollection',
-      features: [],
-    });
-  }
-  componentDidUpdate(prevProps) {
-    if (prevProps.id !== this.props.id) {
-      // Hacky fix since Preact doesn't fire componentWillUnmount
-      this._removeBuses();
-      clearTimeout(this._arrivalsTimeout);
-      this.setState({
-        servicesArrivals: {},
-      });
-      this._fetchServices();
-    }
-  }
-  _arrivalsTimeout = null;
-  _fetchServices = () => {
-    const { id, map } = this.props;
-    if (!id) return;
-    this.setState({ isLoading: true });
-    fetch(`https://arrivelah.busrouter.sg/?id=${id}`).then(res => res.json()).then(results => {
-      const servicesArrivals = {};
-      const { services } = results;
-      services.forEach(service => servicesArrivals[service.no] = service.next.duration_ms);
-      this.setState({
-        isLoading: false,
-        servicesArrivals,
-      });
-
-      setTimeout(() => {
-        const servicesWithCoords = services.filter(s => s.no && s.next.lat > 0);
-        const pointMargin = 100;
-        const servicesWithFixedCoords = servicesWithCoords.map(s => {
-          const coords = [s.next.lng, s.next.lat];
-          const point = map.project(coords);
-          let shortestDistance = Infinity;
-          let nearestCoords;
-          if (point.x && point.y) {
-            map.queryRenderedFeatures([
-              [point.x - pointMargin, point.y - pointMargin],
-              [point.x + pointMargin, point.y + pointMargin]
-            ]).forEach(f => {
-              if (f.sourceLayer === 'road' && f.layer.type === 'line' && f.properties.class != 'path' && !/(pedestrian|sidewalk|steps)/.test(f.layer.id)) {
-                const nearestPoint = ruler.pointOnLine(f.geometry.coordinates, coords);
-                if (nearestPoint.t) {
-                  const distance = ruler.distance(coords, nearestPoint.point);
-                  if (distance < shortestDistance) {
-                    shortestDistance = distance;
-                    nearestCoords = nearestPoint.point;
-                  }
-                }
-              }
-            });
-            if (nearestCoords && (shortestDistance * 1000 < 10)){ // Only within 10m
-              console.log(`Fixed bus position: ${s.no} - ${(shortestDistance * 1000).toFixed(3)}m`)
-              s.next = {
-                lng: nearestCoords[0],
-                lat: nearestCoords[1]
-              }
-            }
-          }
-          return s;
-        });
-        map.getSource('buses').setData({
-          type: 'FeatureCollection',
-          features: servicesWithFixedCoords.map(s => ({
-            type: 'Feature',
-            id: encode(s.no),
-            properties: {
-              number: s.no,
-            },
-            geometry: {
-              type: 'Point',
-              coordinates: [s.next.lng, s.next.lat],
-            },
-          })),
-        });
-      }, map.loaded() ? 0 : 1000);
-
-      this._arrivalsTimeout = setTimeout(() => {
-        requestAnimationFrame(this._fetchServices);
-      }, 15 * 1000); // 15 seconds
-    });
-  }
-  componentWillUnmount() {
-    clearTimeout(this._arrivalsTimeout);
-  }
-  render(props, state) {
-    const { services } = props;
-    const { isLoading, servicesArrivals } = state;
-    const route = getRoute();
-    return (
-      <p class={`services-list ${isLoading ? 'loading' : ''}`}>
-        {services.sort(sortServices).map(service => ([
-          <a
-            href={`#/services/${service}`}
-            class={`service-tag ${route.page === 'service' && service === route.value ? 'current' : ''}`}>
-            {service}
-            {servicesArrivals[service] && <span>{timeDisplay(servicesArrivals[service])}</span>}
-          </a>,
-          ' '
-        ]))}
-      </p>
-    );
-  }
-}
 
 let raqST;
 const raqScrollTop = () => {
@@ -233,55 +76,6 @@ function showStopTooltip(data) {
 }
 function hideStopTooltip() {
   $tooltip.classList.remove('show');
-}
-
-function getWalkingMinutes(distance) { // meters
-  const walkingSpeed = 1.4; // meter/second
-  return Math.ceil(distance / walkingSpeed / 60);
-}
-
-function getDistance(x1, y1, x2, y2) {
-  let xs = x2 - x1;
-  let ys = y2 - y1;
-  xs *= xs;
-  ys *= ys;
-  return Math.sqrt(xs + ys);
-};
-
-class BetweenRoutes extends Component {
-  render(props, state) {
-    const { results, nearbyStart, nearbyEnd, onClickRoute } = props;
-    if (!results.length) {
-      return (<div class="between-block between-nada">😔 No routes available.</div>);
-    }
-
-    return (
-      <div class="between-block">
-        {results.map(result => {
-          const { stopsBetween } = result;
-          return (
-            <div class={`between-item ${nearbyStart ? 'nearby-start' : ''}  ${nearbyEnd ? 'nearby-end' : ''}`} onClick={(e) => onClickRoute(e, result)}>
-              <div class="between-inner">
-                <div class={`between-services ${result.endService ? '' : 'full'}`}>
-                  <span class="start">{result.startService}</span>
-                  {!!result.endService && <span class="end">{result.endService}</span>}
-                </div>
-                <div class={`between-stops ${stopsBetween.length ? '' : 'nada'}`}>
-                  {result.startStop && <span class="start">{result.startStop.number}</span>}
-                  <span class={`betweens betweens-${Math.min(6, stopsBetween.length)}`}>
-                    {!!stopsBetween.length && (
-                      stopsBetween.length === 1 ? stopsBetween[0] : `${stopsBetween.length} stops`
-                    )}
-                  </span>
-                  {result.endStop && <span class="end">{result.endStop.number}</span>}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
 }
 
 window.requestIdleCallback = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
@@ -314,7 +108,7 @@ class App extends Component {
     const mapboxScriptP = new Promise((resolve, reject) => {
       const s = document.createElement('script');
       s.onload = resolve;
-      s.src = 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js';
+      s.src = 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js';
       document.getElementsByTagName('head')[0].appendChild(s);
     });
 
@@ -369,15 +163,14 @@ class App extends Component {
     // Init map
     await mapboxScriptP;
     if (!mapboxgl.supported()) {
-      const redirect = confirm('Looks like your browser is a little old. Redirecting you to the older version of BusRouter SG.');
-      if (redirect) location.href = 'https://v1.busrouter.sg/';
+      redirectToOldSite();
     }
 
     mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
     const lowerLat = 1.2, upperLat = 1.48, lowerLong = 103.59, upperLong = 104.05;
     const map = this.map = window._map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v10?optimized=true',
+      style: `https://maps.tilehosting.com/c/9fdb169d-8076-44bb-a5e6-3e48a4604f35/styles/busrouter-sg-1/style.json?key=${MAPTILER_KEY}`,
       renderWorldCopies: false,
       boxZoom: false,
       minZoom: 8,
@@ -386,13 +179,6 @@ class App extends Component {
       pitchWithRotate: false,
       dragRotate: false,
       bounds: [lowerLong, lowerLat, upperLong, upperLat],
-      transformRequest: (url) => {
-        if (/tiles\.mapbox/.test(url)) {
-          return {
-            url: url.replace(/^.*mapbox\.com/i, 'https://busrouter.sg/mapbox-tiles'),
-          };
-        }
-      }
     });
     map.touchZoomRotate.disableRotation();
 
@@ -403,38 +189,16 @@ class App extends Component {
     map.addControl(new mapboxgl.NavigationControl({
       showCompass: false,
     }), 'top-right');
-    map.addControl(new mapboxgl.GeolocateControl({
-      fitBoundsOptions: {
-        maxZoom: 16,
+    map.addControl(new GeolocateControl({
+      offset: () => {
+        if (BREAKPOINT() || !this.state.showStopPopover) return [0, 0];
+        return [0, -this._stopPopover.offsetHeight / 2];
       },
-      positionOptions: {
-        enableHighAccuracy: true,
-      },
-      trackUserLocation: true,
     }));
 
     map.fitBounds([lowerLong, lowerLat, upperLong, upperLat], {
       animate: false,
       padding: BREAKPOINT() ? 120 : { top: 40, bottom: window.innerHeight / 2, left: 40, right: 40 },
-    });
-
-    const loadImage = async (path, name) => {
-      await new Promise((resolve, reject) => {
-        map.loadImage(path, (e, img) => {
-          if (e) reject(e);
-          map.addImage(name, img);
-          resolve();
-        });
-      });
-    };
-
-    const mapboxLoadP = new Promise((resolve, reject) => {
-      map.on('load', () => {
-        Promise.all([
-          loadImage(stopImagePath, 'stop'),
-          loadImage(stopEndImagePath, 'stop-end'),
-        ]).then(resolve);
-      });
     });
 
     map.once('zoomstart', () => {
@@ -451,33 +215,31 @@ class App extends Component {
       console.log(layers);
 
       labelLayerId = layers.find(l => l.type == 'symbol' && l.layout['text-field']).id;
-
-      // Apple Maps colors
-      map.setPaintProperty('background', 'background-color', '#F9F5ED');
-      map.setPaintProperty('water', 'fill-color', '#AEE1F5');
-
-      // Fade out road colors at low zoom levels
-      ['road-trunk', 'road-motorway'].forEach(l => {
-        map.setPaintProperty(l, 'line-opacity', [
-          'interpolate', ['linear'], ['zoom'],
-          10, .5,
-          15, 1
-        ]);
-      });
-
-      // Remove useless layers
-      layers.filter(l => /^(hillshade|ferry|admin)/i.test(l.id)).forEach(l => {
-        map.removeLayer(l.id);
-      });
-
-      // The road shields are quite annoying at low zoom levels
-      map.setLayerZoomRange('road-shields-black', 12, 24);
-
-      // Make all other airport symbols insignificant except SIN
-      map.setFilter('airport-label', ['==', 'ref', 'SIN']);
     });
 
-    await mapboxLoadP;
+    const [_, stopImage, stopEndImage] = await Promise.all([
+      new Promise((resolve, reject) => {
+        map.on('load', resolve);
+      }),
+      new Promise((resolve, reject) => {
+        map.loadImage(stopImagePath, (e, img) => e ? reject(e) : resolve(img));
+      }),
+      new Promise((resolve, reject) => {
+        map.loadImage(stopEndImagePath, (e, img) => e ? reject(e) : resolve(img));
+      }),
+    ]);
+
+    if (window.performance) {
+      const timeSincePageLoad = Math.round(performance.now());
+      gtag('event', 'timing_complete', {
+        name: 'load',
+        value: timeSincePageLoad,
+        event_category: 'Map',
+      });
+    }
+
+    map.addImage('stop', stopImage);
+    map.addImage('stop-end', stopEndImage)
 
     map.addSource('stops', {
       type: 'geojson',
@@ -518,9 +280,9 @@ class App extends Component {
         ],
         'text-justify': ['case', ['boolean', ['get', 'left'], false], 'right', 'left'],
         'text-anchor': ['case', ['boolean', ['get', 'left'], false], 'top-right', 'top-left'],
-        'text-offset': ['case', ['boolean', ['get', 'left'], false], ['literal', [-1, -.6]], ['literal', [1, -.6]]],
+        'text-offset': ['case', ['boolean', ['get', 'left'], false], ['literal', [-1, -.5]], ['literal', [1, -.5]]],
         'text-padding': .5,
-        'text-font': ['DIN Offc Pro Medium', 'Open Sans Semibold', 'Arial Unicode MS Bold'],
+        'text-font': ['Roboto Medium', 'Noto Sans Regular'],
       },
       paint: {
         'text-color': '#f01b48',
@@ -555,7 +317,7 @@ class App extends Component {
         ],
         ...stopText.paint,
       },
-    }, 'place-neighbourhood');
+    }, 'place_city');
 
     map.addLayer({
       id: 'stops',
@@ -591,6 +353,9 @@ class App extends Component {
         mapCanvas.style.cursor = 'pointer';
       });
       map.on('click', (e) => {
+        if (e.originalEvent.altKey) {
+          console.log(e.lngLat);
+        }
         const { point } = e;
         const features = map.queryRenderedFeatures(point, { layers: ['stops', 'stops-icon', 'stops-highlight'] });
         if (features.length) {
@@ -686,8 +451,8 @@ class App extends Component {
           16, ['concat', ['get', 'number'], '\n', ['get', 'name']]
         ],
         'text-offset': ['case', ['==', ['get', 'type'], 'end'],
-          ['case', ['boolean', ['get', 'left'], false], ['literal', [-1, -1.8]], ['literal', [1, -1.8]]],
-          ['case', ['boolean', ['get', 'left'], false], ['literal', [-1, -.6]], ['literal', [1, -.6]]]
+          ['case', ['boolean', ['get', 'left'], false], ['literal', [-1, -1.5]], ['literal', [1, -1.5]]],
+          ['case', ['boolean', ['get', 'left'], false], ['literal', [-1, -.5]], ['literal', [1, -.5]]]
         ],
       },
       paint: stopText.paint,
@@ -800,7 +565,8 @@ class App extends Component {
         'symbol-placement': 'line',
         'symbol-spacing': 100,
         'text-field': '→',
-        'text-size': 26,
+        'text-size': 16,
+        'text-font': ['Roboto Medium', 'Noto Sans Regular'],
         'text-allow-overlap': true,
         'text-ignore-placement': true,
         'text-keep-upright': false,
@@ -888,7 +654,7 @@ class App extends Component {
       layout: {
         'symbol-placement': 'line',
         'symbol-spacing': 100,
-        'text-font': ['DIN Offc Pro Medium', 'Open Sans Semibold', 'Arial Unicode MS Bold'],
+        'text-font': ['Roboto Medium', 'Noto Sans Regular'],
         'text-field': '{service}',
         'text-size': 12,
         'text-rotation-alignment': 'viewport',
@@ -1047,7 +813,7 @@ class App extends Component {
         'symbol-placement': 'line',
         'symbol-spacing': 100,
         'text-field': '→',
-        'text-size': 26,
+        'text-size': 16,
         'text-allow-overlap': true,
         'text-ignore-placement': true,
         'text-keep-upright': false,
@@ -1254,8 +1020,10 @@ class App extends Component {
     });
   }
   _hideStopPopover = (e) => {
-    // if (this.state.route.page === 'stop') return;
-    if (e) e.preventDefault();
+    const { page, subpage } = this.state.route;
+    if (e && (page !== 'stop' || subpage === 'routes')) {
+      e.preventDefault();
+    }
     const map = this.map;
     let { number } = this.state.showStopPopover;
     number = number || this.state.prevStopNumber;
@@ -1275,12 +1043,6 @@ class App extends Component {
     }
     this.setState({
       showStopPopover: false,
-    });
-    // Leftovers that should be handled by <BusServicesArrival/>
-    const source = map.getSource('buses');
-    if (source) source.setData({
-      type: 'FeatureCollection',
-      features: [],
     });
   }
   _zoomToStop = () => {
@@ -1945,7 +1707,9 @@ class App extends Component {
             <button type="button" onclick={this._handleSearchClose}>Cancel</button>
           </div>
           <ul class={`popover-list ${services.length || searching ? '' : 'loading'} ${searching ? 'searching' : ''}`} ref={c => this._servicesList = c} onScroll={this._handleServicesScroll}>
-            {(!!services.length && showAd) && <Ad key="ad" />}
+            <li class="carbon-li" hidden={!services.length || !showAd}>
+              {services.length && showAd && <Ad key="ad" />}
+            </li>
             {services.length ? (
               (expandedSearchOnce ? services : services.slice(0, 10)).map(s => (
                 <li key={s.number}>
@@ -2028,9 +1792,9 @@ class App extends Component {
             <a href="#/" onClick={this._hideStopPopover} class="popover-close">&times;</a>,
             <header>
               <h1 onClick={this._zoomToStop}><b class="stop-tag">{showStopPopover.number}</b> {showStopPopover.name}</h1>
-              <h2>{showStopPopover.services.length} service{showStopPopover.services.length == 1 ? '' : 's'}</h2>
             </header>,
             <div class="popover-scroll">
+              <h2>{showStopPopover.services.length} service{showStopPopover.services.length == 1 ? '' : 's'} &middot; <a href={`/bus-first-last/#${showStopPopover.number}`} target="_blank">First/last bus <img src={openNewWindowImagePath} width="12" height="12" alt="" class="new-window" /></a></h2>
               <BusServicesArrival map={this.map} id={showStopPopover.number} services={showStopPopover.services} />
             </div>,
             <div class="popover-footer">
@@ -2069,6 +1833,15 @@ render(<App />, document.getElementById('app'));
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('../service-worker.js');
+  });
+}
+
+if (matchMedia('(display-mode: standalone)').matches || 'standalone' in navigator) {
+  gtag('event', 'pwa_load', {
+    event_category: 'PWA',
+    event_label: 'standalone',
+    value: true,
+    non_interaction: true,
   });
 }
 

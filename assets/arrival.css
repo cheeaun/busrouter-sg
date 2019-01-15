@@ -90,8 +90,12 @@ h1 {
 }
 h1 b {
   margin-top: 5px;
-  display: block;
   font-size: 1.35em;
+  display: flex;
+  align-items: center;
+}
+h1 b .stop-tag {
+  margin-right: 1ex;
 }
 table {
   text-align: left;
@@ -187,6 +191,9 @@ footer {
   background-color: firebrick;
 }
 
+.time {
+  display: inline-block;
+}
 .time-sea {
   color: green;
 }
@@ -256,36 +263,56 @@ footer {
   font-size: 10px;
   display: inline-block;
   transition: all 1s;
-  z-index: 3;
   filter: drop-shadow(1px 0 0 #fff) drop-shadow(1px -1px #fff);
+}
+
+.bus-lane .bus > * {
   animation: show 3s both;
 }
 @keyframes show {
   0% {
-    margin-left: 12px;
+    transform: translateX(12px);
     opacity: 0;
   }
   100% {
-    margin-left: 0;
+    transform: translateX(0px);
     opacity: 1;
   }
 }
-.bus-lane .bus.left {
-  animation: left 3s both;
+
+.bus-lane > .bus.ghost:first-child > * {
+  animation: ghosting 3s both;
 }
-@keyframes left {
+@keyframes ghosting {
   100% {
-    margin-left: -12px;
+    transform: translateX(-12px);
     opacity: 0;
   }
 }
-.bus-lane .bus + .bus {
-  opacity: .75;
+.bus-lane .bus ~ .bus.ghost > * {
+  animation: ghosting2 1.5s both;
+}
+@keyframes ghosting2 {
+  100% {
+    transform: scale(.6);
+    opacity: 0;
+  }
+}
+
+.bus-lane .bus:not(.ghost) {
+  z-index: 3;
+}
+.bus-lane .bus:not(.ghost) ~ .bus:not(.ghost) {
   z-index: 2;
 }
-.bus-lane .bus + .bus + .bus {
-  opacity: .5;
+.bus-lane .bus:not(.ghost) ~ .bus:not(.ghost) > * {
+  filter: opacity(.75);
+}
+.bus-lane .bus:not(.ghost) ~ .bus:not(.ghost) ~ .bus:not(.ghost) {
   z-index: 1;
+}
+.bus-lane .bus:not(.ghost) ~ .bus:not(.ghost) ~ .bus:not(.ghost) > * {
+  filter: opacity(.5);
 }
 .bus-lane .bus,
 .bus-lane .bus img {
