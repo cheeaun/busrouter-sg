@@ -898,7 +898,7 @@ class App extends Component {
     const { services } = this.state;
     switch (e.key.toLowerCase()) {
       case 'enter': {
-        const link = this._servicesList.querySelector('li a');
+        const link = this._servicesList.querySelector('li a[href^="#"]');
         if (link) {
           this._searchField.blur();
           link.click();
