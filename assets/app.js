@@ -231,9 +231,10 @@ class App extends Component {
 
     if (window.performance) {
       const timeSincePageLoad = Math.round(performance.now());
-      gtag('event', 'map_complete', {
-        'name': 'load',
-        'value': timeSincePageLoad,
+      gtag('event', 'timing_complete', {
+        name: 'load',
+        value: timeSincePageLoad,
+        event_category: 'Map',
       });
     }
 
