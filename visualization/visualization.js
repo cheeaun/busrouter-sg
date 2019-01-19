@@ -1,7 +1,12 @@
 import { sortServices } from '../assets/utils/bus';
+import fetchCache from '../assets/utils/fetchCache';
 import { MAPBOX_ACCESS_TOKEN } from '../assets/config';
 import routesJSONPath from './data/routes.json';
 import stops3DJSONPath from './data/stops.3d.json';
+
+const CACHE_TIME = 7 * 24 * 60; // 1 week
+const stopsFetch = fetchCache(stops3DJSONPath, CACHE_TIME);
+const routesFetch = fetchCache(routesJSONPath, CACHE_TIME);
 
 mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
 const lowerLat = 1.1, upperLat = 1.58, lowerLong = 103.49, upperLong = 104.15;
@@ -51,8 +56,8 @@ function lerpColor(a, b, amount) {
 const mapCanvas = map.getCanvas();
 
 map.on('load', async () => {
-  const stopsData = (await fetch(stops3DJSONPath).then(r => r.json())).sort((a, b) => a.number - b.number);
-  const routesData = (await fetch(routesJSONPath).then(r => r.json())).sort((a, b) => sortServices(a.number, b.number));
+  const stopsData = (await stopsFetch).sort((a, b) => a.number - b.number);
+  const routesData = (await routesFetch).sort((a, b) => sortServices(a.number, b.number));
 
   const serviceStops = {};
   stopsData.forEach(stop => {
