@@ -30,7 +30,7 @@
   "author": "Lim Chee Aun",
   "license": "MIT",
   "scripts": {
-    "watch": "parcel watch index.html bus-arrival/index.html bus-first-last/index.html -d tmp --no-hmr --no-autoinstall",
+    "watch": "parcel watch index.html bus-arrival/index.html bus-first-last/index.html visualization/index.html -d tmp --no-hmr --no-autoinstall",
     "serve": "serve -l 1234 tmp/",
     "start": "npm-run-all --parallel watch serve",
     "prebuild": "rm -rf dist && parcel --version",

@@ -1,34 +1,24 @@
 const fs = require('fs');
 const circle = require('@turf/circle').default;
+const { round } = require('@turf/helpers');
+const toTitleCase = require('../utils/titleCase');
 
-const stops = JSON.parse(fs.readFileSync('data/2/bus-stops.geojson'));
-const levels = JSON.parse(fs.readFileSync('3d/data/levels.json'));
+const stops = JSON.parse(fs.readFileSync('data/3/stops.geojson'));
+const levels = JSON.parse(fs.readFileSync('visualization/data/levels.json'));
 
 console.log(`Total stops: ${stops.features.length}`);
-let maxRoutesCount = 0;
 
-stops.features = stops.features.map(f => {
-  const { number } = f.properties;
-  const { routesCount } = levels[number];
-  f.properties.routesCount = routesCount;
-  if (routesCount > maxRoutesCount) maxRoutesCount = routesCount;
-  f.id = number;
-  return f;
+const data = stops.features.map(f => {
+  f.geometry.coordinates.forEach(c => round(c, 5));
+  const feature = circle(f, .015, { steps: 3 });
+  return {
+    ...f.properties,
+    name: toTitleCase(f.properties.name),
+    level: levels[f.properties.number],
+    contour: feature.geometry.coordinates,
+  }
 });
 
-console.log(`Max routes count: ${maxRoutesCount}`);
-
-let geojsonFile = '3d/data/stops-2d.geojson';
-fs.writeFileSync(geojsonFile, JSON.stringify(stops));
-console.log(`File generated: ${geojsonFile}`);
-
-stops.features = stops.features.map(f => {
-  const { number } = f.properties;
-  f.properties.level = levels[number].level;
-  delete f.properties.routesCount;
-  return circle(f, .012, { steps: 4 });
-});
-
-geojsonFile = '3d/data/stops.geojson';
-fs.writeFileSync(geojsonFile, JSON.stringify(stops));
-console.log(`File generated: ${geojsonFile}`);
+const stopsFile = 'visualization/data/stops.3d.json';
+fs.writeFileSync(stopsFile, JSON.stringify(data, null, ' '));
+console.log(`File generated: ${stopsFile}`);
