@@ -11,7 +11,7 @@
   #panel > div { display: flex; flex-direction: column; flex-grow: 1; }
   #panel > div:first-child { border-right: 1px solid #112330; }
   #panel > div h2 { font-size: 1em; font-weight: normal; text-transform: uppercase; padding: .5em 1em; }
-  #panel ul { display: block; list-style: none; margin: 0; padding: 0; overflow: auto; animation: fadein 2s ease-in-out both; }
+  #panel ul { display: block; list-style: none; margin: 0; padding: 0; overflow: auto; animation: fadein 2s ease-in-out both; -webkit-overflow-scrolling: touch; }
   @keyframes fadein {
     0% { opacity: 0; transform: translateY(-5px); }
   }
