@@ -49,7 +49,6 @@ function lerpColor(a, b, amount) {
 }
 
 const mapCanvas = map.getCanvas();
-let hoveredRoute = null;
 
 map.on('load', async () => {
   const stopsData = (await fetch(stops3DJSONPath).then(r => r.json())).sort((a, b) => a.number - b.number);
