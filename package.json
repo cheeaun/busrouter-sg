@@ -34,7 +34,7 @@
     "serve": "serve -l 1234 tmp/",
     "start": "npm-run-all --parallel watch serve",
     "prebuild": "rm -rf dist && parcel --version",
-    "build": "parcel build index.html bus-arrival/index.html bus-first-last/index.html",
+    "build": "parcel build index.html bus-arrival/index.html bus-first-last/index.html visualization/index.html",
     "postbuild": "cpy favicon.ico dist && node tasks/generateHeaders",
     "prod": "npx serve dist/"
   },
