@@ -7,48 +7,49 @@ const type = (filename) => {
 
 const files = fs.readdirSync('dist');
 
-const homeFiles = [
-  /^app\..+js$/,
-  /^app\..+css$/,
+const headers = [
+  {
+    path: '/',
+    files: [
+      /^app\..+js$/,
+      /^app\..+css$/,
+    ],
+  },
+  {
+    path: '/bus-arrival/',
+    files: [
+      /^arrival\..+js$/,
+      /^arrival\..+css$/,
+      /^stop\-active\..+svg$/,
+      /^bus\-bendy\..+svg$/,
+      /^bus\-double\..+svg$/,
+      /^bus\-single\..+svg$/,
+      /^wheelchair\..+svg$/,
+    ],
+  },
+  {
+    path: '/bus-first-last/',
+    files: [
+      /^firstlast\..+js$/,
+      /^firstlast\..+css$/,
+    ],
+  },
+  {
+    path: '/visualization/',
+    files: [
+      /^visualization\..+js$/,
+    ],
+  },
 ];
 
-let content = '/*';
-
-files.forEach(f => {
-  if (homeFiles.some(r => r.test(f))){
-    content += `\n  Link: </${f}>; rel=preload; as=${type(f)}`;
-  }
-});
-
-const arrivalFiles = [
-  /^arrival\..+js$/,
-  /^arrival\..+css$/,
-  /^stop\-active\..+svg$/,
-  /^bus\-bendy\..+svg$/,
-  /^bus\-double\..+svg$/,
-  /^bus\-single\..+svg$/,
-  /^wheelchair\..+svg$/,
-];
-
-content += '\n/bus-arrival/*';
-
-files.forEach(f => {
-  if (arrivalFiles.some(r => r.test(f))){
-    content += `\n  Link: </${f}>; rel=preload; as=${type(f)}`;
-  }
-});
-
-const firstLastFiles = [
-  /^firstlast\..+js$/,
-  /^firstlast\..+css$/,
-];
-
-content += '\n/bus-first-last/*';
-
-files.forEach(f => {
-  if (firstLastFiles.some(r => r.test(f))){
-    content += `\n  Link: </${f}>; rel=preload; as=${type(f)}`;
-  }
+let content = '';
+headers.forEach(h => {
+  content += h.path + '\n';
+  files.forEach(f => {
+    if (h.files.some(r => r.test(f))) {
+      content += `  Link: </${f}>; rel=preload; as=${type(f)}\n`;
+    }
+  })
 });
 
 fs.writeFileSync('dist/_headers', content);
