@@ -13,6 +13,12 @@ workbox.routing.registerRoute(
   /\/.*\.(?:js|css)$/,
   workbox.strategies.staleWhileRevalidate({
     cacheName: 'static-resources',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+        purgeOnQuotaError: true,
+      }),
+    ],
   }),
 );
 
@@ -24,6 +30,7 @@ workbox.routing.registerRoute(
       new workbox.expiration.Plugin({
         maxEntries: 60,
         maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+        purgeOnQuotaError: true,
       }),
       new workbox.cacheableResponse.Plugin({
         statuses: [0, 200]
@@ -37,6 +44,10 @@ workbox.routing.registerRoute(
   workbox.strategies.staleWhileRevalidate({
     cacheName: 'data',
     plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+        purgeOnQuotaError: true,
+      }),
       new workbox.cacheableResponse.Plugin({
         statuses: [0, 200]
       }),
@@ -51,6 +62,7 @@ workbox.routing.registerRoute(
     plugins: [
       new workbox.expiration.Plugin({
         maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+        purgeOnQuotaError: true,
       }),
       new workbox.cacheableResponse.Plugin({
         statuses: [0, 200]
@@ -66,6 +78,7 @@ workbox.routing.registerRoute(
     plugins: [
       new workbox.expiration.Plugin({
         maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+        purgeOnQuotaError: true,
       }),
       new workbox.cacheableResponse.Plugin({
         statuses: [0, 200]
@@ -81,6 +94,7 @@ workbox.routing.registerRoute(
     plugins: [
       new workbox.expiration.Plugin({
         maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+        purgeOnQuotaError: true,
       }),
       new workbox.cacheableResponse.Plugin({
         statuses: [0, 200]
@@ -95,7 +109,8 @@ workbox.routing.registerRoute(
     cacheName: 'mapbox',
     plugins: [
       new workbox.expiration.Plugin({
-        maxAgeSeconds: 14 * 24 * 60 * 60, // 2 weeks
+        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+        purgeOnQuotaError: true,
       }),
       new workbox.cacheableResponse.Plugin({
         statuses: [0, 200]
@@ -111,6 +126,7 @@ workbox.routing.registerRoute(
     plugins: [
       new workbox.expiration.Plugin({
         maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+        purgeOnQuotaError: true,
       }),
       new workbox.cacheableResponse.Plugin({
         statuses: [0, 200]
