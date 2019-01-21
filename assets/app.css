@@ -74,9 +74,11 @@ a:active {
 .mapboxgl-ctrl-attrib.mapboxgl-compact:not(:hover) {
   background-color: transparent;
 }
-.mapboxgl-ctrl-top-right {
-  top: max(0px, env(safe-area-inset-top));
-  right: max(0px, env(safe-area-inset-right));
+@supports (top: max(1px)) {
+  .mapboxgl-ctrl-top-right {
+    top: max(0px, env(safe-area-inset-top));
+    right: max(0px, env(safe-area-inset-right));
+  }
 }
 
 #logo {
@@ -84,11 +86,15 @@ a:active {
   top: 12px;
   top: calc(12px + env(safe-area-inset-top));
   left: 12px;
-  left: max(12px, env(safe-area-inset-left));
   z-index: 1;
   cursor: pointer;
   filter: drop-shadow(0 1px 3px rgba(0,0,0,.3));
   transition: opacity .3s ease-in-out;
+}
+@supports (top: max(1px)) {
+  #logo {
+    left: max(12px, env(safe-area-inset-left));
+  }
 }
 #logo.fadeout {
   opacity: .5;
@@ -177,13 +183,17 @@ a:active {
 
 #search-popover {
   top: -60px;
-  top: min(-60px, calc(-60px - env(safe-area-inset-bottom) + 14px));
   height: 100%;
   bottom: 0;
   transform: translateY(55%);
   display: flex;
   flex-direction: column;
   transition: all .3s ease-in-out;
+}
+@supports (top: min(1px)) {
+  #search-popover {
+    top: min(-60px, calc(-60px - env(safe-area-inset-bottom) + 14px));
+  }
 }
 #search-popover.shrink {
   transform: translateY(100%);
@@ -280,15 +290,21 @@ a:active {
 }
 #between-popover .popover-scroll {
   padding-top: 0;
-  padding-left: max(12px, env(safe-area-inset-left));
-  padding-right: max(12px, env(safe-area-inset-right));
-  padding-bottom: max(12px, env(safe-area-inset-bottom));
 }
 #stop-popover .popover-footer {
   padding: 12px;
-  padding-left: max(12px, env(safe-area-inset-left));
-  padding-right: max(12px, env(safe-area-inset-right));
-  padding-bottom: max(12px, env(safe-area-inset-bottom));
+}
+@supports (top: max(1px)) {
+  #between-popover .popover-scroll {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
+  #stop-popover .popover-footer {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
 }
 
 #stop-popover .services-list span {
@@ -879,7 +895,11 @@ a.service-tag:hover {
   .popover {
     max-width: 320px;
     right: 16px;
-    right: max(16px, env(safe-area-inset-right));
+  }
+  @supports (top: max(1px)) {
+    .popover {
+      right: max(16px, env(safe-area-inset-right));
+    }
   }
 
   /* Reset the safe area paddings */
@@ -910,17 +930,23 @@ a.service-tag:hover {
   .mapboxgl-ctrl-logo {
     position: fixed;
     left: 10px;
-    left: max(10px, env(safe-area-inset-left));
     bottom: 34px;
   }
   .mapboxgl-ctrl-attrib {
     position: fixed !important;
     left: 0;
-    left: max(0px, env(safe-area-inset-left));
     bottom: 0;
     margin: 0 !important;
     background-color: rgba(255,255,255,.5) !important;
     padding: 2px 10px !important;
+  }
+  @supports (top: max(1px)) {
+    .mapboxgl-ctrl-logo {
+      left: max(10px, env(safe-area-inset-left));
+    }
+    .mapboxgl-ctrl-attrib {
+      left: max(0px, env(safe-area-inset-left));
+    }
   }
   .mapboxgl-ctrl-attrib > * {
     display: inline !important;
