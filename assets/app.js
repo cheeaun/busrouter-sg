@@ -83,8 +83,10 @@ window.requestIdleCallback = window.requestIdleCallback || ((cb) => setTimeout(c
 class App extends Component {
   constructor() {
     super();
+    const route = getRoute();
     this.state = {
-      route: getRoute(),
+      route,
+      routeLoading: route.page !== 'home',
       services: [],
       stops: [],
       searching: false,
@@ -1597,6 +1599,8 @@ class App extends Component {
         map.setLayoutProperty('stops-icon', 'visibility', 'visible');
       }
     }
+
+    this.setState({ routeLoading: false });
   }
   componentDidUpdate(_, prevState) {
     const { route } = this.state;
@@ -1629,6 +1633,7 @@ class App extends Component {
   render(_, state) {
     const {
       route,
+      routeLoading,
       stops,
       services,
       searching,
@@ -1650,7 +1655,7 @@ class App extends Component {
         <div
           id="search-popover"
           ref={c => this._searchPopover = c}
-          class={`popover ${expandSearch ? 'expand' : ''} ${shrinkSearch ? 'shrink' : ''}`}
+          class={`popover ${expandSearch ? 'expand' : ''} ${shrinkSearch ? 'shrink' : ''} ${routeLoading ? 'loading' : ''}`}
         >
           <div id="popover-float" hidden={!/service|stop/.test(route.page)}>
             {route.page === 'service' && servicesData ? (

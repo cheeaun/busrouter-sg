@@ -195,6 +195,10 @@ a:active {
   transform: translateY(80px);
   transform: translateY(calc(80px + env(safe-area-inset-top) + env(safe-area-inset-bottom)));
 }
+#search-popover.loading {
+  opacity: .75;
+  pointer-events: none;
+}
 
 #stop-popover,
 #between-popover,
