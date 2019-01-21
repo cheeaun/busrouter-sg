@@ -886,6 +886,9 @@ class App extends Component {
         keydown = null;
       });
 
+      // For cases when user already typed something before fuse.js inits
+      if (this._searchField.value) this._handleSearch();
+
       // Finally, show ad
       setTimeout(() => {
         this.setState({
@@ -916,7 +919,7 @@ class App extends Component {
     });
   }
   _handleSearch = (e) => {
-    const { value } = e.target;
+    const { value } = (e && e.target) || this._searchField;
     if (value) {
       const services = this._fuseServices.search(value);
       let stops = [];
