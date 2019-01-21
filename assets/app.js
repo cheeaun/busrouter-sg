@@ -241,7 +241,7 @@ class App extends Component {
     }
 
     map.addImage('stop', stopImage);
-    map.addImage('stop-end', stopEndImage)
+    map.addImage('stop-end', stopEndImage);
 
     map.addSource('stops', {
       type: 'geojson',
