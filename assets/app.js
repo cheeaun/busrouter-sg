@@ -221,7 +221,7 @@ class App extends Component {
 
     const [_, stopImage, stopEndImage] = await Promise.all([
       new Promise((resolve, reject) => {
-        map.on('load', resolve);
+        map.once('styledata', resolve);
       }),
       new Promise((resolve, reject) => {
         map.loadImage(stopImagePath, (e, img) => e ? reject(e) : resolve(img));
