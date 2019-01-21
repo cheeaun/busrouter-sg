@@ -299,6 +299,7 @@ class App extends Component {
       source: 'stops',
       filter: ['any', ['>=', ['zoom'], 14], ['get', 'interchange']],
       layout: {
+        visibility: 'none',
         'symbol-z-order': 'source',
         'icon-image': 'stop',
         'icon-size': [
@@ -325,6 +326,9 @@ class App extends Component {
       id: 'stops',
       type: 'circle',
       source: 'stops',
+      layout: {
+        visibility: 'none',
+      },
       paint: {
         'circle-radius': [
           'interpolate', ['linear'], ['zoom'],
@@ -972,6 +976,20 @@ class App extends Component {
     const { stopsData, prevStopNumber } = this.state;
     const { services, coordinates, name } = stopsData[number];
 
+    const popoverHeight = this._stopPopover.offsetHeight;
+    const offset = BREAKPOINT() ? [0, 0] : [0, -popoverHeight / 2];
+    const zoom = map.getZoom();
+    if (zoom < 16) {
+      map.flyTo({
+        zoom: 16,
+        center: coordinates,
+        offset,
+        animate: zoom >= 12,
+      });
+    } else {
+      map.easeTo({ center: coordinates, offset });
+    }
+
     if (prevStopNumber) {
       this.map.setFeatureState({
         source: 'stops',
@@ -1009,6 +1027,7 @@ class App extends Component {
       },
     }, () => {
       requestAnimationFrame(() => {
+        if (popoverHeight === this._stopPopover.offsetHeight) return;
         const offset = BREAKPOINT() ? [0, 0] : [0, -this._stopPopover.offsetHeight / 2];
         const zoom = map.getZoom();
         if (zoom < 16) {
@@ -1333,6 +1352,22 @@ class App extends Component {
         let routeStops = [...routes[0], ...(routes[1] || [])].filter((el, pos, arr) => {
           return arr.indexOf(el) == pos;
         }); // Merge and unique
+
+        // Fit map to route bounds
+        const bounds = new mapboxgl.LngLatBounds();
+        routeStops.forEach(stop => {
+          const { coordinates } = stopsData[stop];
+          bounds.extend(coordinates);
+        });
+        map.fitBounds(bounds, {
+          padding: BREAKPOINT() ? 80 : {
+            top: 80,
+            right: 80,
+            bottom: 60 + 54 + 80, // height of search bar + float pill
+            left: 80,
+          },
+        });
+
         map.getSource('stops-highlight').setData({
           type: 'FeatureCollection',
           features: routeStops.map((stop, i) => {
@@ -1368,21 +1403,6 @@ class App extends Component {
           });
         });
 
-        // Fit map to route bounds
-        const bounds = new mapboxgl.LngLatBounds();
-        routeStops.forEach(stop => {
-          const { coordinates } = stopsData[stop];
-          bounds.extend(coordinates);
-        });
-        map.fitBounds(bounds, {
-          padding: BREAKPOINT() ? 80 : {
-            top: 80,
-            right: 80,
-            bottom: 60 + 54 + 80, // height of search bar + float pill
-            left: 80,
-          },
-        });
-
         break;
       }
       case 'stop': {
@@ -1416,6 +1436,22 @@ class App extends Component {
           [...otherStops].map(s => {
             allStopsCoords.push(stopsData[s].coordinates);
           });
+
+          // Fit map to route bounds
+          const bounds = new mapboxgl.LngLatBounds();
+          allStopsCoords.forEach(coordinates => {
+            bounds.extend(coordinates);
+          });
+          const bottom = this._floatPill ? (this._floatPill.offsetHeight + 60 + 80) : 80;
+          map.fitBounds(bounds, {
+            padding: BREAKPOINT() ? 80 : {
+              top: 80,
+              right: 80,
+              bottom,
+              left: 80,
+            },
+          });
+
           map.getSource('stops-highlight').setData({
             type: 'FeatureCollection',
             features: [{
@@ -1458,21 +1494,6 @@ class App extends Component {
               })),
             });
             STORE.routesPathServices = serviceGeometries.map(sg => sg.service);
-          });
-
-          // Fit map to route bounds
-          const bounds = new mapboxgl.LngLatBounds();
-          allStopsCoords.forEach(coordinates => {
-            bounds.extend(coordinates);
-          });
-          const bottom = this._floatPill ? (this._floatPill.offsetHeight + 60 + 80) : 80;
-          map.fitBounds(bounds, {
-            padding: BREAKPOINT() ? 80 : {
-              top: 80,
-              right: 80,
-              bottom,
-              left: 80,
-            },
           });
         } else {
           document.title = `Bus stop ${stop}: ${name} - ${APP_NAME}`;
