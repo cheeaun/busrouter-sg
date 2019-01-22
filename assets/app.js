@@ -624,7 +624,7 @@ class App extends Component {
           ['boolean', ['feature-state', 'hover'], false],
           1,
           ['boolean', ['feature-state', 'fadein'], false],
-          .1,
+          .07,
           .7 // default
         ],
         'line-width': [
@@ -642,14 +642,18 @@ class App extends Component {
       layout: {
         'line-cap': 'round',
       },
-      maxzoom: 14,
+      maxzoom: 20,
       paint: {
         'line-color': ['case',
           ['boolean', ['feature-state', 'fadein'], false],
           'transparent',
           '#fff'
         ],
-        'line-width': 6,
+        'line-width': [
+          'interpolate', ['linear'], ['zoom'],
+          10, 6,
+          14, 16,
+        ],
       },
     }, 'routes-path');
 
