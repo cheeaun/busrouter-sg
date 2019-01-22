@@ -742,7 +742,7 @@ a.service-tag:hover {
 
 .float-pill {
   background-color: rgba(255,255,255,.9);
-  padding: 8px 44px 8px 8px;
+  padding: 8px;
   border-radius: 7px;
   box-shadow: 0 1px 10px rgba(0,0,0,.25);
   position: absolute;
@@ -758,6 +758,7 @@ a.service-tag:hover {
 .float-pill .service-flex {
   display: flex;
   align-items: flex-start;
+  margin-right: 36px;
 }
 .float-pill h1 {
   font-size: 1em;
@@ -777,8 +778,17 @@ a.service-tag:hover {
 .float-pill .service-info {
   flex-basis: 85%;
 }
+.float-pill .services-list {
+  overflow: auto;
+  max-height: 35vh;
+}
 .float-pill .services-list .service-tag{
   margin-top: 4px;
+}
+@media (min-width: 641px) {
+  .float-pill .services-list {
+    max-height: 55vh;
+  }
 }
 
 .popover-close {
