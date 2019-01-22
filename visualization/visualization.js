@@ -73,9 +73,7 @@ map.on('load', async () => {
     const services = object ? object.services : null;
     if (number) {
       showStop(number, services);
-      mapCanvas.style.cursor = 'pointer';
     } else {
-      mapCanvas.style.cursor = '';
       const [_, type, number] = location.hash.match(/#([^\/]+)\/([^\/]+)/i) || [,,];
       if (type === 'stops') {
         showStop(number);
@@ -111,6 +109,8 @@ map.on('load', async () => {
   });
   map.addLayer(stopsLayer);
 
+  const $tooltip = document.getElementById('tooltip');
+
   const routesLayer = new deck.MapboxLayer({
     id: 'routes',
     type: deck.PathLayer,
@@ -120,6 +120,23 @@ map.on('load', async () => {
     widthMinPixels: 1,
     getWidth: 10,
     getColor: (d) => d.highlighted ? [229, 238, 193] : d.faded ? [0,0,0,0] : lerpColor('#73BC84', '#E5EEC1', d.level/211),
+    pickable: true,
+    autoHighlight: true,
+    highlightColor: [255, 255, 255],
+    onHover: (info, e) => {
+      if (info.object) {
+        const { number } = info.object;
+        const { x, y } = e.offsetCenter;
+        $tooltip.innerHTML = `Service ${number}`;
+        const { offsetWidth: w } = $tooltip;
+        const tx = Math.min(x, mapCanvas.offsetWidth - w - 5);
+        const ty = y + 16; // Under the cursor
+        $tooltip.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+        $tooltip.hidden = false;
+      } else {
+        $tooltip.hidden = true;
+      }
+    },
     parameters: {
       depthTest: false,
       blend: true,
