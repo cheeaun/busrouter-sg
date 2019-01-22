@@ -610,8 +610,8 @@ a:active {
   margin: 0;
   padding: 0 0 60px;
   list-style: none;
-  -webkit-overflow-scrolling: touch;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .popover-list.loading {
   opacity: .5;
@@ -780,6 +780,7 @@ a.service-tag:hover {
 }
 .float-pill .services-list {
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   max-height: 35vh;
 }
 .float-pill .services-list .service-tag{
