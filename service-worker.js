@@ -2,8 +2,11 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox
 
 workbox.googleAnalytics.initialize();
 
+// "index" pages, e.g. index.html and /dir/xxx/
+// - Assumes no '.' in file name
+// - Works for hashes too, e.g.: /test#whatever
 workbox.routing.registerRoute(
-  /\/$/,
+  /^[^\.]+(#.*)?$/,
   workbox.strategies.networkFirst({
     cacheName: 'index',
   }),
