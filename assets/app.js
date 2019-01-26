@@ -96,6 +96,7 @@ class App extends Component {
       showStopPopover: false,
       showBetweenPopover: false,
       showArrivalsPopover: false,
+      intersectStops: 0,
       betweenStartStop: null,
       betweenEndStop: null,
       showAd: false,
@@ -1336,10 +1337,10 @@ class App extends Component {
 
     switch (route.page) {
       case 'service': {
-        const service = route.value;
-        if (!servicesData[service]) return;
-        const { name, routes } = servicesData[service];
-        document.title = `Bus service ${service}: ${name} - ${APP_NAME}`;
+        const servicesValue = route.value;
+        const services = servicesValue.split('~').filter(s => servicesData[s]);
+        if (!services.length) return; // No value or none of the service codes are valid
+
         // Reset
         this.setState({
           expandSearch: false,
@@ -1351,62 +1352,150 @@ class App extends Component {
         map.setLayoutProperty('stops', 'visibility', 'none');
         map.setLayoutProperty('stops-icon', 'visibility', 'none');
 
-        // Show stops of the selected service
-        const endStops = [routes[0][0], routes[0][routes[0].length - 1]];
-        if (routes[1]) endStops.push(routes[1][0], routes[1][routes[1].length - 1]);
-        let routeStops = [...routes[0], ...(routes[1] || [])].filter((el, pos, arr) => {
-          return arr.indexOf(el) == pos;
-        }); // Merge and unique
+        if (services.length === 1) {
+          const service = services[0];
+          const { name, routes } = servicesData[service];
+          document.title = `Bus service ${service}: ${name} - ${APP_NAME}`;
 
-        // Fit map to route bounds
-        const bounds = new mapboxgl.LngLatBounds();
-        routeStops.forEach(stop => {
-          const { coordinates } = stopsData[stop];
-          bounds.extend(coordinates);
-        });
-        map.fitBounds(bounds, {
-          padding: BREAKPOINT() ? 80 : {
-            top: 80,
-            right: 80,
-            bottom: 60 + 54 + 80, // height of search bar + float pill
-            left: 80,
-          },
-        });
+          // Show stops of the selected service
+          const endStops = [routes[0][0], routes[0][routes[0].length - 1]];
+          if (routes[1]) endStops.push(routes[1][0], routes[1][routes[1].length - 1]);
+          let routeStops = [...routes[0], ...(routes[1] || [])].filter((el, pos, arr) => {
+            return arr.indexOf(el) == pos;
+          }); // Merge and unique
 
-        map.getSource('stops-highlight').setData({
-          type: 'FeatureCollection',
-          features: routeStops.map((stop, i) => {
-            const { name, left } = stopsData[stop];
-            return {
-              type: 'Feature',
-              id: encode(stop),
-              properties: {
-                name,
-                number: stop,
-                type: endStops.includes(stop) ? 'end' : null,
-                left,
-              },
-              geometry: {
-                type: 'Point',
-                coordinates: stopsData[stop].coordinates,
-              },
-            };
-          }),
-        });
-
-        // Show routes
-        requestAnimationFrame(() => {
-          const routes = routesData[service];
-          const geometries = routes.map(route => toGeoJSON(route));
-          map.getSource('routes').setData({
-            type: 'FeatureCollection',
-            features: geometries.map(geometry => ({
-              type: 'Feature',
-              properties: {},
-              geometry,
-            })),
+          // Fit map to route bounds
+          const bounds = new mapboxgl.LngLatBounds();
+          routeStops.forEach(stop => {
+            const { coordinates } = stopsData[stop];
+            bounds.extend(coordinates);
           });
-        });
+          map.fitBounds(bounds, {
+            padding: BREAKPOINT() ? 80 : {
+              top: 80,
+              right: 80,
+              bottom: 60 + 54 + 80, // height of search bar + float pill
+              left: 80,
+            },
+          });
+
+          map.getSource('stops-highlight').setData({
+            type: 'FeatureCollection',
+            features: routeStops.map((stop, i) => {
+              const { name, left } = stopsData[stop];
+              return {
+                type: 'Feature',
+                id: encode(stop),
+                properties: {
+                  name,
+                  number: stop,
+                  type: endStops.includes(stop) ? 'end' : null,
+                  left,
+                },
+                geometry: {
+                  type: 'Point',
+                  coordinates: stopsData[stop].coordinates,
+                },
+              };
+            }),
+          });
+
+          // Show routes
+          requestAnimationFrame(() => {
+            const routes = routesData[service];
+            const geometries = routes.map(route => toGeoJSON(route));
+            map.getSource('routes').setData({
+              type: 'FeatureCollection',
+              features: geometries.map(geometry => ({
+                type: 'Feature',
+                properties: {},
+                geometry,
+              })),
+            });
+          });
+        } else {
+          const servicesTitle = services.map(s => {
+            const { name } = servicesData[s];
+            return `${s}: ${name}`;
+          }).join(', ');
+          document.title = `Bus services; ${servicesTitle} - ${APP_NAME}`;
+
+          let routeStops = [];
+          let serviceGeometries = [];
+          services.forEach(service => {
+            const { routes } = servicesData[service];
+            const allRoutes = routes[0].concat(routes[1] || []).filter((el, pos, arr) => {
+              return arr.indexOf(el) === pos;
+            });
+            routeStops = routeStops.concat(allRoutes);
+
+            const routeGeometries = routesData[service];
+            serviceGeometries = serviceGeometries.concat(routeGeometries.map(r => ({
+              service,
+              geometry: toGeoJSON(r),
+            })));
+          });
+
+          // Merge and unique stops
+          const intersectStops = [];
+          routeStops = routeStops.filter((el, pos, arr) => {
+            const unique = arr.indexOf(el) === pos;
+            if (!unique && !intersectStops.includes(el)) intersectStops.push(el);
+            return unique;
+          });
+          this.setState({ intersectStops });
+
+          // Fit map to route bounds
+          const bounds = new mapboxgl.LngLatBounds();
+          routeStops.forEach(stop => {
+            const { coordinates } = stopsData[stop];
+            bounds.extend(coordinates);
+          });
+          map.fitBounds(bounds, {
+            padding: BREAKPOINT() ? 80 : {
+              top: 80,
+              right: 80,
+              bottom: 60 + 54 + 80, // height of search bar + float pill
+              left: 80,
+            },
+          });
+
+          map.getSource('stops-highlight').setData({
+            type: 'FeatureCollection',
+            features: intersectStops.map((stop, i) => {
+              const { name, left } = stopsData[stop];
+              return {
+                type: 'Feature',
+                id: encode(stop),
+                properties: {
+                  name,
+                  number: stop,
+                  left,
+                },
+                geometry: {
+                  type: 'Point',
+                  coordinates: stopsData[stop].coordinates,
+                },
+              };
+            }),
+          });
+
+          // Show routes
+          requestAnimationFrame(() => {
+            map.getSource('routes-path').setData({
+              type: 'FeatureCollection',
+              features: serviceGeometries.map(sg => ({
+                type: 'Feature',
+                id: encode(sg.service),
+                properties: {
+                  service: sg.service,
+                },
+                geometry: sg.geometry,
+              })),
+            });
+            STORE.routesPathServices = serviceGeometries.map(sg => sg.service);
+          });
+        }
 
         break;
       }
@@ -1671,10 +1760,12 @@ class App extends Component {
       showStopPopover,
       showBetweenPopover,
       showArrivalsPopover,
+      intersectStops,
       showAd,
     } = state;
 
     const popoverIsUp = !!showStopPopover || !!showBetweenPopover || !!showArrivalsPopover;
+    const routeServices = route.page === 'service' && servicesData ? route.value.split('~').filter(s => servicesData[s]) : [];
 
     return (
       <div>
@@ -1684,19 +1775,41 @@ class App extends Component {
           class={`popover ${expandSearch ? 'expand' : ''} ${shrinkSearch ? 'shrink' : ''} ${routeLoading ? 'loading' : ''}`}
         >
           <div id="popover-float" hidden={!/service|stop/.test(route.page)}>
-            {route.page === 'service' && servicesData ? (
+            {route.page === 'service' && servicesData && routeServices.length ? (
               <div class="float-pill" ref={c => this._floatPill = c}>
                 <a href="#/" class="popover-close">&times;</a>
-                <div class="service-flex">
-                  <span class="service-tag">{route.value}</span>
-                  <div class="service-info">
-                    <h1>{servicesData[route.value].name}</h1>
-                    <p>
-                      {servicesData[route.value].routes.length} route{servicesData[route.value].routes.length > 1 ? 's' : ''} ∙&nbsp;
-                      {servicesData[route.value].routes.map(r => `${r.length} stop${r.length > 1 ? 's' : ''}`).join(' ∙ ')}
-                    </p>
+                {routeServices.length === 1 ? (
+                  <div class="service-flex">
+                    <span class="service-tag">{routeServices[0]}</span>
+                    <div class="service-info">
+                      <h1>{servicesData[routeServices[0]].name}</h1>
+                      <p>
+                        {servicesData[routeServices[0]].routes.length} route{servicesData[routeServices[0]].routes.length > 1 ? 's' : ''} ∙&nbsp;
+                        {servicesData[routeServices[0]].routes.map(r => `${r.length} stop${r.length > 1 ? 's' : ''}`).join(' ∙ ')}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                ) : [
+                  <div class="service-flex">
+                    <div>
+                      <h1>{routeServices.length} services selected</h1>
+                      <p>{intersectStops.length} intersecting stop{intersectStops.length !== 1 && 's'}</p>
+                    </div>
+                  </div>,
+                  <div class="services-list">
+                    {routeServices.sort(sortServices).map(service => (
+                      <a
+                        href={`#/services/${service}`}
+                        onClick={(e) => this._clickRoute(e, service)}
+                        onMouseEnter={(e) => this._highlightRoute(e, service)}
+                        onMouseLeave={this._unhighlightRoute}
+                        class="service-tag"
+                      >
+                        {service}
+                      </a>
+                    ))}
+                  </div>
+                ]}
               </div>
             ) : route.page === 'stop' && route.subpage === 'routes' && stopsData && (
               <div class="float-pill" ref={c => this._floatPill = c}>
@@ -1747,7 +1860,7 @@ class App extends Component {
             {services.length ? (
               (expandedSearchOnce ? services : services.slice(0, 10)).map(s => (
                 <li key={s.number}>
-                  <a href={`#/services/${s.number}`} class={route.page === 'service' && s.number === route.value ? 'current' : ''}>
+                  <a href={`#/services/${s.number}`} class={route.page === 'service' && route.value.split('~').includes(s.number) ? 'current' : ''}>
                     <b class="service-tag">{s.number}</b> {s.name}
                   </a>
                 </li>
