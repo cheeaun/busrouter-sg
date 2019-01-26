@@ -631,8 +631,9 @@ class App extends Component {
         ],
         'line-width': [
           'interpolate', ['linear'], ['zoom'],
-          10, 2,
-          14, 10,
+          12, 2,
+          16, 5,
+          22, 10
         ],
       },
     }, 'stops-highlight');
@@ -653,8 +654,9 @@ class App extends Component {
         ],
         'line-width': [
           'interpolate', ['linear'], ['zoom'],
-          10, 6,
-          14, 16,
+          12, 6,
+          16, 10,
+          22, 16
         ],
       },
     }, 'routes-path');
