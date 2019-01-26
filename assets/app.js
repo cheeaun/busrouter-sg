@@ -420,6 +420,7 @@ class App extends Component {
         mapCanvas.style.cursor = '';
         hideStopTooltip();
       });
+      map.on('mouseout', hideStopTooltip);
       map.on('movestart', hideStopTooltip);
     });
 
