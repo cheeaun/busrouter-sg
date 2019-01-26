@@ -1214,6 +1214,39 @@ class App extends Component {
       }, 300);
     });
   }
+  _previewRAF;
+  _cannotPreviewRoute = () => {
+    const { page, subpage, value } = this.state.route;
+    return subpage === 'routes' || (page === 'service' && value.split('~').length > 1);
+  }
+  _previewRoute = (service) => {
+    cancelAnimationFrame(this._previewRAF);
+    if (this._cannotPreviewRoute()) return;
+    this._previewRAF = requestAnimationFrame(() => {
+      const { routesData } = this.state;
+      const routes = routesData[service];
+      const geometries = routes.map(route => toGeoJSON(route));
+      this.map.getSource('routes-path').setData({
+        type: 'FeatureCollection',
+        features: geometries.map(geometry => ({
+          type: 'Feature',
+          id: encode(service),
+          properties: {
+            service,
+          },
+          geometry,
+        })),
+      });
+    });
+  }
+  _unpreviewRoute = () => {
+    cancelAnimationFrame(this._previewRAF);
+    if (this._cannotPreviewRoute()) return;
+    this.map.getSource('routes-path').setData({
+      type: 'FeatureCollection',
+      features: [],
+    });
+  }
   _renderBetweenRoute = ({ e, startStop, endStop, result }) => {
     const { target } = e;
     [...target.parentElement.children].forEach(el => {
@@ -1862,7 +1895,12 @@ class App extends Component {
             {services.length ? (
               (expandedSearchOnce ? services : services.slice(0, 10)).map(s => (
                 <li key={s.number}>
-                  <a href={`#/services/${s.number}`} class={route.page === 'service' && route.value.split('~').includes(s.number) ? 'current' : ''}>
+                  <a
+                    href={`#/services/${s.number}`}
+                    class={route.page === 'service' && route.value.split('~').includes(s.number) ? 'current' : ''}
+                    onMouseEnter={() => this._previewRoute(s.number)}
+                    onMouseLeave={this._unpreviewRoute}
+                  >
                     <b class="service-tag">{s.number}</b> {s.name}
                   </a>
                 </li>
