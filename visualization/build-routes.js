@@ -18,7 +18,9 @@ const serviceStops = JSON.parse(fs.readFileSync('data/3/serviceStops.json'));
 const sortedRoutes = routes.sort((a, b) => ruler.lineDistance(a.geometry.coordinates) - ruler.lineDistance(b.geometry.coordinates));
 
 // Services, sorted by route length
-const sortedServices = sortedRoutes.map(r => r.properties.number);
+const sortedServices = sortedRoutes.map(r => r.properties.number).filter((el, pos, arr) => {
+  return arr.indexOf(el) == pos;
+});
 let mostHighestLevel = 0;
 const newRoutes = [];
 
