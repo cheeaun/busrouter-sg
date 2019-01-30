@@ -58,7 +58,7 @@ for (service in serviceStops){
         if (len > longestLen) longestLen = len;
       }
 
-      if (longestLen > 1){
+      if (longestLen > 2){
         console.log(`${++count}\) ${service} route ${i+1} has too long straight line: ${longestLen.toFixed(1)} km`);
       }
     }
