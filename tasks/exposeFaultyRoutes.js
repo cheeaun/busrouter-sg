@@ -27,7 +27,7 @@ for (service in serviceStops){
   const routes = serviceStops[service];
   const routesCoords =
     readFile(`data/3/routes/mytransportsg/${service}.json`) ||
-    readFile(`data/3/routes/towertransitsg/${service}.json`) ||
+    // readFile(`data/3/routes/towertransitsg/${service}.json`) ||
     readFile(`data/3/routes/onemapsg/${service}.json`) ||
     readFile(`data/3/routes/mapbox/${service}.json`);
 
