@@ -56,8 +56,8 @@ const genRoute = async (busNo, stopNumbers) => {
     const coordinates1 = await fetchRoute(coords1);
     await delay(1000); // wait 1 sec
     const coordinates2 = await fetchRoute(coords2);
-    fs.writeFileSync('test1.json', JSON.stringify(coordinates1));
-    fs.writeFileSync('test2.json', JSON.stringify(coordinates2));
+    // fs.writeFileSync('test1.json', JSON.stringify(coordinates1));
+    // fs.writeFileSync('test2.json', JSON.stringify(coordinates2));
     return [...coordinates1, ...coordinates2]; // merge
   } else {
     return await fetchRoute(coords);
