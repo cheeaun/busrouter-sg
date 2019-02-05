@@ -21,8 +21,18 @@
 
 [![Screenshot of Singapore Bus Routes Explorer](screenshots/screenshot-1.png)](https://busrouter.sg/)
 
+🔖 Story
+---
+
+This web app is first build in [2012](https://twitter.com/cheeaun/status/160380168739897344), to fulfill my curiosity about buses. Ever since then, I've been maintaing the app and data until today.
+
+**👉 Read more about it: [Building BusRouter SG
+](https://cheeaun.com/blog/2019/02/building-busrouter-sg/).**
+
 🛠 Technicalities
 ---
+
+### Data
 
 All data such as bus stops, services and routes are mostly *scraped* from <http://mytransport.sg/>, which means they are copyrighted by the [Land Transport Authority](http://www.lta.gov.sg/).
 
@@ -116,6 +126,21 @@ When there's a data update, run the scripts in these order:
 	3. `node tasks/generateServices`
 	4. `node tasks/generateRoutesPolyline`
 	5. `node tasks/generateFirstLast`
+
+### Visualization
+
+There's a separate visualization mini-site on `/visualization/` URL.
+
+The scripts to generate the data, in order:
+
+1. `node visualization/build-routes`
+	- Reads `stops2.json` and transform routes data with "levels" for 3D extrusion
+	- Generates `visualization/data/routes.json` for usage on mini-site and `visualization/data/levels.json` to be read by the `build-stops` script
+2. `node visualization/build-stops`
+	- Reads `stops.geojson` and *buffered* into circle polygons which will be 3D-extruded
+	- Generates `visualization/data/stops.3d.json` for usage on mini-site
+
+### Web App
 
 The scripts for the web app:
 
