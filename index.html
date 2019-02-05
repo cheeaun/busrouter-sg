@@ -65,7 +65,8 @@
   window.dataLayer = window.dataLayer || [];
   function gtag() { dataLayer.push(arguments); }
   gtag('js', new Date());
-  gtag('config', 'UA-23235796-4');
+  window._GA_TRACKING_ID = 'UA-23235796-4';
+  gtag('config', window._GA_TRACKING_ID, { send_page_view: false });
   window.gtag = gtag;
 </script>
 <script src="assets/app.js"></script>

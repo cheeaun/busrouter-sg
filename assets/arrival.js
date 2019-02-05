@@ -143,7 +143,13 @@ class ArrivalTimes extends Component {
       } else {
         this.setState({ busStop: null });
       }
+
+      const { pathname, search, hash } = location;
+      gtag('config', window._GA_TRACKING_ID, {
+        page_path: pathname + search + hash,
+      });
     }
+
     window.onhashchange();
   }
   componentWillReceiveProps(props) {

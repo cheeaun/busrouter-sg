@@ -89,6 +89,11 @@ class FirstLastTimes extends Component {
         });
 
         document.title = `Approximate first & last bus arrival times for ${stop}: ${stopName}`;
+
+        const { pathname, search, hash } = location;
+        gtag('config', window._GA_TRACKING_ID, {
+          page_path: pathname + search + hash,
+        });
       }
       window.onhashchange();
     });

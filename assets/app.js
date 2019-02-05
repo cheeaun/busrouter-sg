@@ -101,6 +101,7 @@ class App extends Component {
       betweenEndStop: null,
       showAd: false,
     };
+
     window.onhashchange = () => {
       this.setState({
         route: getRoute(),
@@ -1749,6 +1750,11 @@ class App extends Component {
         map.setLayoutProperty('stops-icon', 'visibility', 'visible');
       }
     }
+
+    const { pathname, search, hash } = location;
+    gtag('config', window._GA_TRACKING_ID, {
+      page_path: pathname + search + hash,
+    });
 
     this.setState({ routeLoading: false });
   }
