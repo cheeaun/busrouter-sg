@@ -112,7 +112,7 @@ class App extends Component {
     const mapboxScriptP = new Promise((resolve, reject) => {
       const s = document.createElement('script');
       s.onload = resolve;
-      s.src = 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js';
+      s.src = 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js';
       document.getElementsByTagName('head')[0].appendChild(s);
     });
 
@@ -183,6 +183,9 @@ class App extends Component {
       pitchWithRotate: false,
       dragRotate: false,
       bounds: [lowerLong, lowerLat, upperLong, upperLat],
+      fitBoundsOptions: {
+        padding: BREAKPOINT() ? 120 : { top: 40, bottom: window.innerHeight / 2, left: 40, right: 40 },
+      },
     });
     map.touchZoomRotate.disableRotation();
 
@@ -199,11 +202,6 @@ class App extends Component {
         return [0, -this._stopPopover.offsetHeight / 2];
       },
     }));
-
-    map.fitBounds([lowerLong, lowerLat, upperLong, upperLat], {
-      animate: false,
-      padding: BREAKPOINT() ? 120 : { top: 40, bottom: window.innerHeight / 2, left: 40, right: 40 },
-    });
 
     map.once('zoomstart', () => {
       $logo.classList.add('fadeout');
