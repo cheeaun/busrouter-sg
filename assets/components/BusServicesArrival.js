@@ -17,6 +17,7 @@ export default class BusServicesArrival extends Component {
   componentWillUnmount() {
     this._removeBuses();
     clearTimeout(this._arrivalsTimeout);
+    cancelAnimationFrame(this._arrivalsRAF);
   }
   _setupMap = () => {
     const { map } = this.props;
@@ -76,6 +77,9 @@ export default class BusServicesArrival extends Component {
   }
   componentDidUpdate(prevProps) {
     if (prevProps.id !== this.props.id) {
+      this._removeBuses();
+      clearTimeout(this._arrivalsTimeout);
+      cancelAnimationFrame(this._arrivalsRAF);
       this.setState({
         servicesArrivals: {},
       });
@@ -83,6 +87,7 @@ export default class BusServicesArrival extends Component {
     }
   }
   _arrivalsTimeout = null;
+  _arrivalsRAF = null;
   _fetchServices = () => {
     const { id, map } = this.props;
     if (!id) return;
@@ -148,7 +153,7 @@ export default class BusServicesArrival extends Component {
       }, map.loaded() ? 0 : 1000);
 
       this._arrivalsTimeout = setTimeout(() => {
-        requestAnimationFrame(this._fetchServices);
+        this._arrivalsRAF = requestAnimationFrame(this._fetchServices);
       }, 15 * 1000); // 15 seconds
     });
   }
