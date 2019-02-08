@@ -25,7 +25,7 @@
     "parcel-plugin-json-url-loader": "~0.1.2",
     "postcss-import-url": "~4.0.0",
     "postcss-modules": "~1.4.1",
-    "serve": "~10.1.1"
+    "serve": "~10.1.2"
   },
   "author": "Lim Chee Aun",
   "license": "MIT",
@@ -41,7 +41,7 @@
   "dependencies": {
     "@babel/runtime": "~7.3.1",
     "cheap-ruler": "~2.5.1",
-    "fuse.js": "~3.3.1",
+    "fuse.js": "~3.4.1",
     "just-intersect": "~3.1.0",
     "lscache": "~1.3.0",
     "preact": "~8.4.2"
