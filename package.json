@@ -35,7 +35,7 @@
     "start": "npm-run-all --parallel watch serve",
     "prebuild": "rm -rf dist && parcel --version",
     "build": "parcel build index.html bus-arrival/index.html bus-first-last/index.html visualization/index.html",
-    "postbuild": "cpy favicon.ico dist && node tasks/generateHeaders",
+    "postbuild": "cpy favicon.ico dist && cpy well-known/* dist/.well-known && node tasks/generateHeaders",
     "prod": "npx serve dist/"
   },
   "dependencies": {

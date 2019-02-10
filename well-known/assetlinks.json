@@ -1,0 +1,5 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target" : { "namespace": "android_app", "package_name": "cheeaun.busroutersg",
+               "sha256_cert_fingerprints": ["5B:7D:8D:54:36:A0:1A:F6:9F:B8:FC:58:60:95:FD:77:5E:05:2B:DD:51:2D:30:32:3D:62:95:52:85:5F:92:8D"] }
+}]
