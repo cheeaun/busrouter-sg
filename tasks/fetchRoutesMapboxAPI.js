@@ -6,7 +6,7 @@ const stops = JSON.parse(fs.readFileSync('data/3/stops2.json'));
 const serviceStops = JSON.parse(fs.readFileSync('data/3/serviceStops.json'));
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-const TOKEN = 'pk.eyJ1IjoiY2hlZWF1biIsImEiOiIwMTkyNjRiOWUzOTMyZThkYTE3YjMyMWFiZGU2OTZlNiJ9.XsOEKtyctGiNGNsmVhetYg';
+const TOKEN = 'pk.eyJ1IjoiY2hlZWF1biIsImEiOiJjam9weHRuMW4xdXczM3FteTR1OGt3OWxhIn0.I9fgZVxvN_wSJb8soniwpQ';
 
 const fetchRoute = async (coords) => {
   let res;
@@ -37,7 +37,7 @@ const fetchRoute = async (coords) => {
     const { body } = res;
     return body.matchings[0].geometry.coordinates;
   } catch (e){
-    console.error(e, res.req.path);
+    console.error(e, res);
     throw e;
   }
 };

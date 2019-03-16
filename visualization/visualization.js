@@ -119,7 +119,7 @@ map.on('load', async () => {
     opacity: 1,
     widthMinPixels: 1,
     getWidth: 10,
-    getColor: (d) => d.highlighted ? [229, 238, 193] : d.faded ? [0,0,0,0] : lerpColor('#73BC84', '#E5EEC1', d.level/130),
+    getColor: (d) => d.highlighted ? [229, 238, 193] : d.faded ? [0,0,0,0] : lerpColor('#73BC84', '#E5EEC1', d.level/134),
     pickable: true,
     autoHighlight: true,
     highlightColor: [255, 255, 255],

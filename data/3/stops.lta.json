@@ -1928,8 +1928,8 @@
 		"BusStopCode": "14069",
 		"RoadName": "Keppel Rd",
 		"Description": "Former Railway Stn",
-		"Latitude": 1.27261333297575,
-		"Longitude": 103.83694861102117
+		"Latitude": 1.272538056,
+		"Longitude": 103.8364069
 	},
 	"14071": {
 		"BusStopCode": "14071",
@@ -1942,8 +1942,8 @@
 		"BusStopCode": "14081",
 		"RoadName": "Keppel Rd",
 		"Description": "Tg Pagar DP Blk F5",
-		"Latitude": 1.27067760623796,
-		"Longitude": 103.83061367871179
+		"Latitude": 1.270896111,
+		"Longitude": 103.8308919
 	},
 	"14089": {
 		"BusStopCode": "14089",
@@ -10492,6 +10492,13 @@
 		"Latitude": 1.30664404460339,
 		"Longitude": 103.84920416709382
 	},
+	"40021": {
+		"BusStopCode": "40021",
+		"RoadName": "Bt Timah Rd",
+		"Description": "BEF WINSTEDT RD",
+		"Latitude": 1.311033889,
+		"Longitude": 103.8427911
+	},
 	"40029": {
 		"BusStopCode": "40029",
 		"RoadName": "Bt Timah Rd",
@@ -10573,8 +10580,8 @@
 		"BusStopCode": "40089",
 		"RoadName": "Dunearn Rd",
 		"Description": "Opp Stevens Stn",
-		"Latitude": 1.32051115982554,
-		"Longitude": 103.82739799064892
+		"Latitude": 1.320510556,
+		"Longitude": 103.8273903
 	},
 	"40091": {
 		"BusStopCode": "40091",
@@ -10727,8 +10734,8 @@
 		"BusStopCode": "40239",
 		"RoadName": "Whitley Rd",
 		"Description": "Aft Tanglin CC",
-		"Latitude": 1.32255443038995,
-		"Longitude": 103.82620193736967
+		"Latitude": 1.322585278,
+		"Longitude": 103.8262153
 	},
 	"40249": {
 		"BusStopCode": "40249",
@@ -16537,8 +16544,8 @@
 		"BusStopCode": "50051",
 		"RoadName": "Thomson Rd",
 		"Description": "Thomson Med Ctr",
-		"Latitude": 1.3256128334349,
-		"Longitude": 103.84186148677112
+		"Latitude": 1.325878056,
+		"Longitude": 103.8418119
 	},
 	"50059": {
 		"BusStopCode": "50059",
@@ -16810,8 +16817,8 @@
 		"BusStopCode": "51011",
 		"RoadName": "Thomson Rd",
 		"Description": "Opp Tan Tong Meng Twr",
-		"Latitude": 1.32770447989161,
-		"Longitude": 103.84095472172798
+		"Latitude": 1.327841667,
+		"Longitude": 103.8406111
 	},
 	"51019": {
 		"BusStopCode": "51019",
@@ -16824,8 +16831,8 @@
 		"BusStopCode": "51021",
 		"RoadName": "Thomson Rd",
 		"Description": "Old Police Academy",
-		"Latitude": 1.33032500001091,
-		"Longitude": 103.83925888900175
+		"Latitude": 1.330411111,
+		"Longitude": 103.8391331
 	},
 	"51029": {
 		"BusStopCode": "51029",
@@ -18237,14 +18244,14 @@
 	"54061": {
 		"BusStopCode": "54061",
 		"RoadName": "Ang Mo Kio Ave 1",
-		"Description": "Opp Blk 244",
+		"Description": "Blk 244",
 		"Latitude": 1.36728801688172,
 		"Longitude": 103.83404076959498
 	},
 	"54069": {
 		"BusStopCode": "54069",
 		"RoadName": "Ang Mo Kio Ave 1",
-		"Description": "Blk 244",
+		"Description": "Opp Blk 244",
 		"Latitude": 1.36691997150676,
 		"Longitude": 103.83405562626137
 	},
@@ -19140,7 +19147,7 @@
 	"55189": {
 		"BusStopCode": "55189",
 		"RoadName": "Ang Mo Kio Ave 6",
-		"Description": "Opp Police Drv Circuit",
+		"Description": "Yio Chu Kang Stn",
 		"Latitude": 1.38261995770962,
 		"Longitude": 103.84383839092432
 	},
@@ -27446,6 +27453,34 @@
 		"Latitude": 1.36626888891089,
 		"Longitude": 103.93315812393162
 	},
+	"75471": {
+		"BusStopCode": "75471",
+		"RoadName": "Tampines Ave 6",
+		"Description": "Blk 602B",
+		"Latitude": 1.361598056,
+		"Longitude": 103.9379408
+	},
+	"75479": {
+		"BusStopCode": "75479",
+		"RoadName": "Tampines Ave 6",
+		"Description": "Blk 619A",
+		"Latitude": 1.361776111,
+		"Longitude": 103.9381889
+	},
+	"75481": {
+		"BusStopCode": "75481",
+		"RoadName": "Tampines Ave 6",
+		"Description": "Blk 609D",
+		"Latitude": 1.3508075,
+		"Longitude": 103.8732867
+	},
+	"75489": {
+		"BusStopCode": "75489",
+		"RoadName": "Tampines Ave 6",
+		"Description": "Opp Blk 609D",
+		"Latitude": 1.363941111,
+		"Longitude": 103.9381689
+	},
 	"76031": {
 		"BusStopCode": "76031",
 		"RoadName": "Tampines Ave 2",
@@ -29200,8 +29235,8 @@
 		"BusStopCode": "81029",
 		"RoadName": "Geylang Rd",
 		"Description": "Aft Lor 28 Geylang",
-		"Latitude": 1.31359869606059,
-		"Longitude": 103.88497531416832
+		"Latitude": 1.313616389,
+		"Longitude": 103.8849306
 	},
 	"81031": {
 		"BusStopCode": "81031",
@@ -29214,8 +29249,8 @@
 		"BusStopCode": "81049",
 		"RoadName": "Geylang Rd",
 		"Description": "Aft Lor 34 Geylang",
-		"Latitude": 1.31414737685242,
-		"Longitude": 103.88788680329557
+		"Latitude": 1.314075556,
+		"Longitude": 103.8873525
 	},
 	"81051": {
 		"BusStopCode": "81051",
@@ -29228,8 +29263,8 @@
 		"BusStopCode": "81069",
 		"RoadName": "Geylang Rd",
 		"Description": "Opp Lor 39 Geylang",
-		"Latitude": 1.314713072947,
-		"Longitude": 103.89084333204679
+		"Latitude": 1.314729,
+		"Longitude": 103.89069
 	},
 	"81081": {
 		"BusStopCode": "81081",
@@ -31447,8 +31482,8 @@
 		"BusStopCode": "92199",
 		"RoadName": "East Coast Pk Svc Rd",
 		"Description": "Aft CP C4",
-		"Latitude": 1.30282001380608,
-		"Longitude": 103.91650277694103
+		"Latitude": 1.302895,
+		"Longitude": 103.91685
 	},
 	"92201": {
 		"BusStopCode": "92201",
@@ -34380,8 +34415,8 @@
 		"BusStopCode": "05131",
 		"RoadName": "Upp Cross St",
 		"Description": "Opp Hong Lim Cplx",
-		"Latitude": 1.28398513155185,
-		"Longitude": 103.84527387289731
+		"Latitude": 1.284073056,
+		"Longitude": 103.8453381
 	},
 	"05189": {
 		"BusStopCode": "05189",
@@ -34485,8 +34520,8 @@
 		"BusStopCode": "05629",
 		"RoadName": "Cantonment Rd",
 		"Description": "Opp Southpoint",
-		"Latitude": 1.27329192032102,
-		"Longitude": 103.84192909343133
+		"Latitude": 1.273211389,
+		"Longitude": 103.84187
 	},
 	"05631": {
 		"BusStopCode": "05631",
@@ -34513,8 +34548,8 @@
 		"BusStopCode": "05651",
 		"RoadName": "Tg Pagar Rd",
 		"Description": "Opp Fuji Xerox Twrs",
-		"Latitude": 1.27324242161317,
-		"Longitude": 103.84305085232333
+		"Latitude": 1.273218611,
+		"Longitude": 103.8430731
 	},
 	"06011": {
 		"BusStopCode": "06011",
@@ -34639,8 +34674,8 @@
 		"BusStopCode": "06171",
 		"RoadName": "Upp Cross St",
 		"Description": "Opp State Ct",
-		"Latitude": 1.2860773006121,
-		"Longitude": 103.84244788580838
+		"Latitude": 1.286101944,
+		"Longitude": 103.8425356
 	},
 	"06189": {
 		"BusStopCode": "06189",
@@ -34695,8 +34730,8 @@
 		"BusStopCode": "07231",
 		"RoadName": "Kitchener Rd",
 		"Description": "Bef Tai Hoe Hotel",
-		"Latitude": 1.30964820661492,
-		"Longitude": 103.85735391381444
+		"Latitude": 1.309658889,
+		"Longitude": 103.8573711
 	},
 	"07241": {
 		"BusStopCode": "07241",
@@ -34709,8 +34744,8 @@
 		"BusStopCode": "07249",
 		"RoadName": "Lavender St",
 		"Description": "Aft Kempas Rd",
-		"Latitude": 1.31538504412508,
-		"Longitude": 103.85946769695234
+		"Latitude": 1.315368056,
+		"Longitude": 103.8594669
 	},
 	"07319": {
 		"BusStopCode": "07319",

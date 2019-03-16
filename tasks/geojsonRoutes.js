@@ -13,6 +13,7 @@ const features = [];
 
 services.forEach(service => {
   const { no } = service;
+  console.log('➡️  ', no);
   const routes =
     readFile(`data/3/routes/mytransportsg/${no}.json`) ||
     // readFile(`data/3/routes/towertransitsg/${no}.json`) ||

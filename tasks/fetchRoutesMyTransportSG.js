@@ -3,6 +3,7 @@ const got = require('got');
 const args = process.argv.splice(process.execArgv.length + 2);
 
 const serviceStops = JSON.parse(fs.readFileSync('data/3/serviceStops.json'));
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 (async() => {
 
@@ -47,6 +48,8 @@ for (let service in serviceStops){
       fs.writeFileSync(filePath, JSON.stringify(serviceRoutes, null, '\t'));
       console.log(`Generated ${filePath}`);
     }
+
+    await delay(1000);
   }
 }
 

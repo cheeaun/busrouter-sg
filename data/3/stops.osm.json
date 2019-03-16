@@ -2,8 +2,8 @@
   "version": 0.6,
   "generator": "Overpass API 0.7.55.5 2ca3f387",
   "osm3s": {
-    "timestamp_osm_base": "2019-01-15T03:16:02Z",
-    "timestamp_areas_base": "2019-01-15T02:17:03Z",
+    "timestamp_osm_base": "2019-03-14T14:10:02Z",
+    "timestamp_areas_base": "2019-03-14T12:41:02Z",
     "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
   },
   "elements": [
@@ -1176,8 +1176,8 @@
 {
   "type": "node",
   "id": 410459462,
-  "lat": 1.2909184,
-  "lon": 103.8204679,
+  "lat": 1.2909141,
+  "lon": 103.8204759,
   "tags": {
     "asset_ref": "10261",
     "highway": "bus_stop",
@@ -1283,8 +1283,8 @@
 {
   "type": "node",
   "id": 410459470,
-  "lat": 1.2912270,
-  "lon": 103.8205920,
+  "lat": 1.2911922,
+  "lon": 103.8205903,
   "tags": {
     "asset_ref": "10269",
     "highway": "bus_stop",
@@ -4653,7 +4653,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Beach Road",
-    "name": "Keypoint Building",
+    "name": "Opp St. John HQ",
     "public_transport": "platform",
     "route_ref": "100;961;961C;980"
   }
@@ -13370,8 +13370,8 @@
 {
   "type": "node",
   "id": 410463606,
-  "lat": 1.3151072,
-  "lon": 103.7693914,
+  "lat": 1.3151237,
+  "lon": 103.7693259,
   "tags": {
     "asset_ref": "17249",
     "bus": "yes",
@@ -15640,7 +15640,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Dover Road",
-    "name": "United World College",
+    "name": "ACS Independent",
     "public_transport": "platform",
     "route_ref": "14;33;74;166;196"
   }
@@ -16855,8 +16855,8 @@
 {
   "type": "node",
   "id": 410464255,
-  "lat": 1.3185242,
-  "lon": 103.8921644,
+  "lat": 1.3186840,
+  "lon": 103.8927563,
   "tags": {
     "asset_ref": "81111",
     "bus": "yes",
@@ -22320,8 +22320,8 @@
 {
   "type": "node",
   "id": 410465270,
-  "lat": 1.2774322,
-  "lon": 103.8321453,
+  "lat": 1.2774332,
+  "lon": 103.8321437,
   "tags": {
     "asset_ref": "10051",
     "bus": "yes",
@@ -22330,7 +22330,8 @@
     "name": "Blk 149",
     "public_transport": "platform",
     "route_ref": "120;147;167;196;197;961;961C",
-    "shelter": "yes"
+    "shelter": "yes",
+    "tactile_paving": "no"
   }
 },
 {
@@ -22366,8 +22367,8 @@
 {
   "type": "node",
   "id": 410465382,
-  "lat": 1.2867214,
-  "lon": 103.8057195,
+  "lat": 1.2866969,
+  "lon": 103.8057099,
   "tags": {
     "asset_ref": "11019",
     "bus": "yes",
@@ -22391,7 +22392,8 @@
     "name": "Opposite Blk 149",
     "public_transport": "platform",
     "route_ref": "120;147;167;196;197;961;961C",
-    "shelter": "yes"
+    "shelter": "yes",
+    "tactile_paving": "no"
   }
 },
 {
@@ -22427,8 +22429,8 @@
 {
   "type": "node",
   "id": 410465583,
-  "lat": 1.2850391,
-  "lon": 103.8136750,
+  "lat": 1.2850331,
+  "lon": 103.8136730,
   "tags": {
     "asset_ref": "10101",
     "bus": "yes",
@@ -22452,14 +22454,15 @@
     "name": "Opposite Blk 140",
     "public_transport": "platform",
     "route_ref": "120;147;167;196;197;961;961C",
-    "shelter": "yes"
+    "shelter": "yes",
+    "tactile_paving": "no"
   }
 },
 {
   "type": "node",
   "id": 410465587,
-  "lat": 1.2854037,
-  "lon": 103.8133897,
+  "lat": 1.2853749,
+  "lon": 103.8133736,
   "tags": {
     "asset_ref": "10109",
     "bus": "yes",
@@ -24869,24 +24872,9 @@
 },
 {
   "type": "node",
-  "id": 410466450,
-  "lat": 1.3527981,
-  "lon": 103.7049209,
-  "tags": {
-    "asset_ref": "27469",
-    "bus": "yes",
-    "highway": "bus_stop",
-    "location": "Jurong West Avenue 3",
-    "name": "Blk 276B",
-    "public_transport": "platform",
-    "route_ref": "181;181M;185"
-  }
-},
-{
-  "type": "node",
   "id": 410466453,
-  "lat": 1.3529306,
-  "lon": 103.7050947,
+  "lat": 1.3526094,
+  "lon": 103.7050762,
   "tags": {
     "asset_ref": "27461",
     "bus": "yes",
@@ -25128,8 +25116,8 @@
 {
   "type": "node",
   "id": 410466492,
-  "lat": 1.3505175,
-  "lon": 103.7001542,
+  "lat": 1.3505331,
+  "lon": 103.6999319,
   "tags": {
     "asset_ref": "27449",
     "bus": "yes",
@@ -25143,8 +25131,8 @@
 {
   "type": "node",
   "id": 410466493,
-  "lat": 1.3503707,
-  "lon": 103.7006722,
+  "lat": 1.3502827,
+  "lon": 103.7007236,
   "tags": {
     "asset_ref": "27441",
     "bus": "yes",
@@ -25292,8 +25280,8 @@
 {
   "type": "node",
   "id": 410466688,
-  "lat": 1.3463356,
-  "lon": 103.7213693,
+  "lat": 1.3462672,
+  "lon": 103.7213042,
   "tags": {
     "asset_ref": "28381",
     "bus": "yes",
@@ -26167,7 +26155,8 @@
     "name": "Opposite Melati Blk 2",
     "public_transport": "platform",
     "route_ref": "61;124;143;166",
-    "shelter": "yes"
+    "shelter": "yes",
+    "tactile_paving": "no"
   }
 },
 {
@@ -26213,7 +26202,8 @@
     "name": "Melati Blk 2",
     "public_transport": "platform",
     "route_ref": "61;124;143;166",
-    "shelter": "yes"
+    "shelter": "yes",
+    "tactile_paving": "no"
   }
 },
 {
@@ -27141,8 +27131,8 @@
 {
   "type": "node",
   "id": 410466966,
-  "lat": 1.2865993,
-  "lon": 103.8116446,
+  "lat": 1.2866014,
+  "lon": 103.8116350,
   "tags": {
     "asset_ref": "10441",
     "highway": "bus_stop",
@@ -30428,8 +30418,8 @@
 {
   "type": "node",
   "id": 410467568,
-  "lat": 1.3065887,
-  "lon": 103.9149045,
+  "lat": 1.3065567,
+  "lon": 103.9149052,
   "tags": {
     "asset_ref": "92079",
     "bus": "yes",
@@ -30503,8 +30493,8 @@
 {
   "type": "node",
   "id": 410467573,
-  "lat": 1.3041880,
-  "lon": 103.9077830,
+  "lat": 1.3044656,
+  "lon": 103.9075830,
   "tags": {
     "asset_ref": "92059",
     "bus": "yes",
@@ -32474,7 +32464,7 @@
     "asset_ref": "95099",
     "highway": "bus_stop",
     "location": "Nicoll Drive",
-    "name": "Opposite Changi Beach Ferry Terminal",
+    "name": "Opposite SAF Ferry Terminal",
     "route_ref": "9;19;89"
   }
 },
@@ -32619,8 +32609,8 @@
 {
   "type": "node",
   "id": 410468043,
-  "lat": 1.3002733,
-  "lon": 103.8630668,
+  "lat": 1.3002450,
+  "lon": 103.8630723,
   "tags": {
     "asset_ref": "80169",
     "bus": "yes",
@@ -35371,7 +35361,8 @@
     "highway": "bus_stop",
     "location": "Pasir Ris Street 52",
     "name": "Blk 502",
-    "route_ref": "15"
+    "route_ref": "15",
+    "shelter": "yes"
   }
 },
 {
@@ -35399,7 +35390,8 @@
     "location": "Pasir Ris Street 52",
     "name": "Blk 582",
     "public_transport": "platform",
-    "route_ref": "15;15A"
+    "route_ref": "15;15A",
+    "shelter": "yes"
   }
 },
 {
@@ -38538,8 +38530,8 @@
 {
   "type": "node",
   "id": 410473814,
-  "lat": 1.3071935,
-  "lon": 103.8331287,
+  "lat": 1.3071944,
+  "lon": 103.8331263,
   "tags": {
     "asset_ref": "09219",
     "bus": "yes",
@@ -39201,7 +39193,8 @@
     "location": "Sengkang East Avenue",
     "name": "Ranggung Station Exit B",
     "public_transport": "platform",
-    "route_ref": "87;89;163;163M"
+    "route_ref": "87;89;163;163M",
+    "shelter": "yes"
   }
 },
 {
@@ -39336,7 +39329,8 @@
     "location": "Sengkang East Avenue",
     "name": "Ranggung Station Exit A",
     "public_transport": "platform",
-    "route_ref": "87;89;163;163M"
+    "route_ref": "87;89;163;163M",
+    "shelter": "yes"
   }
 },
 {
@@ -41176,8 +41170,8 @@
 {
   "type": "node",
   "id": 410475323,
-  "lat": 1.3408976,
-  "lon": 103.9590373,
+  "lat": 1.3406712,
+  "lon": 103.9591569,
   "tags": {
     "asset_ref": "96201",
     "bus": "yes",
@@ -43787,8 +43781,8 @@
 {
   "type": "node",
   "id": 410477175,
-  "lat": 1.3536726,
-  "lon": 103.9460937,
+  "lat": 1.3536548,
+  "lon": 103.9461424,
   "tags": {
     "asset_ref": "76141",
     "bus": "yes",
@@ -51959,8 +51953,8 @@
 {
   "type": "node",
   "id": 410481877,
-  "lat": 1.3198346,
-  "lon": 103.9551328,
+  "lat": 1.3195226,
+  "lon": 103.9552776,
   "tags": {
     "asset_ref": "94071",
     "bus": "yes",
@@ -51989,8 +51983,8 @@
 {
   "type": "node",
   "id": 410481933,
-  "lat": 1.3195949,
-  "lon": 103.9552176,
+  "lat": 1.3194444,
+  "lon": 103.9553161,
   "tags": {
     "asset_ref": "94079",
     "bus": "yes",
@@ -60482,8 +60476,8 @@
 {
   "type": "node",
   "id": 1729287184,
-  "lat": 1.3068939,
-  "lon": 103.8193838,
+  "lat": 1.3066955,
+  "lon": 103.8194133,
   "tags": {
     "asset_ref": "13019",
     "bus": "yes",
@@ -60940,8 +60934,8 @@
 {
   "type": "node",
   "id": 1845246321,
-  "lat": 1.3027560,
-  "lon": 103.7983034,
+  "lat": 1.3027494,
+  "lon": 103.7983090,
   "tags": {
     "asset_ref": "11169",
     "bus": "yes",
@@ -61456,8 +61450,8 @@
 {
   "type": "node",
   "id": 1847713996,
-  "lat": 1.3179775,
-  "lon": 103.9527047,
+  "lat": 1.3176647,
+  "lon": 103.9525996,
   "tags": {
     "amenity": "bus_station",
     "asset_ref": "94009",
@@ -61626,7 +61620,8 @@
     "highway": "bus_stop",
     "location": "Sengkang Central",
     "name": "Buangkok Station Exit A",
-    "route_ref": "27;43;43M;102"
+    "route_ref": "27;43;43M;102",
+    "shelter": "yes"
   }
 },
 {
@@ -63013,7 +63008,7 @@
     "asset_ref": "21679",
     "highway": "bus_stop",
     "location": "Tah Ching Road",
-    "name": "Blk 329",
+    "name": "Blk 329 (bus stop rumah cik sharif - datang)",
     "route_ref": "49;246"
   }
 },
@@ -63026,7 +63021,7 @@
     "asset_ref": "21671",
     "highway": "bus_stop",
     "location": "Tah Ching Road",
-    "name": "Blk 331",
+    "name": "Blk 331 (bus stop rumah cik sharif - balik)",
     "route_ref": "49;246"
   }
 },
@@ -66091,7 +66086,9 @@
     "location": "Kampung Bahru Road",
     "name": "Opposite Saint Teresa's Church",
     "public_transport": "platform",
-    "route_ref": "61;124;143;166"
+    "route_ref": "61;124;143;166",
+    "shelter": "yes",
+    "tactile_paving": "no"
   }
 },
 {
@@ -66137,7 +66134,9 @@
     "location": "Pasir Ris Drive 3",
     "name": "Pasir Ris Interchange",
     "public_transport": "platform",
-    "route_ref": "3;3B;4N;5;6;12;15;15A;17;21;58;88;354;358;359;403;518;518A"
+    "route_ref": "3;3B;4N;5;6;12;15;15A;17;21;58;88;354;358;359;403;518;518A",
+    "shelter": "yes",
+    "wheelchair": "yes"
   }
 },
 {
@@ -66241,7 +66240,9 @@
     "location": "Kampung Bahru Road",
     "name": "Saint Teresa's Church",
     "public_transport": "platform",
-    "route_ref": "61;124;143;166"
+    "route_ref": "61;124;143;166",
+    "shelter": "yes",
+    "tactile_paving": "no"
   }
 },
 {
@@ -67393,7 +67394,8 @@
     "location": "Sengkang Central",
     "name": "Buangkok Station Exit B",
     "public_transport": "platform",
-    "route_ref": "27;43;43M;102"
+    "route_ref": "27;43;43M;102",
+    "shelter": "yes"
   }
 },
 {
@@ -67761,6 +67763,21 @@
   "tags": {
     "amenity": "bus_station",
     "highway": "bus_stop"
+  }
+},
+{
+  "type": "node",
+  "id": 2577843957,
+  "lat": 1.3525392,
+  "lon": 103.7049481,
+  "tags": {
+    "asset_ref": "27469",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "Jurong West Avenue 3",
+    "name": "Blk 276B",
+    "public_transport": "platform",
+    "route_ref": "181;181M;185"
   }
 },
 {
@@ -68438,8 +68455,8 @@
 {
   "type": "node",
   "id": 3535903648,
-  "lat": 1.3484841,
-  "lon": 103.6980886,
+  "lat": 1.3484888,
+  "lon": 103.6980616,
   "tags": {
     "asset_ref": "27389",
     "bus": "yes",
@@ -70045,8 +70062,8 @@
 {
   "type": "node",
   "id": 3884244832,
-  "lat": 1.2949920,
-  "lon": 103.7930649,
+  "lat": 1.2949332,
+  "lon": 103.7931717,
   "tags": {
     "asset_ref": "18201",
     "highway": "bus_stop",
@@ -70359,8 +70376,8 @@
 {
   "type": "node",
   "id": 4312599506,
-  "lat": 1.2745543,
-  "lon": 103.8021852,
+  "lat": 1.2745771,
+  "lon": 103.8021793,
   "tags": {
     "asset_ref": "15049",
     "bus": "yes",
@@ -70422,8 +70439,10 @@
   "lat": 1.3018332,
   "lon": 103.7696131,
   "tags": {
+    "bench": "yes",
     "highway": "bus_stop",
-    "name": "Kent Vale"
+    "name": "Kent Vale",
+    "shelter": "yes"
   }
 },
 {
@@ -70584,8 +70603,8 @@
 {
   "type": "node",
   "id": 4426007112,
-  "lat": 1.3272547,
-  "lon": 103.8597557,
+  "lat": 1.3272580,
+  "lon": 103.8597949,
   "tags": {
     "asset_ref": "52049",
     "bus": "yes",
@@ -71420,8 +71439,8 @@
 {
   "type": "node",
   "id": 4623289717,
-  "lat": 1.3026681,
-  "lon": 103.9050481,
+  "lat": 1.3033375,
+  "lon": 103.9055480,
   "tags": {
     "asset_ref": "92041",
     "bus": "yes",
@@ -72673,8 +72692,8 @@
 {
   "type": "node",
   "id": 5858710744,
-  "lat": 1.3390338,
-  "lon": 103.9604966,
+  "lat": 1.3390434,
+  "lon": 103.9604759,
   "tags": {
     "asset_ref": "96049",
     "bus": "yes",
@@ -73073,6 +73092,49 @@
     "highway": "bus_stop",
     "name": "Changi Airport PTB4",
     "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 6243913085,
+  "lat": 1.4444355,
+  "lon": 103.7673304,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "BALIK KE JB"
+  }
+},
+{
+  "type": "node",
+  "id": 6297636787,
+  "lat": 1.3163920,
+  "lon": 103.8990205,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "bus stop joo chiat cplx (balik)"
+  }
+},
+{
+  "type": "node",
+  "id": 6297638585,
+  "lat": 1.3178188,
+  "lon": 103.8976093,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "bus stop geylang serai (datang)"
+  }
+},
+{
+  "type": "node",
+  "id": 6326858000,
+  "lat": 1.3550952,
+  "lon": 103.6844429,
+  "tags": {
+    "asset_ref": "27071",
+    "highway": "bus_stop",
+    "location": "Nanyang Cresent",
+    "name": "Nanyang Cres Halls",
+    "route_ref": "199"
   }
 }
 

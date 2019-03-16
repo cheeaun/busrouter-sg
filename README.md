@@ -108,11 +108,14 @@ When there's a data update, run the scripts in these order:
 	3. `node tasks/repositionStops`
 	4. `node tasks/repositionStopLabels`
 4. Routes data
-	1. `node tasks/fetchRoutesMyTransport --override`
+	1. `node tasks/fetchRoutesMyTransportSG --override`
 		- Mutates/updates the routes data because of `override` option
 		- Doesn't delete services/routes that are gone
 	2. `node tasks/fetchRoutesOneMapSG --override`
 		- Mutates/updates the routes data because of `override` option
+		- Doesn't delete services/routes that are gone
+	3. `node tasks/fetchRoutesMapboxAPI`
+		- Usually not needed, unless there are routes that are missing
 		- Doesn't delete services/routes that are gone
 5. First/last bus data
 	1. `node tasks/fetchRoutesLTA`
