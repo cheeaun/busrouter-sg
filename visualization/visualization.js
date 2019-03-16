@@ -41,7 +41,7 @@ function debounce(func, wait, immediate) {
 };
 
 // https://gist.github.com/rosszurowski/67f04465c424a9bc0dae
-function lerpColor(a, b, amount) { 
+function lerpColor(a, b, amount) {
   var ah = parseInt(a.replace(/#/g, ''), 16),
       ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
       bh = parseInt(b.replace(/#/g, ''), 16),
