@@ -29,7 +29,7 @@ for (let i=0, l=stopSets.length; i<l; i++){
       json: true,
       query: {
         busStopNo: stopNumbers,
-        token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMsInVzZXJfaWQiOjMsImVtYWlsIjoicHVibGljQXBpUm9sZUBzbGEuZ292LnNnIiwiZm9yZXZlciI6ZmFsc2UsImlzcyI6Imh0dHA6XC9cL29tMi5kZmUub25lbWFwLnNnXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNTUyNDUwNjE0LCJleHAiOjE1NTI4ODI2MTQsIm5iZiI6MTU1MjQ1MDYxNCwianRpIjoiN2IwMWJmY2NiMTYzMjQzNmU3ZDhhNTljNjJlMzYxOTEifQ.D6qyjmM-vI-j4wsIK6i6T8u8-4p3bnYt97zdvuRmtWU'
+        token: process.env.process.env.oneMapToken,
       },
     });
   } catch (e){
