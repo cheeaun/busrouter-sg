@@ -11,7 +11,7 @@ const stopServiceRoutes = {};
     const { body } = await got('http://datamall2.mytransport.sg/ltaodataservice/BusRoutes', {
       json: true,
       headers: {
-        AccountKey: process.env.accountKey,
+        AccountKey: process.env.ltaAccountKey,
       },
       query: {
         '$skip': index*500,

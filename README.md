@@ -41,9 +41,18 @@ All data such as bus stops, services and routes are mostly *scraped* from <http:
 Before running anything, run `npm i` to install all required dependencies.
 
 Notes before diving in:
+
 - There are three important terms: **stop**, **service** and **route**.
 - One service have one or many routes, usually maximum two routes. It may be an A-to-B route or A-to-A route (roundtrip).
 - Services with two routes may contain A-to-B and B-to-A routes with different list of stops, usually on the opposite sides of the road. Some services may contain A-to-B and C-to-D routes where the first stop of a route may not be the last stop of the 2nd route, etc.
+
+Before running the scripts, some **environment variables are required**. This project uses [dotenv](https://github.com/motdotla/dotenv) so one of the easier ways to add environment variables is:
+
+1. Duplicate `.env.example` file (copy & paste)
+2. Rename to `.env`
+3. Open the file and configure the variables
+
+One of environment variables is `ltaAccountKey` which you'll need to [request](https://www.mytransport.sg/content/mytransport/home/dataMall/request-for-api.html). The rest should be self-explanatory.
 
 The scripts are:
 
@@ -103,7 +112,7 @@ When there's a data update, run the scripts in these order:
 1. `node tasks/fetchServices`
 2. `node tasks/fetchServiceStops`
 3. Stops data
-	1. `node tasks/fetchStopsOneMap`
+	1. `node tasks/fetchStopsOneMapSG`
 	2. `node tasks/fetchStopsOverpass`
 	3. `node tasks/repositionStops`
 	4. `node tasks/repositionStopLabels`
