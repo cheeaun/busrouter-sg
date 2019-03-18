@@ -91,8 +91,8 @@ map.on('load', async () => {
     data: stopsData,
     getPolygon: d => d.contour,
     extruded: true,
-    getElevation: d => d.faded ? 30 : d.level * 50,
-    getFillColor: d => d.highlighted ? [229, 238, 193] : [55, 83, 95, 250],
+    getElevation: d => d.faded ? 30 : d.level * 100,
+    getFillColor: d => d.highlighted ? [229, 238, 193] : d.faded ? [55, 83, 95, 255] : [55, 83, 95, 128],
     pickable: true,
     autoHighlight: true,
     highlightColor: [229, 238, 193],
@@ -110,6 +110,7 @@ map.on('load', async () => {
   map.addLayer(stopsLayer);
 
   const $tooltip = document.getElementById('tooltip');
+  const highestLevel = routesData.reduce((level, d) => d.level > level ? d.level : level, 1);
 
   const routesLayer = new deck.MapboxLayer({
     id: 'routes',
@@ -119,7 +120,7 @@ map.on('load', async () => {
     opacity: 1,
     widthMinPixels: 1,
     getWidth: 10,
-    getColor: (d) => d.highlighted ? [229, 238, 193] : d.faded ? [0,0,0,0] : lerpColor('#73BC84', '#E5EEC1', d.level/134),
+    getColor: (d) => d.faded ? [0,0,0,0] : lerpColor('#73BC84', '#E5EEC1', d.level/highestLevel),
     pickable: true,
     autoHighlight: true,
     highlightColor: [255, 255, 255],

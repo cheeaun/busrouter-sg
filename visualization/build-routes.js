@@ -27,9 +27,21 @@ const newRoutes = [];
 sortedServices.forEach(service => {
   const _stops = serviceStops[service];
   const allStops = [...new Set([..._stops[0], ...(_stops[1] || [])])];
-  const highestLevel = allStops.reduce((acc, s) => Math.max(stops[s].level || 0, acc), 0);
-  const level = highestLevel + 1;
-  allStops.forEach(s => stops[s].level = level);
+  // const highestLevel = allStops.reduce((acc, s) => Math.max(stops[s].level || 0, acc), 0);
+  // const level = highestLevel + 1;
+  let level = null;
+  for (let l=1; !level; l++) {
+    const hasLevel = allStops.some(s => stops[s].occupiedLevels ? stops[s].occupiedLevels.has(l) : false);
+    if (!hasLevel) level = l;
+  }
+  allStops.forEach(s => {
+    // stops[s].level = level;
+    if (stops[s].occupiedLevels) {
+      stops[s].occupiedLevels.add(level);
+    } else {
+      stops[s].occupiedLevels = new Set([level]);
+    }
+  });
   const serviceRoutes = routes.filter(r => r.properties.number === service);
   serviceRoutes.forEach(serviceRoute => {
     const simplifiedServiceRoute = simplify(serviceRoute, {
@@ -40,7 +52,7 @@ sortedServices.forEach(service => {
     newRoutes.push({
       level,
       number: serviceRoute.properties.number,
-      path: simplifiedServiceRoute.geometry.coordinates.map(c => c.concat((level-1) * 50)),
+      path: simplifiedServiceRoute.geometry.coordinates.map(c => c.concat((level-1) * 100)),
     });
   });
   console.log(`${service} - level ${level}`);
@@ -55,7 +67,9 @@ console.log(`File generated: ${routesFile}`);
 
 const stopLevels = {};
 stopsArr.map(s => {
-  stopLevels[s.no] = stops[s.no].level;
+  const { occupiedLevels } = stops[s.no];
+  const highestLevel = Math.max(...occupiedLevels);
+  stopLevels[s.no] = highestLevel;
 });
 
 const levelsFile = 'visualization/data/levels.json';
