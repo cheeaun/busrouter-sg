@@ -6,8 +6,10 @@
   @import 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css';
   body { margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; background: #09101D; color: #fff; font-size: 12px; pointer-events: none; }
   body.ready { pointer-events: auto; }
-  #map { position: fixed; top: 0; bottom: 40%; width: 100%; }
-  #panel { position: fixed; top: 60%; bottom: 0; width: 100%; display: flex; background-image: linear-gradient(#0C172E, #09101D); }
+  #map { position: fixed; top: 0; bottom: 40%; width: 100%; transition: .3s bottom; }
+  .map-expand #map { bottom: 44px; }
+  #panel { position: fixed; top: 60%; bottom: 0; width: 100%; display: flex; background-image: linear-gradient(#0C172E, #09101D); transition: .3s top; }
+  .map-expand #panel { top: calc(100% - 44px); }
   #panel > div { display: flex; flex-direction: column; flex-grow: 1; }
   #panel > div:first-child { border-right: 1px solid #112330; }
   #panel > div h2 { font-size: 1em; font-weight: normal; text-transform: uppercase; padding: .5em 1em; }
@@ -25,6 +27,24 @@
     100% { background-color: #112330; }
   }
   #panel ul li a:target { background-color: #fff; color: #09101D; }
+  #toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    transform: scaleX(2) translateX(-.75em);
+    background-color: transparent;
+    border: 0;
+    color: rgba(255,255,255,.5);
+    line-height: 24px;
+    cursor: pointer;
+    z-index: 2;
+    transition: .3s transform;
+    outline: 0;
+  }
+  #toggle:hover { color: #fff; }
+  #toggle:active { color: rgba(0,0,0,.5); }
+  .map-expand #toggle { transform: scale(2, -1) translateX(-.75em); }
   #status { position: fixed; padding: 0 50px 0 1.6em; height: 44px; line-height: 44px; border-radius: 44px; background-color: #fff; color: #09101D; top: 10px; left: 10px; margin-right: 10px; text-transform: uppercase; font-weight: bold; transition: transform .6s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: top left; box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1); }
   #status[hidden] { display: block; transform: translateY(-100px) rotate(-15deg); opacity: 0; pointer-events: none; }
   #status span { display: inline-block; line-height: 1.1em; vertical-align: middle; }
@@ -35,6 +55,7 @@
   @media (min-width: 800px) {
     #map { bottom: 0; width: calc(100% - 320px); }
     #panel { top: 0; width: 320px; right: 0; }
+    #toggle { display: none; }
   }
   .mapboxgl-canvas-container, .mapboxgl-canvas-container * { cursor: crosshair !important; }
   .mapboxgl-ctrl-group { border-radius: 44px; }

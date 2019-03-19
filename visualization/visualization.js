@@ -220,6 +220,7 @@ map.on('load', async () => {
   const $panel = document.getElementById('panel');
   const routesList = routesData.map(r => r.number).filter((el, pos, arr) => arr.indexOf(el) === pos);
   $panel.innerHTML = `
+    <button type="button" id="toggle">▼</button>
     <div id="services">
       <h2 title="${routesList.length} services">Services</h2>
       <ul>
@@ -233,6 +234,13 @@ map.on('load', async () => {
       </ul>
     </div>
   `;
+
+  $panel.querySelector('#toggle').addEventListener('click', () => {
+    document.body.classList.toggle('map-expand');
+    setTimeout(() => {
+      map.resize();
+    }, 350);
+  });
 
   const $stops = $panel.querySelector('#stops');
   const focusListStop = (number) => {
