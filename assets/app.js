@@ -174,7 +174,7 @@ class App extends Component {
     const lowerLat = 1.2, upperLat = 1.48, lowerLong = 103.59, upperLong = 104.05;
     const map = this.map = window._map = new mapboxgl.Map({
       container: 'map',
-      style: `https://maps.tilehosting.com/c/9fdb169d-8076-44bb-a5e6-3e48a4604f35/styles/busrouter-sg-1/style.json?key=${MAPTILER_KEY}`,
+      style: `https://api.maptiler.com/maps/ec33b31b-2797-472b-abd3-f190f5a565a2/style.json?key=${MAPTILER_KEY}`,
       renderWorldCopies: false,
       boxZoom: false,
       minZoom: 8,
