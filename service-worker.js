@@ -123,7 +123,7 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-  /.*maps\.tilehosting\.com.*$/,
+  /.*(?:maps\.tilehosting|api\.maptiler)\.com.*$/,
   workbox.strategies.cacheFirst({
     cacheName: 'maptiler',
     plugins: [
