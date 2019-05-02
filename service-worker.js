@@ -1,4 +1,4 @@
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js');
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.0/workbox-sw.js');
 
 workbox.googleAnalytics.initialize();
 
@@ -7,14 +7,14 @@ workbox.googleAnalytics.initialize();
 // - Works for hashes too, e.g.: /test#whatever
 workbox.routing.registerRoute(
   /^[^\.]+(#.*)?$/,
-  workbox.strategies.networkFirst({
+  new workbox.strategies.NetworkFirst({
     cacheName: 'index',
   }),
 );
 
 workbox.routing.registerRoute(
   /\/.*\.(?:js|css)$/,
-  workbox.strategies.staleWhileRevalidate({
+  new workbox.strategies.StaleWhileRevalidate({
     cacheName: 'static-resources',
     plugins: [
       new workbox.expiration.Plugin({
@@ -27,7 +27,7 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   /\/.*\.(?:png|gif|jpg|jpeg|svg)$/,
-  workbox.strategies.cacheFirst({
+  new workbox.strategies.CacheFirst({
     cacheName: 'images',
     plugins: [
       new workbox.expiration.Plugin({
@@ -44,7 +44,7 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   /\/.*\.(?:json)$/,
-  workbox.strategies.staleWhileRevalidate({
+  new workbox.strategies.StaleWhileRevalidate({
     cacheName: 'data',
     plugins: [
       new workbox.expiration.Plugin({
@@ -60,7 +60,7 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   /\/staticmaps\/.*$/,
-  workbox.strategies.cacheFirst({
+  new workbox.strategies.CacheFirst({
     cacheName: 'staticmaps',
     plugins: [
       new workbox.expiration.Plugin({
@@ -76,7 +76,7 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   /\/mapbox\-tiles\/.*$/,
-  workbox.strategies.cacheFirst({
+  new workbox.strategies.CacheFirst({
     cacheName: 'mapbox-tiles',
     plugins: [
       new workbox.expiration.Plugin({
@@ -92,7 +92,7 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   /.*api\.mapbox\.com\/fonts/,
-  workbox.strategies.cacheFirst({
+  new workbox.strategies.CacheFirst({
     cacheName: 'mapbox-fonts',
     plugins: [
       new workbox.expiration.Plugin({
@@ -108,7 +108,7 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   /.*(?:tiles\.mapbox|api\.mapbox)\.com.*$/,
-  workbox.strategies.cacheFirst({
+  new workbox.strategies.CacheFirst({
     cacheName: 'mapbox',
     plugins: [
       new workbox.expiration.Plugin({
@@ -124,7 +124,7 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   /.*(?:maps\.tilehosting|api\.maptiler)\.com.*$/,
-  workbox.strategies.cacheFirst({
+  new workbox.strategies.CacheFirst({
     cacheName: 'maptiler',
     plugins: [
       new workbox.expiration.Plugin({

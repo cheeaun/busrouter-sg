@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Singapore Bus Routes Explorer",
   "devDependencies": {
-    "@babel/core": "~7.4.3",
-    "@babel/plugin-proposal-class-properties": "~7.4.0",
-    "@babel/plugin-transform-runtime": "~7.4.3",
+    "@babel/core": "~7.4.4",
+    "@babel/plugin-proposal-class-properties": "~7.4.4",
+    "@babel/plugin-transform-runtime": "~7.4.4",
     "@mapbox/polyline": "~1.0.0",
     "@turf/buffer": "~5.1.5",
     "@turf/circle": "~6.0.1",
@@ -13,7 +13,7 @@
     "@turf/helpers": "~6.1.4",
     "@turf/length": "~6.0.2",
     "@turf/simplify": "~5.1.5",
-    "autoprefixer": "~9.5.0",
+    "autoprefixer": "~9.5.1",
     "cheerio": "~1.0.0-rc.2",
     "cpy-cli": "~2.0.0",
     "dotenv": "~7.0.0",
@@ -39,7 +39,10 @@
     "prod": "npx serve dist/"
   },
   "dependencies": {
-    "@babel/runtime": "~7.4.3",
+    "@babel/runtime": "~7.4.4",
+    "@deck.gl/core": "~7.0.4",
+    "@deck.gl/layers": "~7.0.4",
+    "@deck.gl/mapbox": "~7.0.4",
     "cheap-ruler": "~2.5.1",
     "fuse.js": "~3.4.4",
     "just-intersect": "~3.1.0",

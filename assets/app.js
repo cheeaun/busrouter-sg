@@ -112,7 +112,7 @@ class App extends Component {
     const mapboxScriptP = new Promise((resolve, reject) => {
       const s = document.createElement('script');
       s.onload = resolve;
-      s.src = 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js';
+      s.src = 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js';
       document.getElementsByTagName('head')[0].appendChild(s);
     });
 
