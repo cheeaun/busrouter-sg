@@ -1,3 +1,4 @@
+require('dotenv').config();
 const fs = require('fs');
 const got = require('got');
 
@@ -29,11 +30,17 @@ for (let i=0, l=stopSets.length; i<l; i++){
       json: true,
       query: {
         busStopNo: stopNumbers,
-        token: process.env.process.env.oneMapToken,
+        token: process.env.oneMapToken,
       },
     });
   } catch (e){
     console.error(e);
+  }
+
+  if (res.body.error) {
+    console.error(res.body.error);
+    console.log('Token', process.env.oneMapToken);
+    return;
   }
 
   res.body.BusStopInfo.forEach(s => {

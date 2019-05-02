@@ -1,9 +1,9 @@
 {
   "version": 0.6,
-  "generator": "Overpass API 0.7.55.5 2ca3f387",
+  "generator": "Overpass API 0.7.55.6 486819c8",
   "osm3s": {
-    "timestamp_osm_base": "2019-03-14T14:10:02Z",
-    "timestamp_areas_base": "2019-03-14T12:41:02Z",
+    "timestamp_osm_base": "2019-05-01T14:12:02Z",
+    "timestamp_areas_base": "2019-05-01T13:03:02Z",
     "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
   },
   "elements": [
@@ -710,7 +710,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Airline Road",
-    "name": "Police Pass Off",
+    "name": "Police Pass Office",
     "public_transport": "platform",
     "route_ref": "9;19;89"
   }
@@ -2128,8 +2128,8 @@
 {
   "type": "node",
   "id": 410459713,
-  "lat": 1.3717419,
-  "lon": 103.8702260,
+  "lat": 1.3717848,
+  "lon": 103.8702354,
   "tags": {
     "asset_ref": "66331",
     "bus": "yes",
@@ -2356,8 +2356,8 @@
 {
   "type": "node",
   "id": 410459791,
-  "lat": 1.3694505,
-  "lon": 103.8560152,
+  "lat": 1.3695269,
+  "lon": 103.8560447,
   "tags": {
     "asset_ref": "54281",
     "bus": "yes",
@@ -3098,8 +3098,8 @@
 {
   "type": "node",
   "id": 410459869,
-  "lat": 1.3813557,
-  "lon": 103.8439027,
+  "lat": 1.3813295,
+  "lon": 103.8439179,
   "tags": {
     "asset_ref": "55181",
     "bus": "yes",
@@ -7890,8 +7890,8 @@
 {
   "type": "node",
   "id": 410462017,
-  "lat": 1.3442432,
-  "lon": 103.7201565,
+  "lat": 1.3443033,
+  "lon": 103.7201466,
   "tags": {
     "asset_ref": "28091",
     "bus": "yes",
@@ -8315,8 +8315,8 @@
 {
   "type": "node",
   "id": 410462112,
-  "lat": 1.3424443,
-  "lon": 103.8695034,
+  "lat": 1.3424336,
+  "lon": 103.8694860,
   "tags": {
     "asset_ref": "66089",
     "bus": "yes",
@@ -13278,8 +13278,8 @@
 {
   "type": "node",
   "id": 410463600,
-  "lat": 1.3282920,
-  "lon": 103.8854770,
+  "lat": 1.3283255,
+  "lon": 103.8854529,
   "tags": {
     "asset_ref": "70171",
     "bus": "yes",
@@ -16578,8 +16578,8 @@
 {
   "type": "node",
   "id": 410464111,
-  "lat": 1.3804912,
-  "lon": 103.9482834,
+  "lat": 1.3805314,
+  "lon": 103.9482204,
   "tags": {
     "asset_ref": "77109",
     "bus": "yes",
@@ -16735,6 +16735,7 @@
   "lon": 103.8471376,
   "tags": {
     "asset_ref": "04222",
+    "bench": "yes",
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Eu Tong Sen Street",
@@ -21378,8 +21379,8 @@
 {
   "type": "node",
   "id": 410465008,
-  "lat": 1.3265486,
-  "lon": 103.7388347,
+  "lat": 1.3265499,
+  "lon": 103.7388535,
   "tags": {
     "asset_ref": "20081",
     "bus": "yes",
@@ -25280,8 +25281,8 @@
 {
   "type": "node",
   "id": 410466688,
-  "lat": 1.3462672,
-  "lon": 103.7213042,
+  "lat": 1.3463089,
+  "lon": 103.7213789,
   "tags": {
     "asset_ref": "28381",
     "bus": "yes",
@@ -32207,12 +32208,14 @@
   "lon": 103.8475650,
   "tags": {
     "asset_ref": "04239",
+    "bench": "yes",
     "bus": "yes",
     "highway": "bus_stop",
     "location": "New Bridge Road",
     "name": "Clarke Quay Station",
     "public_transport": "platform",
-    "route_ref": "2;12;33;54;147;190"
+    "route_ref": "2;12;33;54;147;190",
+    "shelter": "yes"
   }
 },
 {
@@ -35522,8 +35525,8 @@
 {
   "type": "node",
   "id": 410470884,
-  "lat": 1.3307364,
-  "lon": 103.8893677,
+  "lat": 1.3307163,
+  "lon": 103.8892872,
   "tags": {
     "asset_ref": "70271",
     "bus": "yes",
@@ -36645,8 +36648,8 @@
 {
   "type": "node",
   "id": 410472345,
-  "lat": 1.2916731,
-  "lon": 103.7952516,
+  "lat": 1.2919843,
+  "lon": 103.7952561,
   "tags": {
     "asset_ref": "18211",
     "highway": "bus_stop",
@@ -44286,8 +44289,8 @@
 {
   "type": "node",
   "id": 410477467,
-  "lat": 1.3621750,
-  "lon": 103.9530210,
+  "lat": 1.3621700,
+  "lon": 103.9530443,
   "tags": {
     "asset_ref": "76351",
     "bus": "yes",
@@ -44390,8 +44393,8 @@
 {
   "type": "node",
   "id": 410477475,
-  "lat": 1.3620770,
-  "lon": 103.9522340,
+  "lat": 1.3621436,
+  "lon": 103.9522357,
   "tags": {
     "asset_ref": "76359",
     "bus": "yes",
@@ -53741,8 +53744,8 @@
 {
   "type": "node",
   "id": 410483681,
-  "lat": 1.4231189,
-  "lon": 103.8663141,
+  "lat": 1.4231028,
+  "lon": 103.8663329,
   "tags": {
     "asset_ref": "68151",
     "bus": "yes",
@@ -53756,8 +53759,8 @@
 {
   "type": "node",
   "id": 410483683,
-  "lat": 1.4158447,
-  "lon": 103.8617043,
+  "lat": 1.4159104,
+  "lon": 103.8617244,
   "tags": {
     "asset_ref": "68131",
     "bus": "yes",
@@ -53786,8 +53789,8 @@
 {
   "type": "node",
   "id": 410483688,
-  "lat": 1.4158101,
-  "lon": 103.8619299,
+  "lat": 1.4157270,
+  "lon": 103.8619648,
   "tags": {
     "asset_ref": "68139",
     "bus": "yes",
@@ -62066,8 +62069,8 @@
 {
   "type": "node",
   "id": 1851139231,
-  "lat": 1.3257932,
-  "lon": 103.9195210,
+  "lat": 1.3257914,
+  "lon": 103.9194998,
   "tags": {
     "asset_ref": "84579",
     "highway": "bus_stop",
@@ -62143,7 +62146,7 @@
     "asset_ref": "95139",
     "highway": "bus_stop",
     "location": "Airline Road",
-    "name": "Police Pass Off",
+    "name": "Police Pass Office",
     "route_ref": "9;19;89"
   }
 },
@@ -62785,8 +62788,8 @@
 {
   "type": "node",
   "id": 1856633909,
-  "lat": 1.4063468,
-  "lon": 103.8671349,
+  "lat": 1.4060036,
+  "lon": 103.8668613,
   "tags": {
     "asset_ref": "68089",
     "bus": "yes",
@@ -62815,8 +62818,8 @@
 {
   "type": "node",
   "id": 1856633921,
-  "lat": 1.4061081,
-  "lon": 103.8675301,
+  "lat": 1.4059083,
+  "lon": 103.8672713,
   "tags": {
     "asset_ref": "68081",
     "bus": "yes",
@@ -62845,8 +62848,8 @@
 {
   "type": "node",
   "id": 1856633929,
-  "lat": 1.4040602,
-  "lon": 103.8639243,
+  "lat": 1.4040347,
+  "lon": 103.8639712,
   "tags": {
     "asset_ref": "68109",
     "bus": "yes",
@@ -62860,8 +62863,8 @@
 {
   "type": "node",
   "id": 1856633933,
-  "lat": 1.4037420,
-  "lon": 103.8639150,
+  "lat": 1.4037031,
+  "lon": 103.8639593,
   "tags": {
     "asset_ref": "68101",
     "bus": "yes",
@@ -63276,8 +63279,8 @@
 {
   "type": "node",
   "id": 1863993056,
-  "lat": 1.3148700,
-  "lon": 103.8726925,
+  "lat": 1.3149059,
+  "lon": 103.8726948,
   "tags": {
     "asset_ref": "80319",
     "bus": "yes",
@@ -70315,8 +70318,8 @@
 {
   "type": "node",
   "id": 4032898578,
-  "lat": 1.3690965,
-  "lon": 103.8561436,
+  "lat": 1.3690898,
+  "lon": 103.8561704,
   "tags": {
     "highway": "bus_stop",
     "name": "Blk 452"
@@ -70972,19 +70975,6 @@
     "name": "Opposite Boon Lay Station",
     "public_transport": "platform",
     "route_ref": "NR5"
-  }
-},
-{
-  "type": "node",
-  "id": 4426007141,
-  "lat": 1.3236917,
-  "lon": 103.8747600,
-  "tags": {
-    "asset_ref": "70339",
-    "highway": "bus_stop",
-    "location": "Kallang Way",
-    "name": "Opposite JTC Blk",
-    "route_ref": "NoServices"
   }
 },
 {
@@ -72508,8 +72498,8 @@
 {
   "type": "node",
   "id": 5649729921,
-  "lat": 1.2936927,
-  "lon": 103.8565194,
+  "lat": 1.2936694,
+  "lon": 103.8565510,
   "tags": {
     "highway": "bus_stop",
     "name": "Tickets and bus stop for night safari"
@@ -73135,6 +73125,72 @@
     "location": "Nanyang Cresent",
     "name": "Nanyang Cres Halls",
     "route_ref": "199"
+  }
+},
+{
+  "type": "node",
+  "id": 6342481587,
+  "lat": 1.3034629,
+  "lon": 103.8561859,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "ban san street"
+  }
+},
+{
+  "type": "node",
+  "id": 6359849535,
+  "lat": 1.4473096,
+  "lon": 103.8274488,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Opp Visionare",
+    "public_transport": "platform",
+    "ref": "B58269"
+  }
+},
+{
+  "type": "node",
+  "id": 6359851101,
+  "lat": 1.4469642,
+  "lon": 103.8272374,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Visionare",
+    "public_transport": "platform",
+    "ref": "B58261"
+  }
+},
+{
+  "type": "node",
+  "id": 6410458408,
+  "lat": 1.3217673,
+  "lon": 103.9323961,
+  "tags": {
+    "asset_ref": "84049",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "New Upper Changi Road",
+    "name": "Blk 3",
+    "public_transport": "platform",
+    "route_ref": "2;9;24;28;31;35;35M;67;222"
+  }
+},
+{
+  "type": "node",
+  "id": 6410458409,
+  "lat": 1.3217740,
+  "lon": 103.9321706,
+  "tags": {
+    "asset_ref": "84049",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "New Upper Changi Road",
+    "name": "Opp Blk 3",
+    "public_transport": "platform",
+    "route_ref": "2;9;24;28;31;35;35M;67;222"
   }
 }
 

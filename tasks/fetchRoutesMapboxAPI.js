@@ -1,3 +1,4 @@
+require('dotenv').config();
 const fs = require('fs');
 const got = require('got');
 const args = process.argv.splice(process.execArgv.length + 2);
@@ -6,7 +7,7 @@ const stops = JSON.parse(fs.readFileSync('data/3/stops2.json'));
 const serviceStops = JSON.parse(fs.readFileSync('data/3/serviceStops.json'));
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-const TOKEN = 'pk.eyJ1IjoiY2hlZWF1biIsImEiOiJjam9weHRuMW4xdXczM3FteTR1OGt3OWxhIn0.I9fgZVxvN_wSJb8soniwpQ';
+const TOKEN = process.env.mapboxToken;
 
 const fetchRoute = async (coords) => {
   let res;
