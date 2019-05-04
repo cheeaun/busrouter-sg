@@ -135,8 +135,7 @@ class ArrivalTimes extends Component {
           document.querySelector('[name="apple-mobile-web-app-title"]').setAttribute('content', name);
           this.setState({
             busStop: { code, name, lat, lng },
-          });
-          this._fetchServices();
+          }, this._fetchServices);
         } else {
           alert('Invalid bus stop code.');
         }
