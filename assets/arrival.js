@@ -218,7 +218,7 @@ class ArrivalTimes extends Component {
         </h1>
         <table>
           {services ?
-            services.length ? [
+            (services.length ? [
               <tbody class={!services.length ? 'loading' : ''}>
                 {services.map(({ no, next, next2, next3 }) => {
                   const pinned = pinnedServices.includes(no);
@@ -259,7 +259,8 @@ class ArrivalTimes extends Component {
                     <td class="blank">No arrival times available.</td>
                   </tr>
                 </tbody>
-              ) : (
+              )
+            ) : (
               <tbody class="loading">
                 <tr>
                   <td>Loading&hellip;</td>

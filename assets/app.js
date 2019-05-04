@@ -465,8 +465,12 @@ class App extends Component {
         'text-field': [
           'step', ['zoom'],
           ['case', ['==', ['get', 'type'], 'end'], ['concat', ['get', 'number'], '\n', ['get', 'name']], ''],
-          12, ['case', ['==', ['get', 'type'], 'end'], ['concat', ['get', 'number'], '\n', ['get', 'name']], ['get', 'number']],
-          16, ['concat', ['get', 'number'], '\n', ['get', 'name']]
+          12,
+            ['case', ['==', ['get', 'type'], 'end'],
+              ['concat', ['get', 'number'], '\n', ['get', 'name']],
+              ['get', 'number']
+            ],
+          16, ['concat', ['get', 'number'], '\n', ['get', 'name']],
         ],
         'text-offset': ['case', ['==', ['get', 'type'], 'end'],
           ['case', ['boolean', ['get', 'left'], false], ['literal', [-1, -1.5]], ['literal', [1, -1.5]]],
