@@ -331,7 +331,7 @@ class App extends Component {
         ],
         ...stopText.paint,
       },
-    }, 'place_city');
+    }, 'place_other');
 
     map.addLayer({
       id: 'stops',
