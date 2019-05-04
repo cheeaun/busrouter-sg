@@ -53,15 +53,21 @@ export default class BusServicesArrival extends Component {
         source: 'buses',
         minzoom: 14,
         layout: {
-          'text-field': ['get', 'number'],
+          'text-field': '{number}',
           'text-size': 10,
-          'text-anchor': 'left',
-          'text-offset': [.6, .1],
           'text-font': ['Roboto Medium', 'Noto Sans Regular'],
+          'text-variable-anchor': ['left', 'right', 'bottom', 'top'],
+          'text-justify': 'auto',
+          'text-padding': [
+            'step', ['zoom'],
+            4,
+            15.5, 6,
+            16, 8
+          ],
         },
         paint: {
           'text-color': '#00454d',
-          'text-halo-color': 'rgba(255,255,255,.75)',
+          'text-halo-color': '#fff',
           'text-halo-width': 1,
           'text-opacity': .8,
         },
