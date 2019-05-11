@@ -2036,6 +2036,13 @@ class App extends Component {
 
 render(<App />, document.getElementById('app'));
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    const debug = /debug/.test(location.hash);
+    navigator.serviceWorker.register('./service-worker.js' + (debug ? '?debug' : ''));
+  });
+}
+
 if (matchMedia('(display-mode: standalone)').matches || 'standalone' in navigator) {
   gtag('event', 'pwa_load', {
     event_category: 'PWA',
