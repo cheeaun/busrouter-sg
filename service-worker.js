@@ -10,7 +10,7 @@ workbox.googleAnalytics.initialize();
 // - Assumes no '.' in file name
 // - Works for hashes too, e.g.: /test#whatever
 workbox.routing.registerRoute(
-  /^[^\.]+(#.*)?$/,
+  /\/([#?].*)?$/,
   new workbox.strategies.NetworkFirst({
     cacheName: 'index',
   }),
