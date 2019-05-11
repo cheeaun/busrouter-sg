@@ -70,3 +70,11 @@
   window.gtag = gtag;
 </script>
 <script src="assets/app.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    const debug = /debug/.test(location.hash);
+    navigator.serviceWorker.register('./service-worker.js' + (debug ? '?debug' : ''));
+  });
+}
+</script>

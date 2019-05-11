@@ -1,5 +1,9 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.0/workbox-sw.js');
 
+const url = new URL(location.href);
+const debug = url.searchParams.has('debug');
+workbox.setConfig({ debug });
+
 workbox.googleAnalytics.initialize();
 
 // "index" pages, e.g. index.html and /dir/xxx/
