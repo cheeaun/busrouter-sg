@@ -6,7 +6,7 @@ import cheapRuler from 'cheap-ruler';
 
 import { MAPBOX_ACCESS_TOKEN, MAPTILER_KEY } from './config';
 import { encode, decode } from './utils/specialID';
-import { timeDisplay, sortServices } from './utils/bus';
+import { sortServices } from './utils/bus';
 import fetchCache from './utils/fetchCache';
 import getRoute from './utils/getRoute';
 import getDistance from './utils/getDistance';
@@ -926,7 +926,6 @@ class App extends Component {
     });
   }
   _handleKeys = (e) => {
-    const { services } = this.state;
     switch (e.key.toLowerCase()) {
       case 'enter': {
         const link = this._servicesList.querySelector('li a[href^="#"]');
