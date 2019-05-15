@@ -45,7 +45,7 @@ const redirectToOldSite = () => {
   if (redirect) location.href = 'https://v1.busrouter.sg/';
 };
 
-if (!supportsPromise) {
+if (!supportsPromise || !mapboxgl.supported()) {
   redirectToOldSite();
 }
 
@@ -60,10 +60,10 @@ try {
   if (intro !== 'true') $about.hidden = false;
 } catch (e) { }
 
-let raqST;
-const raqScrollTop = () => {
+let rafST;
+const rafScrollTop = () => {
   window.scrollTo(0, 0);
-  raqST = requestAnimationFrame(raqScrollTop);
+  rafST = requestAnimationFrame(rafScrollTop);
 };
 
 const $tooltip = document.getElementById('tooltip');
@@ -109,13 +109,6 @@ class App extends Component {
     };
   }
   async componentDidMount() {
-    const mapboxScriptP = new Promise((resolve, reject) => {
-      const s = document.createElement('script');
-      s.onload = resolve;
-      s.src = 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js';
-      document.getElementsByTagName('head')[0].appendChild(s);
-    });
-
     const CACHE_TIME = 24 * 60; // 1 day
     const fetchStopsP = fetchCache(stopsJSONPath, CACHE_TIME);
     const fetchServicesP = fetchCache(servicesJSONPath, CACHE_TIME);
@@ -164,12 +157,6 @@ class App extends Component {
     const data = window._data = { servicesData, stopsData, stopsDataArr, routesData, servicesDataArr };
     this.setState({ ...data, services: servicesDataArr });
 
-    // Init map
-    await mapboxScriptP;
-    if (!mapboxgl.supported()) {
-      redirectToOldSite();
-    }
-
     mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
     const lowerLat = 1.2, upperLat = 1.48, lowerLong = 103.59, upperLong = 104.05;
     const map = this.map = window._map = new mapboxgl.Map({
@@ -210,29 +197,30 @@ class App extends Component {
       });
     });
 
-    let labelLayerId;
     const mapCanvas = map.getCanvas();
-    map.once('styledata', () => {
-      const layers = map.getStyle().layers;
-      console.log(layers);
 
-      labelLayerId = layers.find(l => l.type == 'symbol' && l.layout['text-field']).id;
-
-      layers.forEach(l => {
-        const { type, layout, id } = l;
-        if (type === 'symbol' && layout['text-field'] && layout['text-anchor'] && layout['icon-image']) {
-          map.setLayoutProperty(id, 'text-anchor', null);
-          map.setLayoutProperty(id, 'text-offset', null);
-          map.setLayoutProperty(id, 'text-variable-anchor', ['top', 'left', 'right', 'bottom']);
-          map.setLayoutProperty(id, 'text-justify', 'auto');
-          map.setLayoutProperty(id, 'text-radial-offset', .9);
-        }
-      });
-    });
-
+    let labelLayerId;
     const [_, stopImage, stopEndImage] = await Promise.all([
       new Promise((resolve, reject) => {
-        map.once('styledata', resolve);
+        map.once('styledata', () => {
+          const layers = map.getStyle().layers;
+          console.log(layers);
+
+          labelLayerId = layers.find(l => l.type == 'symbol' && l.layout['text-field']).id;
+
+          layers.forEach(l => {
+            const { type, layout, id } = l;
+            if (type === 'symbol' && layout['text-field'] && layout['text-anchor'] && layout['icon-image']) {
+              map.setLayoutProperty(id, 'text-anchor', null);
+              map.setLayoutProperty(id, 'text-offset', null);
+              map.setLayoutProperty(id, 'text-variable-anchor', ['top', 'left', 'right', 'bottom']);
+              map.setLayoutProperty(id, 'text-justify', 'auto');
+              map.setLayoutProperty(id, 'text-radial-offset', .9);
+            }
+          });
+
+          resolve();
+        });
       }),
       new Promise((resolve, reject) => {
         map.loadImage(stopImagePath, (e, img) => e ? reject(e) : resolve(img));
@@ -918,11 +906,13 @@ class App extends Component {
       if (this._searchField.value) this._handleSearch();
 
       // Finally, show ad
-      setTimeout(() => {
-        this.setState({
-          showAd: true,
-        });
-      }, 1000);
+      map.once('idle', () => {
+        setTimeout(() => {
+          this.setState({
+            showAd: true,
+          });
+        }, 1000);
+      });
     });
   }
   _handleKeys = (e) => {
@@ -940,9 +930,9 @@ class App extends Component {
   _handleSearchFocus = (e) => {
     this.setState({ expandSearch: true, expandedSearchOnce: true });
     $map.classList.add('fade-out');
-    raqScrollTop();
+    rafScrollTop();
     this._searchPopover.addEventListener('transitionend', (e) => {
-      cancelAnimationFrame(raqST);
+      cancelAnimationFrame(rafST);
     });
   }
   _handleSearch = (e) => {
