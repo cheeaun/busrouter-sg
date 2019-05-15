@@ -213,7 +213,7 @@ a:active {
 #stop-popover,
 #between-popover,
 #arrivals-popover {
-  top: 100%;
+  top: 101%;
   transition: transform .3s .5s ease-in-out;
   max-height: 50vh;
   display: flex;
@@ -222,7 +222,7 @@ a:active {
 #stop-popover.expand,
 #between-popover.expand,
 #arrivals-popover.expand {
-  transform: translateY(-100%);
+  transform: translateY(-101%);
 }
 #stop-popover header,
 #between-popover header {
