@@ -78,7 +78,15 @@ export default class GeolocateControl {
       geolocateSource: true,
     };
     if (withinBounds) {
-      if (map.getZoom() < 16) {
+      if (map.getZoom() < 14) {
+        map.easeTo({
+          center,
+          zoom: 18,
+          duration: 300,
+          offset,
+          animate: false,
+        }, eventData);
+      } else {
         map.flyTo({
           center,
           zoom: 18,
@@ -86,19 +94,14 @@ export default class GeolocateControl {
           duration: 2000,
           offset,
         }, eventData);
-      } else {
-        map.easeTo({
-          center,
-          duration: 1000,
-          offset,
-        }, eventData);
       }
     } else {
-      map.jumpTo({
+      map.easeTo({
         center,
         zoom: 18,
-        duration: 1000,
+        duration: 300,
         offset,
+        animate: false,
       }, eventData);
     }
   }
