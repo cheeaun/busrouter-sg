@@ -11,7 +11,7 @@ workbox.googleAnalytics.initialize();
 // - Works for hashes too, e.g.: /test#whatever
 workbox.routing.registerRoute(
   /\/([#?].*)?$/,
-  new workbox.strategies.NetworkFirst({
+  new workbox.strategies.StaleWhileRevalidate({
     cacheName: 'index',
   }),
 );
