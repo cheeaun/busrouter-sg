@@ -40,9 +40,9 @@
   },
   "dependencies": {
     "@babel/runtime": "~7.4.4",
-    "@deck.gl/core": "~7.0.5",
-    "@deck.gl/layers": "~7.0.5",
-    "@deck.gl/mapbox": "~7.0.5",
+    "@deck.gl/core": "~7.0.8",
+    "@deck.gl/layers": "~7.0.8",
+    "@deck.gl/mapbox": "~7.0.8",
     "cheap-ruler": "~2.5.1",
     "fuse.js": "~3.4.4",
     "just-intersect": "~3.1.0",
