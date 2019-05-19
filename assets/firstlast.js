@@ -1,4 +1,5 @@
-import { h, render, Component } from 'preact';
+import { h, render } from 'preact';
+import { useState, useEffect } from 'preact/hooks';
 import fetchCache from './utils/fetchCache';
 import { sortServices } from './utils/bus';
 import Ad from './ad';
@@ -63,13 +64,12 @@ const TimeRanger = ({ values }) => {
   );
 };
 
-class FirstLastTimes extends Component {
-  state = {
-    stop: '     ',
-    stopName: null,
-    data: [],
-  }
-  componentDidMount() {
+function FirstLastTimes() {
+  const [stop, setStop] = useState('     ');
+  const [stopName, setStopName] = useState(null);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
     Promise.all([
       fetchCache(firstLastJSONPath, 24 * 60),
       fetchCache(stopsJSONPath, 24 * 60),
@@ -81,12 +81,10 @@ class FirstLastTimes extends Component {
           alert('Bus stop code not found.');
           return;
         }
-        const stopName = stopsData[stop][2];
-        this.setState({
-          stop,
-          stopName,
-          data: data.map(d => d.split(/\s+/)).sort((a, b) => sortServices(a[0], b[0])),
-        });
+
+        setStop(stop);
+        setStopName(stopsData[stop][2]);
+        setData(data.map(d => d.split(/\s+/)).sort((a, b) => sortServices(a[0], b[0])));
 
         document.title = `Approximate first & last bus arrival times for ${stop}: ${stopName}`;
 
@@ -97,101 +95,99 @@ class FirstLastTimes extends Component {
       }
       window.onhashchange();
     });
-  }
-  render() {
-    const { stop, stopName, data } = this.state;
-    return (
-      <div>
-        {!!data.length && <Ad />}
-        <h1>
-          Approximate first &amp; last bus arrival times&nbsp;for<br />
-          <b><span class="stop-tag">{stop}</span> {stopName ? stopName : <span class="placeholder">██████ ███</span>}</b>
-        </h1>
-        <p class="legend">
-          <span><span class="abbr">WD</span> Weekdays</span>
-          <span><span class="abbr">SAT</span> Saturdays</span>
-          <span><span class="abbr">SUN</span> Sundays &amp; Public Holidays</span>
-        </p>
-        <table>
-          <thead>
+  }, []);
+
+  return (
+    <div>
+      {!!data.length && <Ad />}
+      <h1>
+        Approximate first &amp; last bus arrival times&nbsp;for<br />
+        <b><span class="stop-tag">{stop}</span> {stopName ? stopName : <span class="placeholder">██████ ███</span>}</b>
+      </h1>
+      <p class="legend">
+        <span><span class="abbr">WD</span> Weekdays</span>
+        <span><span class="abbr">SAT</span> Saturdays</span>
+        <span><span class="abbr">SUN</span> Sundays &amp; Public Holidays</span>
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th></th>
+            <th>First bus</th>
+            <th>Last bus</th>
+            <th class="timerange-header">
+              <span>12 AM</span>
+              <span>6 AM</span>
+              <span>12 PM</span>
+              <span>6 PM</span>
+            </th>
+          </tr>
+        </thead>
+        {data.length ? (
+          data.map(d => {
+            const [ service, ...times ] = d;
+            const [ wd1raw, wd2raw, sat1raw, sat2raw, sun1raw, sun2raw ] = times;
+            const [ wd1, wd2, sat1, sat2, sun1, sun2 ] = times.map(timeFormat);
+            return (
+              <tbody>
+                <tr>
+                  <td rowspan="3">{service}</td>
+                  <th><abbr title="Weekdays">WD</abbr></th>
+                  <td title={wd1raw}>{wd1}</td>
+                  <td title={wd2raw}>{wd2}</td>
+                  <td class="time-cell"><TimeRanger values={[wd1raw, wd2raw]} /></td>
+                </tr>
+                <tr>
+                  <th><abbr title="Saturdays">SAT</abbr></th>
+                  <td title={sat1raw}>{sat1}</td>
+                  <td title={sat2raw}>{sat2}</td>
+                  <td class="time-cell"><TimeRanger values={[sat1raw, sat2raw]} /></td>
+                </tr>
+                <tr>
+                  <th><abbr title="Sundays &amp; Public Holidays">SUN</abbr></th>
+                  <td title={sun1raw}>{sun1}</td>
+                  <td title={sun2raw}>{sun2}</td>
+                  <td class="time-cell"><TimeRanger values={[sun1raw, sun2raw]} /></td>
+                </tr>
+              </tbody>
+            );
+          })
+        ) : [1,2,3].map(v => (
+          <tbody key={v}>
             <tr>
-              <th>Service</th>
-              <th></th>
-              <th>First bus</th>
-              <th>Last bus</th>
-              <th class="timerange-header">
-                <span>12 AM</span>
-                <span>6 AM</span>
-                <span>12 PM</span>
-                <span>6 PM</span>
-              </th>
+              <td rowspan="3"><span class="placeholder">██</span></td>
+              <th><abbr title="Weekdays">WD</abbr></th>
+              <td><span class="placeholder">████</span></td>
+              <td><span class="placeholder">████</span></td>
+              <td class="time-cell"><TimeRanger /></td>
             </tr>
-          </thead>
-          {data.length ? (
-            data.map(d => {
-              const [ service, ...times ] = d;
-              const [ wd1raw, wd2raw, sat1raw, sat2raw, sun1raw, sun2raw ] = times;
-              const [ wd1, wd2, sat1, sat2, sun1, sun2 ] = times.map(timeFormat);
-              return (
-                <tbody>
-                  <tr>
-                    <td rowspan="3">{service}</td>
-                    <th><abbr title="Weekdays">WD</abbr></th>
-                    <td title={wd1raw}>{wd1}</td>
-                    <td title={wd2raw}>{wd2}</td>
-                    <td class="time-cell"><TimeRanger values={[wd1raw, wd2raw]} /></td>
-                  </tr>
-                  <tr>
-                    <th><abbr title="Saturdays">SAT</abbr></th>
-                    <td title={sat1raw}>{sat1}</td>
-                    <td title={sat2raw}>{sat2}</td>
-                    <td class="time-cell"><TimeRanger values={[sat1raw, sat2raw]} /></td>
-                  </tr>
-                  <tr>
-                    <th><abbr title="Sundays &amp; Public Holidays">SUN</abbr></th>
-                    <td title={sun1raw}>{sun1}</td>
-                    <td title={sun2raw}>{sun2}</td>
-                    <td class="time-cell"><TimeRanger values={[sun1raw, sun2raw]} /></td>
-                  </tr>
-                </tbody>
-              );
-            })
-          ) : [1,2,3].map(v => (
-            <tbody key={v}>
-              <tr>
-                <td rowspan="3"><span class="placeholder">██</span></td>
-                <th><abbr title="Weekdays">WD</abbr></th>
-                <td><span class="placeholder">████</span></td>
-                <td><span class="placeholder">████</span></td>
-                <td class="time-cell"><TimeRanger /></td>
-              </tr>
-              <tr>
-                <th><abbr title="Saturdays">SAT</abbr></th>
-                <td><span class="placeholder">████</span></td>
-                <td><span class="placeholder">████</span></td>
-                <td class="time-cell"><TimeRanger /></td>
-              </tr>
-              <tr>
-                <th><abbr title="Sundays &amp; Public Holidays">SUN</abbr></th>
-                <td><span class="placeholder">████</span></td>
-                <td><span class="placeholder">████</span></td>
-                <td class="time-cell"><TimeRanger /></td>
-              </tr>
-            </tbody>
-          ))}
-          <tfoot>
             <tr>
-              <td colspan="4">
-                {data.length ? `${data.length} service${data.length === 1 ? '' : 's'} · ` : ''}
-                <a href="/">BusRouter SG</a>
-              </td>
+              <th><abbr title="Saturdays">SAT</abbr></th>
+              <td><span class="placeholder">████</span></td>
+              <td><span class="placeholder">████</span></td>
+              <td class="time-cell"><TimeRanger /></td>
             </tr>
-          </tfoot>
-        </table>
-      </div>
-    );
-  }
-}
+            <tr>
+              <th><abbr title="Sundays &amp; Public Holidays">SUN</abbr></th>
+              <td><span class="placeholder">████</span></td>
+              <td><span class="placeholder">████</span></td>
+              <td class="time-cell"><TimeRanger /></td>
+            </tr>
+          </tbody>
+        ))}
+        <tfoot>
+          <tr>
+            <td colspan="4">
+              {data.length ? `${data.length} service${data.length === 1 ? '' : 's'} · ` : ''}
+              <a href="/">BusRouter SG</a>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  );
+};
 
 const $firstlast = document.getElementById('firstlast');
 render(<FirstLastTimes />, $firstlast);

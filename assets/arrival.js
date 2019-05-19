@@ -1,4 +1,5 @@
-import { h, render, Component } from 'preact';
+import { h, render, Fragment } from 'preact';
+import { useState, useRef, useEffect } from 'preact/hooks';
 import { MAPBOX_ACCESS_TOKEN } from './config';
 import { timeDisplay, sortServicesPinned } from './utils/bus';
 import fetchCache from './utils/fetchCache';
@@ -49,176 +50,157 @@ const Bus = (props) => {
 let BUSID = 1;
 const busID = () => BUSID++;
 const isSameBus = (b1, b2) => b1.feature === b2.feature && b1.type === b2.type;
+const isSameBuses = (b1, b2) => b1.map(b => b._id).join() === b2.map(b => b._id).join();
 
-class BusLane extends Component {
-  constructor(props) {
-    super(props);
-    const { buses } = props;
-    this.state = {
-      buses: buses.filter(b => typeof b.duration_ms === 'number').map(b => {
-        b._id = busID();
-        return b;
-      }),
-    };
-  }
-  componentWillReceiveProps(nextProps) {
-    const nextBuses = nextProps.buses.filter(nb => typeof nb.duration_ms === 'number').map(nb => {
-      delete nb._id;
-      return nb;
-    });
-    if (this.props.no === nextProps.no) {
-      const buses = this.props.buses.filter(b => !b._ghost); // Remove previously ghosted buses
-      buses.forEach((b, i) => {
-        // Next bus requirements/checks
-        // - Within range of duration_ms of current bus
-        // - Not assigned with ID (possibly from previous loop execution)
-        // - Same bus type as current bus
-        const latestNextBus = nextBuses.find(nb => {
-          if (nb._id || !isSameBus(b, nb)) return false;
-          const d = (nb.duration_ms - b.duration_ms)/1000/60;
-          return d > -5 && d < 3;
-        });
-        if (latestNextBus) {
-          latestNextBus._id = b._id; // Assign ID for marking
-        } else {
-          // Insert "ghost" bus that will dissapear into thin air
-          b._ghost = true;
-          nextBuses.splice(i, 0, b);
-        }
-      });
-    }
-    // Fill up the left-overs, usually for sudden new next buses
+function BusLane({ no, buses }) {
+  const prevNo = useRef();
+  const prevBuses = useRef();
+  const nextBuses = buses.filter(nb => typeof nb.duration_ms === 'number');
+
+  if (prevNo.current === no && !isSameBuses(prevBuses.current, nextBuses)) {
     nextBuses.forEach(nb => {
-      if (!nb._id) nb._id = busID();
+      delete nb._id;
     });
-    this.setState({ buses: nextBuses });
-  }
-  render(_, state) {
-    return (
-      <div class="bus-lane">
-        {state.buses.map(b => <Bus key={b._id} {...b} />)}
-      </div>
-    );
-  }
-}
 
-let arrivalsTimeout;
-class ArrivalTimes extends Component {
-  constructor() {
-    super();
-
-    let pinnedServices = [];
-    try {
-      pinnedServices = JSON.parse(localStorage.getItem('busroutersg.arrival.pinnedServices') || []);
-    } catch (e) { }
-
-    this.state = {
-      stopsData: null,
-      busStop: null,
-      services: null,
-      pinnedServices,
-    };
+    const pBuses = prevBuses.current.filter(b => !b._ghost); // Remove previously ghosted buses
+    pBuses.forEach((b, i) => {
+      // Next bus requirements/checks
+      // - Within range of duration_ms of current bus
+      // - Not assigned with ID (possibly from previous loop execution)
+      // - Same bus type as current bus
+      const latestNextBus = nextBuses.find(nb => {
+        if (nb._id || !isSameBus(b, nb)) return false;
+        const d = (nb.duration_ms - b.duration_ms)/1000/60;
+        return d > -5 && d < 3;
+      });
+      if (latestNextBus) {
+        latestNextBus._id = b._id; // Assign ID for marking
+      } else {
+        // Insert "ghost" bus that will dissapear into thin air
+        b._ghost = true;
+        nextBuses.splice(i, 0, b);
+      }
+    });
   }
-  async componentDidMount() {
-    const stopsData = await fetchCache(stopsJSONPath, 24 * 60);
-    this.setState({ stopsData });
+
+  nextBuses.forEach(nb => {
+    if (!nb._id) nb._id = busID();
+  });
+
+  useEffect(() => {
+    prevNo.current = no;
+    prevBuses.current = nextBuses;
+  }, [no, nextBuses]);
+
+  return (
+    <div class="bus-lane">
+      {nextBuses.map(b => <Bus key={b._id} {...b} />)}
+    </div>
+  );
+};
+
+function ArrivalTimes() {
+  const [busStop, setBusStop] = useState(null);
+  const [stopsData, setStopsData] = useState(null);
+  const [services, setServices] = useState(null);
+  const initialPinnedServices = JSON.parse(localStorage.getItem('busroutersg.arrival.pinnedServices')) || [];
+  const [pinnedServices, setPinnedServices] = useState(initialPinnedServices);
+
+  useEffect(async () => {
+    const stops = await fetchCache(stopsJSONPath, 24 * 60);
 
     window.onhashchange = () => {
       const code = location.hash.slice(1);
-      clearTimeout(arrivalsTimeout);
-
       if (code) {
-        const stop = stopsData[code];
+        const stop = stops[code];
         if (stop) {
           const [lng, lat, name] = stop;
           document.title = `Bus arrival times for ${code + ' - ' + name}`;
           document.querySelector('[name="apple-mobile-web-app-title"]').setAttribute('content', name);
-          this.setState({
-            busStop: { code, name, lat, lng },
-          }, this._fetchServices);
+          setBusStop({ code, name, lat, lng });
         } else {
           alert('Invalid bus stop code.');
         }
       } else {
-        this.setState({ busStop: null });
+        document.title = 'Bus arrival times';
+        document.querySelector('[name="apple-mobile-web-app-title"]').setAttribute('content', 'Bus arrival times');
+        setBusStop(null);
       }
-
-      const { pathname, search, hash } = location;
-      gtag('config', window._GA_TRACKING_ID, {
-        page_path: pathname + search + hash,
-      });
-    }
-
+    };
     window.onhashchange();
-  }
-  componentWillReceiveProps(props) {
-    clearTimeout(arrivalsTimeout);
-    this._fetchServices();
-  }
-  _fetchServices = () => {
-    const { busStop } = this.state;
-    if (!busStop) return;
-    const id = busStop.code;
-    fetch(`https://arrivelah.busrouter.sg/?id=${id}`).then(r => r.json()).then(results => {
-      this.setState({
-        services: results.services,
+    setStopsData(stops);
+  }, []);
+
+  let arrivalsTimeout, arrivalsRAF;
+  function fetchServices(id) {
+    if (!id) return;
+    fetch(`https://arrivelah.busrouter.sg/?id=${id}`)
+      .then(r => r.json())
+      .then(results => {
+        setServices(results.services);
+        arrivalsTimeout = setTimeout(() => {
+          arrivalsRAF = requestAnimationFrame(() => fetchServices(id));
+        }, 15 * 1000); // 15 seconds
+      }).catch(e => {
+        console.error(e);
+        arrivalsTimeout = setTimeout(() => {
+          arrivalsRAF = requestAnimationFrame(() => fetchServices(id));
+        }, 3 * 1000); // 3 seconds
       });
-      arrivalsTimeout = setTimeout(() => {
-        requestAnimationFrame(this._fetchServices);
-      }, 15 * 1000); // 15 seconds
-    }).catch(e => {
-      console.error(e);
-      arrivalsTimeout = setTimeout(() => {
-        requestAnimationFrame(this._fetchServices);
-      }, 3 * 1000); // 3 seconds
-    });
-  }
-  _togglePin = (no) => {
-    const { pinnedServices } = this.state;
+  };
+
+  useEffect(() => {
+    if (busStop) fetchServices(busStop.code);
+    return () => {
+      clearTimeout(arrivalsTimeout);
+      cancelAnimationFrame(arrivalsRAF);
+    };
+  }, [busStop]);
+
+  function togglePin(no) {
     if (pinnedServices.includes(no)) {
       const index = pinnedServices.indexOf(no);
       pinnedServices.splice(index, 1);
     } else {
       pinnedServices.push(no);
     }
-    this.setState({ pinnedServices });
+    setPinnedServices([...pinnedServices]);
     try {
       localStorage.setItem('busroutersg.arrival.pinnedServices', JSON.stringify(pinnedServices));
     } catch (e) { }
   }
-  render(_, state) {
-    const { busStop, stopsData, services, pinnedServices } = state;
-    if (!busStop) {
-      if (stopsData) {
-        return (
-          <ul class="stops-list">
-            {Object.keys(stopsData).map(stop => (
-              <li><a href={`#${stop}`}>{stopsData[stop][2]}</a></li>
-            ))}
-          </ul>
-        );
-      }
-      return;
+
+  if (!busStop) {
+    if (stopsData) {
+      return (
+        <ul class="stops-list">
+          {Object.keys(stopsData).map(stop => (
+            <li><a href={`#${stop}`}>{stopsData[stop][2]}</a></li>
+          ))}
+        </ul>
+      );
     }
+    return;
+  }
 
-    const { code, name, lat, lng } = busStop;
-    if (services) services.sort(sortServicesPinned(pinnedServices));
+  const { code, name, lat, lng } = busStop;
+  if (services) services.sort(sortServicesPinned(pinnedServices));
 
-    setIcon(code);
-    return (
-      <div>
-        <div id="bus-stop-map">
-          <img src={`https://busrouter.sg/staticmaps/${lng},${lat},17,0,60/400x200@2x?access_token=${MAPBOX_ACCESS_TOKEN}`} alt="Bus stop map" />
-        </div>
-        <h1>
-          Bus arrival times for
-          <b id="bus-stop-name">
-            <span class="stop-tag">{code}</span> {name}
-          </b>
-        </h1>
-        <table>
-          {services ?
-            (services.length ? [
+  return (
+    <div>
+      <div id="bus-stop-map">
+        <img src={`https://busrouter.sg/staticmaps/${lng},${lat},17,0,60/400x200@2x?access_token=${MAPBOX_ACCESS_TOKEN}`} alt="Bus stop map" intrinsicsize="400x200" loading="lazy" />
+      </div>
+      <h1>
+        Bus arrival times for
+        <b id="bus-stop-name">
+          <span class="stop-tag">{code}</span> {name}
+        </b>
+      </h1>
+      <table>
+        {services ?
+          (services.length ? (
+            <Fragment>
               <tbody class={!services.length ? 'loading' : ''}>
                 {services.map(({ no, next, next2, next3 }) => {
                   const pinned = pinnedServices.includes(no);
@@ -226,7 +208,7 @@ class ArrivalTimes extends Component {
                     <tr class={pinned ? 'pin' : ''}>
                       <th onClick={(e) => {
                         e.preventDefault();
-                        this._togglePin(no);
+                        togglePin(no);
                       }}>{no}</th>
                       <td class="bus-lane-cell">
                         <BusLane no={no} buses={[next, next2, next3]} />
@@ -234,7 +216,7 @@ class ArrivalTimes extends Component {
                     </tr>
                   );
                 })}
-              </tbody>,
+              </tbody>
               <tfoot>
                 <tr>
                   <td colspan="2">
@@ -253,31 +235,33 @@ class ArrivalTimes extends Component {
                   </td>
                 </tr>
               </tfoot>
-            ] : (
-                <tbody>
-                  <tr>
-                    <td class="blank">No arrival times available.</td>
-                  </tr>
-                </tbody>
-              )
-            ) : (
-              <tbody class="loading">
+            </Fragment>
+          ) : (
+              <tbody>
                 <tr>
-                  <td>Loading&hellip;</td>
+                  <td class="blank">No arrival times available.</td>
                 </tr>
               </tbody>
-            )}
-        </table>
-        {!!services && !!services.length && (
+            )
+          ) : (
+            <tbody class="loading">
+              <tr>
+                <td>Loading&hellip;</td>
+              </tr>
+            </tbody>
+          )}
+      </table>
+      {!!services && !!services.length && (
+        <Fragment>
           <footer>
             <small><b>Note</b>: Arrival times refresh every 15 seconds.</small>
           </footer>
-        )}
-        <Ad />
-      </div>
-    );
-  }
-}
+          <Ad />
+        </Fragment>
+      )}
+    </div>
+  );
+};
 
 const $arrivals = document.getElementById('arrivals');
 render(<ArrivalTimes />, $arrivals);
