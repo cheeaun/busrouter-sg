@@ -1,111 +1,89 @@
-import { h, Component } from 'preact';
+import { h, Fragment } from 'preact';
+import { useState, useEffect } from 'preact/hooks';
 import { encode } from '../utils/specialID';
 import getRoute from '../utils/getRoute';
 import { timeDisplay, sortServices } from '../utils/bus';
 import cheapRuler from 'cheap-ruler';
 const ruler = cheapRuler(1.3);
 
-export default class BusServicesArrival extends Component {
-  state = {
-    isLoading: false,
-    servicesArrivals: {},
-  }
-  componentDidMount() {
-    this._fetchServices();
-    this._setupMap();
-  }
-  componentWillUnmount() {
-    this._removeBuses();
-    clearTimeout(this._arrivalsTimeout);
-    cancelAnimationFrame(this._arrivalsRAF);
-  }
-  _setupMap = () => {
-    const { map } = this.props;
-    if (!map.getSource('buses')){
-      map.addSource('buses', {
-        type: 'geojson',
-        tolerance: 10,
-        data: {
-          type: 'FeatureCollection',
-          features: [],
-        },
-      });
-      map.addLayer({
-        id: 'buses',
-        type: 'circle',
-        source: 'buses',
-        minzoom: 14,
-        paint: {
-          'circle-stroke-width': 2,
-          'circle-stroke-color': '#fff',
-          'circle-radius': [
-            'interpolate', ['linear'], ['zoom'],
-            15, 2,
-            16, 4
-          ],
-          'circle-color': '#00454d',
-          'circle-opacity': .8,
-        },
-      });
-      map.addLayer({
-        id: 'buses-label',
-        type: 'symbol',
-        source: 'buses',
-        minzoom: 14,
-        layout: {
-          'text-field': '{number}',
-          'text-size': 10,
-          'text-font': ['Roboto Medium', 'Noto Sans Regular'],
-          'text-variable-anchor': ['left', 'right', 'bottom', 'top'],
-          'text-justify': 'auto',
-          'text-padding': [
-            'step', ['zoom'],
-            4,
-            15.5, 6,
-            16, 8
-          ],
-        },
-        paint: {
-          'text-color': '#00454d',
-          'text-halo-color': '#fff',
-          'text-halo-width': 1,
-          'text-opacity': .8,
-        },
-      });
-    }
-  }
-  _removeBuses = () => {
-    const { map } = this.props;
-    map.getSource('buses').setData({
-      type: 'FeatureCollection',
-      features: [],
+const addMapBuses = (map) => {
+  if (!map.getSource('buses')){
+    map.addSource('buses', {
+      type: 'geojson',
+      tolerance: 10,
+      data: {
+        type: 'FeatureCollection',
+        features: [],
+      },
+    });
+    map.addLayer({
+      id: 'buses',
+      type: 'circle',
+      source: 'buses',
+      minzoom: 14,
+      paint: {
+        'circle-stroke-width': 2,
+        'circle-stroke-color': '#fff',
+        'circle-radius': [
+          'interpolate', ['linear'], ['zoom'],
+          15, 2,
+          16, 4
+        ],
+        'circle-color': '#00454d',
+        'circle-opacity': .8,
+      },
+    });
+    map.addLayer({
+      id: 'buses-label',
+      type: 'symbol',
+      source: 'buses',
+      minzoom: 14,
+      layout: {
+        'text-field': '{number}',
+        'text-size': 10,
+        'text-font': ['Roboto Medium', 'Noto Sans Regular'],
+        'text-variable-anchor': ['left', 'right', 'bottom', 'top'],
+        'text-justify': 'auto',
+        'text-padding': [
+          'step', ['zoom'],
+          4,
+          15.5, 6,
+          16, 8
+        ],
+      },
+      paint: {
+        'text-color': '#00454d',
+        'text-halo-color': '#fff',
+        'text-halo-width': 1,
+        'text-opacity': .8,
+      },
     });
   }
-  componentDidUpdate(prevProps) {
-    if (prevProps.id !== this.props.id) {
-      this._removeBuses();
-      clearTimeout(this._arrivalsTimeout);
-      cancelAnimationFrame(this._arrivalsRAF);
-      this.setState({
-        servicesArrivals: {},
-      });
-      this._fetchServices();
-    }
-  }
-  _arrivalsTimeout = null;
-  _arrivalsRAF = null;
-  _fetchServices = () => {
-    const { id, map } = this.props;
-    if (!id) return;
-    this.setState({ isLoading: true });
+};
+
+const removeMapBuses = (map) => {
+  map.getSource('buses').setData({
+    type: 'FeatureCollection',
+    features: [],
+  });
+};
+
+export default function BusServicesArrival({ services, id, map }) {
+  if (!id || !map) return;
+  const [isLoading, setIsLoading] = useState(false);
+  const [servicesArrivals, setServicesArrivals] = useState({});
+  const route = getRoute();
+  let arrivalsTimeout;
+  let arrivalsRAF;
+
+  const fetchServices = () => {
+    setIsLoading(true);
     fetch(`https://arrivelah.busrouter.sg/?id=${id}`).then(res => res.json()).then(results => {
       const servicesArrivals = {};
       const { services } = results;
       services.forEach(service => servicesArrivals[service.no] = service.next.duration_ms);
-      this.setState({
-        isLoading: false,
-        servicesArrivals,
-      });
+      setServicesArrivals(servicesArrivals);
+      setIsLoading(false);
 
       setTimeout(() => {
         const servicesWithCoords = services.filter(s => s.no && s.next.lat > 0);
@@ -158,27 +136,35 @@ export default class BusServicesArrival extends Component {
         });
       }, map.loaded() ? 0 : 1000);
 
-      this._arrivalsTimeout = setTimeout(() => {
-        this._arrivalsRAF = requestAnimationFrame(this._fetchServices);
+      arrivalsTimeout = setTimeout(() => {
+        arrivalsRAF = requestAnimationFrame(fetchServices);
       }, 15 * 1000); // 15 seconds
     });
-  }
-  render(props, state) {
-    const { services } = props;
-    const { isLoading, servicesArrivals } = state;
-    const route = getRoute();
-    return (
-      <p class={`services-list ${isLoading ? 'loading' : ''}`}>
-        {services.sort(sortServices).map(service => ([
+  };
+
+  useEffect(() => {
+    fetchServices();
+    addMapBuses(map);
+    return () => {
+      removeMapBuses(map);
+      clearTimeout(arrivalsTimeout);
+      cancelAnimationFrame(arrivalsRAF);
+    };
+  }, [id]);
+
+  return (
+    <p class={`services-list ${isLoading ? 'loading' : ''}`}>
+      {services.sort(sortServices).map(service => (
+        <Fragment>
           <a
             href={`#/services/${service}`}
             class={`service-tag ${route.page === 'service' && service === route.value ? 'current' : ''}`}>
             {service}
             {servicesArrivals[service] && <span>{timeDisplay(servicesArrivals[service])}</span>}
-          </a>,
-          ' '
-        ]))}
-      </p>
-    );
-  }
-}
+          </a>
+          {' '}
+        </Fragment>
+      ))}
+    </p>
+  );
+};
