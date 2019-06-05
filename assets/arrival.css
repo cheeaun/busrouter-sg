@@ -113,8 +113,6 @@ table thead * {
 table th,
 table td {
   padding: 6px 10px;
-  vertical-align: middle;
-  height: 1.7em;
 }
 table th *,
 table td * {
