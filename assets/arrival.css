@@ -260,7 +260,7 @@ footer {
   position: absolute;
   font-size: 10px;
   display: inline-block;
-  transition: all 1s;
+  transition: all 1s ease-out;
   filter: drop-shadow(1px 0 0 #fff) drop-shadow(1px -1px #fff);
 }
 

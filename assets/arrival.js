@@ -35,12 +35,32 @@ const WheelChair = () => (
 );
 
 const Bus = (props) => {
+  const prevPx = useRef();
   const { duration_ms, type, load, feature, _ghost, _id } = props;
   const busImage = BUSES[type.toLowerCase()];
   const px = (duration_ms / 1000 / 60) * (duration_ms > 0 ? 10 : 2.5);
+
+  useEffect(() => {
+    prevPx.current = px;
+  }, [px]);
+
+  let time = 1; // 1 second
+  if (prevPx.current) {
+    const distance = Math.abs(prevPx.current - px);
+    time = distance / 10;
+  }
+
   return (
-    <span id={_id ? `bus-${_id}` : null} class={`bus ${_ghost ? 'ghost' : ''}`} style={{ transform: `translateX(${px.toFixed(1)}px)` }}>
-      <img {...busImage} /><br />
+    <span
+      id={_id ? `bus-${_id}` : null}
+      class={`bus ${_ghost ? 'ghost' : ''}`}
+      style={{
+        transform: `translateX(${px.toFixed(1)}px)`,
+        transitionDuration: `${time}s`,
+      }}
+    >
+      <img {...busImage} />
+      <br />
       <span class={`time time-${load.toLowerCase()}`}>{timeDisplay(duration_ms)}</span>
       {feature.toLowerCase() === 'wab' && <WheelChair />}
     </span>
