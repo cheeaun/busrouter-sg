@@ -78,7 +78,7 @@ export default function BusServicesArrival({ services, id, map }) {
 
   const fetchServices = () => {
     setIsLoading(true);
-    fetch(`https://arrivelah.busrouter.sg/?id=${id}`).then(res => res.json()).then(results => {
+    fetch(`https://arrivelah2.busrouter.sg/?id=${id}`).then(res => res.json()).then(results => {
       const servicesArrivals = {};
       const { services } = results;
       services.forEach(service => servicesArrivals[service.no] = service.next.duration_ms);

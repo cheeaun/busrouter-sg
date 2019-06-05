@@ -134,7 +134,7 @@ function ArrivalTimes() {
   let arrivalsTimeout, arrivalsRAF;
   function fetchServices(id) {
     if (!id) return;
-    fetch(`https://arrivelah.busrouter.sg/?id=${id}`)
+    fetch(`https://arrivelah2.busrouter.sg/?id=${id}`)
       .then(r => r.json())
       .then(results => {
         setServices(results.services);
