@@ -6,3 +6,4 @@ tmp
 .cache
 .env
 data/3/route-lines
+.vscode
