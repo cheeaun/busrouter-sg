@@ -7,6 +7,7 @@ const stops2 = JSON.parse(fs.readFileSync('data/3/stops2.json'));
 const fullServiceStops = {};
 
 for (let service in serviceStops){
+  console.log(service);
   const routes = serviceStops[service];
   let name = '';
   if (routes.length == 1){

@@ -6,6 +6,7 @@ const services = JSON.parse(fs.readFileSync('data/3/services.json'));
 
 const serviceStops = {};
 const stops = {};
+const errorStops = [];
 
 (async() => {
 
@@ -41,10 +42,16 @@ for (let i=0, l=services.length; i<l; i++){
     };
   });
 
-  serviceStops[service.no] = routeStops.map(rs => rs.filter(Boolean));
+  if (routeStops.length) {
+    serviceStops[service.no] = routeStops.map(rs => rs.filter(Boolean));
+  } else {
+    errorStops.push(service.no);
+  }
 
   await new Promise(res => setTimeout(res, 1000));
 }
+
+console.log('Stops with no routes: ' + errorStops.join(', '));
 
 let filePath = 'data/3/serviceStops.json';
 fs.writeFileSync(filePath, JSON.stringify(serviceStops, null, '\t'));

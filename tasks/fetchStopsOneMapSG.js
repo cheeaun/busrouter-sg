@@ -1,4 +1,3 @@
-require('dotenv').config();
 const fs = require('fs');
 const got = require('got');
 
@@ -21,6 +20,8 @@ const stopsData = {};
 
 (async() => {
 
+const token = (await got('https://developers.onemap.sg/publicapi/publicsessionid', { json: true })).body.access_token;
+
 for (let i=0, l=stopSets.length; i<l; i++){
   let res;
   const stopNumbers = stopSets[i].join(',');
@@ -30,7 +31,7 @@ for (let i=0, l=stopSets.length; i<l; i++){
       json: true,
       query: {
         busStopNo: stopNumbers,
-        token: process.env.oneMapToken,
+        token,
       },
     });
   } catch (e){
@@ -39,7 +40,7 @@ for (let i=0, l=stopSets.length; i<l; i++){
 
   if (res.body.error) {
     console.error(res.body.error);
-    console.log('Token', process.env.oneMapToken);
+    console.log('Token', token);
     return;
   }
 

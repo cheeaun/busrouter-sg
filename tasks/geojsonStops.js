@@ -7,6 +7,7 @@ const stopServices = {};
 
 for (service in serviceStops) {
   const routes = serviceStops[service];
+  console.log(service, routes);
   const stops = [...new Set([...routes[0], ...(routes[1] || [])])]; // Flatten and dedupe
   stops.forEach(s => {
     if (!stopServices[s]) return stopServices[s] = [service];
