@@ -287,6 +287,7 @@ a:active {
 #stop-popover .popover-scroll {
   padding-bottom: 0;
   padding-top: 0;
+  background: linear-gradient(to top, #fff, transparent 20%);
 }
 #between-popover .popover-scroll {
   padding-top: 0;
