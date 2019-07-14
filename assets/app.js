@@ -190,7 +190,7 @@ class App extends Component {
       },
     }));
 
-    map.once('zoomstart', () => {
+    map.once('movestart', () => {
       $logo.classList.add('fadeout');
       this.setState({
         shrinkSearch: true,
