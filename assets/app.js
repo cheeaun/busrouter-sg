@@ -362,7 +362,7 @@ class App extends Component {
           console.log(e.lngLat);
         }
         const { point } = e;
-        const features = map.queryRenderedFeatures(point, { layers: ['stops', 'stops-icon', 'stops-highlight'] });
+        const features = map.queryRenderedFeatures(point, { layers: ['stops', 'stops-icon', 'stops-highlight'], validate: false });
         if (features.length) {
           const zoom = map.getZoom();
           const feature = features[0];
@@ -394,7 +394,7 @@ class App extends Component {
         let lastFrame = null;
         map.on('mousemove', (e) => {
           const { point } = e;
-          const features = map.queryRenderedFeatures(point, { layers: ['stops', 'stops-highlight'] });
+          const features = map.queryRenderedFeatures(point, { layers: ['stops', 'stops-highlight'], validate: false });
           if (features.length && map.getZoom() < 16) {
             if (lastFeature && features[0].id === lastFeature.id) {
               return;
