@@ -161,7 +161,7 @@ class App extends Component {
     const lowerLat = 1.2, upperLat = 1.48, lowerLong = 103.59, upperLong = 104.05;
     const map = this.map = window._map = new mapboxgl.Map({
       container: 'map',
-      style: `https://api.maptiler.com/maps/ec33b31b-2797-472b-abd3-f190f5a565a2/style.json?key=${MAPTILER_KEY}`,
+      style: 'mapbox://styles/cheeaun/cjy5wcdoo00h51co7bbhqxly3',
       renderWorldCopies: false,
       boxZoom: false,
       minZoom: 8,
@@ -288,7 +288,7 @@ class App extends Component {
         'text-anchor': ['case', ['boolean', ['get', 'left'], false], 'top-right', 'top-left'],
         'text-offset': ['case', ['boolean', ['get', 'left'], false], ['literal', [-1, -.5]], ['literal', [1, -.5]]],
         'text-padding': .5,
-        'text-font': ['Roboto Medium', 'Noto Sans Regular'],
+        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
       },
       paint: {
         'text-color': '#f01b48',
@@ -324,7 +324,7 @@ class App extends Component {
         ],
         ...stopText.paint,
       },
-    }, 'place_other');
+    }, 'airport-label');
 
     map.addLayer({
       id: 'stops',
@@ -581,7 +581,7 @@ class App extends Component {
         'symbol-spacing': 100,
         'text-field': '→',
         'text-size': 16,
-        'text-font': ['Roboto Medium', 'Noto Sans Regular'],
+        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
         'text-allow-overlap': true,
         'text-ignore-placement': true,
         'text-keep-upright': false,
@@ -675,7 +675,7 @@ class App extends Component {
       layout: {
         'symbol-placement': 'line',
         'symbol-spacing': 100,
-        'text-font': ['Roboto Medium', 'Noto Sans Regular'],
+        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
         'text-field': '{service}',
         'text-size': 12,
         'text-rotation-alignment': 'viewport',
