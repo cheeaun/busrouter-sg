@@ -190,12 +190,17 @@ class App extends Component {
       },
     }));
 
-    map.once('movestart', () => {
+    let initialMoveStart = false;
+    const initialHideSearch = () => {
+      if (initialMoveStart) return;
+      initialMoveStart = true;
       $logo.classList.add('fadeout');
       this.setState({
         shrinkSearch: true,
       });
-    });
+    };
+    map.once('dragstart', initialHideSearch);
+    map.once('zoomstart', initialHideSearch);
 
     const mapCanvas = map.getCanvas();
 
