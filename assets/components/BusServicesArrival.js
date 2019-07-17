@@ -41,7 +41,7 @@ const addMapBuses = (map) => {
       layout: {
         'text-field': '{number}',
         'text-size': 10,
-        'text-font': ['Roboto Medium', 'Noto Sans Regular'],
+        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
         'text-variable-anchor': ['left', 'right', 'bottom', 'top'],
         'text-justify': 'auto',
         'text-padding': [
