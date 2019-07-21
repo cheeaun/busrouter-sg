@@ -395,9 +395,9 @@ class App extends Component {
           }
         }
       });
+      let lastFrame = null;
       if (supportsHover) {
         let lastFeature = null;
-        let lastFrame = null;
         map.on('mousemove', (e) => {
           const { point } = e;
           const features = map.queryRenderedFeatures(point, { layers: ['stops', 'stops-highlight'], validate: false });
@@ -423,7 +423,8 @@ class App extends Component {
       }
       map.on('mouseleave', 'stops', () => {
         mapCanvas.style.cursor = '';
-        hideStopTooltip();
+        if (lastFrame) cancelAnimationFrame(lastFrame);
+        requestAnimationFrame(hideStopTooltip);
       });
       map.on('mouseout', hideStopTooltip);
       map.on('movestart', hideStopTooltip);
