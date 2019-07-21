@@ -294,7 +294,7 @@ class App extends Component {
       paint: {
         'text-color': '#f01b48',
         'text-halo-width': 1,
-        'text-halo-color': 'rgba(255,255,255,.9)',
+        'text-halo-color': '#fff',
       },
     };
 
@@ -308,8 +308,9 @@ class App extends Component {
         'symbol-z-order': 'source',
         'icon-image': 'stop',
         'icon-size': [
-          'interpolate', ['linear'], ['zoom'],
-          14, .4,
+          'step', ['zoom'],
+          .4,
+          15, .5,
           16, .6
         ],
         'icon-padding': .5,
@@ -401,7 +402,7 @@ class App extends Component {
         map.on('mousemove', (e) => {
           const { point } = e;
           const features = map.queryRenderedFeatures(point, { layers: ['stops', 'stops-highlight'], validate: false });
-          if (features.length && map.getZoom() < 16) {
+          if (features.length && map.getZoom() < 16 && !map.isMoving()) {
             if (lastFeature && features[0].id === lastFeature.id) {
               return;
             }
@@ -447,9 +448,9 @@ class App extends Component {
       layout: {
         'icon-image': ['case', ['==', ['get', 'type'], 'end'], 'stop-end', 'stop'],
         'icon-size': [
-          'interpolate', ['linear'], ['zoom'],
-          8, .3,
-          10, ['case', ['==', ['get', 'type'], 'end'], .3, .2],
+          'step', ['zoom'],
+          .3,
+          10, ['case', ['==', ['get', 'type'], 'end'], .3, .45],
           15, ['case', ['==', ['get', 'type'], 'end'], .45, .6]
         ],
         'icon-anchor': ['case', ['==', ['get', 'type'], 'end'], 'bottom', 'center'],
@@ -460,7 +461,7 @@ class App extends Component {
         'text-field': [
           'step', ['zoom'],
           ['case', ['==', ['get', 'type'], 'end'], ['concat', ['get', 'number'], '\n', ['get', 'name']], ''],
-          12,
+          14,
             ['case', ['==', ['get', 'type'], 'end'],
               ['concat', ['get', 'number'], '\n', ['get', 'name']],
               ['get', 'number']
@@ -471,8 +472,16 @@ class App extends Component {
           ['case', ['boolean', ['get', 'left'], false], ['literal', [-1, -1.5]], ['literal', [1, -1.5]]],
           ['case', ['boolean', ['get', 'left'], false], ['literal', [-1, -.5]], ['literal', [1, -.5]]]
         ],
+        'text-size': [
+          'interpolate', ['linear'], ['zoom'],
+          14, ['case', ['==', ['get', 'type'], 'end'], 14, 11],
+          16, 14
+        ],
       },
-      paint: stopText.paint,
+      paint: {
+        ...stopText.paint,
+        'text-halo-width': ['case', ['==', ['get', 'type'], 'end'], 2, 1],
+      },
     });
     map.addLayer({
       id: 'stops-highlight-selected',
