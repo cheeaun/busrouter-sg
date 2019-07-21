@@ -1,5 +1,6 @@
-import { h, render } from 'preact';
+import { h, render, Fragment } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
+import useResizeObserver from 'use-resize-observer';
 import fetchCache from './utils/fetchCache';
 import { sortServices } from './utils/bus';
 import Ad from './ad';
@@ -48,7 +49,7 @@ const TimeRanger = ({ values }) => {
   const duration = (lastVal < firstVal ? lastVal + 24 : lastVal) - firstVal;
   const width = duration / 24 * 100;
   return (
-    <div>
+    <Fragment>
       <div class="time-ranger">
         {width + left > 100 && <div class="bar" style={{
           left: 0,
@@ -60,7 +61,7 @@ const TimeRanger = ({ values }) => {
         }} />
       </div>
       <span class="time-duration">{formatDuration(duration)}</span>
-    </div>
+    </Fragment>
   );
 };
 
@@ -68,6 +69,10 @@ function FirstLastTimes() {
   const [stop, setStop] = useState('     ');
   const [stopName, setStopName] = useState(null);
   const [data, setData] = useState([]);
+
+  const [tableRef, _, tableHeight] = useResizeObserver();
+  const [timeLeft, setTimeLeft] = useState(null);
+  const [timeStr, setTimeStr] = useState('');
 
   useEffect(() => {
     Promise.all([
@@ -95,6 +100,29 @@ function FirstLastTimes() {
       }
       window.onhashchange();
     });
+
+    const setLeft = () => {
+      const date = new Date();
+      const time = `${date.getHours()}`.padStart(2, '0') + '' + `${date.getMinutes()}`.padStart(2, '0');
+      const val = convertTimeToNumber(time);
+      const left = val / 24 * 100;
+      setTimeLeft(left);
+
+      let ampm = 'Am';
+      let hour = date.getHours();
+      if (hour > 12) {
+        hour -= 12;
+        ampm = 'PM';
+      }
+      const timeStr = (
+        <Fragment>
+          {hour}<blink>:</blink>{`${date.getMinutes()}`.padStart(2, '0')} {ampm}
+        </Fragment>
+      );
+      setTimeStr(timeStr);
+    };
+    setLeft();
+    setInterval(setLeft, 60*1000);
   }, []);
 
   return (
@@ -109,7 +137,7 @@ function FirstLastTimes() {
         <span><span class="abbr">SAT</span> Saturdays</span>
         <span><span class="abbr">SUN</span> Sundays &amp; Public Holidays</span>
       </p>
-      <table>
+      <table ref={tableRef}>
         <thead>
           <tr>
             <th>Service</th>
@@ -121,6 +149,11 @@ function FirstLastTimes() {
               <span>6 AM</span>
               <span>12 PM</span>
               <span>6 PM</span>
+              {!!data.length && !!timeLeft && !!timeStr && (
+                <div class="timerange-indicator" style={{ left: `${timeLeft}%` }}>
+                  <span>{timeStr}*</span>
+                </div>
+              )}
             </th>
           </tr>
         </thead>
@@ -178,9 +211,10 @@ function FirstLastTimes() {
         ))}
         <tfoot>
           <tr>
-            <td colspan="4">
-              {data.length ? `${data.length} service${data.length === 1 ? '' : 's'} · ` : ''}
-              <a href="/">BusRouter SG</a>
+            <td colspan="5">
+              <p>{data.length ? `${data.length} service${data.length === 1 ? '' : 's'} · ` : ''}
+              <a href="/">BusRouter SG</a></p>
+              <p class="timerange-note"><small><b>*</b> Current time based on your timezone, which may be different than Singapore timezone.</small></p>
             </td>
           </tr>
         </tfoot>

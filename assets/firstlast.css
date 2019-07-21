@@ -125,13 +125,34 @@ abbr {
 }
 
 .timerange-header,
-.time-cell {
+.time-cell,
+.timerange-note {
   display: none;
 }
-.timerange-header span {
+.timerange-header > span {
   display: inline-block;
   width: 25%;
   text-align: left;
+}
+.timerange-indicator {
+  top: 0;
+  position: absolute;
+  /* background-color: #007aff; */
+  background-image: linear-gradient(rgba(255,255,255,0) 16px, #007aff 16px, #007aff 60%, rgba(255,255,255,0) 90%);
+  width: 2px;
+  height: 100vh;
+  pointer-events: none;
+}
+.timerange-indicator > span {
+  position: absolute;
+  top: 16px;
+  transform: translateX(-50%);
+  padding: 3px 6px;
+  border-radius: 123123px;
+  background-color: #007aff;
+  color: #fff;
+  line-height: 1;
+  font-size: smaller;
 }
 .time-cell {
   background: linear-gradient(
@@ -189,6 +210,9 @@ abbr {
   .time-cell {
     display: table-cell;
   }
+  .timerange-note {
+    display: block;
+  }
 
   #carbonads {
     float: right;
@@ -201,6 +225,10 @@ tfoot td {
   font-size: .9em;
   padding: 10px 8px;
   color: #999;
+}
+tfoot p {
+  margin-top: 0;
+  padding-top: 0;
 }
 tfoot a {
   color: inherit;
@@ -221,4 +249,12 @@ tfoot a {
   100% {
     opacity: .8;
   }
+}
+
+blink {
+  animation: blink 1s linear infinite alternate;
+}
+@keyframes blink {
+  0% { opacity: 0 }
+  100% { opacity: 1 }
 }
