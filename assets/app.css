@@ -287,7 +287,6 @@ a:active {
 #stop-popover .popover-scroll {
   padding-bottom: 0;
   padding-top: 0;
-  background: linear-gradient(to top, #fff, transparent 20%);
 }
 #between-popover .popover-scroll {
   padding-top: 0;
@@ -1056,6 +1055,48 @@ a.service-tag:hover {
   100% {
     transform: scale(4);
     opacity: 0;
+  }
+}
+
+/* Scroll shadows */
+
+[data-scroll-shadow="top"] {
+  background: linear-gradient(rgba(0,0,0,.1), rgba(0,0,0,0));
+}
+[data-scroll-shadow="bottom"] {
+  background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.15));
+  background-position: bottom;
+  animation: glowing-gradient 1s linear 2s 10 alternate both;
+}
+[data-scroll-shadow="both"] {
+  background:
+    linear-gradient(rgba(0,0,0,.1), rgba(0,0,0,0)),
+    linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.1));
+  background-position: top, bottom;
+}
+[data-scroll-shadow] {
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-size: 100% 16px;
+}
+@keyframes glowing-gradient {
+  0% {
+    background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.15));
+  }
+  6.25% {
+    background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.1.75));
+  }
+  12.5% {
+    background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.2));
+  }
+  18.75% {
+    background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.225));
+  }
+  25% {
+    background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.25));
+  }
+  100% {
+    background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.25));
   }
 }
 

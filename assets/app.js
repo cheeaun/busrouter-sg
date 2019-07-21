@@ -1,4 +1,4 @@
-import { h, render, Component } from 'preact';
+import { h, render, Component, Fragment } from 'preact';
 import { toGeoJSON } from '@mapbox/polyline';
 import Fuse from 'fuse.js';
 import intersect from 'just-intersect';
@@ -16,6 +16,7 @@ import Ad from './ad';
 import BusServicesArrival from './components/BusServicesArrival';
 import GeolocateControl from './components/GeolocateControl';
 import BetweenRoutes from './components/BetweenRoutes';
+import ScrollableContainer from './components/ScrollableContainer';
 
 import stopImagePath from './images/stop.png';
 import stopEndImagePath from './images/stop-end.png';
@@ -1988,28 +1989,30 @@ class App extends Component {
           ]}
         </div>
         <div id="stop-popover" ref={c => this._stopPopover = c} class={`popover ${showStopPopover ? 'expand' : ''}`}>
-          {showStopPopover && [
-            <a href="#/" onClick={this._hideStopPopover} class="popover-close">&times;</a>,
-            <header>
-              <h1 onClick={this._zoomToStop}><b class="stop-tag">{showStopPopover.number}</b> {showStopPopover.name}</h1>
-            </header>,
-            <div class="popover-scroll">
-              <h2>{showStopPopover.services.length} service{showStopPopover.services.length == 1 ? '' : 's'} &middot; <a href={`/bus-first-last/#${showStopPopover.number}`} target="_blank">First/last bus <img src={openNewWindowImagePath} width="12" height="12" alt="" class="new-window" /></a></h2>
-              <BusServicesArrival map={this.map} id={showStopPopover.number} services={showStopPopover.services} />
-            </div>,
-            <div class="popover-footer">
-              <div class="popover-buttons alt-hide">
-                <a href={`/bus-arrival/#${showStopPopover.number}`} target="_blank" onClick={this._openBusArrival} class="popover-button">Bus arrivals <img src={openNewWindowImagePath} width="16" height="16" alt="" /></a>
-                {showStopPopover.services.length > 1 && (
-                  <a href={`#/stops/${showStopPopover.number}/routes`} class="popover-button">Passing routes <img src={passingRoutesImagePath} width="16" height="16" alt="" /></a>
-                )}
+          {showStopPopover && (
+            <Fragment>
+              <a href="#/" onClick={this._hideStopPopover} class="popover-close">&times;</a>
+              <header>
+                <h1 onClick={this._zoomToStop}><b class="stop-tag">{showStopPopover.number}</b> {showStopPopover.name}</h1>
+              </header>
+              <ScrollableContainer class="popover-scroll">
+                <h2>{showStopPopover.services.length} service{showStopPopover.services.length == 1 ? '' : 's'} &middot; <a href={`/bus-first-last/#${showStopPopover.number}`} target="_blank">First/last bus <img src={openNewWindowImagePath} width="12" height="12" alt="" class="new-window" /></a></h2>
+                <BusServicesArrival map={this.map} id={showStopPopover.number} services={showStopPopover.services} />
+              </ScrollableContainer>
+              <div class="popover-footer">
+                <div class="popover-buttons alt-hide">
+                  <a href={`/bus-arrival/#${showStopPopover.number}`} target="_blank" onClick={this._openBusArrival} class="popover-button">Bus arrivals <img src={openNewWindowImagePath} width="16" height="16" alt="" /></a>
+                  {showStopPopover.services.length > 1 && (
+                    <a href={`#/stops/${showStopPopover.number}/routes`} class="popover-button">Passing routes <img src={passingRoutesImagePath} width="16" height="16" alt="" /></a>
+                  )}
+                </div>
+                <div class="popover-buttons alt-show-flex">
+                  <button onClick={() => this._setStartStop(showStopPopover.number)} class="popover-button">Set as Start</button>
+                  <button onClick={() => this._setEndStop(showStopPopover.number)} class="popover-button">Set as End</button>
+                </div>
               </div>
-              <div class="popover-buttons alt-show-flex">
-                <button onClick={() => this._setStartStop(showStopPopover.number)} class="popover-button">Set as Start</button>
-                <button onClick={() => this._setEndStop(showStopPopover.number)} class="popover-button">Set as End</button>
-              </div>
-            </div>
-          ]}
+            </Fragment>
+          )}
         </div>
         <div id="arrivals-popover" class={`popover ${showArrivalsPopover ? 'expand' : ''}`}>
           {showArrivalsPopover && [
