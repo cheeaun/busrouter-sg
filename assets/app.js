@@ -236,6 +236,8 @@ class App extends Component {
       }),
     ]);
 
+    this.labelLayerId = labelLayerId;
+
     if (window.performance) {
       const timeSincePageLoad = Math.round(performance.now());
       gtag('event', 'timing_complete', {
@@ -762,6 +764,12 @@ class App extends Component {
       });
     });
 
+    // Traffic
+    map.addSource('traffic', {
+      type: 'vector',
+      url: 'mapbox://mapbox.mapbox-traffic-v1',
+    });
+
     // Between routes
     map.addSource('routes-between', {
       type: 'geojson',
@@ -1000,7 +1008,7 @@ class App extends Component {
   }
   _showStopPopover = (number) => {
     const map = this.map;
-    const { stopsData, prevStopNumber } = this.state;
+    const { stopsData, prevStopNumber, route } = this.state;
     const { services, coordinates, name } = stopsData[number];
 
     const popoverHeight = this._stopPopover.offsetHeight;
@@ -1044,6 +1052,8 @@ class App extends Component {
       selected: true,
     });
 
+    const labelLayerId = this.labelLayerId;
+
     this.setState({
       shrinkSearch: true,
       prevStopNumber: number,
@@ -1066,6 +1076,53 @@ class App extends Component {
           });
         } else {
           map.easeTo({ center: coordinates, offset });
+        }
+
+        const { page } = route;
+        if (page === 'stop' && !map.getLayer('traffic')){
+          requestAnimationFrame(() => {
+            map.addLayer({
+              id: 'traffic',
+              type: 'line',
+              source: 'traffic',
+              'source-layer': 'traffic',
+              minzoom: 14,
+              filter: [
+                'all',
+                ['==', '$type', 'LineString'],
+                ['has', 'congestion'],
+              ],
+              layout: {
+                'line-join': 'round',
+                'line-cap': 'round',
+              },
+              paint: {
+                'line-width': 3,
+                'line-offset': [
+                  'case',
+                  ['match', ['get', 'class'], ['link', 'motorway_link', 'service', 'street'], true, false], 6,
+                  ['match', ['get', 'class'], ['secondary', 'tertiary'], true, false], 6,
+                  ['==', 'class', 'primary'], 12,
+                  ['==', 'class', 'trunk'], 12,
+                  ['==', 'class', 'motorway'], 9,
+                  6,
+                ],
+                'line-color': [
+                  'match', ['get', 'congestion'],
+                  'low', 'rgba(36, 218, 26, .4)',
+                  'moderate', 'rgba(253, 149, 0, .75)',
+                  'heavy', 'rgba(252, 77, 77, .85)',
+                  'severe', 'rgba(148, 41, 76, .95)',
+                  'transparent',
+                ],
+                'line-opacity': [
+                  'interpolate', ['linear'], ['zoom'],
+                  14.1, 0,
+                  16, 1,
+                ],
+              },
+            }, labelLayerId);
+          });
         }
       });
     });
@@ -1095,6 +1152,11 @@ class App extends Component {
     this.setState({
       showStopPopover: false,
     });
+    setTimeout(() => {
+      if (map.getLayer('traffic') && (page !== 'stop' || (page === 'stop' && subpage === 'routes'))){
+        map.removeLayer('traffic');
+      }
+    }, 500);
   }
   _zoomToStop = () => {
     const map = this.map;
