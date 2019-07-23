@@ -22,7 +22,7 @@ ID = "busrouter-sg"
 
 [[redirects]]
   from = "/staticmaps/*"
-  to = "https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/:splat"
+  to = "https://api.mapbox.com/styles/v1/cheeaun/cjy5wcdoo00h51co7bbhqxly3/static/:splat"
   status = 200
 
 [[redirects]]
