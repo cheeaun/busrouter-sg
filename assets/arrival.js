@@ -1,6 +1,5 @@
 import { h, render, Fragment } from 'preact';
 import { useState, useRef, useEffect } from 'preact/hooks';
-import { MAPBOX_ACCESS_TOKEN } from './config';
 import { timeDisplay, sortServicesPinned } from './utils/bus';
 import fetchCache from './utils/fetchCache';
 import Ad from './ad';
@@ -11,6 +10,8 @@ import busSingleImagePath from './images/bus-single.svg';
 import busDoubleImagePath from './images/bus-double.svg';
 import busBendyImagePath from './images/bus-bendy.svg';
 import stopsJSONPath from '../data/3/stops.final.json';
+
+const TOKEN = 'QTKoEi1Mf_A2wAgIvOv9w0.0nIppXYy0me4YmZxt2MsJzMwgDNhJnYz9majJiOiEmIsIib1FWZlh2YiojI1Jye.kp';
 
 const BUSES = {
   sd: {
@@ -209,7 +210,7 @@ function ArrivalTimes() {
   return (
     <div>
       <div id="bus-stop-map">
-        <img src={`https://busrouter.sg/staticmaps/${lng},${lat},17,0,60/400x200@2x?access_token=${MAPBOX_ACCESS_TOKEN}`} alt="Bus stop map" intrinsicsize="400x200" loading="lazy" />
+        <img src={`https://busrouter.sg/staticmaps/${lng},${lat},17,0,60/400x200@2x?access_token=${TOKEN.split('').reverse().join('')}`} alt="Bus stop map" intrinsicsize="400x200" loading="lazy" />
       </div>
       <h1>
         Bus arrival times for
