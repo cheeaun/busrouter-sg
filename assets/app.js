@@ -1866,6 +1866,12 @@ class App extends Component {
       });
     }
   }
+  _resetStartEndStops = () => {
+    this.setState({
+      betweenStartStop: null,
+      betweenEndStop: null,
+    });
+  }
   render(_, state) {
     const {
       route,
@@ -2017,7 +2023,7 @@ class App extends Component {
         </div>
         <div id="between-popover" ref={c => this._betweenPopover = c} class={`popover ${showBetweenPopover ? 'expand' : ''}`}>
           {showBetweenPopover && [
-            <a href="#/" class="popover-close">&times;</a>,
+            <a href="#/" onClick={this._resetStartEndStops} class="popover-close">&times;</a>,
             <header>
               <h1>
                 <small>Routes between</small><br />
