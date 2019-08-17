@@ -11,6 +11,7 @@ export default class GeolocateControl {
   constructor(options) {
     this.options = Object.assign({
       offset: [0, 0],
+      onClick: () => {},
     }, options);
   }
   onAdd(map) {
@@ -115,11 +116,13 @@ export default class GeolocateControl {
   _clickButton = (e, locking = true) => {
     if (e) e.preventDefault();
     if (!this._setup) return;
+    const { onClick } = this.options;
 
     if (this._watching) {
       this._updateButtonState('active');
       this._flyToCurrentLocation();
       this._locking = true;
+      onClick(this._currentLocation);
     } else {
       this._updateButtonState('loading');
       this._buttonClicked = true;
@@ -149,6 +152,7 @@ export default class GeolocateControl {
         if (this._buttonClicked) {
           // Differentiate between initiated from button click or watchPosition subsequent runs
           this._buttonClicked = false;
+          onClick(this._currentLocation);
         }
         this._watching = true;
       }, (e) => {
