@@ -1330,7 +1330,7 @@ class App extends Component {
   }
   _renderBetweenRoute = ({ e, startStop, endStop, result }) => {
     const { target } = e;
-    [...target.parentElement.children].forEach(el => {
+    target.parentElement.parentElement.querySelectorAll('.between-item').forEach(el => {
       if (el === target) {
         target.classList.add('selected');
       } else {
