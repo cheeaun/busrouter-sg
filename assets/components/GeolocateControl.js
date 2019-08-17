@@ -23,8 +23,7 @@ export default class GeolocateControl {
   }
   _setupUI = (supported) => {
     if (!supported) {
-      console.warn('Geolocation support is not available, the GeolocateControl will not be visible.');
-      return;
+      console.warn('Geolocation support is not available.');
     }
 
     const button = document.createElement('button');
@@ -152,7 +151,7 @@ export default class GeolocateControl {
           this._buttonClicked = false;
         }
         this._watching = true;
-      }, () => {
+      }, (e) => {
         this._locking = false;
         this._watching = false;
         this._buttonClicked = false;
@@ -163,8 +162,13 @@ export default class GeolocateControl {
           window.removeEventListener(deviceorientation, this._setHeading);
         }
 
-        // Retry again
-        this._clickButton();
+        console.warn(e);
+        if (e.code === 1) { // PERMISSION_DENIED
+          alert('Looks like location tracking is blocked on your browser. Please enable it in the settings to use this feature.');
+        } else {
+          // Retry again
+          this._clickButton();
+        }
       }, {
         enableHighAccuracy: true,
         timeout: 60 * 1000, // 1min
