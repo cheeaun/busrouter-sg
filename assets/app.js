@@ -86,6 +86,7 @@ class App extends Component {
     super();
     const route = getRoute();
     this.state = {
+      prevRoute: null,
       route,
       routeLoading: route.page !== 'home',
       services: [],
@@ -105,6 +106,7 @@ class App extends Component {
 
     window.onhashchange = () => {
       this.setState({
+        prevRoute: this.state.route,
         route: getRoute(),
       });
     };
@@ -1158,6 +1160,13 @@ class App extends Component {
       }
     }, 500);
   }
+  _closeServicesPopover = (e) => {
+    const { prevRoute } = this.state;
+    if (prevRoute && prevRoute.page === 'stop') {
+      e.preventDefault();
+      history.back();
+    }
+  }
   _zoomToStop = () => {
     const map = this.map;
     const { stopsData, showStopPopover } = this.state;
@@ -1904,7 +1913,7 @@ class App extends Component {
           <div id="popover-float" hidden={!/service|stop/.test(route.page)}>
             {route.page === 'service' && servicesData && routeServices.length ? (
               <div class="float-pill" ref={c => this._floatPill = c}>
-                <a href="#/" class="popover-close">&times;</a>
+                <a href="#/" onClick={this._closeServicesPopover} class="popover-close">&times;</a>
                 {routeServices.length === 1 ? (
                   <div class="service-flex">
                     <span class="service-tag">{routeServices[0]}</span>
