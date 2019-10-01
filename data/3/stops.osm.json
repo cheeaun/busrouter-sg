@@ -2,8 +2,8 @@
   "version": 0.6,
   "generator": "Overpass API 0.7.55.7 8b86ff77",
   "osm3s": {
-    "timestamp_osm_base": "2019-07-14T09:47:02Z",
-    "timestamp_areas_base": "2019-07-14T09:26:02Z",
+    "timestamp_osm_base": "2019-09-29T15:02:01Z",
+    "timestamp_areas_base": "2019-09-29T14:43:02Z",
     "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
   },
   "elements": [
@@ -259,7 +259,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Admiralty Road East",
-    "name": "Before Prison Training School",
+    "name": "Aft Queen's Ave",
     "public_transport": "platform",
     "route_ref": "169"
   }
@@ -274,7 +274,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Admiralty Road West",
-    "name": "Opposite Sembawang Drug Rehabilitationb Centre",
+    "name": "Opp Police Drv Circuit",
     "public_transport": "platform",
     "route_ref": "169"
   }
@@ -545,7 +545,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Admiralty Road West",
-    "name": "Sembawang Drug Rehabilitationb Centre",
+    "name": "Police Drv Circuit",
     "public_transport": "platform",
     "route_ref": "169"
   }
@@ -3873,7 +3873,7 @@
   "type": "node",
   "id": 410460045,
   "lat": 1.2883438,
-  "lon": 103.7931917,
+  "lon": 103.7932104,
   "tags": {
     "asset_ref": "18041",
     "bus": "yes",
@@ -7183,8 +7183,8 @@
 {
   "type": "node",
   "id": 410461837,
-  "lat": 1.3528427,
-  "lon": 103.8517530,
+  "lat": 1.3528454,
+  "lon": 103.8517959,
   "tags": {
     "asset_ref": "53261",
     "bus": "yes",
@@ -7192,14 +7192,15 @@
     "location": "Bishan Street 14",
     "name": "Opposite Bishan Stadium",
     "public_transport": "platform",
-    "route_ref": "53;410W"
+    "route_ref": "53;410W",
+    "shelter": "yes"
   }
 },
 {
   "type": "node",
   "id": 410461838,
-  "lat": 1.3533556,
-  "lon": 103.8510946,
+  "lat": 1.3533529,
+  "lon": 103.8511187,
   "tags": {
     "asset_ref": "53269",
     "bus": "yes",
@@ -7213,8 +7214,8 @@
 {
   "type": "node",
   "id": 410461839,
-  "lat": 1.3484960,
-  "lon": 103.8452780,
+  "lat": 1.3484866,
+  "lon": 103.8452740,
   "tags": {
     "asset_ref": "53309",
     "bus": "yes",
@@ -7228,8 +7229,8 @@
 {
   "type": "node",
   "id": 410461840,
-  "lat": 1.3485676,
-  "lon": 103.8459196,
+  "lat": 1.3486078,
+  "lon": 103.8459223,
   "tags": {
     "asset_ref": "53301",
     "bus": "yes",
@@ -7243,8 +7244,8 @@
 {
   "type": "node",
   "id": 410461841,
-  "lat": 1.3467944,
-  "lon": 103.8418553,
+  "lat": 1.3468413,
+  "lon": 103.8416213,
   "tags": {
     "asset_ref": "53311",
     "bus": "yes",
@@ -7259,8 +7260,8 @@
 {
   "type": "node",
   "id": 410461842,
-  "lat": 1.3472546,
-  "lon": 103.8412299,
+  "lat": 1.3472231,
+  "lon": 103.8412467,
   "tags": {
     "asset_ref": "53319",
     "bus": "yes",
@@ -8060,8 +8061,8 @@
 {
   "type": "node",
   "id": 410462086,
-  "lat": 1.3261558,
-  "lon": 103.7554964,
+  "lat": 1.3261719,
+  "lon": 103.7554977,
   "tags": {
     "asset_ref": "28021",
     "bus": "yes",
@@ -8090,8 +8091,8 @@
 {
   "type": "node",
   "id": 410462095,
-  "lat": 1.3272166,
-  "lon": 103.7523398,
+  "lat": 1.3279165,
+  "lon": 103.7510282,
   "tags": {
     "asset_ref": "28031",
     "bus": "yes",
@@ -8135,8 +8136,8 @@
 {
   "type": "node",
   "id": 410462098,
-  "lat": 1.3281122,
-  "lon": 103.7513806,
+  "lat": 1.3281350,
+  "lon": 103.7513900,
   "tags": {
     "asset_ref": "28039",
     "bus": "yes",
@@ -10842,7 +10843,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Burghley Drive",
-    "name": "Serangoon Garden School",
+    "name": "Tipsy cow",
     "public_transport": "platform",
     "route_ref": "317"
   }
@@ -13389,8 +13390,8 @@
 {
   "type": "node",
   "id": 410463606,
-  "lat": 1.3151237,
-  "lon": 103.7693259,
+  "lat": 1.3151331,
+  "lon": 103.7693044,
   "tags": {
     "asset_ref": "17249",
     "bus": "yes",
@@ -13577,7 +13578,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Clementi Avenue 6",
-    "name": "Blk 436",
+    "name": "Opp Regent Pk",
     "public_transport": "platform",
     "route_ref": "154;188;196;201;963;963R"
   }
@@ -23387,7 +23388,8 @@
     "location": "Jalan Toa Payoh",
     "name": "Opposite Blk 195",
     "public_transport": "platform",
-    "route_ref": "8;26;31;90;142;151;154;966;985"
+    "route_ref": "8;26;31;90;142;151;154;966;985",
+    "shelter": "yes"
   }
 },
 {
@@ -24444,8 +24446,8 @@
 {
   "type": "node",
   "id": 410466350,
-  "lat": 1.3318620,
-  "lon": 103.7395830,
+  "lat": 1.3318128,
+  "lon": 103.7395724,
   "tags": {
     "asset_ref": "28241",
     "bus": "yes",
@@ -24459,8 +24461,8 @@
 {
   "type": "node",
   "id": 410466351,
-  "lat": 1.3325858,
-  "lon": 103.7390460,
+  "lat": 1.3326254,
+  "lon": 103.7390574,
   "tags": {
     "asset_ref": "28249",
     "bus": "yes",
@@ -25101,8 +25103,8 @@
 {
   "type": "node",
   "id": 410466473,
-  "lat": 1.3496432,
-  "lon": 103.6970920,
+  "lat": 1.3495440,
+  "lon": 103.6971161,
   "tags": {
     "asset_ref": "27439",
     "bus": "yes",
@@ -25116,8 +25118,8 @@
 {
   "type": "node",
   "id": 410466475,
-  "lat": 1.3496490,
-  "lon": 103.6974200,
+  "lat": 1.3497616,
+  "lon": 103.6975420,
   "tags": {
     "asset_ref": "27431",
     "bus": "yes",
@@ -25146,8 +25148,8 @@
 {
   "type": "node",
   "id": 410466492,
-  "lat": 1.3505331,
-  "lon": 103.6999319,
+  "lat": 1.3505787,
+  "lon": 103.7001492,
   "tags": {
     "asset_ref": "27449",
     "bus": "yes",
@@ -25161,8 +25163,8 @@
 {
   "type": "node",
   "id": 410466493,
-  "lat": 1.3504058,
-  "lon": 103.7006822,
+  "lat": 1.3502854,
+  "lon": 103.7006767,
   "tags": {
     "asset_ref": "27441",
     "bus": "yes",
@@ -25644,8 +25646,8 @@
 {
   "type": "node",
   "id": 410466780,
-  "lat": 1.3479286,
-  "lon": 103.7009414,
+  "lat": 1.3480922,
+  "lon": 103.7008475,
   "tags": {
     "asset_ref": "27379",
     "bus": "yes",
@@ -26591,7 +26593,8 @@
     "location": "Kim Keat Road",
     "name": "Opposite NKF",
     "public_transport": "platform",
-    "route_ref": "21;124;125;131;139;186"
+    "route_ref": "21;124;125;131;139;186",
+    "shelter": "yes"
   }
 },
 {
@@ -29148,21 +29151,6 @@
     "name": "Before Engine Test Facility",
     "public_transport": "platform",
     "route_ref": "2;9;19;29;59;89;109"
-  }
-},
-{
-  "type": "node",
-  "id": 410467223,
-  "lat": 1.3711813,
-  "lon": 103.9718063,
-  "tags": {
-    "asset_ref": "98231",
-    "bus": "yes",
-    "highway": "bus_stop",
-    "location": "Loyang Avenue",
-    "name": "Loyang Industrial Estate",
-    "public_transport": "platform",
-    "route_ref": "9;19;59;89;109"
   }
 },
 {
@@ -32323,7 +32311,8 @@
     "location": "New Upper Changi Road",
     "name": "The Tanamera Condominium",
     "public_transport": "platform",
-    "route_ref": "2;9;14;24;31;35;35M;45;46;506;NR7"
+    "route_ref": "2;9;14;24;31;35;35M;45;46;506;NR7",
+    "wheelchair": "yes"
   }
 },
 {
@@ -34323,8 +34312,8 @@
 {
   "type": "node",
   "id": 410468533,
-  "lat": 1.3737538,
-  "lon": 103.9426797,
+  "lat": 1.3737522,
+  "lon": 103.9427085,
   "tags": {
     "asset_ref": "77011",
     "bus": "yes",
@@ -38414,8 +38403,8 @@
 {
   "type": "node",
   "id": 410473689,
-  "lat": 1.3819999,
-  "lon": 103.7682760,
+  "lat": 1.3819992,
+  "lon": 103.7682874,
   "tags": {
     "asset_ref": "44609",
     "highway": "bus_stop",
@@ -38849,7 +38838,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Sembawang Road",
-    "name": "Before Spiritual Grace Presby Church",
+    "name": "Spiritual Grace Presby Church",
     "public_transport": "platform",
     "route_ref": "167;169;980"
   }
@@ -38894,7 +38883,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Sembawang Road",
-    "name": "After Yishun Avenue 2",
+    "name": "Blk 590C",
     "public_transport": "platform",
     "route_ref": "169"
   }
@@ -38924,7 +38913,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Sembawang Road",
-    "name": "Seletaris Condominium",
+    "name": "Opp Jln Kemuning",
     "public_transport": "platform",
     "route_ref": "167;856;858;859;980"
   }
@@ -39000,7 +38989,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Sembawang Road",
-    "name": "Before Canberra Road",
+    "name": "Opp The Nautical",
     "public_transport": "platform",
     "route_ref": "167;856;858;859;980"
   }
@@ -43240,7 +43229,9 @@
     "location": "Sungei Tengah Road",
     "name": "Chengtai Nursery",
     "public_transport": "platform",
-    "route_ref": "172;975"
+    "route_ref": "172;975",
+    "shelter": "yes",
+    "tactile_paving": "no"
   }
 },
 {
@@ -43255,7 +43246,9 @@
     "location": "Sungei Tengah Road",
     "name": "Opposite Chengtai Nursery",
     "public_transport": "platform",
-    "route_ref": "172;975"
+    "route_ref": "172;975",
+    "shelter": "yes",
+    "tactile_paving": "no"
   }
 },
 {
@@ -43298,7 +43291,7 @@
     "location": "Tampines Avenue 1",
     "name": "Tropica Condominium",
     "public_transport": "platform",
-    "route_ref": "8;15;15A;23;518",
+    "route_ref": "8;15;15A;23;129;518",
     "shelter": "yes"
   }
 },
@@ -43309,12 +43302,14 @@
   "lon": 103.9278058,
   "tags": {
     "asset_ref": "75251",
+    "bin": "yes",
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Tampines Avenue 1",
     "name": "Opposite Tropica Condominium",
     "public_transport": "platform",
-    "route_ref": "8;15;23;518"
+    "route_ref": "8;15;23;129;298;518",
+    "shelter": "yes"
   }
 },
 {
@@ -46656,7 +46651,8 @@
     "location": "Telok Blangah Road",
     "name": "Caribbean at Keppel Bay",
     "public_transport": "platform",
-    "route_ref": "10;30;57;61;93;97;100;124;131;143;145;166;188;408;963"
+    "route_ref": "10;30;57;61;93;97;100;124;131;143;145;166;188;408;963",
+    "shelter": "yes"
   }
 },
 {
@@ -47626,7 +47622,8 @@
     "location": "Toa Payoh Central",
     "name": "Blk 177",
     "public_transport": "platform",
-    "route_ref": "56;105;153;232"
+    "route_ref": "56;105;153;232",
+    "shelter": "yes"
   }
 },
 {
@@ -47641,7 +47638,8 @@
     "location": "Toa Payoh Central",
     "name": "Opposite Blk 177",
     "public_transport": "platform",
-    "route_ref": "56;105;153;NR1"
+    "route_ref": "56;105;153;NR1",
+    "shelter": "yes"
   }
 },
 {
@@ -48096,7 +48094,8 @@
     "location": "Lorong 6 Toa Payoh",
     "name": "Opposite Toa Payoh Stadium",
     "public_transport": "platform",
-    "route_ref": "8;26;31;57;59;90;142;235;238;506"
+    "route_ref": "8;26;31;57;59;90;142;235;238;506",
+    "shelter": "yes"
   }
 },
 {
@@ -48160,7 +48159,8 @@
     "location": "Lorong 6 Toa Payoh",
     "name": "Blk 27",
     "public_transport": "platform",
-    "route_ref": "57;235;238"
+    "route_ref": "57;235;238",
+    "shelter": "yes"
   }
 },
 {
@@ -48175,7 +48175,8 @@
     "location": "Lorong 6 Toa Payoh",
     "name": "Toa Payoh Stadium",
     "public_transport": "platform",
-    "route_ref": "8;26;31;57;59;90;142;235;238;506"
+    "route_ref": "8;26;31;57;59;90;142;235;238;506",
+    "shelter": "yes"
   }
 },
 {
@@ -48207,7 +48208,8 @@
     "location": "Lorong 6 Toa Payoh",
     "name": "Opposite Toa Payoh Swimming Complex",
     "public_transport": "platform",
-    "route_ref": "8;26;28;31;57;59;73;88;90;142;155;157;159;163;232;235;238;506"
+    "route_ref": "8;26;28;31;57;59;73;88;90;142;155;157;159;163;232;235;238;506",
+    "shelter": "yes"
   }
 },
 {
@@ -48239,7 +48241,8 @@
     "location": "Lorong 6 Toa Payoh",
     "name": "Toa Payoh Swimming Complex",
     "public_transport": "platform",
-    "route_ref": "8;26;28;31;57;59;73;88;90;142;155;157;159;163;235;238;506"
+    "route_ref": "8;26;28;31;57;59;73;88;90;142;155;157;159;163;235;238;506",
+    "shelter": "yes"
   }
 },
 {
@@ -48266,7 +48269,8 @@
     "highway": "bus_stop",
     "location": "Lorong 6 Toa Payoh",
     "name": "Blk 32",
-    "route_ref": "57;235;238"
+    "route_ref": "57;235;238",
+    "shelter": "yes"
   }
 },
 {
@@ -53227,7 +53231,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Upper Thomson Road",
-    "name": "Opposite Former Seletar Institute",
+    "name": "Aft Springleaf Rd",
     "public_transport": "platform",
     "route_ref": "138;167;169;980"
   }
@@ -53242,7 +53246,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Upper Thomson Road",
-    "name": "After NTUC Fairprice Centre",
+    "name": "Aft Tagore Dr",
     "public_transport": "platform",
     "route_ref": "138;167;169;980"
   }
@@ -53257,7 +53261,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Upper Thomson Road",
-    "name": "Opposite 3M Singapore",
+    "name": "Opp Tagore Rd",
     "public_transport": "platform",
     "route_ref": "138;167;169;980"
   }
@@ -53272,7 +53276,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Upper Thomson Road",
-    "name": "Nessea Club",
+    "name": "Springleaf Nature Pk",
     "public_transport": "platform",
     "route_ref": "138;167;169;980"
   }
@@ -53287,7 +53291,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Upper Thomson Road",
-    "name": "After 3M Singapore",
+    "name": "Bef Tagore Rd",
     "public_transport": "platform",
     "route_ref": "138;167;169;980"
   }
@@ -53302,7 +53306,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Upper Thomson Road",
-    "name": "Opposite Nessea Club",
+    "name": "Opp Springleaf Nature Pk",
     "public_transport": "platform",
     "route_ref": "138;167;169;980"
   }
@@ -53332,7 +53336,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Upper Thomson Road",
-    "name": "Before NTUC Fairprice Centre",
+    "name": "Bef Tagore Dr",
     "public_transport": "platform",
     "route_ref": "138;167;169;980"
   }
@@ -53362,7 +53366,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Upper Thomson Road",
-    "name": "Opposite Thong Soon Road",
+    "name": "Bef Springleaf Rd",
     "public_transport": "platform",
     "route_ref": "138;167;169;980"
   }
@@ -53422,7 +53426,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Upper Thomson Road",
-    "name": "Opposite Windsor Park",
+    "name": "Aft Windsor Pk Rd",
     "public_transport": "platform",
     "route_ref": "52;132;162;162M;163;165;166;167;410W;855;980"
   }
@@ -56282,8 +56286,8 @@
 {
   "type": "node",
   "id": 410485275,
-  "lat": 1.4374059,
-  "lon": 103.7919454,
+  "lat": 1.4374434,
+  "lon": 103.7919360,
   "tags": {
     "asset_ref": "46669",
     "highway": "bus_stop",
@@ -56308,13 +56312,15 @@
 {
   "type": "node",
   "id": 410485277,
-  "lat": 1.4366926,
-  "lon": 103.7948050,
+  "lat": 1.4367997,
+  "lon": 103.7946813,
   "tags": {
     "asset_ref": "46679",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Woodlands Drive 50",
     "name": "Opposite 888 Plaza",
+    "public_transport": "platform",
     "route_ref": "912"
   }
 },
@@ -58551,8 +58557,8 @@
 {
   "type": "node",
   "id": 410487076,
-  "lat": 1.4305858,
-  "lon": 103.8321925,
+  "lat": 1.4305764,
+  "lon": 103.8321945,
   "tags": {
     "asset_ref": "59149",
     "highway": "bus_stop",
@@ -58579,8 +58585,8 @@
 {
   "type": "node",
   "id": 410487078,
-  "lat": 1.4302796,
-  "lon": 103.8327167,
+  "lat": 1.4302943,
+  "lon": 103.8327133,
   "tags": {
     "asset_ref": "59141",
     "bus": "yes",
@@ -59863,7 +59869,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Sembawang Road",
-    "name": "Opposite The Ashram",
+    "name": "Opp Durban Rd",
     "public_transport": "platform",
     "route_ref": "169;882"
   }
@@ -59956,7 +59962,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Sembawang Road",
-    "name": "Before Sembawang Community Club",
+    "name": "Blk 592C",
     "public_transport": "platform",
     "route_ref": "169;882"
   }
@@ -59971,7 +59977,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Sembawang Road",
-    "name": "After Sembawang Community Club",
+    "name": "Opp Blk 592C",
     "public_transport": "platform",
     "route_ref": "169;882"
   }
@@ -59986,7 +59992,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Sembawang Road",
-    "name": "After The Ashram",
+    "name": "Aft Durban Rd",
     "public_transport": "platform",
     "route_ref": "169;882"
   }
@@ -60042,7 +60048,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Bayfront Avenue",
-    "name": "Marina Bay Sands MICE",
+    "name": "Marina Bay Sands &Sky Park",
     "name:ar": "مول مارينا باي ساندي",
     "name:ru": "смотровая площадка Sands SkyPark",
     "public_transport": "platform",
@@ -61129,8 +61135,8 @@
 {
   "type": "node",
   "id": 1845246333,
-  "lat": 1.3160960,
-  "lon": 103.8938333,
+  "lat": 1.3161235,
+  "lon": 103.8938551,
   "tags": {
     "asset_ref": "82111",
     "bus": "yes",
@@ -63383,7 +63389,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Sembawang Road",
-    "name": "Before Yishun Avenue 2",
+    "name": "Opp Blk 590C",
     "public_transport": "platform",
     "route_ref": "169"
   }
@@ -64418,8 +64424,8 @@
 {
   "type": "node",
   "id": 1867526434,
-  "lat": 1.3893756,
-  "lon": 103.7547483,
+  "lat": 1.3896397,
+  "lon": 103.7546833,
   "tags": {
     "asset_ref": "45011",
     "bus": "yes",
@@ -64463,10 +64469,18 @@
   "lon": 103.7517905,
   "tags": {
     "asset_ref": "43801",
+    "bench": "yes",
+    "bin": "yes",
+    "bus": "yes",
+    "departures_board": "no",
     "highway": "bus_stop",
     "location": "Bukit Batok Street 52",
     "name": "Ren Ci @ Bt Batok St 52",
-    "route_ref": "945"
+    "network": "945",
+    "operator": "SGBus",
+    "public_transport": "platform",
+    "route_ref": "945",
+    "shelter": "yes"
   }
 },
 {
@@ -64489,10 +64503,18 @@
   "lon": 103.7518955,
   "tags": {
     "asset_ref": "43809",
+    "bench": "yes",
+    "bin": "yes",
+    "bus": "yes",
+    "departures_board": "no",
     "highway": "bus_stop",
     "location": "Bukit Batok Street 52",
     "name": "Blk 514",
-    "route_ref": "945"
+    "network": "945",
+    "operator": "SGBus",
+    "public_transport": "platform",
+    "route_ref": "945",
+    "shelter": "yes"
   }
 },
 {
@@ -64666,8 +64688,8 @@
 {
   "type": "node",
   "id": 1867526768,
-  "lat": 1.3637560,
-  "lon": 103.7490720,
+  "lat": 1.3637667,
+  "lon": 103.7493282,
   "tags": {
     "asset_ref": "43659",
     "highway": "bus_stop",
@@ -65143,7 +65165,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Sembawang Road",
-    "name": "After Canberra Road",
+    "name": "The Nautical",
     "public_transport": "platform",
     "route_ref": "167;856;858;859;980"
   }
@@ -66504,10 +66526,12 @@
   "lon": 103.8456237,
   "tags": {
     "asset_ref": "52471",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Ah Hood Road",
     "name": "EASB",
-    "route_ref": "NoServices",
+    "public_transport": "platform",
+    "route_ref": "139;565",
     "shelter": "no",
     "tactile_paving": "no"
   }
@@ -67219,8 +67243,8 @@
 {
   "type": "node",
   "id": 2391354870,
-  "lat": 1.3909888,
-  "lon": 103.8706980,
+  "lat": 1.3910495,
+  "lon": 103.8706259,
   "tags": {
     "asset_ref": "68019",
     "bus": "yes",
@@ -71484,8 +71508,8 @@
 {
   "type": "node",
   "id": 4584806450,
-  "lat": 1.4500997,
-  "lon": 103.8310369,
+  "lat": 1.4496326,
+  "lon": 103.8314803,
   "tags": {
     "highway": "bus_stop",
     "name": "Blk 104C"
@@ -71494,9 +71518,10 @@
 {
   "type": "node",
   "id": 4584806451,
-  "lat": 1.4479769,
-  "lon": 103.8327215,
+  "lat": 1.4481890,
+  "lon": 103.8326013,
   "tags": {
+    "bus": "yes",
     "highway": "bus_stop",
     "name": "Blk 106A"
   }
@@ -71527,6 +71552,7 @@
   "lat": 1.4479786,
   "lon": 103.8324679,
   "tags": {
+    "bus": "yes",
     "highway": "bus_stop",
     "name": "Blk 108 CP"
   }
@@ -71534,11 +71560,13 @@
 {
   "type": "node",
   "id": 4584806455,
-  "lat": 1.4498728,
-  "lon": 103.8308604,
+  "lat": 1.4498002,
+  "lon": 103.8310379,
   "tags": {
+    "bus": "yes",
     "highway": "bus_stop",
-    "name": "Opp Blk 104B"
+    "name": "Opp Blk 104B",
+    "public_transport": "platform"
   }
 },
 {
@@ -71864,14 +71892,14 @@
 {
   "type": "node",
   "id": 4740599062,
-  "lat": 1.3570262,
-  "lon": 103.8288926,
+  "lat": 1.3570597,
+  "lon": 103.8289556,
   "tags": {
     "asset_ref": "53061",
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Upper Thomson Road",
-    "name": "Thomson View Condominium",
+    "name": "Bef Windsor Pk Rd",
     "public_transport": "platform",
     "route_ref": "52;132;162;162M;163;165;166;167;410G;855;980"
   }
@@ -72322,8 +72350,8 @@
 {
   "type": "node",
   "id": 5150758153,
-  "lat": 1.2900593,
-  "lon": 103.7920040,
+  "lat": 1.2901611,
+  "lon": 103.7920719,
   "tags": {
     "asset_ref": "18049",
     "bus": "yes",
@@ -72759,8 +72787,8 @@
 {
   "type": "node",
   "id": 5770659913,
-  "lat": 1.3942155,
-  "lon": 103.7532489,
+  "lat": 1.3941817,
+  "lon": 103.7529909,
   "tags": {
     "bus": "yes",
     "highway": "bus_stop",
@@ -73158,21 +73186,21 @@
 {
   "type": "node",
   "id": 5966414071,
-  "lat": 1.4098097,
-  "lon": 103.8727359,
+  "lat": 1.4098392,
+  "lon": 103.8726393,
   "tags": {
     "asset_ref": "68071",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Piccadilly",
-    "name": "Aft Seletar Camp",
-    "route_ref": "NoServices"
+    "name": "Aft Seletar Camp"
   }
 },
 {
   "type": "node",
   "id": 5978087970,
-  "lat": 1.3351476,
-  "lon": 103.8201905,
+  "lat": 1.3350384,
+  "lon": 103.8200606,
   "tags": {
     "bus": "yes",
     "highway": "bus_stop",
@@ -73196,8 +73224,8 @@
 {
   "type": "node",
   "id": 5986758081,
-  "lat": 1.3939696,
-  "lon": 103.7520229,
+  "lat": 1.3938354,
+  "lon": 103.7519937,
   "tags": {
     "bus": "yes",
     "highway": "bus_stop",
@@ -73320,7 +73348,7 @@
   "lon": 103.7673304,
   "tags": {
     "highway": "bus_stop",
-    "name": "BALIK KE JB"
+    "name": "Balik ke JB"
   }
 },
 {
@@ -73371,8 +73399,8 @@
 {
   "type": "node",
   "id": 6359849535,
-  "lat": 1.4473096,
-  "lon": 103.8274488,
+  "lat": 1.4472944,
+  "lon": 103.8274355,
   "tags": {
     "bus": "yes",
     "highway": "bus_stop",
@@ -73447,6 +73475,139 @@
     "name": "Aft Kheam Hock Rd",
     "public_transport": "platform",
     "route_ref": "52;74;93;157;165;852;855"
+  }
+},
+{
+  "type": "node",
+  "id": 6684902475,
+  "lat": 1.3711452,
+  "lon": 103.9718094,
+  "tags": {
+    "bus": "yes",
+    "departures_board": "no",
+    "fixme": "bus routing",
+    "highway": "bus_stop",
+    "name": "Loyang Industrial Estate",
+    "public_transport": "platform",
+    "route_ref": "9;19;59;89;109",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6694728025,
+  "lat": 1.3503512,
+  "lon": 103.9278366,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Blk 879B",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 6694728026,
+  "lat": 1.3557022,
+  "lon": 103.9292624,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Aft Tampines Ave 5",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 6694728027,
+  "lat": 1.3570585,
+  "lon": 103.9317349,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Blk 871C",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 6730459767,
+  "lat": 1.3618538,
+  "lon": 103.9381527,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 6771457249,
+  "lat": 1.3662906,
+  "lon": 103.9611921,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Blk 197",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 6780513249,
+  "lat": 1.4035623,
+  "lon": 103.8959034,
+  "tags": {
+    "asset_ref": "65499",
+    "bench": "yes",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "Sumang Walk",
+    "name": "Blk 258A",
+    "public_transport": "platform",
+    "route_ref": "382W",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6780513250,
+  "lat": 1.4034253,
+  "lon": 103.8955797,
+  "tags": {
+    "asset_ref": "65499",
+    "bench": "yes",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "Sumang Walk",
+    "name": "Blk 218",
+    "public_transport": "platform",
+    "route_ref": "382W",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6817757485,
+  "lat": 1.2839199,
+  "lon": 103.8649218,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Domes: Shuttle to Bayside",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 6817757486,
+  "lat": 1.2818833,
+  "lon": 103.8618547,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Bayside: Shuttle to Domes",
+    "public_transport": "platform"
   }
 }
 

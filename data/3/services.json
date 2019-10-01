@@ -335,6 +335,11 @@
 		"category": "Trunk Bus Services"
 	},
 	{
+		"no": "43e",
+		"routes": 2,
+		"category": "Trunk Bus Services"
+	},
+	{
 		"no": "45",
 		"routes": 2,
 		"category": "Trunk Bus Services"
@@ -1685,6 +1690,11 @@
 		"category": "Trunk Bus Services"
 	},
 	{
+		"no": "654",
+		"routes": 2,
+		"category": "Trunk Bus Services"
+	},
+	{
 		"no": "700",
 		"routes": 2,
 		"category": "Trunk Bus Services"
@@ -1725,7 +1735,7 @@
 		"category": "Trunk Bus Services"
 	},
 	{
-		"no": "853C",
+		"no": "853M",
 		"routes": 2,
 		"category": "Trunk Bus Services"
 	},
@@ -1795,11 +1805,6 @@
 		"category": "Trunk Bus Services"
 	},
 	{
-		"no": "860A",
-		"routes": 1,
-		"category": "Trunk Bus Services"
-	},
-	{
 		"no": "868E",
 		"routes": 1,
 		"category": "Trunk Bus Services"
@@ -1830,7 +1835,7 @@
 		"category": "Trunk Bus Services"
 	},
 	{
-		"no": "925C",
+		"no": "925M",
 		"routes": 1,
 		"category": "Trunk Bus Services"
 	},
@@ -1870,7 +1875,7 @@
 		"category": "Trunk Bus Services"
 	},
 	{
-		"no": "961C",
+		"no": "961M",
 		"routes": 2,
 		"category": "Trunk Bus Services"
 	},
@@ -2345,6 +2350,11 @@
 		"category": "Feeder Bus Services"
 	},
 	{
+		"no": "382",
+		"routes": 2,
+		"category": "Feeder Bus Services"
+	},
+	{
 		"no": "382A",
 		"routes": 1,
 		"category": "Feeder Bus Services"
@@ -2541,16 +2551,6 @@
 	},
 	{
 		"no": "1N",
-		"routes": 1,
-		"category": "Nite Bus Services"
-	},
-	{
-		"no": "2N",
-		"routes": 1,
-		"category": "Nite Bus Services"
-	},
-	{
-		"no": "3N",
 		"routes": 1,
 		"category": "Nite Bus Services"
 	},
