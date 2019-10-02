@@ -43,6 +43,7 @@ main {
 }
 #bus-stop-map img {
   width: 100%;
+  height: auto;
   vertical-align: top;
   position: absolute;
   left: 0;
