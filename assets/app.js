@@ -11,6 +11,7 @@ import fetchCache from './utils/fetchCache';
 import getRoute from './utils/getRoute';
 import getDistance from './utils/getDistance';
 import getWalkingMinutes from './utils/getWalkingMinutes';
+import { setRafInterval, clearRafInterval } from './utils/rafInterval';
 
 import Ad from './ad';
 import BusServicesArrival from './components/BusServicesArrival';
@@ -23,6 +24,7 @@ import stopEndImagePath from './images/stop-end.png';
 import openNewWindowImagePath from './images/open-new-window.svg';
 import passingRoutesImagePath from './images/passing-routes.svg';
 import iconSVGPath from '../icons/icon.svg';
+import busTinyImagePath from './images/bus-tiny.png';
 
 import routesJSONPath from '../data/3/routes.polyline.json';
 import stopsJSONPath from '../data/3/stops.final.json';
@@ -102,6 +104,7 @@ class App extends Component {
       betweenStartStop: null,
       betweenEndStop: null,
       showAd: false,
+      liveBusCount: 0,
     };
 
     window.onhashchange = () => {
@@ -761,6 +764,35 @@ class App extends Component {
       url: 'mapbox://mapbox.mapbox-traffic-v1',
     });
 
+    // Service live buses
+    map.addSource('buses-service', {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: [],
+      },
+    });
+    map.loadImage(busTinyImagePath, (e, img) => {
+      map.addImage('bus-tiny', img);
+    });
+    map.addLayer({
+      id: 'buses-service',
+      type: 'symbol',
+      source: 'buses-service',
+      layout: {
+        'icon-image': 'bus-tiny',
+        'icon-allow-overlap': true,
+        'icon-ignore-placement': true,
+        'icon-size': [
+          'step', ['zoom'],
+          .3,
+          14, .35,
+          15, .45,
+          16, .55
+        ],
+      },
+    });
+
     // Between routes
     map.addSource('routes-between', {
       type: 'geojson',
@@ -859,7 +891,7 @@ class App extends Component {
       },
       paint: {
         'text-color': '#5301a4',
-        'text-opacity': .9,
+        'text-opacity': .8,
         'text-halo-color': '#fff',
         'text-halo-width': 2,
       },
@@ -1423,6 +1455,7 @@ class App extends Component {
       });
     });
   }
+  _liveBusesTimeout
   _renderRoute = () => {
     const { servicesData, stopsData, stopsDataArr, routesData, route, prevStopNumber } = this.state;
     const map = this.map;
@@ -1433,12 +1466,14 @@ class App extends Component {
     this.setState({
       showStopPopover: false,
       showBetweenPopover: false,
+      liveBusCount: 0,
     });
     [
       'stops-highlight',
       'routes',
       'routes-path',
       'routes-between',
+      'buses-service',
     ].forEach(source => {
       map.getSource(source).setData({
         type: 'FeatureCollection',
@@ -1448,6 +1483,7 @@ class App extends Component {
     if (prevStopNumber) {
       this._hideStopPopover();
     }
+    clearRafInterval(this._liveBusesTimeout);
 
     switch (route.page) {
       case 'service': {
@@ -1526,6 +1562,25 @@ class App extends Component {
                 geometry,
               })),
             });
+
+            const fetchBuses = async () => {
+              const buses = await fetchCache(`https://arrivelah2.busrouter.sg/service/?stops=${routeStops.join(',')}&service=${service}`, 1);
+              map.getSource('buses-service').setData({
+                type: 'FeatureCollection',
+                features: buses.map((coordinates) => ({
+                  type: 'Feature',
+                  properties: {},
+                  geometry: {
+                    type: 'Point',
+                    coordinates,
+                  },
+                })),
+              });
+              this.setState({
+                liveBusCount: buses.length,
+              });
+            };
+            this._liveBusesTimeout = setRafInterval(fetchBuses, 60 * 1000 + 1);
           });
         } else {
           const servicesTitle = services.map(s => {
@@ -1887,6 +1942,7 @@ class App extends Component {
       showArrivalsPopover,
       intersectStops,
       showAd,
+      liveBusCount,
     } = state;
 
     const popoverIsUp = !!showStopPopover || !!showBetweenPopover || !!showArrivalsPopover;
@@ -1912,6 +1968,9 @@ class App extends Component {
                         {servicesData[routeServices[0]].routes.length} route{servicesData[routeServices[0]].routes.length > 1 ? 's' : ''} ∙&nbsp;
                         {servicesData[routeServices[0]].routes.map(r => `${r.length} stop${r.length > 1 ? 's' : ''}`).join(' ∙ ')}
                       </p>
+                      {liveBusCount > 0 && (
+                        <p style={{ marginTop: 5 }}><span class="live">LIVE</span> <img src={busTinyImagePath} width="16" alt="" /> {liveBusCount} bus{liveBusCount === 1 ? '' : 'es'} now on track.</p>
+                      )}
                     </div>
                   </div>
                 ) : [
@@ -2073,7 +2132,11 @@ class App extends Component {
               </header>
               <ScrollableContainer class="popover-scroll">
                 <h2>{showStopPopover.services.length} service{showStopPopover.services.length == 1 ? '' : 's'} &middot; <a href={`/bus-first-last/#${showStopPopover.number}`} target="_blank">First/last bus <img src={openNewWindowImagePath} width="12" height="12" alt="" class="new-window" /></a></h2>
-                <BusServicesArrival map={this.map} id={showStopPopover.number} services={showStopPopover.services} />
+                <BusServicesArrival
+                  map={route.page === 'stop' ? this.map : null}
+                  id={showStopPopover.number}
+                  services={showStopPopover.services}
+                />
               </ScrollableContainer>
               <div class="popover-footer">
                 <div class="popover-buttons alt-hide">

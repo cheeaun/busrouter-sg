@@ -16,6 +16,10 @@ body {
   background-color: #F9F5ED;
 }
 
+p, img {
+  vertical-align: middle;
+}
+
 *, *:before, *:after{
   box-sizing: border-box;
 }
@@ -1098,6 +1102,19 @@ a.service-tag:hover {
   100% {
     background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.25));
   }
+}
+
+/* Live badge */
+
+.live {
+  display: inline-block;
+  font-size: .9em;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 2px;
+  /* animation: glowing infinite alternate 1s linear both; */
+  color: #fff;
+  background-color: #00454d;
 }
 
 /* Fancy pants features */

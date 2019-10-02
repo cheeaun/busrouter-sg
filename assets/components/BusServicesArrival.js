@@ -2,13 +2,16 @@ import { h, Fragment } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 import { encode } from '../utils/specialID';
 import getRoute from '../utils/getRoute';
+import { setRafInterval, clearRafInterval } from '../utils/rafInterval';
 import { timeDisplay, sortServices } from '../utils/bus';
 import cheapRuler from 'cheap-ruler';
 const ruler = cheapRuler(1.3);
 
+import busTinyImagePath from '../images/bus-tiny.png';
+
 const addMapBuses = (map) => {
-  if (!map.getSource('buses')){
-    map.addSource('buses', {
+  if (!map.getSource('buses-stop')){
+    map.addSource('buses-stop', {
       type: 'geojson',
       tolerance: 10,
       data: {
@@ -16,30 +19,32 @@ const addMapBuses = (map) => {
         features: [],
       },
     });
+    if (!map.hasImage('bus-tiny')) {
+      map.loadImage(busTinyImagePath, (e, img) => {
+        if (!map.hasImage('bus-tiny')) map.addImage('bus-tiny', img);
+      });
+    }
     map.addLayer({
-      id: 'buses',
-      type: 'circle',
-      source: 'buses',
-      minzoom: 14,
-      paint: {
-        'circle-stroke-width': 2,
-        'circle-stroke-color': '#fff',
-        'circle-radius': [
-          'interpolate', ['linear'], ['zoom'],
-          15, 2,
-          16, 4
-        ],
-        'circle-color': '#00454d',
-        'circle-opacity': .8,
-      },
-    });
-    map.addLayer({
-      id: 'buses-label',
+      id: 'buses-stop',
       type: 'symbol',
-      source: 'buses',
-      minzoom: 14,
+      source: 'buses-stop',
+      minzoom: 11,
       layout: {
-        'text-field': '{number}',
+        'icon-image': 'bus-tiny',
+        'icon-allow-overlap': true,
+        'icon-ignore-placement': true,
+        'icon-size': [
+          'step', ['zoom'],
+          .25,
+          15, .3,
+          16, .4
+        ],
+        'text-field': [
+          'step', ['zoom'],
+          '',
+          15, ['get', 'number'],
+        ],
+        'text-optional': true,
         'text-size': 10,
         'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
         'text-variable-anchor': ['left', 'right', 'bottom', 'top'],
@@ -47,34 +52,32 @@ const addMapBuses = (map) => {
         'text-padding': [
           'step', ['zoom'],
           4,
-          15.5, 6,
+          15, 6,
           16, 8
         ],
       },
       paint: {
         'text-color': '#00454d',
         'text-halo-color': '#fff',
-        'text-halo-width': 1,
-        'text-opacity': .8,
+        'text-halo-width': 2,
       },
     });
   }
 };
 
 const removeMapBuses = (map) => {
-  map.getSource('buses').setData({
+  map.getSource('buses-stop').setData({
     type: 'FeatureCollection',
     features: [],
   });
 };
 
 export default function BusServicesArrival({ services, id, map }) {
-  if (!id || !map) return;
+  if (!id) return;
   const [isLoading, setIsLoading] = useState(false);
   const [servicesArrivals, setServicesArrivals] = useState({});
+  const [liveBusCount, setLiveBusCount] = useState(0);
   const route = getRoute();
-  let arrivalsTimeout;
-  let arrivalsRAF;
 
   const fetchServices = () => {
     setIsLoading(true);
@@ -85,8 +88,9 @@ export default function BusServicesArrival({ services, id, map }) {
       setServicesArrivals(servicesArrivals);
       setIsLoading(false);
 
-      setTimeout(() => {
+      if (map) setTimeout(() => {
         const servicesWithCoords = services.filter(s => s.no && s.next.lat > 0);
+        setLiveBusCount(servicesWithCoords.length)
         const pointMargin = 100;
         const servicesWithFixedCoords = servicesWithCoords.map(s => {
           const coords = [s.next.lng, s.next.lat];
@@ -97,16 +101,18 @@ export default function BusServicesArrival({ services, id, map }) {
             const features = map.queryRenderedFeatures([
               [point.x - pointMargin, point.y - pointMargin],
               [point.x + pointMargin, point.y + pointMargin]
-            ])
+            ], {
+              validate: false,
+            }).filter(f => {
+              return f.sourceLayer === 'road' && f.layer.type === 'line' && f.properties.class != 'path' && !/(pedestrian|sidewalk|steps)/.test(f.layer.id);
+            });
             features.forEach(f => {
-              if (f.sourceLayer === 'transportation' && f.layer.type === 'line' && f.properties.class != 'path' && !/(pedestrian|sidewalk|steps)/.test(f.layer.id)) {
-                const nearestPoint = ruler.pointOnLine(f.geometry.coordinates, coords);
-                if (nearestPoint.t) {
-                  const distance = ruler.distance(coords, nearestPoint.point);
-                  if (distance < shortestDistance) {
-                    shortestDistance = distance;
-                    nearestCoords = nearestPoint.point;
-                  }
+              const nearestPoint = ruler.pointOnLine(f.geometry.coordinates, coords);
+              if (nearestPoint.t) {
+                const distance = ruler.distance(coords, nearestPoint.point);
+                if (distance < shortestDistance) {
+                  shortestDistance = distance;
+                  nearestCoords = nearestPoint.point;
                 }
               }
             });
@@ -120,7 +126,7 @@ export default function BusServicesArrival({ services, id, map }) {
           }
           return s;
         });
-        map.getSource('buses').setData({
+        map.getSource('buses-stop').setData({
           type: 'FeatureCollection',
           features: servicesWithFixedCoords.map(s => ({
             type: 'Feature',
@@ -135,36 +141,36 @@ export default function BusServicesArrival({ services, id, map }) {
           })),
         });
       }, map.loaded() ? 0 : 1000);
-
-      arrivalsTimeout = setTimeout(() => {
-        arrivalsRAF = requestAnimationFrame(fetchServices);
-      }, 15 * 1000); // 15 seconds
     });
   };
 
   useEffect(() => {
-    fetchServices();
-    addMapBuses(map);
+    if (map) addMapBuses(map);
+    const intervalID = setRafInterval(fetchServices, 15 * 1000); // 15 seconds
     return () => {
-      removeMapBuses(map);
-      clearTimeout(arrivalsTimeout);
-      cancelAnimationFrame(arrivalsRAF);
+      if (map) removeMapBuses(map);
+      clearRafInterval(intervalID);
     };
   }, [id]);
 
   return (
-    <p class={`services-list ${isLoading ? 'loading' : ''}`}>
-      {services.sort(sortServices).map(service => (
-        <Fragment>
-          <a
-            href={`#/services/${service}`}
-            class={`service-tag ${route.page === 'service' && service === route.value ? 'current' : ''}`}>
-            {service}
-            {servicesArrivals[service] && <span>{timeDisplay(servicesArrivals[service])}</span>}
-          </a>
-          {' '}
-        </Fragment>
-      ))}
-    </p>
+    <Fragment>
+      <p class={`services-list ${isLoading ? 'loading' : ''}`}>
+        {services.sort(sortServices).map(service => (
+          <Fragment>
+            <a
+              href={`#/services/${service}`}
+              class={`service-tag ${route.page === 'service' && service === route.value ? 'current' : ''}`}>
+              {service}
+              {servicesArrivals[service] && <span>{timeDisplay(servicesArrivals[service])}</span>}
+            </a>
+            {' '}
+          </Fragment>
+        ))}
+      </p>
+      {map && liveBusCount > 0 && (
+        <p style={{ marginTop: 5, fontSize: '.8em' }}><span class="live">LIVE</span> <img src={busTinyImagePath} width="16" alt="" /> {liveBusCount} bus{liveBusCount === 1 ? '' : 'es'} now on track.</p>
+      )}
+    </Fragment>
   );
 };
