@@ -210,7 +210,7 @@ function ArrivalTimes() {
   return (
     <div>
       <div id="bus-stop-map">
-        <img src={`https://busrouter.sg/staticmaps/${lng},${lat},17,0,60/400x200@2x?access_token=${TOKEN.split('').reverse().join('')}`} alt="Bus stop map" intrinsicsize="400x200" loading="lazy" />
+        <img src={`https://busrouter.sg/staticmaps/${lng},${lat},17,0,60/400x200@2x?access_token=${TOKEN.split('').reverse().join('')}`} alt="Bus stop map" width="400" height="200" intrinsicsize="400x200" loading="lazy" />
       </div>
       <h1>
         Bus arrival times for
