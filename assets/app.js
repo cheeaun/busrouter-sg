@@ -216,17 +216,6 @@ class App extends Component {
 
           labelLayerId = layers.find(l => l.type == 'symbol' && l.layout['text-field']).id;
 
-          layers.forEach(l => {
-            const { type, layout, id } = l;
-            if (type === 'symbol' && layout['text-field'] && layout['text-anchor'] && layout['icon-image']) {
-              map.setLayoutProperty(id, 'text-anchor', null);
-              map.setLayoutProperty(id, 'text-offset', null);
-              map.setLayoutProperty(id, 'text-variable-anchor', ['top', 'left', 'right', 'bottom']);
-              map.setLayoutProperty(id, 'text-justify', 'auto');
-              map.setLayoutProperty(id, 'text-radial-offset', .9);
-            }
-          });
-
           resolve();
         });
       }),
