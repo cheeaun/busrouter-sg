@@ -1132,10 +1132,10 @@ class App extends Component {
                 ],
                 'line-color': [
                   'match', ['get', 'congestion'],
-                  'low', 'rgba(36, 218, 26, .4)',
-                  'moderate', 'rgba(253, 149, 0, .75)',
-                  'heavy', 'rgba(252, 77, 77, .85)',
-                  'severe', 'rgba(148, 41, 76, .95)',
+                  'low', 'rgba(36, 218, 26, .2)',
+                  'moderate', 'rgba(253, 149, 0, .55)',
+                  'heavy', 'rgba(252, 77, 77, .65)',
+                  'severe', 'rgba(148, 41, 76, .75)',
                   'transparent',
                 ],
                 'line-opacity': [
