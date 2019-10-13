@@ -72,6 +72,8 @@ const removeMapBuses = (map) => {
   });
 };
 
+const timeout = (n) => new Promise(f => setTimeout(f, n));
+
 export default function BusServicesArrival({ services, id, map }) {
   if (!id) return;
   const [isLoading, setIsLoading] = useState(false);
@@ -92,7 +94,8 @@ export default function BusServicesArrival({ services, id, map }) {
         const servicesWithCoords = services.filter(s => s.no && s.next.lat > 0);
         setLiveBusCount(servicesWithCoords.length)
         const pointMargin = 100;
-        const servicesWithFixedCoords = servicesWithCoords.map(s => {
+        const servicesWithFixedCoordsPromises = servicesWithCoords.map(async s => {
+          await timeout(0); // Forces this to be async
           const coords = [s.next.lng, s.next.lat];
           const point = map.project(coords);
           let shortestDistance = Infinity;
@@ -126,19 +129,22 @@ export default function BusServicesArrival({ services, id, map }) {
           }
           return s;
         });
-        map.getSource('buses-stop').setData({
-          type: 'FeatureCollection',
-          features: servicesWithFixedCoords.map(s => ({
-            type: 'Feature',
-            id: encode(s.no),
-            properties: {
-              number: s.no,
-            },
-            geometry: {
-              type: 'Point',
-              coordinates: [s.next.lng, s.next.lat],
-            },
-          })),
+        requestAnimationFrame(async () => {
+          const servicesWithFixedCoords = await Promise.all(servicesWithFixedCoordsPromises);
+          map.getSource('buses-stop').setData({
+            type: 'FeatureCollection',
+            features: servicesWithFixedCoords.map(s => ({
+              type: 'Feature',
+              id: encode(s.no),
+              properties: {
+                number: s.no,
+              },
+              geometry: {
+                type: 'Point',
+                coordinates: [s.next.lng, s.next.lat],
+              },
+            })),
+          });
         });
       }, map.loaded() ? 0 : 1000);
     });
