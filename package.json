@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "Singapore Bus Routes Explorer",
   "devDependencies": {
-    "@babel/core": "~7.6.2",
+    "@babel/core": "~7.6.4",
     "@babel/plugin-proposal-class-properties": "~7.5.5",
     "@babel/plugin-transform-runtime": "~7.6.2",
-    "@babel/preset-env": "~7.6.2",
+    "@babel/preset-env": "~7.6.3",
     "@mapbox/polyline": "~1.1.0",
     "@turf/buffer": "~5.1.5",
     "@turf/circle": "~6.0.1",
@@ -22,7 +22,7 @@
     "got": "~9.6.0",
     "kdbush": "~3.0.0",
     "npm-run-all": "~4.1.5",
-    "parcel-bundler": "~1.12.3",
+    "parcel-bundler": "~1.12.4",
     "parcel-plugin-json-url-loader": "~0.1.2",
     "postcss-import-url": "~4.0.0",
     "postcss-modules": "~1.4.1",
@@ -40,7 +40,7 @@
     "prod": "npx serve dist/"
   },
   "dependencies": {
-    "@babel/runtime": "~7.6.2",
+    "@babel/runtime": "~7.6.3",
     "@deck.gl/core": "~7.3.2",
     "@deck.gl/layers": "~7.3.2",
     "@deck.gl/mapbox": "~7.3.2",
