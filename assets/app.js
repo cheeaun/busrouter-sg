@@ -801,6 +801,7 @@ class App extends Component {
       id: 'buses-service',
       type: 'symbol',
       source: 'buses-service',
+      minzoom: 9,
       layout: {
         'icon-image': 'bus-tiny',
         'icon-allow-overlap': true,
