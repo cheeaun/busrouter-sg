@@ -437,10 +437,32 @@ class App extends Component {
       },
     });
     map.addLayer({
+      id: 'stops-highlight-circle',
+      type: 'circle',
+      source: 'stops-highlight',
+      minzoom: 11,
+      maxzoom: 14,
+      filter: ['!=', ['get', 'type'], 'end'],
+      paint: {
+        'circle-radius': [
+          'step', ['zoom'],
+          1.5,
+          12, 2,
+        ],
+        'circle-color': '#fff',
+        'circle-stroke-color': '#f01b48',
+        'circle-stroke-width': [
+          'step', ['zoom'],
+          1.5,
+          12, 2,
+        ],
+      },
+    });
+    map.addLayer({
       id: 'stops-highlight',
       type: 'symbol',
       source: 'stops-highlight',
-      filter: ['any', ['>', ['zoom'], 10], ['==', ['get', 'type'], 'end']],
+      filter: ['any', ['>=', ['zoom'], 14], ['==', ['get', 'type'], 'end']],
       layout: {
         'icon-image': ['case', ['==', ['get', 'type'], 'end'], 'stop-end', 'stop'],
         'icon-size': [
