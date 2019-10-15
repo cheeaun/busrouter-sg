@@ -150,7 +150,7 @@ class App extends Component {
       });
       routes.forEach((route, i) => {
         route.forEach(stop => {
-          if (!stopsData[stop].services.includes(number)) {
+          if (stopsData[stop] && !stopsData[stop].services.includes(number)) {
             stopsData[stop].services.push(number);
             stopsData[stop].routes.push(number + '-' + i);
           }
