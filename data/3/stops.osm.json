@@ -1,9 +1,9 @@
 {
   "version": 0.6,
-  "generator": "Overpass API 0.7.55.7 8b86ff77",
+  "generator": "Overpass API 0.7.55.1009 5e627b63",
   "osm3s": {
-    "timestamp_osm_base": "2019-09-29T15:02:01Z",
-    "timestamp_areas_base": "2019-09-29T14:43:02Z",
+    "timestamp_osm_base": "2019-10-15T15:56:02Z",
+    "timestamp_areas_base": "2019-10-15T15:16:02Z",
     "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
   },
   "elements": [
@@ -6417,7 +6417,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Bencoolen Street",
-    "name": "After Prinsep Link",
+    "name": "Bef Bencoolen Stn Exit A",
     "public_transport": "platform",
     "route_ref": "NoServices",
     "shelter": "yes"
@@ -7183,8 +7183,8 @@
 {
   "type": "node",
   "id": 410461837,
-  "lat": 1.3528454,
-  "lon": 103.8517959,
+  "lat": 1.3528588,
+  "lon": 103.8517919,
   "tags": {
     "asset_ref": "53261",
     "bus": "yes",
@@ -7772,8 +7772,8 @@
 {
   "type": "node",
   "id": 410462007,
-  "lat": 1.3383790,
-  "lon": 103.7385740,
+  "lat": 1.3384259,
+  "lon": 103.7385968,
   "tags": {
     "asset_ref": "28079",
     "bus": "yes",
@@ -7787,8 +7787,8 @@
 {
   "type": "node",
   "id": 410462009,
-  "lat": 1.3401470,
-  "lon": 103.7363510,
+  "lat": 1.3401765,
+  "lon": 103.7363818,
   "tags": {
     "asset_ref": "28089",
     "bus": "yes",
@@ -7970,8 +7970,8 @@
 {
   "type": "node",
   "id": 410462025,
-  "lat": 1.3395054,
-  "lon": 103.7366255,
+  "lat": 1.3394826,
+  "lon": 103.7366429,
   "tags": {
     "asset_ref": "28081",
     "bus": "yes",
@@ -23988,8 +23988,8 @@
 {
   "type": "node",
   "id": 410466212,
-  "lat": 1.3361920,
-  "lon": 103.7393540,
+  "lat": 1.3363837,
+  "lon": 103.7396772,
   "tags": {
     "asset_ref": "28449",
     "bus": "yes",
@@ -24063,8 +24063,8 @@
 {
   "type": "node",
   "id": 410466227,
-  "lat": 1.3361510,
-  "lon": 103.7390910,
+  "lat": 1.3357434,
+  "lon": 103.7387986,
   "tags": {
     "asset_ref": "28441",
     "bus": "yes",
@@ -34196,8 +34196,8 @@
 {
   "type": "node",
   "id": 410468519,
-  "lat": 1.3727609,
-  "lon": 103.9477081,
+  "lat": 1.3731256,
+  "lon": 103.9480836,
   "tags": {
     "asset_ref": "77321",
     "bus": "yes",
@@ -38434,9 +38434,11 @@
   "lon": 103.7897300,
   "tags": {
     "asset_ref": "18279",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Science Park Drive",
     "name": "Opposite Blk 85",
+    "public_transport": "platform",
     "route_ref": "92"
   }
 },
@@ -39446,7 +39448,7 @@
   "type": "node",
   "id": 410474236,
   "lat": 1.3873040,
-  "lon": 103.9093260,
+  "lon": 103.9092674,
   "tags": {
     "asset_ref": "67529",
     "bus": "yes",
@@ -51320,8 +51322,8 @@
 {
   "type": "node",
   "id": 410481706,
-  "lat": 1.3367385,
-  "lon": 103.9580949,
+  "lat": 1.3376489,
+  "lon": 103.9591560,
   "tags": {
     "asset_ref": "96091",
     "bus": "yes",
@@ -51395,8 +51397,8 @@
 {
   "type": "node",
   "id": 410481711,
-  "lat": 1.3366749,
-  "lon": 103.9578329,
+  "lat": 1.3375081,
+  "lon": 103.9590322,
   "tags": {
     "asset_ref": "96099",
     "bus": "yes",
@@ -53051,7 +53053,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Upper Serangoon Road",
-    "name": "Paya Lebar Camp",
+    "name": "Forest Woods",
     "public_transport": "platform",
     "route_ref": "22;43;43M;45;53;58;70;70M;81;82;101;103;107;107M;153;317"
   }
@@ -56049,8 +56051,8 @@
 {
   "type": "node",
   "id": 410485128,
-  "lat": 1.4495076,
-  "lon": 103.8016031,
+  "lat": 1.4495121,
+  "lon": 103.8015512,
   "tags": {
     "asset_ref": "46489",
     "bus": "yes",
@@ -59504,8 +59506,8 @@
 {
   "type": "node",
   "id": 410487288,
-  "lat": 1.3418340,
-  "lon": 103.7214200,
+  "lat": 1.3418198,
+  "lon": 103.7213732,
   "tags": {
     "asset_ref": "21661",
     "bus": "yes",
@@ -59713,7 +59715,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Petir Road",
-    "name": "Before Dairy Farm Road",
+    "name": "bef Dairy Farm Rd",
     "public_transport": "platform",
     "route_ref": "700;700A;966"
   }
@@ -60482,24 +60484,6 @@
     "name": "LT 13",
     "public_transport": "platform",
     "shelter": "yes"
-  }
-},
-{
-  "type": "node",
-  "id": 1573773447,
-  "lat": 1.3260844,
-  "lon": 103.8554808,
-  "tags": {
-    "amenity": "bus_station",
-    "asset_ref": "52499",
-    "bus": "yes",
-    "highway": "bus_stop",
-    "location": "Whampoa Road",
-    "name": "Saint Michael's Terminal",
-    "public_transport": "platform",
-    "route_ref": "21;124;125;131;186",
-    "shelter": "yes",
-    "wheelchair": "yes"
   }
 },
 {
@@ -65117,8 +65101,8 @@
 {
   "type": "node",
   "id": 1868458321,
-  "lat": 1.4282598,
-  "lon": 103.7901114,
+  "lat": 1.4283402,
+  "lon": 103.7898325,
   "tags": {
     "asset_ref": "58479",
     "highway": "bus_stop",
@@ -66124,9 +66108,11 @@
   "lon": 103.8770623,
   "tags": {
     "asset_ref": "67561",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Sengkang West Way",
     "name": "Opposite Blk 432A",
+    "public_transport": "platform",
     "route_ref": "85;102;374",
     "shelter": "yes",
     "tactile_paving": "no"
@@ -67939,16 +67925,6 @@
 },
 {
   "type": "node",
-  "id": 2505692120,
-  "lat": 1.3782355,
-  "lon": 103.8276177,
-  "tags": {
-    "amenity": "bus_station",
-    "highway": "bus_stop"
-  }
-},
-{
-  "type": "node",
   "id": 2577843957,
   "lat": 1.3525392,
   "lon": 103.7049481,
@@ -68685,21 +68661,6 @@
 },
 {
   "type": "node",
-  "id": 3552908868,
-  "lat": 1.4248467,
-  "lon": 103.8360584,
-  "tags": {
-    "asset_ref": "59691",
-    "bus": "yes",
-    "highway": "bus_stop",
-    "location": "Yishun Central 1",
-    "name": "Before Blk 935",
-    "public_transport": "platform",
-    "route_ref": "855;857"
-  }
-},
-{
-  "type": "node",
   "id": 3552908869,
   "lat": 1.4279244,
   "lon": 103.8351248,
@@ -68739,21 +68700,6 @@
     "name": "Blk 348B",
     "public_transport": "platform",
     "route_ref": "103;806"
-  }
-},
-{
-  "type": "node",
-  "id": 3552908872,
-  "lat": 1.4245862,
-  "lon": 103.8359415,
-  "tags": {
-    "asset_ref": "59699",
-    "bus": "yes",
-    "highway": "bus_stop",
-    "location": "Yishun Central 1",
-    "name": "Opposite Blk 935",
-    "public_transport": "platform",
-    "route_ref": "855;857"
   }
 },
 {
@@ -69651,9 +69597,11 @@
   "lon": 103.7899250,
   "tags": {
     "asset_ref": "18271",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Science Park Drive",
     "name": "Blk 85",
+    "public_transport": "platform",
     "route_ref": "92"
   }
 },
@@ -69846,9 +69794,11 @@
   "lon": 103.7912100,
   "tags": {
     "asset_ref": "18289",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Science Park Drive",
     "name": "Opposite The Rutherford",
+    "public_transport": "platform",
     "route_ref": "92"
   }
 },
@@ -69900,9 +69850,11 @@
   "lon": 103.7912140,
   "tags": {
     "asset_ref": "18281",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Science Park Drive",
     "name": "The Rutherford",
+    "public_transport": "platform",
     "route_ref": "92"
   }
 },
@@ -70977,9 +70929,11 @@
   "lat": 1.3380430,
   "lon": 103.7066345,
   "tags": {
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Boon Lay Way",
     "name": "Boon Lay Way",
+    "public_transport": "platform",
     "route_ref": "NoServices"
   }
 },
@@ -72099,9 +72053,11 @@
   "lon": 103.8774886,
   "tags": {
     "asset_ref": "67701",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Fernvale Street",
     "name": "After Blk 467B",
+    "public_transport": "platform",
     "route_ref": "374",
     "shelter": "yes",
     "tactile_paving": "no"
