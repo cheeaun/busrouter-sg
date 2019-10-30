@@ -1,7 +1,7 @@
 export default (iconText) => {
   let iconSize = 512;
   let iconBackgroundColor = '#F01B48';
-  let iconPrimaryColor = 'FFFFFF';
+  let iconPrimaryColor = '#FFFFFF';
   let iconTextFont = `bold ${Math.round(iconSize * 0.2)}px -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Open Sans\", \"Helvetica Neue\", sans-serif`;
 
   // canvas handles
