@@ -139,6 +139,7 @@ function ArrivalTimes() {
           document.title = `Bus arrival times for ${code + ' - ' + name}`;
           document.querySelector('[name="apple-mobile-web-app-title"]').setAttribute('content', name);
           setBusStop({ code, name, lat, lng });
+          setIcon(code);
         } else {
           alert('Invalid bus stop code.');
         }
