@@ -146,20 +146,29 @@ table tbody td.blank {
   text-align: center;
   padding: 3em;
 }
-tfoot {
-  font-size: 11px;
-}
-tfoot td {
-  box-shadow: inset 0 20px 20px -20px rgba(0,0,0,.1);
-}
-tfoot td > span {
-  margin-right: 5px;
-  display: inline-block;
-}
-footer {
-  margin-top: .5em;
-  opacity: .6;
+
+.legend {
   padding: 10px;
+  font-size: 11px;
+  position: sticky;
+  bottom: 0;
+  background-color: rgba(240,240,240,.75);
+  z-index: 11;
+  backdrop-filter: blur(1px) saturate(3);
+  display: flex;
+}
+.legend span {
+  display: flex;
+  align-items: center;
+  padding: 3px;
+  background-color: #fff;
+  margin-right: 3px;
+  border-radius: 1px;
+}
+.legend span > img {
+  margin-right: 5px;
+  min-height: 16px;
+  min-width: 16px;
 }
 
 .stop-tag {
@@ -171,34 +180,57 @@ footer {
   color: #fff;
   font-weight: bold;
   box-shadow: 0 0 5px rgba(0,0,0,.15);
+  position: relative;
 }
+.stop-tag:after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: limegreen;
+}
+@keyframes blink {
+  0% { opacity: 1; }
+  100% { opacity: .3; }
+}
+.stop-tag.loading:after {
+  animation: blink .3s ease-in-out 4 alternate both;
+}
+
 .load {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 6px;
+  border-bottom-width: 1px;
 }
 .load-sea {
-  background-color: green;
+  color: green;
 }
 .load-sda {
-  background-color: orangered;
+  color: orangered;
+  border-bottom-style: dotted;
 }
 .load-lsd {
-  background-color: firebrick;
+  color: firebrick;
+  border-bottom-style: dashed;
 }
 
 .time {
   display: inline-block;
+  border-bottom-width: 1px;
 }
 .time-sea {
   color: green;
 }
 .time-sda {
   color: orangered;
+  border-bottom-style: dotted;
 }
 .time-lsd {
   color: firebrick;
+  border-bottom-style: dashed;
 }
 
 #carbonads {
@@ -226,7 +258,7 @@ footer {
   #bus-stop-map, h1, table, #carbonads {
     width: 50%;
   }
-  #bus-stop-map, h1, footer, #carbonads {
+  #bus-stop-map, h1, #carbonads {
     float: left;
   }
   header {
@@ -251,13 +283,13 @@ footer {
 }
 .bus-lane {
   position: relative;
-  height: 1.7em;
+  height: 1.8em;
 }
 .bus-lane .bus {
   left: 0;
   bottom: 0;
   position: absolute;
-  font-size: 10px;
+  font-size: 11px;
   display: inline-block;
   transition: all 1s ease-out;
   filter: drop-shadow(1px 0 0 #fff) drop-shadow(1px -1px #fff);
