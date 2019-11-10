@@ -946,7 +946,7 @@
 	},
 	{
 		"no": "117B",
-		"routes": 2,
+		"routes": 1,
 		"category": "Trunk Bus Services"
 	},
 	{
@@ -2030,6 +2030,11 @@
 		"category": "Trunk Bus Services"
 	},
 	{
+		"no": "976",
+		"routes": 2,
+		"category": "Trunk Bus Services"
+	},
+	{
 		"no": "979",
 		"routes": 1,
 		"category": "Trunk Bus Services"
@@ -2082,11 +2087,6 @@
 	{
 		"no": "991B",
 		"routes": 1,
-		"category": "Trunk Bus Services"
-	},
-	{
-		"no": "BPS1",
-		"routes": 2,
 		"category": "Trunk Bus Services"
 	},
 	{

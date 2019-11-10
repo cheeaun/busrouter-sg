@@ -1,9 +1,9 @@
 {
   "version": 0.6,
-  "generator": "Overpass API 0.7.55.1009 5e627b63",
+  "generator": "Overpass API 0.7.55.7 8b86ff77",
   "osm3s": {
-    "timestamp_osm_base": "2019-10-15T15:56:02Z",
-    "timestamp_areas_base": "2019-10-15T15:16:02Z",
+    "timestamp_osm_base": "2019-11-10T09:42:02Z",
+    "timestamp_areas_base": "2019-11-10T09:17:02Z",
     "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
   },
   "elements": [
@@ -859,10 +859,12 @@
   "lon": 103.8903340,
   "tags": {
     "asset_ref": "71019",
+    "bus": "yes",
     "disused": "yes",
     "highway": "bus_stop",
     "location": "Airport Road",
-    "name": "Bef Paya Lebar Rd"
+    "name": "Bef Paya Lebar Rd",
+    "public_transport": "platform"
   }
 },
 {
@@ -1209,8 +1211,8 @@
 {
   "type": "node",
   "id": 410459464,
-  "lat": 1.2770153,
-  "lon": 103.8023204,
+  "lat": 1.2770140,
+  "lon": 103.8023740,
   "tags": {
     "asset_ref": "15051",
     "bus": "yes",
@@ -1405,13 +1407,15 @@
 {
   "type": "node",
   "id": 410459484,
-  "lat": 1.3162671,
-  "lon": 103.8819293,
+  "lat": 1.3162719,
+  "lon": 103.8819290,
   "tags": {
     "asset_ref": "81089",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Aljunied Road",
     "name": "Aljunied Station",
+    "public_transport": "platform",
     "route_ref": "40;62;62A;63;80;100;158",
     "source": "Kaart Ground Survey 2017"
   }
@@ -2455,9 +2459,10 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Ang Mo Kio Avenue 4",
-    "name": "Blk 622",
+    "name": "Blk 622 Bus stop",
     "public_transport": "platform",
-    "route_ref": "76;268;268B;CT8"
+    "route_ref": "76;268;268B;CT8",
+    "shelter": "yes"
   }
 },
 {
@@ -4319,15 +4324,15 @@
 {
   "type": "node",
   "id": 410460366,
-  "lat": 1.3210800,
-  "lon": 103.8528730,
+  "lat": 1.3210768,
+  "lon": 103.8528206,
   "tags": {
     "asset_ref": "50229",
     "bench": "yes",
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Balestier Road",
-    "name": "Balestier Towers",
+    "name": "Opp Blk 104",
     "public_transport": "platform",
     "route_ref": "124;125;130;139;145"
   }
@@ -5237,9 +5242,11 @@
   "lon": 103.9297775,
   "tags": {
     "asset_ref": "84321",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Bedok North Road",
     "name": "Blk 516",
+    "public_transport": "platform",
     "route_ref": "4N;17;17A;45;NR7"
   }
 },
@@ -5387,9 +5394,11 @@
   "lon": 103.9297887,
   "tags": {
     "asset_ref": "84329",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Bedok North Road",
     "name": "Blk 414",
+    "public_transport": "platform",
     "route_ref": "17;45"
   }
 },
@@ -5626,9 +5635,11 @@
   "lon": 103.9133757,
   "tags": {
     "asset_ref": "84511",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Bedok Reservoir Road",
     "name": "Blk 608",
+    "public_transport": "platform",
     "route_ref": "60;228",
     "shelter": "yes"
   }
@@ -5965,7 +5976,8 @@
     "location": "Bedok Road",
     "name": "Opposite Bedok Market Place",
     "public_transport": "platform",
-    "route_ref": "2;9;10;48"
+    "route_ref": "2;9;10;48",
+    "shelter": "yes"
   }
 },
 {
@@ -6010,7 +6022,8 @@
     "location": "Bedok Road",
     "name": "Bedok Market Place",
     "public_transport": "platform",
-    "route_ref": "2;9;10;48"
+    "route_ref": "2;9;10;48",
+    "shelter": "yes"
   }
 },
 {
@@ -6448,7 +6461,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Bendemeer Road",
-    "name": "Opposite Blk 30",
+    "name": "Opp Boon Keng Stn",
     "public_transport": "platform",
     "route_ref": "13;23;31;64;65;66;66A;66B;125;133;140;147;857;985"
   }
@@ -7742,8 +7755,8 @@
 {
   "type": "node",
   "id": 410461994,
-  "lat": 1.3423007,
-  "lon": 103.7146808,
+  "lat": 1.3422900,
+  "lon": 103.7148069,
   "tags": {
     "asset_ref": "21681",
     "bus": "yes",
@@ -7802,8 +7815,8 @@
 {
   "type": "node",
   "id": 410462010,
-  "lat": 1.3424245,
-  "lon": 103.7144562,
+  "lat": 1.3424835,
+  "lon": 103.7144052,
   "tags": {
     "asset_ref": "21689",
     "bus": "yes",
@@ -8046,8 +8059,8 @@
 {
   "type": "node",
   "id": 410462085,
-  "lat": 1.3415330,
-  "lon": 103.7120510,
+  "lat": 1.3416751,
+  "lon": 103.7122723,
   "tags": {
     "asset_ref": "21699",
     "bus": "yes",
@@ -8076,8 +8089,8 @@
 {
   "type": "node",
   "id": 410462094,
-  "lat": 1.3413251,
-  "lon": 103.7119530,
+  "lat": 1.3412420,
+  "lon": 103.7119222,
   "tags": {
     "asset_ref": "21691",
     "bus": "yes",
@@ -8541,7 +8554,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Bras Basah Road",
-    "name": "Bencoolen Stn Exit B",
+    "name": "Bencoolen Mall Entrance B",
     "public_transport": "platform",
     "route_ref": "7;14;16;36;36B;77;106;111;124;128;162;162M;167;171;174;175;190;502;502A;518;518A;700;700A;850E;951E;NR7"
   }
@@ -14869,8 +14882,8 @@
 {
   "type": "node",
   "id": 410463823,
-  "lat": 1.3324538,
-  "lon": 103.7236074,
+  "lat": 1.3322527,
+  "lon": 103.7235196,
   "tags": {
     "asset_ref": "21589",
     "bus": "yes",
@@ -14884,8 +14897,8 @@
 {
   "type": "node",
   "id": 410463824,
-  "lat": 1.3346822,
-  "lon": 103.7227181,
+  "lat": 1.3347416,
+  "lon": 103.7226889,
   "tags": {
     "asset_ref": "21599",
     "bus": "yes",
@@ -15081,7 +15094,7 @@
   "type": "node",
   "id": 410463878,
   "lat": 1.3504679,
-  "lon": 103.7127738,
+  "lon": 103.7127336,
   "tags": {
     "asset_ref": "21161",
     "bus": "yes",
@@ -15185,8 +15198,8 @@
 {
   "type": "node",
   "id": 410463886,
-  "lat": 1.3436330,
-  "lon": 103.7160350,
+  "lat": 1.3435874,
+  "lon": 103.7160015,
   "tags": {
     "asset_ref": "21231",
     "bus": "yes",
@@ -17136,9 +17149,11 @@
   "lon": 103.9242542,
   "tags": {
     "asset_ref": "83261",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Fidelio Street",
     "name": "Opera Estate Primary School",
+    "public_transport": "platform",
     "route_ref": "42"
   }
 },
@@ -17149,9 +17164,11 @@
   "lon": 103.9250113,
   "tags": {
     "asset_ref": "83279",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Fidelio Street",
     "name": "After Carmen Street",
+    "public_transport": "platform",
     "route_ref": "42"
   }
 },
@@ -17177,9 +17194,11 @@
   "lon": 103.8855885,
   "tags": {
     "asset_ref": "91089",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Fort Road",
     "name": "Opposite Fort Gardens",
+    "public_transport": "platform",
     "route_ref": "30;158;401"
   }
 },
@@ -17824,21 +17843,6 @@
     "location": "Ghim Moh Road",
     "name": "Blk 3",
     "route_ref": "92;92M"
-  }
-},
-{
-  "type": "node",
-  "id": 410464347,
-  "lat": 1.3110977,
-  "lon": 103.7893136,
-  "tags": {
-    "asset_ref": "11009",
-    "bus": "yes",
-    "highway": "bus_stop",
-    "location": "Ghim Moh Road",
-    "name": "Ghim Moh Terminal",
-    "public_transport": "platform",
-    "route_ref": "92;92M;100;111"
   }
 },
 {
@@ -22021,7 +22025,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Jalan Besar",
-    "name": "Before Sim Lim Tower",
+    "name": "Jln Besar Stn Exit A",
     "public_transport": "platform",
     "route_ref": "64;65;130;139;147;857"
   }
@@ -23124,9 +23128,11 @@
   "lon": 103.9136840,
   "tags": {
     "asset_ref": "83321",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Jalan Kembangan",
     "name": "Kembangan Station",
+    "public_transport": "platform",
     "route_ref": "42"
   }
 },
@@ -23137,9 +23143,11 @@
   "lon": 103.9137300,
   "tags": {
     "asset_ref": "83329",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Jalan Kembangan",
     "name": "Opposite Kembangan Station",
+    "public_transport": "platform",
     "route_ref": "42"
   }
 },
@@ -23278,9 +23286,11 @@
   "lon": 103.9153966,
   "tags": {
     "asset_ref": "83371",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Jalan Selamat",
     "name": "After Jalan Paras",
+    "public_transport": "platform",
     "route_ref": "42"
   }
 },
@@ -23668,9 +23678,11 @@
   "tags": {
     "asset_ref": "92181",
     "bench": "yes",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Joo Chiat Road",
     "name": "112 Katong",
+    "public_transport": "platform",
     "route_ref": "16",
     "shelter": "yes"
   }
@@ -24815,8 +24827,8 @@
 {
   "type": "node",
   "id": 410466432,
-  "lat": 1.3506244,
-  "lon": 103.7237796,
+  "lat": 1.3506290,
+  "lon": 103.7237812,
   "tags": {
     "asset_ref": "28511",
     "bus": "yes",
@@ -26068,9 +26080,11 @@
   "lon": 103.8768089,
   "tags": {
     "asset_ref": "70321",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Kallang Way",
     "name": "After Kallang Way 1",
+    "public_transport": "platform",
     "route_ref": "125"
   }
 },
@@ -26081,9 +26095,11 @@
   "lon": 103.8790850,
   "tags": {
     "asset_ref": "70319",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Kallang Way",
     "name": "After Kallang Way 4",
+    "public_transport": "platform",
     "route_ref": "125"
   }
 },
@@ -26094,9 +26110,11 @@
   "lon": 103.8788780,
   "tags": {
     "asset_ref": "70311",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Kallang Way",
     "name": "After Genting Lane",
+    "public_transport": "platform",
     "route_ref": "125"
   }
 },
@@ -26107,9 +26125,11 @@
   "lon": 103.8768816,
   "tags": {
     "asset_ref": "70329",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Kallang Way",
     "name": "After Kallang Way 2",
+    "public_transport": "platform",
     "route_ref": "125",
     "wheelchair": "limited"
   }
@@ -26645,8 +26665,8 @@
 {
   "type": "node",
   "id": 410466881,
-  "lat": 1.3080911,
-  "lon": 103.8588918,
+  "lat": 1.3081826,
+  "lon": 103.8589710,
   "tags": {
     "asset_ref": "07331",
     "highway": "bus_stop",
@@ -27203,9 +27223,11 @@
   "lon": 103.9144905,
   "tags": {
     "asset_ref": "83361",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Lengkong Empat",
     "name": "Hua Yu Mansion",
+    "public_transport": "platform",
     "route_ref": "42"
   }
 },
@@ -27216,9 +27238,11 @@
   "lon": 103.9121310,
   "tags": {
     "asset_ref": "83351",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Lengkong Empat",
     "name": "Grosvenor View",
+    "public_transport": "platform",
     "route_ref": "42"
   }
 },
@@ -27229,9 +27253,11 @@
   "lon": 103.9127936,
   "tags": {
     "asset_ref": "83331",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Lengkong Tiga",
     "name": "Kampung Kembangan Community Club",
+    "public_transport": "platform",
     "route_ref": "42"
   }
 },
@@ -27242,9 +27268,11 @@
   "lon": 103.9111293,
   "tags": {
     "asset_ref": "83341",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Lengkong Tiga",
     "name": "Blk 102",
+    "public_transport": "platform",
     "route_ref": "42"
   }
 },
@@ -28335,9 +28363,11 @@
   "lon": 103.8782480,
   "tags": {
     "asset_ref": "80269",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Lorong 17 Geylang",
     "name": "Before Sims Avenue",
+    "public_transport": "platform",
     "route_ref": "125",
     "source": "Kaart Ground Survey 2017"
   }
@@ -32642,7 +32672,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Nicoll Highway",
-    "name": "One Raffles Link",
+    "name": "Opp War Memorial Park",
     "public_transport": "platform",
     "route_ref": "10;57;70;128;162;196;700;850E;951E;971E"
   }
@@ -38143,10 +38173,13 @@
   "lon": 103.7828635,
   "tags": {
     "asset_ref": "46301",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Riverside Road",
-    "name": "HLH Tyre & Battery",
-    "route_ref": "903"
+    "name": "Progen Bldg",
+    "public_transport": "platform",
+    "route_ref": "903",
+    "shelter": "yes"
   }
 },
 {
@@ -38156,10 +38189,13 @@
   "lon": 103.7828044,
   "tags": {
     "asset_ref": "46309",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Riverside Road",
-    "name": "Opposite Pacific Vintex",
-    "route_ref": "903"
+    "name": "opp Progen Bldg",
+    "public_transport": "platform",
+    "route_ref": "903",
+    "shelter": "yes"
   }
 },
 {
@@ -38324,7 +38360,8 @@
     "location": "Robinson Road",
     "name": "Opposite Sofitel S'pore",
     "public_transport": "platform",
-    "route_ref": "10;97;106;133;196;513;850E;868;951E;982E"
+    "route_ref": "10;97;106;133;196;513;850E;868;951E;982E",
+    "shelter": "yes"
   }
 },
 {
@@ -40657,7 +40694,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Serangoon Road",
-    "name": "Sri Srinivasa Perumal Temple",
+    "name": "Aft Farrer Park Stn Exit G",
     "public_transport": "platform",
     "route_ref": "21;23;64;65;66;67;125;130;139;141;147;857;NR6"
   }
@@ -40687,7 +40724,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Serangoon Road",
-    "name": "Boon Keng Station",
+    "name": "Boon Keng Station/Block 102",
     "public_transport": "platform",
     "route_ref": "13;23;31;64;65;66;125;133;140;147;857;985;NR6"
   }
@@ -40911,9 +40948,11 @@
   "lon": 103.9208334,
   "tags": {
     "asset_ref": "83229",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Siglap Drive",
     "name": "Before Carlton Avenue",
+    "public_transport": "platform",
     "route_ref": "42"
   }
 },
@@ -40924,9 +40963,11 @@
   "lon": 103.9191581,
   "tags": {
     "asset_ref": "83219",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Siglap Drive",
     "name": "Before Frankel Avenue",
+    "public_transport": "platform",
     "route_ref": "42"
   }
 },
@@ -40937,9 +40978,11 @@
   "lon": 103.9279549,
   "tags": {
     "asset_ref": "93149",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Siglap Link",
     "name": "Siglap Link",
+    "public_transport": "platform",
     "route_ref": "36;401"
   }
 },
@@ -40950,9 +40993,11 @@
   "lon": 103.9221950,
   "tags": {
     "asset_ref": "83231",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Siglap Road",
     "name": "Before Siglap Drive",
+    "public_transport": "platform",
     "route_ref": "40;401"
   }
 },
@@ -40963,9 +41008,11 @@
   "lon": 103.9262974,
   "tags": {
     "asset_ref": "93199",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Siglap Road",
     "name": "Opposite Mandarin Gardens",
+    "public_transport": "platform",
     "route_ref": "36;36B;55;135;155;401"
   }
 },
@@ -40991,9 +41038,11 @@
   "lon": 103.9217091,
   "tags": {
     "asset_ref": "83249",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Siglap Road",
     "name": "Flamingo Valley",
+    "public_transport": "platform",
     "route_ref": "40;42;401"
   }
 },
@@ -41004,9 +41053,11 @@
   "lon": 103.9229567,
   "tags": {
     "asset_ref": "93119",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Siglap Road",
     "name": "After Elite Park Avenue",
+    "public_transport": "platform",
     "route_ref": "40;401"
   }
 },
@@ -41032,9 +41083,11 @@
   "lon": 103.9224660,
   "tags": {
     "asset_ref": "83239",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Siglap Road",
     "name": "Opposite Cheviot Hill",
+    "public_transport": "platform",
     "route_ref": "40;401"
   }
 },
@@ -41080,7 +41133,8 @@
     "location": "Simei Avenue",
     "name": "Blk 3012",
     "public_transport": "platform",
-    "route_ref": "9;10;17;31;118"
+    "route_ref": "9;10;17;31;118",
+    "shelter": "yes"
   }
 },
 {
@@ -41110,7 +41164,8 @@
     "location": "Simei Avenue",
     "name": "Opposite Blk 3012",
     "public_transport": "platform",
-    "route_ref": "9;10;17;31;118"
+    "route_ref": "9;10;17;31;118",
+    "shelter": "yes"
   }
 },
 {
@@ -41729,9 +41784,11 @@
   "lon": 103.8805581,
   "tags": {
     "asset_ref": "80239",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Sims Drive",
     "name": "Before Blk 53",
+    "public_transport": "platform",
     "route_ref": "64;125;134",
     "source": "Kaart Ground Survey 2017"
   }
@@ -41743,9 +41800,11 @@
   "lon": 103.8801642,
   "tags": {
     "asset_ref": "80231",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Sims Drive",
     "name": "Opposite Blk 53",
+    "public_transport": "platform",
     "route_ref": "64;134"
   }
 },
@@ -41756,9 +41815,11 @@
   "lon": 103.8781013,
   "tags": {
     "asset_ref": "80229",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Sims Drive",
     "name": "Blk 45",
+    "public_transport": "platform",
     "route_ref": "64;125;134",
     "source": "Kaart Ground Survey 2017"
   }
@@ -41770,9 +41831,11 @@
   "lon": 103.8798550,
   "tags": {
     "asset_ref": "80249",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Sims Place",
     "name": "Blk 49 Market/Food Centre",
+    "public_transport": "platform",
     "route_ref": "64;134",
     "source": "Kaart Ground Survey 2017"
   }
@@ -41784,9 +41847,11 @@
   "lon": 103.8794970,
   "tags": {
     "asset_ref": "80289",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Sims Place",
     "name": "Sims Place Terminal",
+    "public_transport": "platform",
     "route_ref": "64;134",
     "source": "Kaart Ground Survey 2017"
   }
@@ -42531,9 +42596,11 @@
   "lon": 103.8797653,
   "tags": {
     "asset_ref": "80181",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Stadium Boulevard",
     "name": "Kallang Squash Centre",
+    "public_transport": "platform",
     "route_ref": "11"
   }
 },
@@ -42544,9 +42611,11 @@
   "lon": 103.8757780,
   "tags": {
     "asset_ref": "80191",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Stadium Walk",
     "name": "Opposite Singapore Indoor Stadium",
+    "public_transport": "platform",
     "route_ref": "11"
   }
 },
@@ -42557,9 +42626,11 @@
   "lon": 103.8801552,
   "tags": {
     "asset_ref": "80189",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Stadium Boulevard",
     "name": "Opposite Kallang Squash Centre",
+    "public_transport": "platform",
     "route_ref": "11"
   }
 },
@@ -42570,9 +42641,11 @@
   "lon": 103.8770920,
   "tags": {
     "asset_ref": "80179",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Stadium Cresent",
     "name": "Opposite Carpark F",
+    "public_transport": "platform",
     "route_ref": "11"
   }
 },
@@ -42583,9 +42656,11 @@
   "lon": 103.8750585,
   "tags": {
     "asset_ref": "80199",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Stadium Cresent",
     "name": "Singapore Indoor Stadium",
+    "public_transport": "platform",
     "route_ref": "11"
   }
 },
@@ -42596,9 +42671,11 @@
   "lon": 103.8771336,
   "tags": {
     "asset_ref": "80171",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Stadium Walk",
     "name": "Carpark F",
+    "public_transport": "platform",
     "route_ref": "11"
   }
 },
@@ -43273,9 +43350,11 @@
   "lon": 103.9145448,
   "tags": {
     "asset_ref": "83381",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Taman Kembangan",
     "name": "Before Jalan Kembangan",
+    "public_transport": "platform",
     "route_ref": "42"
   }
 },
@@ -46042,9 +46121,11 @@
   "lon": 103.8798523,
   "tags": {
     "asset_ref": "90051",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Tanjong Rhu Road",
     "name": "Opposite Singapore Swim Club",
+    "public_transport": "platform",
     "route_ref": "158"
   }
 },
@@ -46055,9 +46136,11 @@
   "lon": 103.8826450,
   "tags": {
     "asset_ref": "90069",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Tanjong Rhu Road",
     "name": "Opposite Dunman High School",
+    "public_transport": "platform",
     "route_ref": "158"
   }
 },
@@ -46068,9 +46151,11 @@
   "lon": 103.8801260,
   "tags": {
     "asset_ref": "90059",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Tanjong Rhu Road",
     "name": "Singapore Swim Club",
+    "public_transport": "platform",
     "route_ref": "158"
   }
 },
@@ -46081,9 +46166,11 @@
   "lon": 103.8754149,
   "tags": {
     "asset_ref": "90039",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Tanjong Rhu Road",
     "name": "Opposite Tanjong Ria Condominium",
+    "public_transport": "platform",
     "route_ref": "11;158"
   }
 },
@@ -46094,9 +46181,11 @@
   "lon": 103.8823141,
   "tags": {
     "asset_ref": "90061",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Tanjong Rhu Road",
     "name": "Dunman High School",
+    "public_transport": "platform",
     "route_ref": "158"
   }
 },
@@ -46133,9 +46222,11 @@
   "lon": 103.8723740,
   "tags": {
     "asset_ref": "90029",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Tanjong Rhu Road",
     "name": "Opposite Pebble Bay",
+    "public_transport": "platform",
     "route_ref": "11;158"
   }
 },
@@ -46146,9 +46237,11 @@
   "lon": 103.8723260,
   "tags": {
     "asset_ref": "90021",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Tanjong Rhu Road",
     "name": "Pebble Bay",
+    "public_transport": "platform",
     "route_ref": "11;158"
   }
 },
@@ -46814,9 +46907,11 @@
   "lon": 103.9112518,
   "tags": {
     "asset_ref": "92201",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Telok Kurau Road",
     "name": "Tandeville",
+    "public_transport": "platform",
     "route_ref": "15;150;155"
   }
 },
@@ -46827,9 +46922,11 @@
   "lon": 103.9114488,
   "tags": {
     "asset_ref": "92209",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Telok Kurau Road",
     "name": "Opposite Tandeville",
+    "public_transport": "platform",
     "route_ref": "15;150;155"
   }
 },
@@ -46840,9 +46937,11 @@
   "lon": 103.9099717,
   "tags": {
     "asset_ref": "83139",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Telok Kurau Road",
     "name": "After Joo Chiat Place",
+    "public_transport": "platform",
     "route_ref": "15;150;155"
   }
 },
@@ -46853,9 +46952,11 @@
   "lon": 103.9126912,
   "tags": {
     "asset_ref": "92309",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Telok Kurau Road",
     "name": "East Coast Apartments",
+    "public_transport": "platform",
     "route_ref": "15;150"
   }
 },
@@ -46881,9 +46982,11 @@
   "lon": 103.9106538,
   "tags": {
     "asset_ref": "83121",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Telok Kurau Road",
     "name": "Before Lorong K Telok Kurau",
+    "public_transport": "platform",
     "route_ref": "15;150;155"
   }
 },
@@ -46909,9 +47012,11 @@
   "lon": 103.9106109,
   "tags": {
     "asset_ref": "83129",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Telok Kurau Road",
     "name": "After Ji Xiang Court",
+    "public_transport": "platform",
     "route_ref": "15;150;155"
   }
 },
@@ -47024,9 +47129,11 @@
   "lon": 103.8593252,
   "tags": {
     "asset_ref": "02141",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Temasek Boulevard",
     "name": "Suntec Tower Two",
+    "public_transport": "platform",
     "route_ref": "107M"
   }
 },
@@ -50551,9 +50658,11 @@
   "lon": 103.8979059,
   "tags": {
     "asset_ref": "71201",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Ubi Avenue 1",
     "name": "Paya Ubi Industrial Park",
+    "public_transport": "platform",
     "route_ref": "63;63M"
   }
 },
@@ -50577,9 +50686,11 @@
   "lon": 103.9028434,
   "tags": {
     "asset_ref": "71101",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Ubi Avenue 1",
     "name": "Blk 318",
+    "public_transport": "platform",
     "route_ref": "63;63M"
   }
 },
@@ -50590,9 +50701,11 @@
   "lon": 103.9025843,
   "tags": {
     "asset_ref": "71109",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Ubi Avenue 1",
     "name": "Maha Bodhi School",
+    "public_transport": "platform",
     "route_ref": "63;63M"
   }
 },
@@ -50603,9 +50716,11 @@
   "lon": 103.9005392,
   "tags": {
     "asset_ref": "71111",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Ubi Avenue 1",
     "name": "Blk 343",
+    "public_transport": "platform",
     "route_ref": "63;63M"
   }
 },
@@ -50616,9 +50731,11 @@
   "lon": 103.9001548,
   "tags": {
     "asset_ref": "71119",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Ubi Avenue 1",
     "name": "Opposite Blk 343",
+    "public_transport": "platform",
     "route_ref": "63;63M"
   }
 },
@@ -51322,8 +51439,8 @@
 {
   "type": "node",
   "id": 410481706,
-  "lat": 1.3376489,
-  "lon": 103.9591560,
+  "lat": 1.3367401,
+  "lon": 103.9580967,
   "tags": {
     "asset_ref": "96091",
     "bus": "yes",
@@ -51346,7 +51463,8 @@
     "location": "Upper Changi Road",
     "name": "Before Jalan Pari Burong",
     "public_transport": "platform",
-    "route_ref": "2;9;10;48"
+    "route_ref": "2;9;10;48",
+    "shelter": "yes"
   }
 },
 {
@@ -51397,8 +51515,8 @@
 {
   "type": "node",
   "id": 410481711,
-  "lat": 1.3375081,
-  "lon": 103.9590322,
+  "lat": 1.3366770,
+  "lon": 103.9578325,
   "tags": {
     "asset_ref": "96099",
     "bus": "yes",
@@ -57300,9 +57418,11 @@
   "lon": 103.9665929,
   "tags": {
     "asset_ref": "96249",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Xilin Avenue",
     "name": "Builders Centre",
+    "public_transport": "platform",
     "route_ref": "35;35M"
   }
 },
@@ -57328,9 +57448,11 @@
   "lon": 103.9670490,
   "tags": {
     "asset_ref": "96241",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Xilin Avenue",
     "name": "Laguna Natl Country Club",
+    "public_transport": "platform",
     "route_ref": "35;35M"
   }
 },
@@ -57341,9 +57463,11 @@
   "lon": 103.9636230,
   "tags": {
     "asset_ref": "96271",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Xilin Avenue",
     "name": "Opposite Global Logistics Centre",
+    "public_transport": "platform",
     "route_ref": "35;35M"
   }
 },
@@ -57665,14 +57789,14 @@
 {
   "type": "node",
   "id": 410486946,
-  "lat": 1.3919172,
-  "lon": 103.8533567,
+  "lat": 1.3919611,
+  "lon": 103.8533586,
   "tags": {
     "asset_ref": "55079",
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Yio Chu Kang Road",
-    "name": "After KLC School Of Education",
+    "name": "After KLC International Inst",
     "public_transport": "platform",
     "route_ref": "70;70M;86;163;854;857"
   }
@@ -59067,8 +59191,8 @@
 {
   "type": "node",
   "id": 410487119,
-  "lat": 1.4320154,
-  "lon": 103.8420902,
+  "lat": 1.4319926,
+  "lon": 103.8420674,
   "tags": {
     "asset_ref": "59389",
     "highway": "bus_stop",
@@ -59753,9 +59877,11 @@
   "lon": 103.9270175,
   "tags": {
     "asset_ref": "83281",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Fidelio Street",
     "name": "Before Tosca Street",
+    "public_transport": "platform",
     "route_ref": "42"
   }
 },
@@ -60238,9 +60364,11 @@
   "lon": 103.9167573,
   "tags": {
     "asset_ref": "92219",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Marine Terrace",
     "name": "Opposite CHIJ Katong Convent",
+    "public_transport": "platform",
     "route_ref": "134;150"
   }
 },
@@ -61411,7 +61539,8 @@
     "location": "Upper Changi Road",
     "name": "Before Changi Fire Station",
     "public_transport": "platform",
-    "route_ref": "2;9;10;48"
+    "route_ref": "2;9;10;48",
+    "shelter": "yes"
   }
 },
 {
@@ -61456,7 +61585,8 @@
     "location": "Upper Changi Road",
     "name": "Flextronic",
     "public_transport": "platform",
-    "route_ref": "2;9;10;48"
+    "route_ref": "2;9;10;48",
+    "shelter": "yes"
   }
 },
 {
@@ -61617,9 +61747,11 @@
   "lon": 103.9094058,
   "tags": {
     "asset_ref": "72089",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Jalan Damai",
     "name": "Blk 671A Carpark",
+    "public_transport": "platform",
     "route_ref": "NoServices"
   }
 },
@@ -61630,9 +61762,11 @@
   "lon": 103.9095820,
   "tags": {
     "asset_ref": "72081",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Jalan Damai",
     "name": "Opposite Blk 668",
+    "public_transport": "platform",
     "route_ref": "NoServices"
   }
 },
@@ -61972,9 +62106,11 @@
   "lon": 103.9227896,
   "tags": {
     "asset_ref": "93111",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Siglap Road",
     "name": "Before Elite Park Avenue",
+    "public_transport": "platform",
     "route_ref": "40;401"
   }
 },
@@ -62182,7 +62318,7 @@
     "highway": "bus_stop",
     "lines": "1N;2N;3N;4N;5N;6N;36;56;70M;75;77;97;97e;106;111;133;162M;171;195;531;700A;857;960;961;NR1;NR2;NR5;NR6;NR7;NR8",
     "location": "Raffles Avenue",
-    "name": "Seating Gallery",
+    "name": "The Float @ Marina Bay",
     "public_transport": "platform"
   }
 },
@@ -62193,9 +62329,11 @@
   "lon": 103.9194998,
   "tags": {
     "asset_ref": "84579",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Chai Chee Drive",
     "name": "After Chai Chee Street",
+    "public_transport": "platform",
     "route_ref": "26;222;222B"
   }
 },
@@ -62206,9 +62344,11 @@
   "lon": 103.9195414,
   "tags": {
     "asset_ref": "84589",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Chai Chee Drive",
     "name": "Before New Upper Changi Road",
+    "public_transport": "platform",
     "route_ref": "26;222;222B"
   }
 },
@@ -62222,7 +62362,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Jalan Toa Payoh",
-    "name": "Opposite Saint Andrew's Junior School",
+    "name": "Opposite Saint Andrew's Village",
     "public_transport": "platform",
     "route_ref": "8;26;31;90;142;151;154;857;966;985"
   }
@@ -62237,7 +62377,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Jalan Toa Payoh",
-    "name": "Saint Andrew's Junior School",
+    "name": "Saint Andrew's Village",
     "public_transport": "platform",
     "route_ref": "8;26;31;90;142;151;154;857;966;985"
   }
@@ -63047,7 +63187,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Upper Thomson Road",
-    "name": "After Yio Chu Kang Road",
+    "name": "Aft Yio Chu Kang Rd",
     "public_transport": "platform",
     "route_ref": "163;167;169;855;980"
   }
@@ -63143,7 +63283,7 @@
     "asset_ref": "21679",
     "highway": "bus_stop",
     "location": "Tah Ching Road",
-    "name": "Blk 329 (bus stop rumah cik sharif - datang)",
+    "name": "Blk 329",
     "route_ref": "49;246"
   }
 },
@@ -63567,7 +63707,8 @@
     "location": "Hume Avenue",
     "name": "Opposite Symphony Heights",
     "route_ref": "173",
-    "shelter": "yes"
+    "shelter": "yes",
+    "tactile_paving": "no"
   }
 },
 {
@@ -63581,7 +63722,8 @@
     "location": "Hume Avenue",
     "name": "Symphony Heights",
     "route_ref": "173",
-    "shelter": "yes"
+    "shelter": "yes",
+    "tactile_paving": "no"
   }
 },
 {
@@ -65395,9 +65537,11 @@
   "lon": 103.9126853,
   "tags": {
     "asset_ref": "92301",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Telok Kurau Road",
     "name": "Before Saint Patrick's Road",
+    "public_transport": "platform",
     "route_ref": "15;150"
   }
 },
@@ -65574,9 +65718,11 @@
   "lon": 103.9162653,
   "tags": {
     "asset_ref": "92229",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Marine Terrace",
     "name": "Blk 53",
+    "public_transport": "platform",
     "route_ref": "134;150"
   }
 },
@@ -65979,9 +66125,11 @@
   "lon": 103.8873832,
   "tags": {
     "asset_ref": "70381",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Circuit Road",
     "name": "Kong Hwa School",
+    "public_transport": "platform",
     "route_ref": "40;155"
   }
 },
@@ -66529,9 +66677,11 @@
   "lon": 103.8906031,
   "tags": {
     "asset_ref": "91151",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Meyer Road",
     "name": "Hawaii Tower",
+    "public_transport": "platform",
     "route_ref": "NoServices"
   }
 },
@@ -66542,9 +66692,11 @@
   "lon": 103.8966314,
   "tags": {
     "asset_ref": "91121",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Meyer Road",
     "name": "House 189",
+    "public_transport": "platform",
     "route_ref": "NoServices"
   }
 },
@@ -66581,9 +66733,11 @@
   "lon": 103.8954157,
   "tags": {
     "asset_ref": "91131",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Meyer Road",
     "name": "Peach Garden",
+    "public_transport": "platform",
     "route_ref": "NoServices"
   }
 },
@@ -66607,9 +66761,11 @@
   "lon": 103.8884288,
   "tags": {
     "asset_ref": "91161",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Meyer Road",
     "name": "The Seafront",
+    "public_transport": "platform",
     "route_ref": "NoServices"
   }
 },
@@ -66620,9 +66776,11 @@
   "lon": 103.8932929,
   "tags": {
     "asset_ref": "91141",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Meyer Road",
     "name": "The Sovereign",
+    "public_transport": "platform",
     "route_ref": "NoServices"
   }
 },
@@ -67815,9 +67973,11 @@
   "tags": {
     "asset_ref": "92189",
     "bench": "yes",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Joo Chiat Road",
     "name": "Opposite 112 Katong",
+    "public_transport": "platform",
     "route_ref": "16",
     "shelter": "yes"
   }
@@ -68712,7 +68872,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Yishun Central 1",
-    "name": "Opposite Yishun Polyclinic",
+    "name": "Blk 767",
     "public_transport": "platform",
     "route_ref": "853;853C;855;857"
   }
@@ -68854,7 +69014,9 @@
   "lat": 1.3036060,
   "lon": 103.8773873,
   "tags": {
-    "highway": "bus_stop"
+    "bus": "yes",
+    "highway": "bus_stop",
+    "public_transport": "platform"
   }
 },
 {
@@ -68863,7 +69025,9 @@
   "lat": 1.3048779,
   "lon": 103.8769265,
   "tags": {
-    "highway": "bus_stop"
+    "bus": "yes",
+    "highway": "bus_stop",
+    "public_transport": "platform"
   }
 },
 {
@@ -68872,7 +69036,9 @@
   "lat": 1.3054395,
   "lon": 103.8769159,
   "tags": {
-    "highway": "bus_stop"
+    "bus": "yes",
+    "highway": "bus_stop",
+    "public_transport": "platform"
   }
 },
 {
@@ -70645,9 +70811,11 @@
   "lon": 103.8726960,
   "tags": {
     "asset_ref": "80209",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Stadium Road",
     "name": "After Stadium Drive",
+    "public_transport": "platform",
     "route_ref": "NoServices"
   }
 },
@@ -70658,9 +70826,11 @@
   "lon": 103.8730200,
   "tags": {
     "asset_ref": "80201",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Stadium Road",
     "name": "After Stadium Road",
+    "public_transport": "platform",
     "route_ref": "NoServices"
   }
 },
@@ -70837,9 +71007,11 @@
   "lon": 103.9301300,
   "tags": {
     "asset_ref": "84429",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Bedok North Avenue 2",
     "name": "Blk 515",
+    "public_transport": "platform",
     "route_ref": "NoServices"
   }
 },
@@ -70998,9 +71170,11 @@
   "lon": 103.8894000,
   "tags": {
     "asset_ref": "70371",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Circuit Link",
     "name": "MacPherson Station",
+    "public_transport": "platform",
     "route_ref": "NoServices"
   }
 },
@@ -71138,9 +71312,11 @@
   "lon": 103.8894040,
   "tags": {
     "asset_ref": "70379",
+    "bus": "yes",
     "highway": "bus_stop",
     "location": "Circuit Link",
     "name": "Opposite MacPherson Station",
+    "public_transport": "platform",
     "route_ref": "NoServices"
   }
 },
@@ -71534,7 +71710,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "location": "Bencoolen Street",
-    "name": "Manulife Centre",
+    "name": "Opp Bencoolen Stn Exit B",
     "public_transport": "platform",
     "shelter": "yes"
   }
@@ -72686,7 +72862,8 @@
     "bus": "yes",
     "highway": "bus_stop",
     "name": "Before Ubi Road 3",
-    "network": "SBS"
+    "network": "SBS",
+    "public_transport": "platform"
   }
 },
 {
@@ -72791,7 +72968,7 @@
     "bus": "yes",
     "highway": "bus_stop",
     "name": "Pro",
-    "name:en": "Promenade STN",
+    "name:en": "Promenade Stn",
     "public_transport": "platform"
   }
 },
@@ -73280,9 +73457,11 @@
   "lat": 1.3041822,
   "lon": 103.9023588,
   "tags": {
+    "bus": "yes",
     "highway": "bus_stop",
     "name": "KKKL to Kuala Lumpur",
-    "operator": "KKKL"
+    "operator": "KKKL",
+    "public_transport": "platform"
   }
 },
 {
@@ -73313,8 +73492,10 @@
   "lat": 1.3163920,
   "lon": 103.8990205,
   "tags": {
+    "bus": "yes",
     "highway": "bus_stop",
-    "name": "bus stop joo chiat cplx (balik)"
+    "name": "bus stop joo chiat cplx (balik)",
+    "public_transport": "platform"
   }
 },
 {
@@ -73323,8 +73504,10 @@
   "lat": 1.3178188,
   "lon": 103.8976093,
   "tags": {
+    "bus": "yes",
     "highway": "bus_stop",
-    "name": "bus stop geylang serai (datang)"
+    "name": "bus stop geylang serai (datang)",
+    "public_transport": "platform"
   }
 },
 {
@@ -73564,6 +73747,49 @@
     "highway": "bus_stop",
     "name": "Bayside: Shuttle to Domes",
     "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 6907476785,
+  "lat": 1.3468457,
+  "lon": 103.7410168,
+  "tags": {
+    "bench": "yes",
+    "bin": "yes",
+    "highway": "bus_stop",
+    "name": "Blk 169",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6923883536,
+  "lat": 1.4428918,
+  "lon": 103.8303818,
+  "tags": {
+    "asset_ref": "59529",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "Canberra Link",
+    "name": "Opposite Canberra Station",
+    "public_transport": "platform",
+    "route_ref": "117;169"
+  }
+},
+{
+  "type": "node",
+  "id": 6923888720,
+  "lat": 1.4427878,
+  "lon": 103.8300566,
+  "tags": {
+    "asset_ref": "59521",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "location": "Canberra Link",
+    "name": "Canberra Station",
+    "public_transport": "platform",
+    "route_ref": "117;169"
   }
 }
 
