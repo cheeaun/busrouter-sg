@@ -1603,7 +1603,7 @@ class App extends Component {
                 liveBusCount: buses.length,
               });
             };
-            this._liveBusesTimeout = setRafInterval(fetchBuses, 60 * 1000 + 1);
+            // this._liveBusesTimeout = setRafInterval(fetchBuses, 60 * 1000 + 1);
           });
         } else {
           const servicesTitle = services.map(s => {
