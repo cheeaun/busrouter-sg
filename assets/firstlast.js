@@ -1,6 +1,5 @@
 import { h, render, Fragment } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
-import useResizeObserver from 'use-resize-observer';
 import fetchCache from './utils/fetchCache';
 import { sortServices } from './utils/bus';
 import Ad from './ad';
@@ -70,7 +69,6 @@ function FirstLastTimes() {
   const [stopName, setStopName] = useState(null);
   const [data, setData] = useState([]);
 
-  const [tableRef, _, tableHeight] = useResizeObserver();
   const [timeLeft, setTimeLeft] = useState(null);
   const [timeStr, setTimeStr] = useState('');
 
@@ -137,7 +135,7 @@ function FirstLastTimes() {
         <span><span class="abbr">SAT</span> Saturdays</span>
         <span><span class="abbr">SUN</span> Sundays &amp; Public Holidays</span>
       </p>
-      <table ref={tableRef}>
+      <table>
         <thead>
           <tr>
             <th>Service</th>

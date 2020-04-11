@@ -4,7 +4,7 @@ import Fuse from 'fuse.js';
 import intersect from 'just-intersect';
 import cheapRuler from 'cheap-ruler';
 
-import { MAPBOX_ACCESS_TOKEN, MAPTILER_KEY } from './config';
+import { MAPBOX_ACCESS_TOKEN } from './config';
 import { encode, decode } from './utils/specialID';
 import { sortServices } from './utils/bus';
 import fetchCache from './utils/fetchCache';
@@ -1014,8 +1014,8 @@ class App extends Component {
         stops = this._fuseStops.search(value);
       }
       this.setState({
-        services,
-        stops,
+        services: services.map(s => s.item),
+        stops: stops.map(s => s.item),
         searching: true,
       });
       // Scroll to top, with hack for momentum scrolling
