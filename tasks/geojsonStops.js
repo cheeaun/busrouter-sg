@@ -9,8 +9,8 @@ for (service in serviceStops) {
   const routes = serviceStops[service];
   console.log(service, routes);
   const stops = [...new Set([...routes[0], ...(routes[1] || [])])]; // Flatten and dedupe
-  stops.forEach(s => {
-    if (!stopServices[s]) return stopServices[s] = [service];
+  stops.forEach((s) => {
+    if (!stopServices[s]) return (stopServices[s] = [service]);
     if (stopServices[s].includes(s)) return;
     stopServices[s].push(service);
   });
@@ -18,7 +18,7 @@ for (service in serviceStops) {
 
 const features = [];
 
-for (number in stops){
+for (number in stops) {
   const { lat, lng, ...props } = stops[number];
   features.push({
     type: 'Feature',
@@ -36,8 +36,15 @@ for (number in stops){
 }
 
 const filePath = 'data/3/stops.geojson';
-fs.writeFileSync(filePath, JSON.stringify({
-  type: 'FeatureCollection',
-  features,
-}, null, '\t'));
+fs.writeFileSync(
+  filePath,
+  JSON.stringify(
+    {
+      type: 'FeatureCollection',
+      features,
+    },
+    null,
+    '\t',
+  ),
+);
 console.log(`Generated ${filePath}`);

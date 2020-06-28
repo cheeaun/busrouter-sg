@@ -11,7 +11,7 @@ const readFile = (path) => {
 
 const features = [];
 
-services.forEach(service => {
+services.forEach((service) => {
   const { no } = service;
   console.log('➡️  ', no);
   const routes =
@@ -35,8 +35,15 @@ services.forEach(service => {
 });
 
 const filePath = 'data/3/routes.geojson';
-fs.writeFileSync(filePath, JSON.stringify({
-  type: 'FeatureCollection',
-  features,
-}, null, '\t'));
+fs.writeFileSync(
+  filePath,
+  JSON.stringify(
+    {
+      type: 'FeatureCollection',
+      features,
+    },
+    null,
+    '\t',
+  ),
+);
 console.log(`Generated ${filePath}`);

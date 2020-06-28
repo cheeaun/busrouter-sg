@@ -39,12 +39,8 @@ export default function ScrollableContainer(props) {
   }, [width, height]);
 
   return (
-    <div
-      {...otherProps}
-      ref={ref}
-      data-scroll-shadow={scrollShadow}
-    >
+    <div {...otherProps} ref={ref} data-scroll-shadow={scrollShadow}>
       {children}
     </div>
   );
-};
+}

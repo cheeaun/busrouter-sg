@@ -11,7 +11,8 @@ import busDoubleImagePath from './images/bus-double.svg';
 import busBendyImagePath from './images/bus-bendy.svg';
 import stopsJSONPath from '../data/3/stops.final.json';
 
-const TOKEN = 'QTKoEi1Mf_A2wAgIvOv9w0.0nIppXYy0me4YmZxt2MsJzMwgDNhJnYz9majJiOiEmIsIib1FWZlh2YiojI1Jye.kp';
+const TOKEN =
+  'QTKoEi1Mf_A2wAgIvOv9w0.0nIppXYy0me4YmZxt2MsJzMwgDNhJnYz9majJiOiEmIsIib1FWZlh2YiojI1Jye.kp';
 
 const BUSES = {
   sd: {
@@ -32,7 +33,12 @@ const BUSES = {
 };
 
 const WheelChair = () => (
-  <img src={wheelchairImagePath} width="11" height="11" alt="Wheelchair accessible" />
+  <img
+    src={wheelchairImagePath}
+    width="11"
+    height="11"
+    alt="Wheelchair accessible"
+  />
 );
 
 const Bus = (props) => {
@@ -62,7 +68,9 @@ const Bus = (props) => {
     >
       <img {...busImage} />
       <br />
-      <span class={`time time-${load.toLowerCase()}`}>{timeDisplay(duration_ms)}</span>
+      <span class={`time time-${load.toLowerCase()}`}>
+        {timeDisplay(duration_ms)}
+      </span>
       {feature.toLowerCase() === 'wab' && <WheelChair />}
     </span>
   );
@@ -71,27 +79,28 @@ const Bus = (props) => {
 let BUSID = 1;
 const busID = () => BUSID++;
 const isSameBus = (b1, b2) => b1.feature === b2.feature && b1.type === b2.type;
-const isSameBuses = (b1, b2) => b1.map(b => b._id).join() === b2.map(b => b._id).join();
+const isSameBuses = (b1, b2) =>
+  b1.map((b) => b._id).join() === b2.map((b) => b._id).join();
 
 function BusLane({ no, buses }) {
   const prevNo = useRef();
   const prevBuses = useRef();
-  const nextBuses = buses.filter(nb => typeof nb.duration_ms === 'number');
+  const nextBuses = buses.filter((nb) => typeof nb.duration_ms === 'number');
 
   if (prevNo.current === no && !isSameBuses(prevBuses.current, nextBuses)) {
-    nextBuses.forEach(nb => {
+    nextBuses.forEach((nb) => {
       delete nb._id;
     });
 
-    const pBuses = prevBuses.current.filter(b => !b._ghost); // Remove previously ghosted buses
+    const pBuses = prevBuses.current.filter((b) => !b._ghost); // Remove previously ghosted buses
     pBuses.forEach((b, i) => {
       // Next bus requirements/checks
       // - Within range of duration_ms of current bus
       // - Not assigned with ID (possibly from previous loop execution)
       // - Same bus type as current bus
-      const latestNextBus = nextBuses.find(nb => {
+      const latestNextBus = nextBuses.find((nb) => {
         if (nb._id || !isSameBus(b, nb)) return false;
-        const d = (nb.duration_ms - b.duration_ms)/1000/60;
+        const d = (nb.duration_ms - b.duration_ms) / 1000 / 60;
         return d > -5 && d < 3;
       });
       if (latestNextBus) {
@@ -104,7 +113,7 @@ function BusLane({ no, buses }) {
     });
   }
 
-  nextBuses.forEach(nb => {
+  nextBuses.forEach((nb) => {
     if (!nb._id) nb._id = busID();
   });
 
@@ -115,17 +124,21 @@ function BusLane({ no, buses }) {
 
   return (
     <div class="bus-lane">
-      {nextBuses.map(b => <Bus key={b._id} {...b} />)}
+      {nextBuses.map((b) => (
+        <Bus key={b._id} {...b} />
+      ))}
     </div>
   );
-};
+}
 
 function ArrivalTimes() {
   const [busStop, setBusStop] = useState(null);
   const [stopsData, setStopsData] = useState(null);
   const [fetchingServices, setFetchingServices] = useState(false);
   const [services, setServices] = useState(null);
-  const initialPinnedServices = JSON.parse(localStorage.getItem('busroutersg.arrival.pinnedServices')) || [];
+  const initialPinnedServices =
+    JSON.parse(localStorage.getItem('busroutersg.arrival.pinnedServices')) ||
+    [];
   const [pinnedServices, setPinnedServices] = useState(initialPinnedServices);
 
   useEffect(async () => {
@@ -138,7 +151,9 @@ function ArrivalTimes() {
         if (stop) {
           const [lng, lat, name] = stop;
           document.title = `Bus arrival times for ${code + ' - ' + name}`;
-          document.querySelector('[name="apple-mobile-web-app-title"]').setAttribute('content', name);
+          document
+            .querySelector('[name="apple-mobile-web-app-title"]')
+            .setAttribute('content', name);
           setBusStop({ code, name, lat, lng });
           setIcon(code);
         } else {
@@ -146,7 +161,9 @@ function ArrivalTimes() {
         }
       } else {
         document.title = 'Bus arrival times';
-        document.querySelector('[name="apple-mobile-web-app-title"]').setAttribute('content', 'Bus arrival times');
+        document
+          .querySelector('[name="apple-mobile-web-app-title"]')
+          .setAttribute('content', 'Bus arrival times');
         setBusStop(null);
       }
     };
@@ -159,21 +176,22 @@ function ArrivalTimes() {
     if (!id) return;
     setFetchingServices(true);
     fetch(`https://arrivelah2.busrouter.sg/?id=${id}`)
-      .then(r => r.json())
-      .then(results => {
+      .then((r) => r.json())
+      .then((results) => {
         setServices(results.services);
         setTimeout(() => setFetchingServices(false), 1200);
         arrivalsTimeout = setTimeout(() => {
           arrivalsRAF = requestAnimationFrame(() => fetchServices(id));
         }, 15 * 1000); // 15 seconds
-      }).catch(e => {
+      })
+      .catch((e) => {
         console.error(e);
         setTimeout(() => setFetchingServices(false), 1200);
         arrivalsTimeout = setTimeout(() => {
           arrivalsRAF = requestAnimationFrame(() => fetchServices(id));
         }, 3 * 1000); // 3 seconds
       });
-  };
+  }
 
   useEffect(() => {
     if (busStop) fetchServices(busStop.code);
@@ -192,16 +210,21 @@ function ArrivalTimes() {
     }
     setPinnedServices([...pinnedServices]);
     try {
-      localStorage.setItem('busroutersg.arrival.pinnedServices', JSON.stringify(pinnedServices));
-    } catch (e) { }
+      localStorage.setItem(
+        'busroutersg.arrival.pinnedServices',
+        JSON.stringify(pinnedServices),
+      );
+    } catch (e) {}
   }
 
   if (!busStop) {
     if (stopsData) {
       return (
         <ul class="stops-list">
-          {Object.keys(stopsData).map(stop => (
-            <li><a href={`#${stop}`}>{stopsData[stop][2]}</a></li>
+          {Object.keys(stopsData).map((stop) => (
+            <li>
+              <a href={`#${stop}`}>{stopsData[stop][2]}</a>
+            </li>
           ))}
         </ul>
       );
@@ -215,26 +238,44 @@ function ArrivalTimes() {
   return (
     <div>
       <div id="bus-stop-map">
-        <img src={`https://busrouter.sg/staticmaps/${lng},${lat},17,0,60/400x200@2x?access_token=${TOKEN.split('').reverse().join('')}`} alt="Bus stop map" width="400" height="200" intrinsicsize="400x200" loading="lazy" />
+        <img
+          src={`https://busrouter.sg/staticmaps/${lng},${lat},17,0,60/400x200@2x?access_token=${TOKEN.split(
+            '',
+          )
+            .reverse()
+            .join('')}`}
+          alt="Bus stop map"
+          width="400"
+          height="200"
+          intrinsicsize="400x200"
+          loading="lazy"
+        />
       </div>
       <h1>
         Bus arrival times for
         <b id="bus-stop-name">
-          <span class={fetchingServices ? 'loading stop-tag' : 'stop-tag'}>{code}</span> {name}
+          <span class={fetchingServices ? 'loading stop-tag' : 'stop-tag'}>
+            {code}
+          </span>{' '}
+          {name}
         </b>
       </h1>
       <table>
-        {services ?
-          (services.length ? (
+        {services ? (
+          services.length ? (
             <tbody class={!services.length ? 'loading' : ''}>
               {services.map(({ no, next, next2, next3 }) => {
                 const pinned = pinnedServices.includes(no);
                 return (
                   <tr class={pinned ? 'pin' : ''}>
-                    <th onClick={(e) => {
-                      e.preventDefault();
-                      togglePin(no);
-                    }}>{no}</th>
+                    <th
+                      onClick={(e) => {
+                        e.preventDefault();
+                        togglePin(no);
+                      }}
+                    >
+                      {no}
+                    </th>
                     <td class="bus-lane-cell">
                       <BusLane no={no} buses={[next, next2, next3]} />
                     </td>
@@ -243,37 +284,31 @@ function ArrivalTimes() {
               })}
             </tbody>
           ) : (
-              <tbody>
-                <tr>
-                  <td class="blank">No arrival times available.</td>
-                </tr>
-              </tbody>
-            )
-          ) : (
-            <tbody class="loading">
+            <tbody>
               <tr>
-                <td>Loading&hellip;</td>
+                <td class="blank">No arrival times available.</td>
               </tr>
             </tbody>
-          )}
+          )
+        ) : (
+          <tbody class="loading">
+            <tr>
+              <td>Loading&hellip;</td>
+            </tr>
+          </tbody>
+        )}
       </table>
       <div class="legend">
-        <span class="load load-sea">
-          Seats available
-        </span>
-        <span class="load load-sda">
-          Standing available
-        </span>
-        <span class="load load-lsd">
-          Limited standing
-        </span>
+        <span class="load load-sea">Seats available</span>
+        <span class="load load-sda">Standing available</span>
+        <span class="load load-lsd">Limited standing</span>
         <span>
           <WheelChair /> Wheelchair accessible
         </span>
       </div>
     </div>
   );
-};
+}
 
 const $arrivals = document.getElementById('arrivals');
 render(<ArrivalTimes />, $arrivals);

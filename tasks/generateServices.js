@@ -6,29 +6,43 @@ const stops2 = JSON.parse(fs.readFileSync('data/3/stops2.json'));
 
 const fullServiceStops = {};
 
-for (let service in serviceStops){
+for (let service in serviceStops) {
   console.log(service);
   const routes = serviceStops[service];
   let name = '';
-  if (routes.length == 1){
+  if (routes.length == 1) {
     const route = routes[0];
     const [firstStop, ...rest] = route;
     const lastStop = rest.pop();
-    if (firstStop == lastStop){
+    if (firstStop == lastStop) {
       const midStop = rest[Math.floor((rest.length - 1) / 2)];
-      name = `${toTitleCase(stops2[firstStop].name)} ⟲ ${toTitleCase(stops2[midStop].name)}`;
+      name = `${toTitleCase(stops2[firstStop].name)} ⟲ ${toTitleCase(
+        stops2[midStop].name,
+      )}`;
     } else {
-      name = `${toTitleCase(stops2[firstStop].name)} → ${toTitleCase(stops2[lastStop].name)}`;
+      name = `${toTitleCase(stops2[firstStop].name)} → ${toTitleCase(
+        stops2[lastStop].name,
+      )}`;
     }
   } else {
     // If A -> B, B -> A, becomes "A <-> B"
     // If A -> B, B -> C, becomes "A / C <-> B" (Special slash)
     const [route1, route2] = routes;
-    const firstStops = route1[0] == route2[route2.length-1] ? [route1[0]] : [route1[0], route2[route2.length-1]];
-    const lastStops = route2[0] == route1[route1.length-1] ? [route1[route1.length-1]] : [route1[route1.length-1], route2[0]];
-    const firstStopsName = toTitleCase(firstStops.map(s => stops2[s].name).join(' / '));
-    const lastStopsName = toTitleCase(lastStops.map(s => stops2[s].name).join(' / '));
-    if (firstStopsName == lastStopsName){
+    const firstStops =
+      route1[0] == route2[route2.length - 1]
+        ? [route1[0]]
+        : [route1[0], route2[route2.length - 1]];
+    const lastStops =
+      route2[0] == route1[route1.length - 1]
+        ? [route1[route1.length - 1]]
+        : [route1[route1.length - 1], route2[0]];
+    const firstStopsName = toTitleCase(
+      firstStops.map((s) => stops2[s].name).join(' / '),
+    );
+    const lastStopsName = toTitleCase(
+      lastStops.map((s) => stops2[s].name).join(' / '),
+    );
+    if (firstStopsName == lastStopsName) {
       name = firstStopsName;
     } else {
       name = `${firstStopsName} ⇄ ${lastStopsName}`;

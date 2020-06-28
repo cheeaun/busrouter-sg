@@ -1,4 +1,6 @@
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js');
+importScripts(
+  'https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js',
+);
 
 const url = new URL(location.href);
 const debug = url.searchParams.has('debug');
@@ -40,7 +42,7 @@ workbox.routing.registerRoute(
         purgeOnQuotaError: true,
       }),
       new workbox.cacheableResponse.Plugin({
-        statuses: [0, 200]
+        statuses: [0, 200],
       }),
     ],
   }),
@@ -56,7 +58,7 @@ workbox.routing.registerRoute(
         purgeOnQuotaError: true,
       }),
       new workbox.cacheableResponse.Plugin({
-        statuses: [0, 200]
+        statuses: [0, 200],
       }),
     ],
   }),
@@ -72,7 +74,7 @@ workbox.routing.registerRoute(
         purgeOnQuotaError: true,
       }),
       new workbox.cacheableResponse.Plugin({
-        statuses: [0, 200]
+        statuses: [0, 200],
       }),
     ],
   }),
@@ -88,7 +90,7 @@ workbox.routing.registerRoute(
         purgeOnQuotaError: true,
       }),
       new workbox.cacheableResponse.Plugin({
-        statuses: [0, 200]
+        statuses: [0, 200],
       }),
     ],
   }),
@@ -104,7 +106,7 @@ workbox.routing.registerRoute(
         purgeOnQuotaError: true,
       }),
       new workbox.cacheableResponse.Plugin({
-        statuses: [0, 200]
+        statuses: [0, 200],
       }),
     ],
   }),
@@ -120,7 +122,7 @@ workbox.routing.registerRoute(
         purgeOnQuotaError: true,
       }),
       new workbox.cacheableResponse.Plugin({
-        statuses: [0, 200]
+        statuses: [0, 200],
       }),
     ],
   }),
@@ -136,7 +138,7 @@ workbox.routing.registerRoute(
         purgeOnQuotaError: true,
       }),
       new workbox.cacheableResponse.Plugin({
-        statuses: [0, 200]
+        statuses: [0, 200],
       }),
     ],
   }),

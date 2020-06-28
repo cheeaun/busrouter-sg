@@ -5,9 +5,11 @@ export default (url, timeout) => {
   if (data) {
     return Promise.resolve(data);
   } else {
-    return fetch(url).then(r => r.json()).then(r => {
-      lscache.set(url, r, timeout);
-      return r;
-    });
+    return fetch(url)
+      .then((r) => r.json())
+      .then((r) => {
+        lscache.set(url, r, timeout);
+        return r;
+      });
   }
 };

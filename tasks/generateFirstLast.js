@@ -4,7 +4,7 @@ const routes = JSON.parse(fs.readFileSync('data/3/routes.lta.json'));
 const services = JSON.parse(fs.readFileSync('data/3/services.json'));
 const stops = JSON.parse(fs.readFileSync('data/3/stops3.json'));
 
-const servicesList = services.map(s => s.no);
+const servicesList = services.map((s) => s.no);
 const stopsList = Object.keys(stops);
 
 const firstLastData = {};
@@ -20,13 +20,9 @@ for (let stop in routes) {
     if (!servicesList.includes(service)) continue;
 
     const { weekday, saturday, sunday } = services[service];
-    const times = [
-      ...weekday,
-      ...saturday,
-      ...sunday,
-    ];
+    const times = [...weekday, ...saturday, ...sunday];
 
-    const timesStr = times.map(t => /\d+/.test(t) ? t : '-').join(' ');
+    const timesStr = times.map((t) => (/\d+/.test(t) ? t : '-')).join(' ');
     firstLastData[stop].push(`${service} ${timesStr}`);
   }
 }

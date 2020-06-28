@@ -21,7 +21,8 @@ const timeFormat = (time) => {
   return `${h}:${m} ${ampm}`;
 };
 
-const formatDuration = (duration) => { // hours
+const formatDuration = (duration) => {
+  // hours
   const durationMins = duration * 60;
   const hour = Math.floor(durationMins / 60);
   const minute = Math.round(durationMins % 60);
@@ -34,8 +35,8 @@ const formatDuration = (duration) => { // hours
 const convertTimeToNumber = (time) => {
   const h = parseInt(time.slice(0, 2), 10);
   const m = parseInt(time.slice(2), 10);
-  return h + (m/60);
-}
+  return h + m / 60;
+};
 
 const TimeRanger = ({ values }) => {
   const nadaEl = <div class="time-ranger nada" />;
@@ -44,20 +45,28 @@ const TimeRanger = ({ values }) => {
   if (!first || !/\d+/.test(first)) return nadaEl;
   const firstVal = convertTimeToNumber(first);
   const lastVal = convertTimeToNumber(last);
-  const left = firstVal / 24 * 100;
+  const left = (firstVal / 24) * 100;
   const duration = (lastVal < firstVal ? lastVal + 24 : lastVal) - firstVal;
-  const width = duration / 24 * 100;
+  const width = (duration / 24) * 100;
   return (
     <Fragment>
       <div class="time-ranger">
-        {width + left > 100 && <div class="bar" style={{
-          left: 0,
-          width: `${width + left - 100}%`
-        }} />}
-        <div class="bar" style={{
-          left: `${left}%`,
-          width: `${width}%`,
-        }} />
+        {width + left > 100 && (
+          <div
+            class="bar"
+            style={{
+              left: 0,
+              width: `${width + left - 100}%`,
+            }}
+          />
+        )}
+        <div
+          class="bar"
+          style={{
+            left: `${left}%`,
+            width: `${width}%`,
+          }}
+        />
       </div>
       <span class="time-duration">{formatDuration(duration)}</span>
     </Fragment>
@@ -87,7 +96,11 @@ function FirstLastTimes() {
 
         setStop(stop);
         setStopName(stopsData[stop][2]);
-        setData(data.map(d => d.split(/\s+/)).sort((a, b) => sortServices(a[0], b[0])));
+        setData(
+          data
+            .map((d) => d.split(/\s+/))
+            .sort((a, b) => sortServices(a[0], b[0])),
+        );
 
         document.title = `Approximate first & last bus arrival times for ${stop}: ${stopName}`;
 
@@ -95,15 +108,18 @@ function FirstLastTimes() {
         gtag('config', window._GA_TRACKING_ID, {
           page_path: pathname + search + hash,
         });
-      }
+      };
       window.onhashchange();
     });
 
     const setLeft = () => {
       const date = new Date();
-      const time = `${date.getHours()}`.padStart(2, '0') + '' + `${date.getMinutes()}`.padStart(2, '0');
+      const time =
+        `${date.getHours()}`.padStart(2, '0') +
+        '' +
+        `${date.getMinutes()}`.padStart(2, '0');
       const val = convertTimeToNumber(time);
-      const left = val / 24 * 100;
+      const left = (val / 24) * 100;
       setTimeLeft(left);
 
       let ampm = 'Am';
@@ -114,26 +130,38 @@ function FirstLastTimes() {
       }
       const timeStr = (
         <Fragment>
-          {hour}<blink>:</blink>{`${date.getMinutes()}`.padStart(2, '0')} {ampm}
+          {hour}
+          <blink>:</blink>
+          {`${date.getMinutes()}`.padStart(2, '0')} {ampm}
         </Fragment>
       );
       setTimeStr(timeStr);
     };
     setLeft();
-    setInterval(setLeft, 60*1000);
+    setInterval(setLeft, 60 * 1000);
   }, []);
 
   return (
     <div>
       {!!data.length && <Ad />}
       <h1>
-        Approximate first &amp; last bus arrival times&nbsp;for<br />
-        <b><span class="stop-tag">{stop}</span> {stopName ? stopName : <span class="placeholder">██████ ███</span>}</b>
+        Approximate first &amp; last bus arrival times&nbsp;for
+        <br />
+        <b>
+          <span class="stop-tag">{stop}</span>{' '}
+          {stopName ? stopName : <span class="placeholder">██████ ███</span>}
+        </b>
       </h1>
       <p class="legend">
-        <span><span class="abbr">WD</span> Weekdays</span>
-        <span><span class="abbr">SAT</span> Saturdays</span>
-        <span><span class="abbr">SUN</span> Sundays &amp; Public Holidays</span>
+        <span>
+          <span class="abbr">WD</span> Weekdays
+        </span>
+        <span>
+          <span class="abbr">SAT</span> Saturdays
+        </span>
+        <span>
+          <span class="abbr">SUN</span> Sundays &amp; Public Holidays
+        </span>
       </p>
       <table>
         <thead>
@@ -148,78 +176,135 @@ function FirstLastTimes() {
               <span>12 PM</span>
               <span>6 PM</span>
               {!!data.length && !!timeLeft && !!timeStr && (
-                <div class="timerange-indicator" style={{ left: `${timeLeft}%` }}>
+                <div
+                  class="timerange-indicator"
+                  style={{ left: `${timeLeft}%` }}
+                >
                   <span>{timeStr}*</span>
                 </div>
               )}
             </th>
           </tr>
         </thead>
-        {data.length ? (
-          data.map(d => {
-            const [ service, ...times ] = d;
-            const [ wd1raw, wd2raw, sat1raw, sat2raw, sun1raw, sun2raw ] = times;
-            const [ wd1, wd2, sat1, sat2, sun1, sun2 ] = times.map(timeFormat);
-            return (
-              <tbody>
+        {data.length
+          ? data.map((d) => {
+              const [service, ...times] = d;
+              const [
+                wd1raw,
+                wd2raw,
+                sat1raw,
+                sat2raw,
+                sun1raw,
+                sun2raw,
+              ] = times;
+              const [wd1, wd2, sat1, sat2, sun1, sun2] = times.map(timeFormat);
+              return (
+                <tbody>
+                  <tr>
+                    <td rowspan="3">{service}</td>
+                    <th>
+                      <abbr title="Weekdays">WD</abbr>
+                    </th>
+                    <td title={wd1raw}>{wd1}</td>
+                    <td title={wd2raw}>{wd2}</td>
+                    <td class="time-cell">
+                      <TimeRanger values={[wd1raw, wd2raw]} />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <abbr title="Saturdays">SAT</abbr>
+                    </th>
+                    <td title={sat1raw}>{sat1}</td>
+                    <td title={sat2raw}>{sat2}</td>
+                    <td class="time-cell">
+                      <TimeRanger values={[sat1raw, sat2raw]} />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <abbr title="Sundays &amp; Public Holidays">SUN</abbr>
+                    </th>
+                    <td title={sun1raw}>{sun1}</td>
+                    <td title={sun2raw}>{sun2}</td>
+                    <td class="time-cell">
+                      <TimeRanger values={[sun1raw, sun2raw]} />
+                    </td>
+                  </tr>
+                </tbody>
+              );
+            })
+          : [1, 2, 3].map((v) => (
+              <tbody key={v}>
                 <tr>
-                  <td rowspan="3">{service}</td>
-                  <th><abbr title="Weekdays">WD</abbr></th>
-                  <td title={wd1raw}>{wd1}</td>
-                  <td title={wd2raw}>{wd2}</td>
-                  <td class="time-cell"><TimeRanger values={[wd1raw, wd2raw]} /></td>
+                  <td rowspan="3">
+                    <span class="placeholder">██</span>
+                  </td>
+                  <th>
+                    <abbr title="Weekdays">WD</abbr>
+                  </th>
+                  <td>
+                    <span class="placeholder">████</span>
+                  </td>
+                  <td>
+                    <span class="placeholder">████</span>
+                  </td>
+                  <td class="time-cell">
+                    <TimeRanger />
+                  </td>
                 </tr>
                 <tr>
-                  <th><abbr title="Saturdays">SAT</abbr></th>
-                  <td title={sat1raw}>{sat1}</td>
-                  <td title={sat2raw}>{sat2}</td>
-                  <td class="time-cell"><TimeRanger values={[sat1raw, sat2raw]} /></td>
+                  <th>
+                    <abbr title="Saturdays">SAT</abbr>
+                  </th>
+                  <td>
+                    <span class="placeholder">████</span>
+                  </td>
+                  <td>
+                    <span class="placeholder">████</span>
+                  </td>
+                  <td class="time-cell">
+                    <TimeRanger />
+                  </td>
                 </tr>
                 <tr>
-                  <th><abbr title="Sundays &amp; Public Holidays">SUN</abbr></th>
-                  <td title={sun1raw}>{sun1}</td>
-                  <td title={sun2raw}>{sun2}</td>
-                  <td class="time-cell"><TimeRanger values={[sun1raw, sun2raw]} /></td>
+                  <th>
+                    <abbr title="Sundays &amp; Public Holidays">SUN</abbr>
+                  </th>
+                  <td>
+                    <span class="placeholder">████</span>
+                  </td>
+                  <td>
+                    <span class="placeholder">████</span>
+                  </td>
+                  <td class="time-cell">
+                    <TimeRanger />
+                  </td>
                 </tr>
               </tbody>
-            );
-          })
-        ) : [1,2,3].map(v => (
-          <tbody key={v}>
-            <tr>
-              <td rowspan="3"><span class="placeholder">██</span></td>
-              <th><abbr title="Weekdays">WD</abbr></th>
-              <td><span class="placeholder">████</span></td>
-              <td><span class="placeholder">████</span></td>
-              <td class="time-cell"><TimeRanger /></td>
-            </tr>
-            <tr>
-              <th><abbr title="Saturdays">SAT</abbr></th>
-              <td><span class="placeholder">████</span></td>
-              <td><span class="placeholder">████</span></td>
-              <td class="time-cell"><TimeRanger /></td>
-            </tr>
-            <tr>
-              <th><abbr title="Sundays &amp; Public Holidays">SUN</abbr></th>
-              <td><span class="placeholder">████</span></td>
-              <td><span class="placeholder">████</span></td>
-              <td class="time-cell"><TimeRanger /></td>
-            </tr>
-          </tbody>
-        ))}
+            ))}
         <tfoot>
           <tr>
             <td colspan="5">
-              <p>{data.length ? `${data.length} service${data.length === 1 ? '' : 's'} · ` : ''}
-              <a href="/">BusRouter SG</a></p>
-              <p class="timerange-note"><small><b>*</b> Current time based on your timezone, which may be different than Singapore timezone.</small></p>
+              <p>
+                {data.length
+                  ? `${data.length} service${data.length === 1 ? '' : 's'} · `
+                  : ''}
+                <a href="/">BusRouter SG</a>
+              </p>
+              <p class="timerange-note">
+                <small>
+                  <b>*</b> Current time based on your timezone, which may be
+                  different than Singapore timezone.
+                </small>
+              </p>
             </td>
           </tr>
         </tfoot>
       </table>
     </div>
   );
-};
+}
 
 const $firstlast = document.getElementById('firstlast');
 render(<FirstLastTimes />, $firstlast);

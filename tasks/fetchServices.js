@@ -2,9 +2,11 @@ const fs = require('fs');
 const got = require('got');
 const cheerio = require('cheerio');
 
-(async() => {
+(async () => {
   try {
-    const { body } = await got('https://www.mytransport.sg/content/mytransport/map.html');
+    const { body } = await got(
+      'https://www.mytransport.sg/content/mytransport/map.html',
+    );
     const $ = cheerio.load(body);
 
     const services = [];
@@ -17,7 +19,13 @@ const cheerio = require('cheerio');
         const option = $(el);
         services.push({
           no: option.text().trim(),
-          routes: parseInt(option.attr('value').trim().match(/[0-9]$/)[0], 10),
+          routes: parseInt(
+            option
+              .attr('value')
+              .trim()
+              .match(/[0-9]$/)[0],
+            10,
+          ),
           category,
         });
       });

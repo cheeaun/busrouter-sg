@@ -9,10 +9,13 @@ export default class GeolocateControl {
   _currentLocation = null;
   _buttonClicked = false;
   constructor(options) {
-    this.options = Object.assign({
-      offset: [0, 0],
-      onClick: () => {},
-    }, options);
+    this.options = Object.assign(
+      {
+        offset: [0, 0],
+        onClick: () => {},
+      },
+      options,
+    );
   }
   onAdd(map) {
     this._map = map;
@@ -57,62 +60,85 @@ export default class GeolocateControl {
     this._setup = true;
 
     if (supported === 'granted') this._clickButton(null, false);
-  }
+  };
   _updateButtonState = (state) => {
     const { classList } = this._button;
     classList.remove('loading');
     classList.remove('active');
     if (state) classList.add(state);
-  }
+  };
   _flyToCurrentLocation = () => {
     const map = this._map;
     const { _currentLocation: center } = this;
     const { offset: _offset } = this.options;
     const offset = typeof _offset === 'function' ? _offset() : _offset;
     const { x, y } = map.project(center);
-    const { offsetWidth, offsetHeight, offsetLeft, offsetTop } = map.getContainer();
+    const {
+      offsetWidth,
+      offsetHeight,
+      offsetLeft,
+      offsetTop,
+    } = map.getContainer();
     const margin = Math.max(offsetWidth, offsetHeight);
-    const withinBounds = x > offsetLeft-margin && x < offsetWidth+margin && y > offsetTop-margin && y < offsetHeight+margin;
+    const withinBounds =
+      x > offsetLeft - margin &&
+      x < offsetWidth + margin &&
+      y > offsetTop - margin &&
+      y < offsetHeight + margin;
     // console.log(center, x, y, offsetLeft, offsetTop, offsetWidth, offsetHeight);
     const eventData = {
       geolocateSource: true,
     };
     if (withinBounds) {
       if (map.getZoom() < 14) {
-        map.easeTo({
+        map.easeTo(
+          {
+            center,
+            zoom: 18,
+            duration: 300,
+            offset,
+            animate: false,
+          },
+          eventData,
+        );
+      } else {
+        map.flyTo(
+          {
+            center,
+            zoom: 18,
+            speed: 1.5,
+            duration: 2000,
+            offset,
+          },
+          eventData,
+        );
+      }
+    } else {
+      map.easeTo(
+        {
           center,
           zoom: 18,
           duration: 300,
           offset,
           animate: false,
-        }, eventData);
-      } else {
-        map.flyTo({
-          center,
-          zoom: 18,
-          speed: 1.5,
-          duration: 2000,
-          offset,
-        }, eventData);
-      }
-    } else {
-      map.easeTo({
-        center,
-        zoom: 18,
-        duration: 300,
-        offset,
-        animate: false,
-      }, eventData);
+        },
+        eventData,
+      );
     }
-  }
+  };
   _setHeading = (e) => {
     if (!this._watching) return;
     if (!e || e.alpha === null) return;
     this._compass.hidden = false;
-    const heading = e.compassHeading || e.webkitCompassHeading || compassHeading(e.alpha, e.beta, e.gamma);
+    const heading =
+      e.compassHeading ||
+      e.webkitCompassHeading ||
+      compassHeading(e.alpha, e.beta, e.gamma);
     // -60deg rotateX is for *tilting* the compass "box" to look like a trapezoid
-    this._compass.style.transform = `rotate(${Math.round(heading)}deg) rotateX(-60deg)`;
-  }
+    this._compass.style.transform = `rotate(${Math.round(
+      heading,
+    )}deg) rotateX(-60deg)`;
+  };
   _clickButton = (e, locking = true) => {
     if (e) e.preventDefault();
     if (!this._setup) return;
@@ -129,68 +155,78 @@ export default class GeolocateControl {
       this._locking = locking;
       let deviceorientation;
 
-      this._watching = navigator.geolocation.watchPosition((position) => {
-        const { latitude, longitude } = position.coords;
+      this._watching = navigator.geolocation.watchPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
 
-        if (`${[latitude,longitude]}` === `${this._currentLocation}`) return; // No idea why
+          if (`${[latitude, longitude]}` === `${this._currentLocation}`) return; // No idea why
 
-        // console.log({ latitude, longitude });
-        this._currentLocation = [longitude, latitude];
-        this._dot.setLngLat(this._currentLocation);
-        if (!this._dot._addedToMap) {
-          this._dot.addTo(this._map);
-          this._dot._addedToMap = true;
-        }
+          // console.log({ latitude, longitude });
+          this._currentLocation = [longitude, latitude];
+          this._dot.setLngLat(this._currentLocation);
+          if (!this._dot._addedToMap) {
+            this._dot.addTo(this._map);
+            this._dot._addedToMap = true;
+          }
 
-        if (this._locking) {
-          this._updateButtonState('active');
-          this._flyToCurrentLocation();
-        } else {
-          this._updateButtonState(null);
-        }
+          if (this._locking) {
+            this._updateButtonState('active');
+            this._flyToCurrentLocation();
+          } else {
+            this._updateButtonState(null);
+          }
 
-        if (this._buttonClicked) {
-          // Differentiate between initiated from button click or watchPosition subsequent runs
+          if (this._buttonClicked) {
+            // Differentiate between initiated from button click or watchPosition subsequent runs
+            this._buttonClicked = false;
+            onClick(this._currentLocation);
+          }
+          this._watching = true;
+        },
+        (e) => {
+          this._locking = false;
+          this._watching = false;
           this._buttonClicked = false;
-          onClick(this._currentLocation);
-        }
-        this._watching = true;
-      }, (e) => {
-        this._locking = false;
-        this._watching = false;
-        this._buttonClicked = false;
 
-        this._updateButtonState(null);
-        navigator.geolocation.clearWatch(this._watching);
-        if (deviceorientation) {
-          window.removeEventListener(deviceorientation, this._setHeading);
-        }
+          this._updateButtonState(null);
+          navigator.geolocation.clearWatch(this._watching);
+          if (deviceorientation) {
+            window.removeEventListener(deviceorientation, this._setHeading);
+          }
 
-        console.warn(e);
-        if (e.code === 1) { // PERMISSION_DENIED
-          alert('Looks like location tracking is blocked on your browser. Please enable it in the settings to use this feature.');
-        } else {
-          // Retry again
-          this._clickButton();
-        }
-      }, {
-        enableHighAccuracy: true,
-        timeout: 60 * 1000, // 1min
-        maximumAge: 1000, // 1s
-      });
+          console.warn(e);
+          if (e.code === 1) {
+            // PERMISSION_DENIED
+            alert(
+              'Looks like location tracking is blocked on your browser. Please enable it in the settings to use this feature.',
+            );
+          } else {
+            // Retry again
+            this._clickButton();
+          }
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 60 * 1000, // 1min
+          maximumAge: 1000, // 1s
+        },
+      );
 
-      if (window.DeviceOrientationEvent){
+      if (window.DeviceOrientationEvent) {
         // https://developers.google.com/web/updates/2016/03/device-orientation-changes
         // https://stackoverflow.com/a/47870694/20838
-        if (location.hostname === 'localhost'){
+        if (location.hostname === 'localhost') {
           // Stupid bug with Chrome
           // `ondeviceorientationabsolute` is true but always return empty values
           deviceorientation = 'deviceorientation';
         } else {
-          deviceorientation = 'ondeviceorientationabsolute' in window ? 'deviceorientationabsolute' : 'deviceorientation';
+          deviceorientation =
+            'ondeviceorientationabsolute' in window
+              ? 'deviceorientationabsolute'
+              : 'deviceorientation';
         }
         window.addEventListener(deviceorientation, this._setHeading, false);
       }
     }
-  }
+  };
 }

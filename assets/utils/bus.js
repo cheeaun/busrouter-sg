@@ -1,7 +1,7 @@
 export const timeDisplay = (ms) => {
-	if (ms === null) return;
-	const mins = Math.floor(ms/1000/60);
-	return mins <= 0 ? 'Arr' : `${mins}m`;
+  if (ms === null) return;
+  const mins = Math.floor(ms / 1000 / 60);
+  return mins <= 0 ? 'Arr' : `${mins}m`;
 };
 
 export const sortServices = (a, b) => {
@@ -17,9 +17,9 @@ export const sortServices = (a, b) => {
 export const sortServicesPinned = (pinnedServices) => (a, b) => {
   const pinA = pinnedServices.includes(a.no);
   const pinB = pinnedServices.includes(b.no);
-  if (pinA && !pinB){
+  if (pinA && !pinB) {
     return -1;
-  } else if (pinB && !pinA){
+  } else if (pinB && !pinA) {
     return 1;
   } else {
     return sortServices(a.no, b.no);

@@ -5,7 +5,7 @@ export default () => {
     if (localStorage['busroutersg.noads'] === '1') {
       return '';
     }
-  } catch (e) { }
+  } catch (e) {}
   return (
     <div>
       <style>{`
@@ -42,7 +42,12 @@ export default () => {
           font-size: smaller;
         }
       `}</style>
-      <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CK7DPK3J&placement=busroutersg" id="_carbonads_js" />
+      <script
+        async
+        type="text/javascript"
+        src="//cdn.carbonads.com/carbon.js?serve=CK7DPK3J&placement=busroutersg"
+        id="_carbonads_js"
+      />
     </div>
   );
 };

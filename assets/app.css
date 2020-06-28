@@ -1,6 +1,7 @@
-@import 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css';
+@import 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css';
 
-html, body {
+html,
+body {
   max-width: 100%;
   overflow-x: hidden;
   min-height: 100%;
@@ -11,20 +12,26 @@ html, body {
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   text-size-adjust: none;
-  background-color: #F9F5ED;
+  background-color: #f9f5ed;
 }
 
-p, img {
+p,
+img {
   vertical-align: middle;
 }
 
-*, *:before, *:after{
+*,
+*:before,
+*:after {
   box-sizing: border-box;
 }
 
-input, button, select {
+input,
+button,
+select {
   font-family: inherit;
   font-size: inherit;
 }
@@ -34,7 +41,7 @@ a {
 }
 
 a:active {
-  filter: brightness(.8);
+  filter: brightness(0.8);
 }
 
 #map {
@@ -42,12 +49,12 @@ a:active {
   top: 0;
   bottom: 0;
   width: 100%;
-  transition: filter .3s ease-in-out;
-  background-color: #F9F5ED;
+  transition: filter 0.3s ease-in-out;
+  background-color: #f9f5ed;
 }
 #map.fade-out {
   pointer-events: none;
-  filter: brightness(.7);
+  filter: brightness(0.7);
 }
 #map.fade-out + header {
   pointer-events: none;
@@ -57,17 +64,17 @@ a:active {
   margin-top: 5px !important;
 }
 .mapboxgl-ctrl-group {
-  background-color: rgba(255,255,255,.8);
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 123123px;
 }
-@supports (backdrop-filter: blur(10px)){
+@supports (backdrop-filter: blur(10px)) {
   .mapboxgl-ctrl-group {
-    background-color: rgba(255,255,255,.7);
+    background-color: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px) saturate(3);
   }
 }
 .mapboxgl-ctrl-group button {
-  opacity: .8;
+  opacity: 0.8;
   width: 36px;
   height: 36px;
 }
@@ -92,8 +99,8 @@ a:active {
   left: 12px;
   z-index: 1;
   cursor: pointer;
-  filter: drop-shadow(0 1px 3px rgba(0,0,0,.3));
-  transition: opacity .3s ease-in-out;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.3));
+  transition: opacity 0.3s ease-in-out;
 }
 @supports (top: max(1px)) {
   #logo {
@@ -101,14 +108,14 @@ a:active {
   }
 }
 #logo.fadeout {
-  opacity: .5;
+  opacity: 0.5;
 }
 #logo.fadeout:hover {
   opacity: 1;
 }
 #logo:active {
-  transform: scale(.95);
-  filter: brightness(.9);
+  transform: scale(0.95);
+  filter: brightness(0.9);
 }
 #logo h1 {
   margin: 0;
@@ -116,37 +123,37 @@ a:active {
 }
 
 #about {
-  background-color: rgba(0,0,0,.25);
+  background-color: rgba(0, 0, 0, 0.25);
   position: fixed;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
   z-index: 3;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   perspective: 500px;
 }
 #about[hidden] {
   pointer-events: none;
-  background-color: rgba(0,0,0,0);
+  background-color: rgba(0, 0, 0, 0);
   display: block;
 }
 #about section {
   position: absolute;
   bottom: 0;
   line-height: 1.4;
-  background-color: rgba(255,255,255,.9);
+  background-color: rgba(255, 255, 255, 0.9);
   padding: 12px;
   padding-bottom: calc(12px + env(safe-area-inset-bottom));
   border-radius: 7px 7px 0 0;
-  box-shadow: 0 -1px 200px rgba(0,0,0,.3);
-  font-size: .9em;
-  transition: all .3s ease-in-out;
+  box-shadow: 0 -1px 200px rgba(0, 0, 0, 0.3);
+  font-size: 0.9em;
+  transition: all 0.3s ease-in-out;
   opacity: 1;
 }
-@supports (backdrop-filter: blur(10px)){
+@supports (backdrop-filter: blur(10px)) {
   #about section {
-    background-color: rgba(255,255,255,.7);
+    background-color: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px) saturate(3);
   }
 }
@@ -173,14 +180,14 @@ a:active {
 .popover {
   position: fixed;
   width: 100%;
-  background-color: rgba(255,255,255,.9);
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 7px 7px 0 0;
-  box-shadow: 0 0 5px rgba(0,0,0,.3);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   z-index: 2;
 }
-@supports (backdrop-filter: blur(10px)){
+@supports (backdrop-filter: blur(10px)) {
   .popover {
-    background-color: rgba(255,255,255,.7);
+    background-color: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px) saturate(3);
   }
 }
@@ -192,7 +199,7 @@ a:active {
   transform: translateY(55%);
   display: flex;
   flex-direction: column;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 @supports (top: min(1px)) {
   #search-popover {
@@ -203,14 +210,16 @@ a:active {
   transform: translateY(100%);
 }
 #search-popover.shrink:not(.expand) .popover-list {
-  opacity: .5;
+  opacity: 0.5;
 }
 #search-popover.expand {
   transform: translateY(80px);
-  transform: translateY(calc(80px + env(safe-area-inset-top) + env(safe-area-inset-bottom)));
+  transform: translateY(
+    calc(80px + env(safe-area-inset-top) + env(safe-area-inset-bottom))
+  );
 }
 #search-popover.loading {
-  opacity: .75;
+  opacity: 0.75;
   pointer-events: none;
 }
 
@@ -218,7 +227,7 @@ a:active {
 #between-popover,
 #arrivals-popover {
   top: 101%;
-  transition: transform .3s .5s ease-in-out;
+  transition: transform 0.3s 0.5s ease-in-out;
   max-height: 50vh;
   display: flex;
   flex-direction: column;
@@ -236,7 +245,7 @@ a:active {
 #stop-popover h1,
 #between-popover h1 {
   font-size: 1em;
-  margin: 0 0 .5em;
+  margin: 0 0 0.5em;
   padding: 0;
 }
 #stop-popover header h1 {
@@ -244,16 +253,16 @@ a:active {
 }
 #stop-popover h2,
 #between-popover h2 {
-  font-size: .8em;
+  font-size: 0.8em;
   font-weight: normal;
-  margin: .5em 0 0;
+  margin: 0.5em 0 0;
   padding: 0;
   color: #999;
   text-transform: uppercase;
 }
 #stop-popover h2 {
   margin-top: 0;
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
 }
 #stop-popover h2 a {
   color: inherit;
@@ -263,12 +272,12 @@ a:active {
   text-decoration: underline;
 }
 #stop-popover h2 img.new-window {
-  filter: invert(1) opacity(.4);
+  filter: invert(1) opacity(0.4);
 }
 #stop-popover h3,
 #between-popover h3 {
-  font-size: .7em;
-  margin: 1em 0 .5em;
+  font-size: 0.7em;
+  margin: 1em 0 0.5em;
   padding: 0;
   color: #666;
   text-transform: uppercase;
@@ -312,10 +321,10 @@ a:active {
 }
 
 #stop-popover .services-list span {
-  transition: opacity .3s;
+  transition: opacity 0.3s;
 }
-#stop-popover .services-list.loading span{
-  opacity: .75;
+#stop-popover .services-list.loading span {
+  opacity: 0.75;
   pointer-events: none;
 }
 
@@ -332,7 +341,7 @@ a:active {
   border-radius: 12px;
   padding: 12px;
   border: 2px solid transparent;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   margin-bottom: 6px;
   cursor: pointer;
 }
@@ -342,7 +351,7 @@ a:active {
 }
 #between-popover .between-item.selected {
   border-color: #007aff;
-  box-shadow: 0 0 5px rgba(0,0,0,.15);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   background-color: #fff;
 }
 
@@ -350,8 +359,8 @@ a:active {
   pointer-events: none;
   position: relative;
   height: 40px;
-  opacity: .6;
-  transition: opacity .3s ease-in-out;
+  opacity: 0.6;
+  transition: opacity 0.3s ease-in-out;
 }
 #between-popover .between-item:hover .between-inner,
 #between-popover .between-item.selected .between-inner {
@@ -381,14 +390,14 @@ a:active {
   right: 5px;
 }
 #between-popover .between-services.full .start {
-  background-image: linear-gradient(to left, #972FFE, #f01b48);
+  background-image: linear-gradient(to left, #972ffe, #f01b48);
   padding-right: 0;
 }
 #between-popover .between-services .end {
   padding-left: 2em;
   padding-bottom: 6px;
   right: 5px;
-  background-image: linear-gradient(to right, transparent 0%, #972FFE 30%);
+  background-image: linear-gradient(to right, transparent 0%, #972ffe 30%);
 }
 #between-popover .nearby-start .between-services .start:before,
 #between-popover .nearby-end .between-services .end:before {
@@ -431,7 +440,7 @@ a:active {
   margin-right: 24px;
 }
 #between-popover .between-stops:after {
-  border-color: #972FFE;
+  border-color: #972ffe;
   margin-top: 4px;
   margin-left: 24px;
 }
@@ -454,7 +463,7 @@ a:active {
   width: 10px;
   height: 10px;
   border: 3px solid;
-  border-color: #f01b48 #972FFE #972FFE #f01b48;
+  border-color: #f01b48 #972ffe #972ffe #f01b48;
   background-color: #fff;
   border-radius: 100px;
 }
@@ -465,7 +474,7 @@ a:active {
 #between-popover .nearby-end .between-stops .end:before {
   margin-left: auto;
   margin-top: 5px;
-  border-color: #972FFE;
+  border-color: #972ffe;
 }
 
 #between-popover .between-stops .betweens {
@@ -484,7 +493,7 @@ a:active {
   width: 10px;
   height: 10px;
   border: 3px solid;
-  border-color: #f01b48 #972FFE #972FFE #f01b48;
+  border-color: #f01b48 #972ffe #972ffe #f01b48;
   background-color: #fff;
   border-radius: 100px;
 }
@@ -510,7 +519,7 @@ a:active {
   color: saddlebrown;
   border-radius: 12px;
   font-weight: bold;
-  font-size: .9em;
+  font-size: 0.9em;
   line-height: 1.3;
 }
 
@@ -520,7 +529,7 @@ a:active {
   height: calc(100% - env(safe-area-inset-top) - 20px);
   overflow: hidden;
   background-color: #fff;
-  transition: transform .15s ease-in-out;
+  transition: transform 0.15s ease-in-out;
 }
 #arrivals-popover .popover-scroll {
   overflow: auto;
@@ -536,7 +545,7 @@ a:active {
   min-height: calc(100vh - 20px);
   border: 0;
   opacity: 0;
-  transition: opacity .3 1s ease-in-out;
+  transition: opacity 0.3 1s ease-in-out;
 }
 #arrivals-popover.expand iframe {
   opacity: 1;
@@ -544,7 +553,7 @@ a:active {
 
 #arrivals-popover .popover-close {
   z-index: 1;
-  background-color: rgba(0,0,0,.35);
+  background-color: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(10px) saturate(3);
 }
 #arrivals-popover .popover-popout {
@@ -558,7 +567,7 @@ a:active {
   vertical-align: text-bottom;
 }
 #arrivals-popover .popover-popout:hover img {
-  filter: brightness(.2);
+  filter: brightness(0.2);
 }
 .standalone #arrivals-popover .popover-popout {
   display: none;
@@ -566,12 +575,12 @@ a:active {
 
 .popover-search {
   padding: 14px;
-  border-bottom: 1px solid rgba(0,0,0,.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   min-height: 60px;
   display: flex;
 }
 
-.popover-search input[type="search"] {
+.popover-search input[type='search'] {
   display: block;
   width: 100%;
   appearance: none;
@@ -579,14 +588,14 @@ a:active {
   line-height: 30px;
   border-radius: 10px;
   border: 0;
-  background-color: rgba(0,0,0,.1);
+  background-color: rgba(0, 0, 0, 0.1);
   padding: 0 7px;
 }
-.popover-search input[type="search"]:focus {
-  background-color: rgba(255,255,255,.5);
+.popover-search input[type='search']:focus {
+  background-color: rgba(255, 255, 255, 0.5);
 }
-.popover-search input[type="search"]:active {
-  background-color: rgba(0,0,0,.2);
+.popover-search input[type='search']:active {
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .popover-search button {
@@ -606,7 +615,7 @@ a:active {
   display: inline-block;
 }
 .popover-search button:active {
-  opacity: .4;
+  opacity: 0.4;
 }
 
 .popover-list {
@@ -618,7 +627,7 @@ a:active {
   -webkit-overflow-scrolling: touch;
 }
 .popover-list.loading {
-  opacity: .5;
+  opacity: 0.5;
   pointer-events: none;
 }
 .popover-list.loading #carbonads {
@@ -633,7 +642,7 @@ a:active {
 }
 .popover-list li:not(.carbon-li) a {
   padding: 14px;
-  border-bottom: 1px solid rgba(0,0,0,.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   display: flex;
   text-decoration: none;
   align-items: center;
@@ -641,10 +650,10 @@ a:active {
 }
 @media (hover: hover) {
   .popover-list li:not(.carbon-li) a:hover {
-    background-color: rgba(255,255,255,.6);
+    background-color: rgba(255, 255, 255, 0.6);
   }
 }
-.popover-list li a [class*="-tag"] {
+.popover-list li a [class*='-tag'] {
   margin-right: 1em;
 }
 .popover-list li a.current {
@@ -659,7 +668,7 @@ a:active {
 }
 @keyframes glowing {
   0% {
-    opacity: .2;
+    opacity: 0.2;
   }
   100% {
     opacity: 1;
@@ -675,7 +684,7 @@ a:active {
   color: #fff;
   font-weight: bold;
   text-decoration: none;
-  box-shadow: 0 0 5px rgba(0,0,0,.15);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   overflow: hidden;
   white-space: nowrap;
   flex-shrink: 0;
@@ -692,7 +701,7 @@ a.service-tag:hover {
 }
 .service-tag.highlight {
   border-color: #729e1f;
-  animation: currenting infinite linear .5s alternate both;
+  animation: currenting infinite linear 0.5s alternate both;
 }
 @keyframes currenting {
   0% {
@@ -704,7 +713,7 @@ a.service-tag:hover {
 }
 .service-tag span {
   font-weight: normal;
-  font-size: .75em;
+  font-size: 0.75em;
   background-color: #fff;
   color: #666;
   padding: 7px;
@@ -719,7 +728,7 @@ a.service-tag:hover {
   background-color: #f01b48;
   color: #fff;
   font-weight: bold;
-  box-shadow: 0 0 5px rgba(0,0,0,.15);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   flex-shrink: 0;
 }
 
@@ -727,7 +736,7 @@ a.service-tag:hover {
   width: 100%;
   position: absolute;
   top: -14px;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   opacity: 1;
   transform: translateY(0);
   padding: 0 12px;
@@ -745,17 +754,17 @@ a.service-tag:hover {
 }
 
 .float-pill {
-  background-color: rgba(255,255,255,.9);
+  background-color: rgba(255, 255, 255, 0.9);
   padding: 8px;
   border-radius: 7px;
-  box-shadow: 0 1px 10px rgba(0,0,0,.25);
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.25);
   position: absolute;
   right: 12px;
   margin-left: 12px;
 }
-@supports (backdrop-filter: blur(10px)){
+@supports (backdrop-filter: blur(10px)) {
   .float-pill {
-    background-color: rgba(255,255,255,.7);
+    background-color: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px) saturate(3);
   }
 }
@@ -770,7 +779,7 @@ a.service-tag:hover {
   padding: 0;
 }
 .float-pill p {
-  font-size: .8em;
+  font-size: 0.8em;
   margin: 0;
   padding: 0;
 }
@@ -787,7 +796,7 @@ a.service-tag:hover {
   -webkit-overflow-scrolling: touch;
   max-height: 35vh;
 }
-.float-pill .services-list .service-tag{
+.float-pill .services-list .service-tag {
   margin-top: 4px;
 }
 @media (min-width: 641px) {
@@ -808,16 +817,16 @@ a.service-tag:hover {
   text-align: center;
   font-size: 18px;
   border-radius: 123123px;
-  background-color: rgba(0,0,0,.2);
+  background-color: rgba(0, 0, 0, 0.2);
   color: #fff;
   text-decoration: none;
 }
 .popover-close:hover {
-  color: rgba(0,0,0,.75);
+  color: rgba(0, 0, 0, 0.75);
 }
 .popover-close:active {
-  filter: brightness(.9);
-  transform: scale(.95);
+  filter: brightness(0.9);
+  transform: scale(0.95);
 }
 
 .popover.expand #popover-float {
@@ -852,8 +861,8 @@ a.service-tag:hover {
   filter: saturate(2);
 }
 .popover-button:active {
-  filter: saturate(.7);
-  transform: scale(.95);
+  filter: saturate(0.7);
+  transform: scale(0.95);
 }
 .popover-button img {
   vertical-align: text-bottom;
@@ -868,19 +877,19 @@ a.service-tag:hover {
   top: 0;
   pointer-events: none;
   opacity: 0;
-  background-color: rgba(255,255,255,.9);
+  background-color: rgba(255, 255, 255, 0.9);
   padding: 5px;
   border-radius: 8px;
-  transition: opacity .3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
   margin-top: 1.5em;
   white-space: nowrap;
   font-size: 80%;
-  box-shadow: 0 0 0 2px rgba(0,0,0,.1);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
   z-index: 2;
 }
-@supports (backdrop-filter: blur(10px)){
+@supports (backdrop-filter: blur(10px)) {
   #tooltip {
-    background-color: rgba(255,255,255,.7);
+    background-color: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px) saturate(3);
   }
 }
@@ -952,7 +961,7 @@ a.service-tag:hover {
     left: 0;
     bottom: 0;
     margin: 0 !important;
-    background-color: rgba(255,255,255,.5) !important;
+    background-color: rgba(255, 255, 255, 0.5) !important;
     padding: 2px 10px !important;
   }
   @supports (top: max(1px)) {
@@ -979,7 +988,7 @@ a.service-tag:hover {
 
 .mapboxgl-ctrl-custom-geolocate {
   color: #333;
-  transition: color .3s;
+  transition: color 0.3s;
 }
 .mapboxgl-ctrl-custom-geolocate.loading {
   color: #007aff;
@@ -1004,7 +1013,7 @@ a.service-tag:hover {
   overflow: hidden;
   background-color: #fff;
   border-radius: 123123px;
-  box-shadow: 0 0 15px rgba(0,0,0,.3);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
   position: absolute;
   transform: translate(-50%, -50%);
   z-index: 1;
@@ -1039,7 +1048,7 @@ a.service-tag:hover {
   bottom: 0;
   transform-origin: bottom center;
   transform: rotateX(-60deg);
-  transition: transform .3s;
+  transition: transform 0.3s;
 }
 .user-location-accuracy {
   width: 20px;
@@ -1054,7 +1063,7 @@ a.service-tag:hover {
 @keyframes pulse {
   0% {
     transform: scale(1);
-    opacity: .2;
+    opacity: 0.2;
   }
   100% {
     transform: scale(4);
@@ -1064,18 +1073,17 @@ a.service-tag:hover {
 
 /* Scroll shadows */
 
-[data-scroll-shadow="top"] {
-  background: linear-gradient(rgba(0,0,0,.1), rgba(0,0,0,0));
+[data-scroll-shadow='top'] {
+  background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
 }
-[data-scroll-shadow="bottom"] {
-  background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.15));
+[data-scroll-shadow='bottom'] {
+  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));
   background-position: bottom;
   animation: glowing-gradient 1s linear 2s 10 alternate both;
 }
-[data-scroll-shadow="both"] {
-  background:
-    linear-gradient(rgba(0,0,0,.1), rgba(0,0,0,0)),
-    linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.1));
+[data-scroll-shadow='both'] {
+  background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0)),
+    linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1));
   background-position: top, bottom;
 }
 [data-scroll-shadow] {
@@ -1085,22 +1093,22 @@ a.service-tag:hover {
 }
 @keyframes glowing-gradient {
   0% {
-    background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.15));
+    background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));
   }
   6.25% {
-    background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.1.75));
+    background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1.75));
   }
   12.5% {
-    background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.2));
+    background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2));
   }
   18.75% {
-    background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.225));
+    background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.225));
   }
   25% {
-    background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.25));
+    background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.25));
   }
   100% {
-    background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.25));
+    background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.25));
   }
 }
 
@@ -1108,7 +1116,7 @@ a.service-tag:hover {
 
 .live {
   display: inline-block;
-  font-size: .9em;
+  font-size: 0.9em;
   font-weight: bold;
   padding: 2px 5px;
   border-radius: 2px;
@@ -1119,7 +1127,7 @@ a.service-tag:hover {
 
 /* Fancy pants features */
 
-[class*="alt-show"] {
+[class*='alt-show'] {
   display: none;
 }
 .alt-mode .alt-show-inline {
@@ -1141,7 +1149,7 @@ a.service-tag:hover {
   content: '';
   display: block;
   height: env(safe-area-inset-top);
-  background: linear-gradient(to bottom, rgba(0,0,0,.5), rgba(0,0,0,0));
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
   position: fixed;
   top: 0;
   left: 0;

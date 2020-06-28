@@ -8,15 +8,15 @@ const levels = JSON.parse(fs.readFileSync('visualization/data/levels.json'));
 
 console.log(`Total stops: ${stops.features.length}`);
 
-const data = stops.features.map(f => {
-  f.geometry.coordinates.forEach(c => round(c, 5));
-  const feature = circle(f, .015, { steps: 3 });
+const data = stops.features.map((f) => {
+  f.geometry.coordinates.forEach((c) => round(c, 5));
+  const feature = circle(f, 0.015, { steps: 3 });
   return {
     ...f.properties,
     name: toTitleCase(f.properties.name),
     level: levels[f.properties.number],
     contour: feature.geometry.coordinates,
-  }
+  };
 });
 
 const stopsFile = 'visualization/data/stops.3d.json';

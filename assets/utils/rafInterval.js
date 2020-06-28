@@ -17,7 +17,4 @@ const clearRafInterval = (id) => {
   cancelAnimationFrame(raf);
 };
 
-export {
-  setRafInterval,
-  clearRafInterval,
-};
+export { setRafInterval, clearRafInterval };

@@ -17,24 +17,29 @@ const readFile = (path) => {
 const encodeRoute = (lngLatCoords) => {
   // GeoJSON -> lng, lat
   // Polyline algo -> lat, lng
-  const xyCoords = lngLatCoords.map(coord => ({x: coord[0], y: coord[1]}));
-  const simplifiedCoords = simplify({
-    type: 'Feature',
-    properties: {},
-    geometry: {
-      type: 'LineString',
-      coordinates: lngLatCoords,
+  const xyCoords = lngLatCoords.map((coord) => ({ x: coord[0], y: coord[1] }));
+  const simplifiedCoords = simplify(
+    {
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'LineString',
+        coordinates: lngLatCoords,
+      },
     },
-  }, {
-    tolerance: .00005,
-    highQuality: true,
-    mutate: true,
-  });
-  const latLngCoords = simplifiedCoords.geometry.coordinates.map(coord => coord.reverse());
+    {
+      tolerance: 0.00005,
+      highQuality: true,
+      mutate: true,
+    },
+  );
+  const latLngCoords = simplifiedCoords.geometry.coordinates.map((coord) =>
+    coord.reverse(),
+  );
   return encode(latLngCoords);
 };
 
-services.forEach(({ no:service }) => {
+services.forEach(({ no: service }) => {
   console.log('service', service);
   const routes =
     readFile(`data/3/routes/mytransportsg/${service}.json`) ||

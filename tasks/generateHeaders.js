@@ -10,10 +10,7 @@ const files = fs.readdirSync('dist');
 const headers = [
   {
     path: '/',
-    files: [
-      /^app\..+js$/,
-      /^app\..+css$/,
-    ],
+    files: [/^app\..+js$/, /^app\..+css$/],
   },
   {
     path: '/bus-arrival/',
@@ -29,27 +26,22 @@ const headers = [
   },
   {
     path: '/bus-first-last/',
-    files: [
-      /^firstlast\..+js$/,
-      /^firstlast\..+css$/,
-    ],
+    files: [/^firstlast\..+js$/, /^firstlast\..+css$/],
   },
   {
     path: '/visualization/',
-    files: [
-      /^visualization\..+js$/,
-    ],
+    files: [/^visualization\..+js$/],
   },
 ];
 
 let content = '';
-headers.forEach(h => {
+headers.forEach((h) => {
   content += h.path + '\n';
-  files.forEach(f => {
-    if (h.files.some(r => r.test(f))) {
+  files.forEach((f) => {
+    if (h.files.some((r) => r.test(f))) {
       content += `  Link: </${f}>; rel=preload; as=${type(f)}\n`;
     }
-  })
+  });
 });
 
 fs.writeFileSync('dist/_headers', content);

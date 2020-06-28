@@ -8,17 +8,20 @@ const stopServiceRoutes = {};
 (async () => {
   do {
     console.log(`↗️  ${index}`);
-    const { body } = await got('http://datamall2.mytransport.sg/ltaodataservice/BusRoutes', {
-      json: true,
-      headers: {
-        AccountKey: process.env.ltaAccountKey,
+    const { body } = await got(
+      'http://datamall2.mytransport.sg/ltaodataservice/BusRoutes',
+      {
+        responseType: 'json',
+        headers: {
+          AccountKey: process.env.ltaAccountKey,
+        },
+        query: {
+          $skip: index * 500,
+        },
       },
-      query: {
-        '$skip': index*500,
-      },
-    });
+    );
     value = body.value;
-    value.forEach(v => {
+    value.forEach((v) => {
       const {
         ServiceNo,
         BusStopCode,
@@ -49,4 +52,3 @@ const stopServiceRoutes = {};
   fs.writeFileSync(filePath, JSON.stringify(stopServiceRoutes, null, '\t'));
   console.log(`Generated ${filePath}`);
 })();
-

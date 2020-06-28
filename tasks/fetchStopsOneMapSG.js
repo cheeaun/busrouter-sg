@@ -18,39 +18,44 @@ console.log(`Number of stops: ${numbers.length}`);
 const stopSets = chunkArr(numbers, 200);
 const stopsData = {};
 
-(async() => {
+(async () => {
+  const token = (
+    await got('https://developers.onemap.sg/publicapi/publicsessionid', {
+      responseType: 'json',
+    })
+  ).body.access_token;
 
-const token = (await got('https://developers.onemap.sg/publicapi/publicsessionid', { json: true })).body.access_token;
+  for (let i = 0, l = stopSets.length; i < l; i++) {
+    let res;
+    const stopNumbers = stopSets[i].join(',');
+    try {
+      console.log(`↗️  ${stopNumbers}`);
+      res = await got(
+        'https://developers.onemap.sg/publicapi/busexp/getbusStopsInfo',
+        {
+          responseType: 'json',
+          searchParams: {
+            busStopNo: stopNumbers,
+            token,
+          },
+        },
+      );
+    } catch (e) {
+      console.error(e);
+    }
 
-for (let i=0, l=stopSets.length; i<l; i++){
-  let res;
-  const stopNumbers = stopSets[i].join(',');
-  try {
-    console.log(`↗️  ${stopNumbers}`);
-    res = await got('https://developers.onemap.sg/publicapi/busexp/getbusStopsInfo', {
-      json: true,
-      query: {
-        busStopNo: stopNumbers,
-        token,
-      },
+    if (res.body.error) {
+      console.error(res.body.error);
+      console.log('Token', token);
+      return;
+    }
+
+    res.body.BusStopInfo.forEach((s) => {
+      stopsData[s.bus_stop] = [s.longitude, s.latitude];
     });
-  } catch (e){
-    console.error(e);
   }
 
-  if (res.body.error) {
-    console.error(res.body.error);
-    console.log('Token', token);
-    return;
-  }
-
-  res.body.BusStopInfo.forEach(s => {
-    stopsData[s.bus_stop] = [s.longitude, s.latitude];
-  });
-}
-
-const filePath = 'data/3/stops.onemap.json';
-fs.writeFileSync(filePath, JSON.stringify(stopsData, null, '\t'));
-console.log(`Generated ${filePath}`);
-
+  const filePath = 'data/3/stops.onemap.json';
+  fs.writeFileSync(filePath, JSON.stringify(stopsData, null, '\t'));
+  console.log(`Generated ${filePath}`);
 })();

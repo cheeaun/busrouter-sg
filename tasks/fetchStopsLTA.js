@@ -8,17 +8,20 @@ const got = require('got');
   let value;
   do {
     console.log(`↗️  ${index}`);
-    const { body } = await got('http://datamall2.mytransport.sg/ltaodataservice/BusStops', {
-      json: true,
-      headers: {
-        AccountKey: process.env.ltaAccountKey,
+    const { body } = await got(
+      'http://datamall2.mytransport.sg/ltaodataservice/BusStops',
+      {
+        responseType: 'json',
+        headers: {
+          AccountKey: process.env.ltaAccountKey,
+        },
+        searchParams: {
+          $skip: index * 500,
+        },
       },
-      query: {
-        '$skip': index*500,
-      },
-    });
+    );
     value = body.value;
-    value.forEach(v => {
+    value.forEach((v) => {
       const { BusStopCode } = v;
       stops[BusStopCode] = v;
     });
