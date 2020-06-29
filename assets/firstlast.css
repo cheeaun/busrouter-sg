@@ -222,7 +222,7 @@ abbr {
     display: block;
   }
 
-  #carbonads {
+  .ads {
     float: right;
     width: 320px;
     margin-top: -1em;

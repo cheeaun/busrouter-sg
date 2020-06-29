@@ -240,10 +240,6 @@ table tbody td.blank {
   border-bottom-style: dashed;
 }
 
-#carbonads {
-  pointer-events: auto;
-}
-
 @media (min-width: 720px) {
   body {
     display: grid;
@@ -264,13 +260,11 @@ table tbody td.blank {
   }
   #bus-stop-map,
   h1,
-  table,
-  #carbonads {
+  table {
     width: 50%;
   }
   #bus-stop-map,
-  h1,
-  #carbonads {
+  h1 {
     float: left;
   }
   header {

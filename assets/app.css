@@ -630,17 +630,17 @@ a:active {
   opacity: 0.5;
   pointer-events: none;
 }
-.popover-list.loading #carbonads {
+.popover-list.loading .ads {
   pointer-events: auto;
 }
-.popover-list.searching #carbonads {
+.popover-list.searching .ads {
   display: none;
 }
 .popover-list li.nada {
   padding: 14px;
   pointer-events: none;
 }
-.popover-list li:not(.carbon-li) a {
+.popover-list li:not(.ads) a {
   padding: 14px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   display: flex;
@@ -649,7 +649,7 @@ a:active {
   color: #000;
 }
 @media (hover: hover) {
-  .popover-list li:not(.carbon-li) a:hover {
+  .popover-list li:not(.ads) a:hover {
     background-color: rgba(255, 255, 255, 0.6);
   }
 }

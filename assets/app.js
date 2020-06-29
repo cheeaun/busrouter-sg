@@ -2498,7 +2498,7 @@ class App extends Component {
             ref={(c) => (this._servicesList = c)}
             onScroll={this._handleServicesScroll}
           >
-            <li class="carbon-li" hidden={!services.length || !showAd}>
+            <li class="ads-li" hidden={!services.length || !showAd}>
               {services.length && showAd && <Ad key="ad" />}
             </li>
             {services.length
@@ -2665,7 +2665,9 @@ class App extends Component {
               <ScrollableContainer class="popover-scroll">
                 <h2>
                   {showStopPopover.services.length} service
-                  {showStopPopover.services.length == 1 ? '' : 's'} &middot;{' '}
+                  {showStopPopover.services.length == 1
+                    ? ''
+                    : 's'} &middot;{' '}
                   <a
                     href={`/bus-first-last/#${showStopPopover.number}`}
                     target="_blank"
