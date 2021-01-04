@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
+import { useRef, useState, useEffect } from 'preact/hooks';
 import useResizeObserver from 'use-resize-observer';
 
 const shadowStyles = {
@@ -12,7 +12,8 @@ const shadowStyles = {
 
 export default function ScrollableContainer(props) {
   const { children, ...otherProps } = props;
-  const { ref, width, height } = useResizeObserver();
+  const ref = useRef(null)
+  const { width, height } = useResizeObserver({ ref });
   const [scrollShadow, setScrollShadow] = useState('bottom');
   useEffect(() => {
     // console.log('TRIGGER');
