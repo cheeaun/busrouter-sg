@@ -60,6 +60,9 @@ a:active {
   pointer-events: none;
 }
 
+.mapboxgl-canvas {
+  outline: 0;
+}
 .mapboxgl-ctrl-attrib {
   margin-top: 5px !important;
 }
