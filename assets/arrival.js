@@ -12,7 +12,7 @@ import busBendyImagePath from './images/bus-bendy.svg';
 import stopsJSONPath from '../data/3/stops.final.json';
 
 const TOKEN =
-  'QTKoEi1Mf_A2wAgIvOv9w0.0nIppXYy0me4YmZxt2MsJzMwgDNhJnYz9majJiOiEmIsIib1FWZlh2YiojI1Jye.kp';
+  'QWqqEvvKqJWAso5fvPW6ki.0nI31GO0YjYuNjMzpnMrB3Zw8WY1cTcrp2ajJiOiEmIsIib1FWZlh2YiojI1Jye.kp';
 
 const BUSES = {
   sd: {
