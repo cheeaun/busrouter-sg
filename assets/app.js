@@ -26,9 +26,10 @@ import passingRoutesImagePath from './images/passing-routes.svg';
 import iconSVGPath from '../icons/icon.svg';
 import busTinyImagePath from './images/bus-tiny.png';
 
-import routesJSONPath from '../data/3/routes.polyline.json';
-import stopsJSONPath from '../data/3/stops.final.json';
-import servicesJSONPath from '../data/3/services.final.json';
+const dataPath = 'https://data.busrouter.sg/v1/';
+const routesJSONPath = dataPath + 'routes.min.json';
+const stopsJSONPath = dataPath + 'stops.min.json';
+const servicesJSONPath = dataPath + 'services.min.json';
 
 const APP_NAME = 'BusRouter SG';
 const APP_LONG_NAME = 'Singapore Bus Routes Explorer';
@@ -133,7 +134,7 @@ class App extends Component {
     const stopsData = {};
     const stopsDataArr = [];
     Object.keys(stops).forEach((number) => {
-      const [lng, lat, name, left] = stops[number];
+      const [lng, lat, name] = stops[number];
       stopsData[number] = {
         name,
         number,
@@ -142,7 +143,6 @@ class App extends Component {
         coordinates: [lng, lat],
         services: [],
         routes: [],
-        left: !!left,
       };
       stopsDataArr.push(stopsData[number]);
     });
@@ -291,7 +291,6 @@ class App extends Component {
             number: stop.number,
             name: stop.name,
             interchange: stop.interchange,
-            left: stop.left,
           },
           geometry: {
             type: 'Point',
@@ -301,6 +300,16 @@ class App extends Component {
       },
     });
 
+    const stopTextPartialFormat = ['get', 'number'];
+    const stopTextFullFormat = [
+      'format',
+      ['get', 'number'],
+      { 'font-scale': 0.8 },
+      '\n',
+      {},
+      ['get', 'name'],
+      { 'text-color': '#000' },
+    ];
     const stopText = {
       layout: {
         'text-optional': true,
@@ -308,32 +317,19 @@ class App extends Component {
           'step',
           ['zoom'],
           '',
-          14,
-          ['get', 'number'],
+          15,
+          stopTextPartialFormat,
           16,
-          ['concat', ['get', 'number'], '\n', ['get', 'name']],
+          stopTextFullFormat,
         ],
-        'text-size': ['interpolate', ['linear'], ['zoom'], 14, 11, 16, 14],
-        'text-justify': [
-          'case',
-          ['boolean', ['get', 'left'], false],
-          'right',
-          'left',
-        ],
-        'text-anchor': [
-          'case',
-          ['boolean', ['get', 'left'], false],
-          'top-right',
-          'top-left',
-        ],
-        'text-offset': [
-          'case',
-          ['boolean', ['get', 'left'], false],
-          ['literal', [-1, -0.5]],
-          ['literal', [1, -0.5]],
-        ],
+        'text-size': ['step', ['zoom'], 12, 16, 14],
+        'text-justify': 'auto',
+        'text-variable-anchor': ['left', 'right'],
+        'text-radial-offset': 1,
         'text-padding': 0.5,
         'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
+        'text-max-width': 16,
+        'text-line-height': 1.1,
       },
       paint: {
         'text-color': '#f01b48',
@@ -341,38 +337,6 @@ class App extends Component {
         'text-halo-color': '#fff',
       },
     };
-
-    map.addLayer(
-      {
-        id: 'stops-icon',
-        type: 'symbol',
-        source: 'stops',
-        filter: ['any', ['>=', ['zoom'], 14], ['get', 'interchange']],
-        layout: {
-          visibility: 'none',
-          'symbol-z-order': 'source',
-          'icon-image': 'stop',
-          'icon-size': ['step', ['zoom'], 0.4, 15, 0.5, 16, 0.6],
-          'icon-padding': 0.5,
-          'icon-allow-overlap': true,
-          'icon-ignore-placement': true,
-          ...stopText.layout,
-        },
-        paint: {
-          'icon-opacity': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            8,
-            ['case', ['get', 'interchange'], 1, 0],
-            14,
-            1,
-          ],
-          ...stopText.paint,
-        },
-      },
-      'airport-label',
-    );
 
     map.addLayer(
       {
@@ -441,8 +405,37 @@ class App extends Component {
           ],
         },
       },
-      'stops-icon',
+      'settlement-subdivision-label',
     );
+
+    map.addLayer({
+      id: 'stops-icon',
+      type: 'symbol',
+      source: 'stops',
+      filter: ['any', ['>=', ['zoom'], 14], ['get', 'interchange']],
+      layout: {
+        visibility: 'none',
+        // 'symbol-z-order': 'source',
+        'icon-image': 'stop',
+        'icon-size': ['step', ['zoom'], 0.4, 15, 0.5, 16, 0.6],
+        'icon-padding': 0.5,
+        'icon-allow-overlap': true,
+        // 'icon-ignore-placement': true,
+        ...stopText.layout,
+      },
+      paint: {
+        'icon-opacity': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          8,
+          ['case', ['get', 'interchange'], 1, 0],
+          14,
+          1,
+        ],
+        ...stopText.paint,
+      },
+    });
 
     requestIdleCallback(() => {
       map.on('mouseenter', 'stops', () => {
@@ -578,43 +571,20 @@ class App extends Component {
         'text-field': [
           'step',
           ['zoom'],
-          [
-            'case',
-            ['==', ['get', 'type'], 'end'],
-            ['concat', ['get', 'number'], '\n', ['get', 'name']],
-            '',
-          ],
+          ['case', ['==', ['get', 'type'], 'end'], stopTextFullFormat, ''],
           14,
           [
             'case',
             ['==', ['get', 'type'], 'end'],
-            ['concat', ['get', 'number'], '\n', ['get', 'name']],
-            ['get', 'number'],
+            stopTextFullFormat,
+            stopTextPartialFormat,
           ],
           16,
-          ['concat', ['get', 'number'], '\n', ['get', 'name']],
-        ],
-        'text-offset': [
-          'case',
-          ['==', ['get', 'type'], 'end'],
-          [
-            'case',
-            ['boolean', ['get', 'left'], false],
-            ['literal', [-1, -1.5]],
-            ['literal', [1, -1.5]],
-          ],
-          [
-            'case',
-            ['boolean', ['get', 'left'], false],
-            ['literal', [-1, -0.5]],
-            ['literal', [1, -0.5]],
-          ],
+          stopTextFullFormat,
         ],
         'text-size': [
-          'interpolate',
-          ['linear'],
+          'step',
           ['zoom'],
-          14,
           ['case', ['==', ['get', 'type'], 'end'], 14, 11],
           16,
           14,
@@ -1746,7 +1716,6 @@ class App extends Component {
           name: stop.name,
           number: stop.number,
           type: stop.end ? 'end' : null,
-          left: stop.left,
         },
         geometry: {
           type: 'Point',
@@ -1903,7 +1872,7 @@ class App extends Component {
           map.getSource('stops-highlight').setData({
             type: 'FeatureCollection',
             features: routeStops.map((stop, i) => {
-              const { name, left } = stopsData[stop];
+              const { name } = stopsData[stop];
               return {
                 type: 'Feature',
                 id: encode(stop),
@@ -1911,7 +1880,6 @@ class App extends Component {
                   name,
                   number: stop,
                   type: endStops.includes(stop) ? 'end' : null,
-                  left,
                 },
                 geometry: {
                   type: 'Point',
@@ -2017,14 +1985,13 @@ class App extends Component {
           map.getSource('stops-highlight').setData({
             type: 'FeatureCollection',
             features: intersectStops.map((stop, i) => {
-              const { name, left } = stopsData[stop];
+              const { name } = stopsData[stop];
               return {
                 type: 'Feature',
                 id: encode(stop),
                 properties: {
                   name,
                   number: stop,
-                  left,
                 },
                 geometry: {
                   type: 'Point',
@@ -2116,7 +2083,6 @@ class App extends Component {
                   name,
                   number: stop,
                   type: 'end',
-                  left: stopsData[stop].left,
                 },
                 geometry: {
                   type: 'Point',
@@ -2474,80 +2440,80 @@ class App extends Component {
             )}
           </div>
           <div class="popover-inner">
-          <div class="popover-search">
-            <input
-              type="search"
-              placeholder="Search for bus service or stop"
-              autocomplete="off"
-              autocorrect="off"
-              autocapitalize="off"
-              spellcheck="false"
-              ref={(c) => (this._searchField = c)}
-              onfocus={this._handleSearchFocus}
-              oninput={this._handleSearch}
-              onkeydown={this._handleKeys}
-              disabled={(!searching && !services.length) || popoverIsUp}
-            />
-            <button type="button" onclick={this._handleSearchClose}>
-              Cancel
-            </button>
-          </div>
-          <ul
-            class={`popover-list ${
-              services.length || searching ? '' : 'loading'
-            } ${searching ? 'searching' : ''}`}
-            ref={(c) => (this._servicesList = c)}
-            onScroll={this._handleServicesScroll}
-          >
-            <li class="ads-li" hidden={!services.length || !showAd}>
-              {services.length && showAd && <Ad key="ad" />}
-            </li>
-            {services.length
-              ? (expandedSearchOnce ? services : services.slice(0, 10)).map(
-                  (s) => (
-                    <li key={s.number}>
-                      <a
-                        href={`#/services/${s.number}`}
-                        class={
-                          route.page === 'service' &&
-                          route.value.split('~').includes(s.number)
-                            ? 'current'
-                            : ''
-                        }
-                        onMouseEnter={() => this._previewRoute(s.number)}
-                        onMouseLeave={this._unpreviewRoute}
-                      >
-                        <b class="service-tag">{s.number}</b> {s.name}
+            <div class="popover-search">
+              <input
+                type="search"
+                placeholder="Search for bus service or stop"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                ref={(c) => (this._searchField = c)}
+                onfocus={this._handleSearchFocus}
+                oninput={this._handleSearch}
+                onkeydown={this._handleKeys}
+                disabled={(!searching && !services.length) || popoverIsUp}
+              />
+              <button type="button" onclick={this._handleSearchClose}>
+                Cancel
+              </button>
+            </div>
+            <ul
+              class={`popover-list ${
+                services.length || searching ? '' : 'loading'
+              } ${searching ? 'searching' : ''}`}
+              ref={(c) => (this._servicesList = c)}
+              onScroll={this._handleServicesScroll}
+            >
+              <li class="ads-li" hidden={!services.length || !showAd}>
+                {services.length && showAd && <Ad key="ad" />}
+              </li>
+              {services.length
+                ? (expandedSearchOnce ? services : services.slice(0, 10)).map(
+                    (s) => (
+                      <li key={s.number}>
+                        <a
+                          href={`#/services/${s.number}`}
+                          class={
+                            route.page === 'service' &&
+                            route.value.split('~').includes(s.number)
+                              ? 'current'
+                              : ''
+                          }
+                          onMouseEnter={() => this._previewRoute(s.number)}
+                          onMouseLeave={this._unpreviewRoute}
+                        >
+                          <b class="service-tag">{s.number}</b> {s.name}
+                        </a>
+                      </li>
+                    ),
+                  )
+                : !searching &&
+                  [1, 2, 3, 4, 5, 6, 7, 8].map((s, i) => (
+                    <li key={s}>
+                      <a href="#">
+                        <b class="service-tag">&nbsp;&nbsp;&nbsp;</b>
+                        <span class="placeholder">
+                          █████{i % 3 == 0 ? '███' : ''} ███
+                          {i % 2 == 0 ? '████' : ''}
+                        </span>
                       </a>
                     </li>
-                  ),
-                )
-              : !searching &&
-                [1, 2, 3, 4, 5, 6, 7, 8].map((s, i) => (
-                  <li key={s}>
-                    <a href="#">
-                      <b class="service-tag">&nbsp;&nbsp;&nbsp;</b>
-                      <span class="placeholder">
-                        █████{i % 3 == 0 ? '███' : ''} ███
-                        {i % 2 == 0 ? '████' : ''}
-                      </span>
+                  ))}
+              {searching &&
+                !!stops.length &&
+                stops.map((s) => (
+                  <li key={s.number}>
+                    <a href={`#/stops/${s.number}`}>
+                      <b class="stop-tag">{s.number}</b> {s.name}
                     </a>
                   </li>
                 ))}
-            {searching &&
-              !!stops.length &&
-              stops.map((s) => (
-                <li key={s.number}>
-                  <a href={`#/stops/${s.number}`}>
-                    <b class="stop-tag">{s.number}</b> {s.name}
-                  </a>
-                </li>
-              ))}
-            {searching && !stops.length && !services.length && (
-              <li class="nada">No results.</li>
-            )}
-          </ul>
-        </div>
+              {searching && !stops.length && !services.length && (
+                <li class="nada">No results.</li>
+              )}
+            </ul>
+          </div>
         </div>
         <div
           id="between-popover"
