@@ -2473,6 +2473,7 @@ class App extends Component {
               )
             )}
           </div>
+          <div class="popover-inner">
           <div class="popover-search">
             <input
               type="search"
@@ -2546,6 +2547,7 @@ class App extends Component {
               <li class="nada">No results.</li>
             )}
           </ul>
+        </div>
         </div>
         <div
           id="between-popover"
