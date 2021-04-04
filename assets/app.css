@@ -847,6 +847,9 @@ a.service-tag:hover {
   filter: brightness(0.9);
   transform: scale(0.95);
 }
+.popover-close > * {
+  pointer-events: none;
+}
 
 .popover.expand #popover-float {
   opacity: 0;
