@@ -9,7 +9,9 @@ import wheelchairImagePath from './images/wheelchair.svg';
 import busSingleImagePath from './images/bus-single.svg';
 import busDoubleImagePath from './images/bus-double.svg';
 import busBendyImagePath from './images/bus-bendy.svg';
-import stopsJSONPath from '../data/3/stops.final.json';
+
+const dataPath = 'https://data.busrouter.sg/v1/';
+const stopsJSONPath = dataPath + 'stops.min.json';
 
 const TOKEN =
   'QWqqEvvKqJWAso5fvPW6ki.0nI31GO0YjYuNjMzpnMrB3Zw8WY1cTcrp2ajJiOiEmIsIib1FWZlh2YiojI1Jye.kp';
