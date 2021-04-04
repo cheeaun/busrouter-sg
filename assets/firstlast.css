@@ -123,6 +123,10 @@ table tbody tr:nth-child(2) > * {
   border-bottom: 1px solid #eee;
 }
 
+.insignificant {
+  opacity: 0.5;
+}
+
 abbr {
   text-decoration: none;
 }

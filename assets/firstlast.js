@@ -4,8 +4,9 @@ import fetchCache from './utils/fetchCache';
 import { sortServices } from './utils/bus';
 import Ad from './ad';
 
-import firstLastJSONPath from '../data/3/firstlast.final.json';
-import stopsJSONPath from '../data/3/stops.final.json';
+const dataPath = 'https://data.busrouter.sg/v1/';
+const firstLastJSONPath = dataPath + 'firstlast.min.json';
+const stopsJSONPath = dataPath + 'stops.min.json';
 
 const timeFormat = (time) => {
   if (!/\d{4}/.test(time)) return time;
@@ -74,12 +75,17 @@ const TimeRanger = ({ values }) => {
 };
 
 function FirstLastTimes() {
-  const [stop, setStop] = useState('     ');
+  const [stop, setStop] = useState(null);
   const [stopName, setStopName] = useState(null);
   const [data, setData] = useState([]);
 
   const [timeLeft, setTimeLeft] = useState(null);
   const [timeStr, setTimeStr] = useState('');
+
+  useEffect(() => {
+    if (!stop || !stopName) return;
+    document.title = `Approximate first & last bus arrival times for ${stop}: ${stopName}`;
+  }, [stop, stopName]);
 
   useEffect(() => {
     Promise.all([
@@ -98,11 +104,21 @@ function FirstLastTimes() {
         setStopName(stopsData[stop][2]);
         setData(
           data
-            .map((d) => d.split(/\s+/))
+            .map((d) => {
+              const serviceTimings = d.split(/\s+/);
+              // If '=', means it's same timings as weekdays
+              if (serviceTimings[3] === '=')
+                serviceTimings[3] = serviceTimings[1];
+              if (serviceTimings[4] === '=')
+                serviceTimings[4] = serviceTimings[2];
+              if (serviceTimings[5] === '=')
+                serviceTimings[5] = serviceTimings[1];
+              if (serviceTimings[6] === '=')
+                serviceTimings[6] = serviceTimings[2];
+              return serviceTimings;
+            })
             .sort((a, b) => sortServices(a[0], b[0])),
         );
-
-        document.title = `Approximate first & last bus arrival times for ${stop}: ${stopName}`;
 
         const { pathname, search, hash } = location;
         gtag('config', window._GA_TRACKING_ID, {
@@ -148,7 +164,7 @@ function FirstLastTimes() {
         Approximate first &amp; last bus arrival times&nbsp;for
         <br />
         <b>
-          <span class="stop-tag">{stop}</span>{' '}
+          <span class="stop-tag">{stop || '     '}</span>{' '}
           {stopName ? stopName : <span class="placeholder">██████ ███</span>}
         </b>
       </h1>
@@ -187,8 +203,10 @@ function FirstLastTimes() {
           </tr>
         </thead>
         {data.length
-          ? data.map((d) => {
+          ? data.map((d, i) => {
               const [service, ...times] = d;
+              const sameAsPrevService =
+                data[i - 1] && service === data[i - 1][0];
               const [
                 wd1raw,
                 wd2raw,
@@ -199,7 +217,7 @@ function FirstLastTimes() {
               ] = times;
               const [wd1, wd2, sat1, sat2, sun1, sun2] = times.map(timeFormat);
               return (
-                <tbody>
+                <tbody class={sameAsPrevService ? 'insignificant' : ''}>
                   <tr>
                     <td rowspan="3">{service}</td>
                     <th>
