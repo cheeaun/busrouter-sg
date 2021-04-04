@@ -184,7 +184,7 @@ class App extends Component {
       upperLong = 104.05;
     const map = (this.map = window._map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/cheeaun/cjy5wcdoo00h51co7bbhqxly3',
+      style: 'mapbox://styles/cheeaun/ckn18umqw1jsi17nymmpdinba',
       renderWorldCopies: false,
       boxZoom: false,
       minZoom: 8,
