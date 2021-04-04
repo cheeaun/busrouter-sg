@@ -1129,22 +1129,17 @@ class App extends Component {
       });
 
       // Global shortcuts
-      let keydown = null;
       document.addEventListener('keydown', (e) => {
         const isFormField =
           e.target &&
           e.target.tagName &&
           /input|textarea|button|select/i.test(e.target.tagName);
-        keydown = e.key.toLowerCase();
+        const keydown = e.key.toLowerCase();
         switch (keydown) {
           case '/': {
             if (isFormField) return;
             e.preventDefault();
             this._searchField.focus();
-            break;
-          }
-          case 'alt': {
-            document.body.classList.add('alt-mode');
             break;
           }
           case 'escape': {
@@ -1162,16 +1157,15 @@ class App extends Component {
             }
             break;
           }
+          default: {
+            if (e.shiftKey && e.altKey) {
+              document.body.classList.add('alt-mode');
+            }
+          }
         }
       });
       document.addEventListener('keyup', () => {
-        switch (keydown) {
-          case 'alt': {
-            document.body.classList.remove('alt-mode');
-            break;
-          }
-        }
-        keydown = null;
+        document.body.classList.remove('alt-mode');
       });
 
       // For cases when user already typed something before fuse.js inits
