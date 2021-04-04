@@ -1,5 +1,4 @@
-[BusRouter SG](https://busrouter.sg/) - Singapore Bus Routes Explorer
-===
+# [BusRouter SG](https://busrouter.sg/) - Singapore Bus Routes Explorer
 
 > 🚌 🗺 🇸🇬
 
@@ -9,34 +8,33 @@
 
 [![Screenshot of BusRouter SG](screenshots/screenshot-3.png)](https://busrouter.sg/)
 
-✨ Complete Feature Set
----
+## ✨ Complete Feature Set
 
 - Show **full route** with all bus stops for every bus service.
 - Show **all** bus stops when zoomed in.
 - Show all routes that **pass through** one bus stop.
 - Show bus **arrival times** for a bus stop.
 
-*Previously* known as Singapore Bus Routes Explorer, abbreviated as 'SBRE' and *previously* looks like this:
+_Previously_ known as Singapore Bus Routes Explorer, abbreviated as 'SBRE' and _previously_ looks like this:
 
 [![Screenshot of Singapore Bus Routes Explorer](screenshots/screenshot-1.png)](https://busrouter.sg/)
 
-🔖 Story
----
+## 🔖 Story
 
 This web app is first build in [2012](https://twitter.com/cheeaun/status/160380168739897344), to fulfill my curiosity about buses. Ever since then, I've been maintaing the app and data until today.
 
 **👉 Read more about it: [Building BusRouter SG
 ](https://cheeaun.com/blog/2019/02/building-busrouter-sg/).**
 
-🛠 Technicalities
----
+## 🛠 Technicalities
 
 ### Data
 
-All data such as bus stops, services and routes are mostly *scraped* from <http://mytransport.sg/>, which means they are copyrighted by the [Land Transport Authority](http://www.lta.gov.sg/).
+> ⚠️ **WARNING** ⚠️ The data set is slowly being moved to a new separate repository: [**cheeaun/sgbusdata**](https://github.com/cheeaun/sgbusdata). Data in this repository and documentation shown below may be outdated and soon be removed.
 
-[`Node.js`](https://nodejs.org/) is required to run the tasks to scrape data, *massage* the data, and run this web app.
+All data such as bus stops, services and routes are mostly _scraped_ from <http://mytransport.sg/>, which means they are copyrighted by the [Land Transport Authority](http://www.lta.gov.sg/).
+
+[`Node.js`](https://nodejs.org/) is required to run the tasks to scrape data, _massage_ the data, and run this web app.
 
 Before running anything, run `npm i` to install all required dependencies.
 
@@ -57,51 +55,51 @@ One of environment variables is `ltaAccountKey` which you'll need to [request](h
 The scripts are:
 
 - `node tasks/fetchServices`
-	- Scrapes https://www.mytransport.sg/content/mytransport/map.html
-	- Grabs a list of bus services (number, category and number of routes)
-	- Generates `services.json`
+  - Scrapes https://www.mytransport.sg/content/mytransport/map.html
+  - Grabs a list of bus services (number, category and number of routes)
+  - Generates `services.json`
 - `node tasks/fetchServiceStops`
-	- Loop through all bus services and scrape `https://www.mytransport.sg/content/mytransport/ajax_lib/map_ajaxlib.getBusRouteByServiceId.{SERVICE_NUMBER}.html`
-	- Grabs a list of stops for every service
-	- Generates `serviceStops.json`, a mapping of every service to stops, separated by routes.
-	- Generates `stops.json`, a list of stops with names and coordinates
+  - Loop through all bus services and scrape `https://www.mytransport.sg/content/mytransport/ajax_lib/map_ajaxlib.getBusRouteByServiceId.{SERVICE_NUMBER}.html`
+  - Grabs a list of stops for every service
+  - Generates `serviceStops.json`, a mapping of every service to stops, separated by routes.
+  - Generates `stops.json`, a list of stops with names and coordinates
 - For route polylines (route lines of a service between all stops, containing just a list of coordinates), everything is scraped from their respective sources, ignoring dirty data, in best-effort ways:
-	- MyTransport.SG: `node tasks/fetchRoutesMyTransportSG` - most reliable so far, but some lines are kind of weird and overlapping in wrong ways
-	- OneMap.SG: `node tasks/fetchRoutesOneMapSG`
-	- TowerTransit.SG: `node tasks/fetchRoutesTowerTransitSG` - pretty reliable source
-	- Mapbox: `node tasks/fetchRoutesMapboxAPI` - using [Mapbox Directions API](https://www.mapbox.com/api-documentation/#directions) to fill in the blanks, for services that don't have routes.
-	- `node tasks/exposeFaultyRoutes` - for exposing routes that may be faulty, which is good for comparing the quality for all sources above.
+  - MyTransport.SG: `node tasks/fetchRoutesMyTransportSG` - most reliable so far, but some lines are kind of weird and overlapping in wrong ways
+  - OneMap.SG: `node tasks/fetchRoutesOneMapSG`
+  - TowerTransit.SG: `node tasks/fetchRoutesTowerTransitSG` - pretty reliable source
+  - Mapbox: `node tasks/fetchRoutesMapboxAPI` - using [Mapbox Directions API](https://www.mapbox.com/api-documentation/#directions) to fill in the blanks, for services that don't have routes.
+  - `node tasks/exposeFaultyRoutes` - for exposing routes that may be faulty, which is good for comparing the quality for all sources above.
 - For stops, everything is scraped from their respective sources too, to get stop names and (hopefully) accurate coordinates:
-	- LTA DataMall: `node tasks/fetchStopsLTA`
-	- OneMap.SG: `node tasks/fetchStopsOneMap`
-	- OpenStreetMap: `node tasks/fetchStopsOverPass` - data queried via OverPass API, generated with [Overpass Turbo](https://overpass-turbo.eu/)
-	- `node tasks/repositionStops` - Generates `stops2.json` with additional stop names and (hopefully) more accurate coordinates
-	- `node tasks/repositionStopLabels` - Generates `stops3.json` with adjusted label positionings.
+  - LTA DataMall: `node tasks/fetchStopsLTA`
+  - OneMap.SG: `node tasks/fetchStopsOneMap`
+  - OpenStreetMap: `node tasks/fetchStopsOverPass` - data queried via OverPass API, generated with [Overpass Turbo](https://overpass-turbo.eu/)
+  - `node tasks/repositionStops` - Generates `stops2.json` with additional stop names and (hopefully) more accurate coordinates
+  - `node tasks/repositionStopLabels` - Generates `stops3.json` with adjusted label positionings.
 - `node tasks/fetchRoutesLTA`
-	- Fetches all routes with stop information for approximate arrival times for first and last buses.
-	- The approximate arrival times are for *every single stop*. They are not the first bus that departs from first stop or last bus towards last stop. Every. Single. Stop.
-	- Generates `routes.lta.json`, a mapping of all stops to services with approximate arrival times for first and last buses.
+  - Fetches all routes with stop information for approximate arrival times for first and last buses.
+  - The approximate arrival times are for _every single stop_. They are not the first bus that departs from first stop or last bus towards last stop. Every. Single. Stop.
+  - Generates `routes.lta.json`, a mapping of all stops to services with approximate arrival times for first and last buses.
 - For generating GeoJSON files
-	- `node tasks/geojsonRoutes`
-	- `node tasks/geojsonStops`
+  - `node tasks/geojsonRoutes`
+  - `node tasks/geojsonStops`
 - For generating final JSON files to be consumed by the web app
-	- `node tasks/fetchAbbrs`
-		- Grab all relevant abbreviations from https://landtransportguru.net/acronyms/ and https://en.m.wikipedia.org/wiki/List_of_Singapore_abbreviations
-		- These are used for normalizing stop names
-	- `node tasks/generateServices`
-		- Service names are dynamically generated from the stops
-		- Generates `services.final.json` for usage in web app
-	- `node tasks/generateStops`
-		- Stop coordinates are rounded to 5-number precision
-		- Generates `stops.final.json` for usage in web app
-	- `node tasks/generateRoutesPolyline`
-		- Line coordinates are lossily compressed with [Encoded Polyline Algorithm Format](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
-		- Generates `routes.polyline.json` for usage in web app
-	- `node tasks/generateFirstLast`
-		- Approximate arrival times for first and last buses for every service in every single stop
-		- Generates `firstlast.final.json` for usage in web app
+  - `node tasks/fetchAbbrs`
+    - Grab all relevant abbreviations from https://landtransportguru.net/acronyms/ and https://en.m.wikipedia.org/wiki/List_of_Singapore_abbreviations
+    - These are used for normalizing stop names
+  - `node tasks/generateServices`
+    - Service names are dynamically generated from the stops
+    - Generates `services.final.json` for usage in web app
+  - `node tasks/generateStops`
+    - Stop coordinates are rounded to 5-number precision
+    - Generates `stops.final.json` for usage in web app
+  - `node tasks/generateRoutesPolyline`
+    - Line coordinates are lossily compressed with [Encoded Polyline Algorithm Format](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
+    - Generates `routes.polyline.json` for usage in web app
+  - `node tasks/generateFirstLast`
+    - Approximate arrival times for first and last buses for every service in every single stop
+    - Generates `firstlast.final.json` for usage in web app
 - For fun
-	- `node tasks/trivia` - Trivia questions with answers
+  - `node tasks/trivia` - Trivia questions with answers
 
 **Current version of the data is _3_**, all located under `./data/3` folder. All JSON files are "immutable", in the sense that all scripts above do not modify existing JSON files that are generated by other scripts. Every script is written to only create or modify its own JSON files and should not overwrite other JSON files.
 
@@ -112,32 +110,32 @@ When there's a data update, run the scripts in these order:
 1. `node tasks/fetchServices`
 2. `node tasks/fetchServiceStops`
 3. Stops data
-	1. `node tasks/fetchStopsOneMapSG`
-	2. `node tasks/fetchStopsOverpass`
-	3. `node tasks/repositionStops`
-	4. `node tasks/repositionStopLabels`
+   1. `node tasks/fetchStopsOneMapSG`
+   2. `node tasks/fetchStopsOverpass`
+   3. `node tasks/repositionStops`
+   4. `node tasks/repositionStopLabels`
 4. Routes data
-	1. `node tasks/fetchRoutesMyTransportSG --override`
-		- Mutates/updates the routes data because of `override` option
-		- Doesn't delete services/routes that are gone
-	2. `node tasks/fetchRoutesOneMapSG --override`
-		- Mutates/updates the routes data because of `override` option
-		- Doesn't delete services/routes that are gone
-	3. `node tasks/fetchRoutesMapboxAPI`
-		- Usually not needed, unless there are routes that are missing
-		- Doesn't delete services/routes that are gone
+   1. `node tasks/fetchRoutesMyTransportSG --override`
+      - Mutates/updates the routes data because of `override` option
+      - Doesn't delete services/routes that are gone
+   2. `node tasks/fetchRoutesOneMapSG --override`
+      - Mutates/updates the routes data because of `override` option
+      - Doesn't delete services/routes that are gone
+   3. `node tasks/fetchRoutesMapboxAPI`
+      - Usually not needed, unless there are routes that are missing
+      - Doesn't delete services/routes that are gone
 5. First/last bus data
-	1. `node tasks/fetchRoutesLTA`
+   1. `node tasks/fetchRoutesLTA`
 6. GeoJSON data (not used in web app)
-	1. `node tasks/geojsonStops`
-	2. `node tasks/geojsonRoutes`
+   1. `node tasks/geojsonStops`
+   2. `node tasks/geojsonRoutes`
 7. Finalized data (used in web app)
-	1. `node tasks/fetchAbbrs`
-		- To be used for next two scripts.
-	2. `node tasks/generateStops`
-	3. `node tasks/generateServices`
-	4. `node tasks/generateRoutesPolyline`
-	5. `node tasks/generateFirstLast`
+   1. `node tasks/fetchAbbrs`
+      - To be used for next two scripts.
+   2. `node tasks/generateStops`
+   3. `node tasks/generateServices`
+   4. `node tasks/generateRoutesPolyline`
+   5. `node tasks/generateFirstLast`
 
 ### Visualization
 
@@ -146,11 +144,11 @@ There's a separate visualization mini-site on `/visualization/` URL.
 The scripts to generate the data, in order:
 
 1. `node visualization/build-routes`
-	- Reads `stops2.json` and transform routes data with "levels" for 3D extrusion
-	- Generates `visualization/data/routes.json` for usage on mini-site and `visualization/data/levels.json` to be read by the `build-stops` script
+   - Reads `stops2.json` and transform routes data with "levels" for 3D extrusion
+   - Generates `visualization/data/routes.json` for usage on mini-site and `visualization/data/levels.json` to be read by the `build-stops` script
 2. `node visualization/build-stops`
-	- Reads `stops.geojson` and *buffered* into circle polygons which will be 3D-extruded
-	- Generates `visualization/data/stops.3d.json` for usage on mini-site
+   - Reads `stops.geojson` and _buffered_ into circle polygons which will be 3D-extruded
+   - Generates `visualization/data/stops.3d.json` for usage on mini-site
 
 ### Web App
 
@@ -159,20 +157,17 @@ The scripts for the web app:
 - `npm start` - start server for development
 - `npm run build` - build for production and deployment, in `./dist` folder.
 
-📜 License
----
+## 📜 License
 
 Data © [LTA](http://www.mytransport.sg/content/mytransport/home/dataMall/termOfUse.html) © [OneMap](https://www.onemap.sg/legal/termsofuse.html) © [OSM contributors](https://www.openstreetmap.org/copyright). Everything else: [MIT](http://cheeaun.mit-license.org/)
 
-🎤 Feedback
----
+## 🎤 Feedback
 
 If you have any feedback, tweet me at [@cheeaun](http://twitter.com/cheeaun).
 
-🙇‍ Credits
----
+## 🙇‍ Credits
 
 - Inspired by [this tweet](https://twitter.com/mengwong/status/155511398653362177).
 - Icon is from [The Noun Project](http://thenounproject.com/noun/bus/#icon-No97)
-- Color scheme *inspired* by [Gothere.sg](http://gothere.sg/)
+- Color scheme _inspired_ by [Gothere.sg](http://gothere.sg/)
 - Thanks to Eddy Yanto for building the [iPad app](https://github.com/eddyyanto/SGBusRouter) until mid-2015.
