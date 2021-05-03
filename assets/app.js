@@ -704,6 +704,28 @@ const App = () => {
     });
   };
 
+  const defaultTitle = document.title;
+  const defaultDesc = document.querySelector('meta[property="og:description"]')
+    .content;
+  const defaultURL = document.querySelector('meta[property="og:url"]').content;
+  const defaultImg = document.querySelector('meta[property="og:image"]')
+    .content;
+  const setHead = (headContent = {}) => {
+    let {
+      title = defaultTitle,
+      url = defaultURL,
+      desc = defaultDesc,
+      image = defaultImg,
+    } = headContent;
+    document.title = document.querySelector(
+      'meta[property="og:title"]',
+    ).content = title;
+    if (!/^https?/.test(url)) url = 'https://busrouter.sg/#' + url;
+    document.querySelector('meta[property="og:url"]').content = url;
+    document.querySelector('meta[property="og:description"]').content = desc;
+    document.querySelector('meta[property="og:image"]').content = image;
+  };
+
   const renderRoute = () => {
     const route = getRoute();
 
@@ -748,7 +770,10 @@ const App = () => {
         if (services.length === 1) {
           const service = services[0];
           const { name, routes } = servicesData[service];
-          document.title = `Bus service ${service}: ${name} - ${APP_NAME}`;
+          setHead({
+            title: `Bus service ${service}: ${name} - ${APP_NAME}`,
+            url: `/services/${service}`,
+          });
 
           // Show stops of the selected service
           const endStops = [routes[0][0], routes[0][routes[0].length - 1]];
@@ -815,7 +840,10 @@ const App = () => {
               return `${s}: ${name}`;
             })
             .join(', ');
-          document.title = `Bus services; ${servicesTitle} - ${APP_NAME}`;
+          setHead({
+            title: `Bus services; ${servicesTitle} - ${APP_NAME}`,
+            url: `/services/${services.join('~')}`,
+          });
 
           let routeStops = [];
           let serviceGeometries = [];
@@ -915,7 +943,10 @@ const App = () => {
 
         const { routes, name, coordinates } = stopsData[stop];
         if (route.subpage === 'routes') {
-          document.title = `Routes passing Bus stop ${stop}: ${name} - ${APP_NAME}`;
+          setHead({
+            title: `Routes passing Bus stop ${stop}: ${name} - ${APP_NAME}`,
+            url: `/stops/${stop}/routes`,
+          });
 
           // Hide all stops
           map.setLayoutProperty('stops', 'visibility', 'none');
@@ -1000,7 +1031,10 @@ const App = () => {
             );
           });
         } else {
-          document.title = `Bus stop ${stop}: ${name} - ${APP_NAME}`;
+          setHead({
+            title: `Bus stop ${stop}: ${name} - ${APP_NAME}`,
+            url: `/stops/${stop}`,
+          });
           map.setLayoutProperty('stops', 'visibility', 'visible');
           map.setLayoutProperty('stops-icon', 'visibility', 'visible');
           _showStopPopover(stop);
@@ -1017,7 +1051,10 @@ const App = () => {
           return;
         }
 
-        document.title = `Routes between ${startStopNumber} and ${endStopNumber} - ${APP_NAME}`;
+        setHead({
+          title: `Routes between ${startStopNumber} and ${endStopNumber} - ${APP_NAME}`,
+          url: `/between/${startStopNumber}-${endStopNumber}`,
+        });
         // Reset
         setExpandSearch(false);
         setShrinkSearch(true);
@@ -1130,7 +1167,7 @@ const App = () => {
         break;
       }
       default: {
-        document.title = `${APP_NAME} - ${APP_LONG_NAME}`;
+        setHead();
 
         // Show all stops
         map.setLayoutProperty('stops', 'visibility', 'visible');
