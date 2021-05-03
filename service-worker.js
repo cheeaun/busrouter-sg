@@ -81,7 +81,23 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-  /\/mapbox\-tiles\/.*$/,
+  /\/staticmaps\/.*$/,
+  new workbox.strategies.CacheFirst({
+    cacheName: 'staticmaps',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+        purgeOnQuotaError: true,
+      }),
+      new workbox.cacheableResponse.Plugin({
+        statuses: [0, 200],
+      }),
+    ],
+  }),
+);
+
+workbox.routing.registerRoute(
+  /.*busroutersg\-staticmaps/,
   new workbox.strategies.CacheFirst({
     cacheName: 'mapbox-tiles',
     plugins: [

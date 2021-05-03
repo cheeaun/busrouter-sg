@@ -12,9 +12,6 @@ import busBendyImagePath from './images/bus-bendy.svg';
 const dataPath = 'https://data.busrouter.sg/v1/';
 const stopsJSONPath = dataPath + 'stops.min.json';
 
-const TOKEN =
-  'QWqqEvvKqJWAso5fvPW6ki.0nI31GO0YjYuNjMzpnMrB3Zw8WY1cTcrp2ajJiOiEmIsIib1FWZlh2YiojI1Jye.kp';
-
 const BUSES = {
   sd: {
     alt: 'Single deck bus',
@@ -240,11 +237,7 @@ function ArrivalTimes() {
     <div>
       <div id="bus-stop-map">
         <img
-          src={`https://busrouter.sg/staticmaps/${lng},${lat},17,0,60/400x200@2x?access_token=${TOKEN.split(
-            '',
-          )
-            .reverse()
-            .join('')}`}
+          src={`https://busroutersg-staticmaps.cheeaun.workers.dev/${lng},${lat},17,0,60/400x200@2x`}
           alt="Bus stop map"
           width="400"
           height="200"
