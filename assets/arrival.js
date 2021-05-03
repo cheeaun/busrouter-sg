@@ -1,8 +1,7 @@
-import { h, render, Fragment } from 'preact';
+import { h, render } from 'preact';
 import { useState, useRef, useEffect } from 'preact/hooks';
 import { timeDisplay, sortServicesPinned } from './utils/bus';
 import fetchCache from './utils/fetchCache';
-import Ad from './ad';
 import setIcon from '../utils/setIcon';
 
 import wheelchairImagePath from './images/wheelchair.svg';
