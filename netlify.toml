@@ -34,5 +34,4 @@ ID = "busrouter-sg"
   package = "@netlify/plugin-lighthouse"
   [[plugins.inputs.audits]]
     path = "dist"
-  [plugins.inputs]
     output_path = "reports/lighthouse.html"
