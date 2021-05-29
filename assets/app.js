@@ -1670,7 +1670,15 @@ const App = () => {
         source: 'stops-highlight',
         filter: ['any', ['>', ['zoom'], 10], ['==', ['get', 'type'], 'end']],
         paint: {
-          'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 4, 15, 12],
+          'circle-radius': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            10,
+            4,
+            15,
+            ['case', ['==', ['get', 'type'], 'end'], 4, 12],
+          ],
           'circle-color': '#fff',
           'circle-stroke-color': '#f01b48',
           'circle-stroke-width': 5,
