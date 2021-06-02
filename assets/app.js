@@ -126,8 +126,6 @@ const App = () => {
   const [betweenStartStop, setBetweenStartStop] = useState(null);
   const [betweenEndStop, setBetweenEndStop] = useState(null);
 
-  const [liveBusCount, setLiveBusCount] = useState(0);
-
   const prevStopNumber = useRef(null);
   const servicesList = useRef(null);
   const searchField = useRef(null);
@@ -733,7 +731,6 @@ const App = () => {
     $map.classList.remove('fade-out');
     setShowStopPopover(false);
     setShowBetweenPopover(false);
-    setLiveBusCount(0);
     [
       'stops-highlight',
       'routes',
@@ -2297,14 +2294,6 @@ const App = () => {
                         )
                         .join(' ∙ ')}
                     </p>
-                    {liveBusCount > 0 && (
-                      <p style={{ marginTop: 5 }}>
-                        <span class="live">LIVE</span>{' '}
-                        <img src={busTinyImagePath} width="16" alt="" />{' '}
-                        {liveBusCount} bus{liveBusCount === 1 ? '' : 'es'} now
-                        on track.
-                      </p>
-                    )}
                   </div>
                 </div>
               ) : (
