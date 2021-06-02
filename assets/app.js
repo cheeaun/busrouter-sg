@@ -110,7 +110,7 @@ let fuseStops;
 
 const App = () => {
   const prevRoute = useRef(null);
-  const route = useRef(getRoute());
+  const [route, setRoute] = useState(getRoute());
 
   const [routeLoading, setRouteLoading] = useState(true);
   const [services, setServices] = useState([]);
@@ -270,7 +270,7 @@ const App = () => {
     setShowStopPopover({ number, name, services });
 
     requestAnimationFrame(() => {
-      const { page } = route.current;
+      const { page } = route;
       if (page === 'stop' && !map.getLayer('traffic')) {
         requestAnimationFrame(() => {
           map.addLayer(
@@ -365,7 +365,7 @@ const App = () => {
   };
 
   const hideStopPopover = (e) => {
-    const { page, subpage } = route.current;
+    const { page, subpage } = route;
     if (e && (page !== 'stop' || subpage === 'routes')) {
       e.preventDefault();
     }
@@ -407,7 +407,7 @@ const App = () => {
     }
     setShowStopPopover(false);
     setTimeout(() => {
-      const { page, subpage } = route.current;
+      const { page, subpage } = route;
       if (
         map.getLayer('traffic') &&
         (page !== 'stop' || (page === 'stop' && subpage === 'routes'))
@@ -420,7 +420,7 @@ const App = () => {
     }, 1000);
   };
 
-  const closeServicesPopover = (e) => {
+  const navBackToStop = (e) => {
     if (prevRoute.current?.page === 'stop') {
       e.preventDefault();
       history.back();
@@ -591,7 +591,7 @@ const App = () => {
   };
 
   const cannotPreviewRoute = () => {
-    const { page, subpage, value } = route.current;
+    const { page, subpage, value } = route;
     return (
       subpage === 'routes' ||
       (page === 'service' && value.split('~').length > 1)
@@ -1243,7 +1243,7 @@ const App = () => {
   const onLoad = async () => {
     window.onhashchange = () => {
       prevRoute.current = route;
-      route.current = getRoute();
+      setRoute(getRoute());
       renderRoute();
     };
 
@@ -1570,7 +1570,7 @@ const App = () => {
             }
           }
         } else {
-          const { page, subpage } = route.current;
+          const { page, subpage } = route;
           if (page === 'stop' && subpage !== 'routes') {
             location.hash = '/';
           } else {
@@ -2301,8 +2301,8 @@ const App = () => {
     !!showArrivalsPopover ||
     !!showServicePopover;
   const routeServices =
-    route.current.page === 'service' && servicesData
-      ? route.current.value.split('~').filter((s) => servicesData[s])
+    route.page === 'service' && servicesData
+      ? route.value.split('~').filter((s) => servicesData[s])
       : [];
 
   return (
@@ -2314,83 +2314,80 @@ const App = () => {
           shrinkSearch ? 'shrink' : ''
         } ${routeLoading ? 'loading' : ''}`}
       >
-        <div
-          id="popover-float"
-          hidden={!/service|stop/.test(route.current.page)}
-        >
-          {route.current.page === 'service' &&
-          servicesData &&
-          routeServices.length > 1 ? (
-            <div class="float-pill" ref={floatPill}>
-              <a href="#/" onClick={closeServicesPopover} class="popover-close">
-                &times;
-              </a>
-              {routeServices.length === 1 ? (
-                <div class="service-flex">
-                  <span class="service-tag">{routeServices[0]}</span>
-                  <div class="service-info">
-                    <h1>{servicesData[routeServices[0]].name}</h1>
-                    <p>
-                      {servicesData[routeServices[0]].routes.length} route
-                      {servicesData[routeServices[0]].routes.length > 1
-                        ? 's'
-                        : ''}{' '}
-                      ∙&nbsp;
-                      {servicesData[routeServices[0]].routes
-                        .map(
-                          (r) => `${r.length} stop${r.length > 1 ? 's' : ''}`,
-                        )
-                        .join(' ∙ ')}
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                [
+        <div id="popover-float" hidden={!/service|stop/.test(route.page)}>
+          {route.page === 'service' &&
+            servicesData &&
+            routeServices.length > 1 && (
+              <div class="float-pill" ref={floatPill}>
+                <a href="#/" class="popover-close">
+                  &times;
+                </a>
+                {routeServices.length === 1 ? (
                   <div class="service-flex">
-                    <div>
-                      <h1>{routeServices.length} services selected</h1>
+                    <span class="service-tag">{routeServices[0]}</span>
+                    <div class="service-info">
+                      <h1>{servicesData[routeServices[0]].name}</h1>
                       <p>
-                        {intersectStops.length} intersecting stop
-                        {intersectStops.length !== 1 && 's'}
+                        {servicesData[routeServices[0]].routes.length} route
+                        {servicesData[routeServices[0]].routes.length > 1
+                          ? 's'
+                          : ''}{' '}
+                        ∙&nbsp;
+                        {servicesData[routeServices[0]].routes
+                          .map(
+                            (r) => `${r.length} stop${r.length > 1 ? 's' : ''}`,
+                          )
+                          .join(' ∙ ')}
                       </p>
                     </div>
-                  </div>,
-                  <div class="services-list">
-                    {routeServices.sort(sortServices).map((service) => (
-                      <a
-                        href={`#/services/${service}`}
-                        onClick={(e) => clickRoute(e, service)}
-                        onMouseEnter={(e) => highlightRoute(e, service)}
-                        onMouseLeave={unhighlightRoute}
-                        class="service-tag"
-                      >
-                        {service}
-                      </a>
-                    ))}
-                  </div>,
-                ]
-              )}
-            </div>
-          ) : (
-            route.current.page === 'stop' &&
-            route.current.subpage === 'routes' &&
-            stopsData && (
+                  </div>
+                ) : (
+                  [
+                    <div class="service-flex">
+                      <div>
+                        <h1>{routeServices.length} services selected</h1>
+                        <p>
+                          {intersectStops.length} intersecting stop
+                          {intersectStops.length !== 1 && 's'}
+                        </p>
+                      </div>
+                    </div>,
+                    <div class="services-list">
+                      {routeServices.sort(sortServices).map((service) => (
+                        <a
+                          href={`#/services/${service}`}
+                          onClick={(e) => clickRoute(e, service)}
+                          onMouseEnter={(e) => highlightRoute(e, service)}
+                          onMouseLeave={unhighlightRoute}
+                          class="service-tag"
+                        >
+                          {service}
+                        </a>
+                      ))}
+                    </div>,
+                  ]
+                )}
+              </div>
+            )}
+          {route.page === 'stop' &&
+            route.subpage === 'routes' &&
+            stopsData &&
+            stopsData[route.value] && (
               <div class="float-pill" ref={floatPill}>
                 <a href="#/" class="popover-close">
                   &times;
                 </a>
                 <div class="service-flex">
-                  <span class="stop-tag">{route.current.value}</span>
+                  <span class="stop-tag">{route.value}</span>
                   <div>
-                    <h1>{stopsData[route.current.value].name}</h1>
+                    <h1>{stopsData[route.value].name}</h1>
                     <p>
-                      {stopsData[route.current.value].services.length} passing
-                      routes
+                      {stopsData[route.value].services.length} passing routes
                     </p>
                   </div>
                 </div>
                 <div class="services-list" onClick={unhighlightRoute}>
-                  {stopsData[route.current.value].services
+                  {stopsData[route.value].services
                     .sort(sortServices)
                     .map((service) => (
                       <a
@@ -2405,8 +2402,7 @@ const App = () => {
                     ))}
                 </div>
               </div>
-            )
-          )}
+            )}
         </div>
         <div class="popover-inner">
           <div class="popover-search">
@@ -2444,8 +2440,8 @@ const App = () => {
                       <a
                         href={`#/services/${s.number}`}
                         class={
-                          route.current.page === 'service' &&
-                          route.current.value.split('~').includes(s.number)
+                          route.page === 'service' &&
+                          route.value.split('~').includes(s.number)
                             ? 'current'
                             : ''
                         }
@@ -2519,7 +2515,7 @@ const App = () => {
                 </a>
               </h2>
               <BusServicesArrival
-                map={route.current.page === 'stop' ? map : null}
+                map={route.page === 'stop' ? map : null}
                 id={showStopPopover.number}
                 services={showStopPopover.services}
               />
@@ -2579,46 +2575,44 @@ const App = () => {
         class={`popover ${showServicePopover ? 'expand' : ''}`}
         key={``}
       >
-        <a href="#/" class="popover-close">
+        <a href="#/" onClick={navBackToStop} class="popover-close">
           &times;
         </a>
-        {route.current.page === 'service' &&
-          servicesData &&
-          routeServices.length && (
-            <>
-              <header>
-                <h1>
-                  <b class="service-tag">{routeServices[0]}</b>
-                  {servicesData[routeServices[0]].name}
-                </h1>
-              </header>
-              <ScrollableContainer
-                class="popover-scroll"
-                scrollToTopKey={`sttk-${routeServices[0]}`}
-              >
-                <h2>
-                  {servicesData[routeServices[0]].routes.length} route
-                  {servicesData[routeServices[0]].routes.length > 1
-                    ? 's'
-                    : ''}{' '}
-                  ∙&nbsp;
-                  {servicesData[routeServices[0]].routes
-                    .map((r) => `${r.length} stop${r.length > 1 ? 's' : ''}`)
-                    .join(' ∙ ')}
-                </h2>
-                <StopsList
-                  routes={servicesData[routeServices[0]].routes}
-                  stopsData={stopsData}
-                  onStopClick={zoomToStop}
-                  onStopClickAgain={_showStopPopover}
-                />
-                <div class="callout info">
-                  <span class="legend-opposite" /> Bus stops with opposite
-                  direction of services
-                </div>
-              </ScrollableContainer>
-            </>
-          )}
+        {route.page === 'service' && servicesData && routeServices.length && (
+          <>
+            <header>
+              <h1>
+                <b class="service-tag">{routeServices[0]}</b>
+                {servicesData[routeServices[0]].name}
+              </h1>
+            </header>
+            <ScrollableContainer
+              class="popover-scroll"
+              scrollToTopKey={`sttk-${routeServices[0]}`}
+            >
+              <h2>
+                {servicesData[routeServices[0]].routes.length} route
+                {servicesData[routeServices[0]].routes.length > 1
+                  ? 's'
+                  : ''}{' '}
+                ∙&nbsp;
+                {servicesData[routeServices[0]].routes
+                  .map((r) => `${r.length} stop${r.length > 1 ? 's' : ''}`)
+                  .join(' ∙ ')}
+              </h2>
+              <StopsList
+                routes={servicesData[routeServices[0]].routes}
+                stopsData={stopsData}
+                onStopClick={zoomToStop}
+                onStopClickAgain={_showStopPopover}
+              />
+              <div class="callout info">
+                <span class="legend-opposite" /> Bus stops with opposite
+                direction of services
+              </div>
+            </ScrollableContainer>
+          </>
+        )}
       </div>
       <div
         id="between-popover"
