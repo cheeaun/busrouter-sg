@@ -176,13 +176,14 @@ table tbody td.blank {
 
 .stop-tag {
   display: inline-block;
-  padding: 3px 7px;
-  border-radius: 5px;
-  border: 2px solid #fff;
-  background-color: #f01b48;
-  color: #fff;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background-color: #f01b4822;
+  color: #f01b48;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
   font-weight: bold;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   position: relative;
 }
 .stop-tag:after {
