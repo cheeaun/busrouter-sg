@@ -18,6 +18,7 @@ import BusServicesArrival from './components/BusServicesArrival';
 import GeolocateControl from './components/GeolocateControl';
 import BetweenRoutes from './components/BetweenRoutes';
 import ScrollableContainer from './components/ScrollableContainer';
+import StopsList from './components/StopsList.jsx';
 
 import stopImagePath from './images/stop.png';
 import stopEndImagePath from './images/stop-end.png';
@@ -108,7 +109,7 @@ let fuseStops;
 
 const App = () => {
   const prevRoute = useRef(null);
-  const [route, setRoute] = useState(getRoute());
+  const route = useRef(getRoute());
 
   const [routeLoading, setRouteLoading] = useState(true);
   const [services, setServices] = useState([]);
@@ -118,6 +119,7 @@ const App = () => {
   const [expandedSearchOnce, setExpandedSearchOnce] = useState(false);
   const [shrinkSearch, setShrinkSearch] = useState(false);
   const [showStopPopover, setShowStopPopover] = useState(false);
+  const [showServicePopover, setShowServicePopover] = useState(false);
   const [showArrivalsPopover, setShowArrivalsPopover] = useState(false);
   const [intersectStops, setIntersectStops] = useState(0);
   const [showAd, setShowAd] = useState(false);
@@ -133,6 +135,7 @@ const App = () => {
   const stopPopover = useRef(null);
   const floatPill = useRef(null);
   const betweenPopover = useRef(null);
+  const servicePopover = useRef(null);
 
   let previewRAF = useRef(null).current;
 
@@ -266,23 +269,7 @@ const App = () => {
     setShowStopPopover({ number, name, services });
 
     requestAnimationFrame(() => {
-      if (popoverHeight === stopPopover.current?.offsetHeight) return;
-      const offset = BREAKPOINT()
-        ? [0, 0]
-        : [0, -stopPopover.current?.offsetHeight / 2];
-      const zoom = map.getZoom();
-      if (zoom < 16) {
-        map.flyTo({
-          zoom: 16,
-          center: coordinates,
-          offset,
-          animate: zoom >= 12,
-        });
-      } else {
-        map.easeTo({ center: coordinates, offset });
-      }
-
-      const { page } = route;
+      const { page } = route.current;
       if (page === 'stop' && !map.getLayer('traffic')) {
         requestAnimationFrame(() => {
           map.addLayer(
@@ -357,16 +344,33 @@ const App = () => {
           );
         });
       }
+
+      if (popoverHeight === stopPopover.current?.offsetHeight) return;
+      const offset = BREAKPOINT()
+        ? [0, 0]
+        : [0, -stopPopover.current?.offsetHeight / 2];
+      const zoom = map.getZoom();
+      if (zoom < 16) {
+        map.flyTo({
+          zoom: 16,
+          center: coordinates,
+          offset,
+          animate: zoom >= 12,
+        });
+      } else {
+        map.easeTo({ center: coordinates, offset });
+      }
     });
   };
 
   const hideStopPopover = (e) => {
-    const { page, subpage } = route;
+    const { page, subpage } = route.current;
     if (e && (page !== 'stop' || subpage === 'routes')) {
       e.preventDefault();
     }
     let { number } = showStopPopover;
     number = number || prevStopNumber.current;
+    let stopToBeHighlighted;
     if (number) {
       map.setFeatureState(
         {
@@ -386,9 +390,23 @@ const App = () => {
           selected: false,
         },
       );
+      if (stopPopover.current?.classList.contains('expand')) {
+        requestAnimationFrame(() => {
+          stopToBeHighlighted = servicePopover.current?.querySelector(
+            `a[data-stop="${number}"]`,
+          );
+          stopToBeHighlighted?.classList.add('flash');
+          stopToBeHighlighted?.scrollIntoView({
+            behaviour: 'smooth',
+            block: 'nearest',
+            inline: 'nearest',
+          });
+        });
+      }
     }
     setShowStopPopover(false);
     setTimeout(() => {
+      const { page, subpage } = route.current;
       if (
         map.getLayer('traffic') &&
         (page !== 'stop' || (page === 'stop' && subpage === 'routes'))
@@ -396,6 +414,9 @@ const App = () => {
         map.removeLayer('traffic');
       }
     }, 500);
+    setTimeout(() => {
+      stopToBeHighlighted?.classList.remove('flash');
+    }, 1000);
   };
 
   const closeServicesPopover = (e) => {
@@ -405,12 +426,17 @@ const App = () => {
     }
   };
 
-  const zoomToStop = () => {
-    const { number } = showStopPopover;
+  const zoomToStop = (num) => {
+    const number = showStopPopover.number || num;
     const { coordinates } = stopsData[number];
-    const offset = BREAKPOINT()
+    let offset = BREAKPOINT()
       ? [0, 0]
       : [0, -stopPopover.current.offsetHeight / 2];
+    if (showServicePopover) {
+      offset = BREAKPOINT()
+        ? [-servicePopover.current.offsetWidth / 3, 0]
+        : [0, -servicePopover.current.offsetHeight / 2];
+    }
     const zoom = map.getZoom();
     if (zoom < 16) {
       map.flyTo({
@@ -564,7 +590,7 @@ const App = () => {
   };
 
   const cannotPreviewRoute = () => {
-    const { page, subpage, value } = route;
+    const { page, subpage, value } = route.current;
     return (
       subpage === 'routes' ||
       (page === 'service' && value.split('~').length > 1)
@@ -730,6 +756,7 @@ const App = () => {
     // Reset everything
     $map.classList.remove('fade-out');
     setShowStopPopover(false);
+    setShowServicePopover(false);
     setShowBetweenPopover(false);
     [
       'stops-highlight',
@@ -772,6 +799,8 @@ const App = () => {
             url: `/services/${service}`,
           });
 
+          setShowServicePopover(true);
+
           // Show stops of the selected service
           const endStops = [routes[0][0], routes[0][routes[0].length - 1]];
           if (routes[1])
@@ -786,15 +815,22 @@ const App = () => {
             const { coordinates } = stopsData[stop];
             bounds.extend(coordinates);
           });
-          map.fitBounds(bounds, {
-            padding: BREAKPOINT()
-              ? 80
-              : {
-                  top: 80,
-                  right: 80,
-                  bottom: 60 + 54 + 80, // height of search bar + float pill
-                  left: 80,
-                },
+          requestAnimationFrame(() => {
+            map.fitBounds(bounds, {
+              padding: BREAKPOINT()
+                ? {
+                    top: 80,
+                    right: servicePopover.current.offsetWidth + 80,
+                    bottom: 80,
+                    left: 80,
+                  }
+                : {
+                    top: 80,
+                    right: 80,
+                    bottom: servicePopover.current.offsetHeight + 20,
+                    left: 80,
+                  },
+            });
           });
 
           map.getSource('stops-highlight').setData({
@@ -1206,7 +1242,7 @@ const App = () => {
   const onLoad = async () => {
     window.onhashchange = () => {
       prevRoute.current = route;
-      setRoute(getRoute());
+      route.current = getRoute();
       renderRoute();
     };
 
@@ -1533,7 +1569,7 @@ const App = () => {
             }
           }
         } else {
-          const { page, subpage } = route;
+          const { page, subpage } = route.current;
           if (page === 'stop' && subpage !== 'routes') {
             location.hash = '/';
           } else {
@@ -2213,6 +2249,7 @@ const App = () => {
         const keydown = e.key.toLowerCase();
         switch (keydown) {
           case '/': {
+            console.log('/', isFormField, searchField.current);
             if (isFormField) return;
             e.preventDefault();
             searchField.current.focus();
@@ -2224,6 +2261,8 @@ const App = () => {
             } else if (showStopPopover) {
               hideStopPopover();
             } else if (showBetweenPopover) {
+              location.hash = '/';
+            } else if (showServicePopover) {
               location.hash = '/';
             }
             break;
@@ -2256,10 +2295,13 @@ const App = () => {
   }, []);
 
   const popoverIsUp =
-    !!showStopPopover || !!showBetweenPopover || !!showArrivalsPopover;
+    !!showStopPopover ||
+    !!showBetweenPopover ||
+    !!showArrivalsPopover ||
+    !!showServicePopover;
   const routeServices =
-    route.page === 'service' && servicesData
-      ? route.value.split('~').filter((s) => servicesData[s])
+    route.current.page === 'service' && servicesData
+      ? route.current.value.split('~').filter((s) => servicesData[s])
       : [];
 
   return (
@@ -2271,8 +2313,13 @@ const App = () => {
           shrinkSearch ? 'shrink' : ''
         } ${routeLoading ? 'loading' : ''}`}
       >
-        <div id="popover-float" hidden={!/service|stop/.test(route.page)}>
-          {route.page === 'service' && servicesData && routeServices.length ? (
+        <div
+          id="popover-float"
+          hidden={!/service|stop/.test(route.current.page)}
+        >
+          {route.current.page === 'service' &&
+          servicesData &&
+          routeServices.length > 1 ? (
             <div class="float-pill" ref={floatPill}>
               <a href="#/" onClick={closeServicesPopover} class="popover-close">
                 &times;
@@ -2324,24 +2371,25 @@ const App = () => {
               )}
             </div>
           ) : (
-            route.page === 'stop' &&
-            route.subpage === 'routes' &&
+            route.current.page === 'stop' &&
+            route.current.subpage === 'routes' &&
             stopsData && (
               <div class="float-pill" ref={floatPill}>
                 <a href="#/" class="popover-close">
                   &times;
                 </a>
                 <div class="service-flex">
-                  <span class="stop-tag">{route.value}</span>
+                  <span class="stop-tag">{route.current.value}</span>
                   <div>
-                    <h1>{stopsData[route.value].name}</h1>
+                    <h1>{stopsData[route.current.value].name}</h1>
                     <p>
-                      {stopsData[route.value].services.length} passing routes
+                      {stopsData[route.current.value].services.length} passing
+                      routes
                     </p>
                   </div>
                 </div>
                 <div class="services-list" onClick={unhighlightRoute}>
-                  {stopsData[route.value].services
+                  {stopsData[route.current.value].services
                     .sort(sortServices)
                     .map((service) => (
                       <a
@@ -2395,8 +2443,8 @@ const App = () => {
                       <a
                         href={`#/services/${s.number}`}
                         class={
-                          route.page === 'service' &&
-                          route.value.split('~').includes(s.number)
+                          route.current.page === 'service' &&
+                          route.current.value.split('~').includes(s.number)
                             ? 'current'
                             : ''
                         }
@@ -2436,6 +2484,142 @@ const App = () => {
         </div>
       </div>
       <div
+        id="stop-popover"
+        ref={stopPopover}
+        class={`popover ${showStopPopover ? 'expand' : ''}`}
+      >
+        {showStopPopover && (
+          <>
+            <a href="#/" onClick={hideStopPopover} class="popover-close">
+              &times;
+            </a>
+            <header>
+              <h1 onClick={zoomToStop}>
+                <b class="stop-tag">{showStopPopover.number}</b>{' '}
+                {showStopPopover.name}
+              </h1>
+            </header>
+            <ScrollableContainer class="popover-scroll">
+              <h2>
+                {showStopPopover.services.length} service
+                {showStopPopover.services.length == 1 ? '' : 's'} &middot;{' '}
+                <a
+                  href={`/bus-first-last/#${showStopPopover.number}`}
+                  target="_blank"
+                >
+                  First/last bus{' '}
+                  <img
+                    src={openNewWindowImagePath}
+                    width="12"
+                    height="12"
+                    alt=""
+                    class="new-window"
+                  />
+                </a>
+              </h2>
+              <BusServicesArrival
+                map={route.current.page === 'stop' ? map : null}
+                id={showStopPopover.number}
+                services={showStopPopover.services}
+              />
+            </ScrollableContainer>
+            <div class="popover-footer">
+              <div class="popover-buttons alt-hide">
+                <a
+                  href={`/bus-arrival/#${showStopPopover.number}`}
+                  target="_blank"
+                  onClick={openBusArrival}
+                  class="popover-button"
+                >
+                  Bus arrivals{' '}
+                  <img
+                    src={openNewWindowImagePath}
+                    width="16"
+                    height="16"
+                    alt=""
+                  />
+                </a>
+                {showStopPopover.services.length > 1 && (
+                  <a
+                    href={`#/stops/${showStopPopover.number}/routes`}
+                    class="popover-button"
+                  >
+                    Passing routes{' '}
+                    <img
+                      src={passingRoutesImagePath}
+                      width="16"
+                      height="16"
+                      alt=""
+                    />
+                  </a>
+                )}
+              </div>
+              <div class="popover-buttons alt-show-flex">
+                <button
+                  onClick={() => setStartStop(showStopPopover.number)}
+                  class="popover-button"
+                >
+                  Set as Start
+                </button>
+                <button
+                  onClick={() => setEndStop(showStopPopover.number)}
+                  class="popover-button"
+                >
+                  Set as End
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+      <div
+        ref={servicePopover}
+        id="service-popover"
+        class={`popover ${showServicePopover ? 'expand' : ''}`}
+        key={``}
+      >
+        <a href="#/" class="popover-close">
+          &times;
+        </a>
+        {route.current.page === 'service' &&
+          servicesData &&
+          routeServices.length && (
+            <>
+              <header>
+                <h1>
+                  <b class="service-tag">{routeServices[0]}</b>
+                  {servicesData[routeServices[0]].name}
+                </h1>
+              </header>
+              <ScrollableContainer
+                class="popover-scroll"
+                scrollToTopKey={`sttk-${routeServices[0]}`}
+              >
+                <h2>
+                  {servicesData[routeServices[0]].routes.length} route
+                  {servicesData[routeServices[0]].routes.length > 1
+                    ? 's'
+                    : ''}{' '}
+                  ∙&nbsp;
+                  {servicesData[routeServices[0]].routes
+                    .map((r) => `${r.length} stop${r.length > 1 ? 's' : ''}`)
+                    .join(' ∙ ')}
+                </h2>
+                <StopsList
+                  routes={servicesData[routeServices[0]].routes}
+                  stopsData={stopsData}
+                  onStopClick={zoomToStop}
+                  onStopClickAgain={_showStopPopover}
+                />
+                <div class="callout info">
+                  <span class="legend-opposite" /> Bus stops with opposite
+                  direction of services
+                </div>
+              </ScrollableContainer>
+            </>
+          )}
+      </div>
+      <div
         id="between-popover"
         ref={betweenPopover}
         class={`popover ${showBetweenPopover ? 'expand' : ''}`}
@@ -2455,7 +2639,7 @@ const App = () => {
             </h1>
           </header>,
           <div class="popover-scroll">
-            <div class="disclaimer">
+            <div class="callout warning">
               This is a beta feature. Directions and routes may not be correct.
             </div>
             <h2>Direct routes</h2>
@@ -2524,95 +2708,6 @@ const App = () => {
             />
           </div>,
         ]}
-      </div>
-      <div
-        id="stop-popover"
-        ref={stopPopover}
-        class={`popover ${showStopPopover ? 'expand' : ''}`}
-      >
-        {showStopPopover && (
-          <Fragment>
-            <a href="#/" onClick={hideStopPopover} class="popover-close">
-              &times;
-            </a>
-            <header>
-              <h1 onClick={zoomToStop}>
-                <b class="stop-tag">{showStopPopover.number}</b>{' '}
-                {showStopPopover.name}
-              </h1>
-            </header>
-            <ScrollableContainer class="popover-scroll">
-              <h2>
-                {showStopPopover.services.length} service
-                {showStopPopover.services.length == 1 ? '' : 's'} &middot;{' '}
-                <a
-                  href={`/bus-first-last/#${showStopPopover.number}`}
-                  target="_blank"
-                >
-                  First/last bus{' '}
-                  <img
-                    src={openNewWindowImagePath}
-                    width="12"
-                    height="12"
-                    alt=""
-                    class="new-window"
-                  />
-                </a>
-              </h2>
-              <BusServicesArrival
-                map={route.page === 'stop' ? map : null}
-                id={showStopPopover.number}
-                services={showStopPopover.services}
-              />
-            </ScrollableContainer>
-            <div class="popover-footer">
-              <div class="popover-buttons alt-hide">
-                <a
-                  href={`/bus-arrival/#${showStopPopover.number}`}
-                  target="_blank"
-                  onClick={openBusArrival}
-                  class="popover-button"
-                >
-                  Bus arrivals{' '}
-                  <img
-                    src={openNewWindowImagePath}
-                    width="16"
-                    height="16"
-                    alt=""
-                  />
-                </a>
-                {showStopPopover.services.length > 1 && (
-                  <a
-                    href={`#/stops/${showStopPopover.number}/routes`}
-                    class="popover-button"
-                  >
-                    Passing routes{' '}
-                    <img
-                      src={passingRoutesImagePath}
-                      width="16"
-                      height="16"
-                      alt=""
-                    />
-                  </a>
-                )}
-              </div>
-              <div class="popover-buttons alt-show-flex">
-                <button
-                  onClick={() => setStartStop(showStopPopover.number)}
-                  class="popover-button"
-                >
-                  Set as Start
-                </button>
-                <button
-                  onClick={() => setEndStop(showStopPopover.number)}
-                  class="popover-button"
-                >
-                  Set as End
-                </button>
-              </div>
-            </div>
-          </Fragment>
-        )}
       </div>
       <div
         id="arrivals-popover"

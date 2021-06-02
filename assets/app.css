@@ -244,34 +244,56 @@ a:active {
 
 #stop-popover,
 #between-popover,
-#arrivals-popover {
+#arrivals-popover,
+#service-popover {
   top: 101%;
-  transition: transform 0.3s 0.5s ease-in-out;
+  transition: all 0.3s 0.1s ease-in-out;
   max-height: 50vh;
   display: flex;
   flex-direction: column;
 }
 #stop-popover.expand,
 #between-popover.expand,
-#arrivals-popover.expand {
+#arrivals-popover.expand,
+#service-popover.expand {
   transform: translateY(-101%);
 }
+#stop-popover.expand {
+  z-index: 3;
+}
+#stop-popover.expand ~ #service-popover.expand {
+  transform: translateY(-80px);
+  pointer-events: none;
+}
+#stop-popover.expand ~ #service-popover.expand .popover-close {
+  opacity: 0;
+}
 #stop-popover header,
-#between-popover header {
+#between-popover header,
+#service-popover header {
   flex-shrink: 0;
-  padding: 12px 12px 0;
+  padding: 12px 40px 0 12px;
 }
 #stop-popover h1,
-#between-popover h1 {
+#between-popover h1,
+#service-popover h1 {
   font-size: 1em;
   margin: 0 0 0.5em;
   padding: 0;
+  display: flex;
+  align-items: flex-start;
+}
+#stop-popover h1 .stop-tag,
+#between-popover h1 .stop-tag,
+#service-popover h1 .service-tag {
+  margin: 0 0.5em 0 0;
 }
 #stop-popover header h1 {
   cursor: pointer;
 }
 #stop-popover h2,
-#between-popover h2 {
+#between-popover h2,
+#service-popover h2 {
   font-size: 0.8em;
   font-weight: normal;
   margin: 0.5em 0 0;
@@ -279,22 +301,27 @@ a:active {
   color: #999;
   text-transform: uppercase;
 }
-#stop-popover h2 {
+#stop-popover h2,
+#service-popover h2 {
   margin-top: 0;
   margin-bottom: 0.5em;
 }
-#stop-popover h2 a {
+#stop-popover h2 a,
+#service-popover h2 a {
   color: inherit;
   text-decoration: none;
 }
-#stop-popover h2 a:hover {
+#stop-popover h2 a:hover,
+#service-popover h2 a:hover {
   text-decoration: underline;
 }
-#stop-popover h2 img.new-window {
+#stop-popover h2 img.new-window,
+#service-popover h2 img.new-window {
   filter: invert(1) opacity(0.4);
 }
 #stop-popover h3,
-#between-popover h3 {
+#between-popover h3,
+#service-popover h3 {
   font-size: 0.7em;
   margin: 1em 0 0.5em;
   padding: 0;
@@ -302,12 +329,14 @@ a:active {
   text-transform: uppercase;
 }
 #stop-popover p,
-#between-popover p {
+#between-popover p,
+#service-popover p {
   margin: 0;
   padding: 0;
 }
 #stop-popover .popover-scroll,
-#between-popover .popover-scroll {
+#between-popover .popover-scroll,
+#service-popover .popover-scroll {
   flex: 1;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
@@ -320,7 +349,8 @@ a:active {
   padding-bottom: 0;
   padding-top: 0;
 }
-#between-popover .popover-scroll {
+#between-popover .popover-scroll,
+#service-popover .popover-scroll {
   padding-top: 0;
 }
 #stop-popover .popover-footer {
@@ -328,6 +358,11 @@ a:active {
 }
 @supports (top: max(1px)) {
   #between-popover .popover-scroll {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
+  #service-popover .popover-scroll {
     padding-left: max(12px, env(safe-area-inset-left));
     padding-right: max(12px, env(safe-area-inset-right));
     padding-bottom: max(12px, env(safe-area-inset-bottom));
@@ -532,14 +567,20 @@ a:active {
   width: 35px;
 }
 
-.disclaimer {
+.callout {
   padding: 12px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  line-height: 1.3;
+}
+.warning {
   background-color: papayawhip;
   color: saddlebrown;
-  border-radius: 12px;
   font-weight: bold;
-  font-size: 0.9em;
-  line-height: 1.3;
+}
+.info {
+  background-color: lightcyan;
+  color: midnightblue;
 }
 
 #arrivals-popover {
@@ -680,6 +721,234 @@ a:active {
   pointer-events: none;
 }
 
+.stops-table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: fixed;
+  width: 100%;
+}
+.stops-table,
+.stops-list {
+  margin-bottom: 16px;
+}
+.stops-list,
+.stops-list li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.stops-table td.stop-start {
+  position: relative;
+  background: radial-gradient(
+    circle at bottom center,
+    transparent,
+    transparent 11px,
+    #f01b48 11px,
+    #f01b48 13px,
+    transparent 13px
+  );
+}
+.stops-table td.stop-end,
+.stops-table td.stop-u {
+  position: relative;
+  background: radial-gradient(
+    circle at top center,
+    transparent,
+    transparent 11px,
+    #f01b48 11px,
+    #f01b48 13px,
+    transparent 13px
+  );
+}
+.stops-table td.stop-u {
+  height: 20px;
+}
+.stops-list li,
+.stops-table td.stop,
+.stops-table td.empty {
+  position: relative;
+  background: linear-gradient(#f01b48, #f01b48) no-repeat 4px 0;
+  background-size: 2px 100%;
+}
+.stops-table td.stop {
+  width: calc(50% - 7px);
+}
+.stops-table td.stop:first-child,
+.stops-table td.empty:first-child {
+  background-position: right 4px top 0;
+}
+.stops-list > li:first-child,
+.stops-table tr:first-of-type > td.stop,
+.stops-table tr > td.stop.first,
+.stops-table tr:first-of-type > td.empty {
+  background-position: 4px bottom;
+  background-size: 2px 50%;
+}
+.stops-table tr:first-of-type > td.stop:first-child,
+.stops-table tr > td.stop.first:first-child,
+.stops-table tr:first-of-type > td.empty:first-child {
+  background-position: right 4px bottom 0;
+}
+.stops-list > li:last-child,
+.stops-table tr:last-of-type > td.stop,
+.stops-table tr > td.stop.last,
+.stops-table tr:last-of-type > td.empty {
+  background-position: 4px top;
+  background-size: 2px 50%;
+}
+.stops-table tr:last-of-type > td:first-child.stop,
+.stops-table tr > td:first-child.stop.last,
+.stops-table tr:last-of-type > td:first-child.empty {
+  background-position: right 4px top 0;
+}
+.stops-list li:before,
+.stops-table td.stop-start:before,
+.stops-table td.stop-end:before,
+.stops-table td.stop:before {
+  pointer-events: none;
+  content: '';
+  display: block;
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 2px solid #f01b48;
+  background-color: #fff;
+  border-radius: 999px;
+}
+.stops-table td.stop-start:before {
+  bottom: 7px;
+  left: calc(50% - 5px);
+}
+.stops-table td.stop-end:before {
+  top: 7px;
+  left: calc(50% - 5px);
+}
+.stops-list li:before,
+.stops-table td.stop:before {
+  top: calc(50% - 5px);
+  left: 0;
+}
+.stops-table td.stop:first-child:before {
+  left: auto;
+  right: 0;
+  margin: 0 0 0 10px;
+}
+.stops-list li:nth-of-type(3n + 1):not(:last-of-type):after,
+.stops-table tr:nth-of-type(3n + 1) td.stop:not(.last):after,
+.stops-table tr:nth-of-type(3n + 1) td.empty:not(.last):after,
+.stops-table tr.edge + tr td.stop:not(.last):after,
+.stops-table tr.edge + tr td.empty:not(.last):after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 1px;
+  width: 8px;
+  height: 8px;
+  border-bottom: 2px solid #f01b48;
+  border-right: 2px solid #f01b48;
+  transform: rotate(45deg);
+  opacity: 0.5;
+}
+.stops-table tr:nth-of-type(3n + 1) td.stop:not(.last):first-child:after,
+.stops-table tr:nth-of-type(3n + 1) td.empty:not(.last):first-child:after,
+.stops-table tr.edge + tr td.stop:not(.last):first-child:after,
+.stops-table tr.edge + tr td.empty:not(.last):first-child:after {
+  left: auto;
+  right: 1px;
+}
+.stops-table tr td.stop:last-child:after,
+.stops-table tr td.empty:last-child:after {
+  transform: rotate(-135deg) !important;
+}
+.stops-list li a,
+.stops-table td.stop a,
+.stops-table td.stop-start a,
+.stops-table td.stop-end a {
+  display: block;
+  text-decoration: none;
+  align-items: center;
+  color: #000;
+  border-radius: 5px;
+  transition: 0.1s background-color ease-in-out;
+}
+.stops-list li a *,
+.stops-table td.stop a *,
+.stops-table td.stop-start a *,
+.stops-table td.stop-end a * {
+  pointer-events: none;
+}
+.stops-list li:first-child a,
+.stops-list li:last-child a,
+.stops-table td.stop-start a,
+.stops-table td.stop-end:not(.loop) a,
+.stops-table td.first a,
+.stops-table td.last a {
+  font-weight: bold;
+}
+.stops-list li:not(:first-child):not(:last-child) a,
+.stops-table td.stop a {
+  font-size: 0.9em;
+}
+.stops-list li a:hover,
+.stops-table td.stop a:hover,
+.stops-table td.stop-start a:hover,
+.stops-table td.stop-end a:hover {
+  background-color: #f01b4822;
+}
+.stops-list li a.flash,
+.stops-table td.stop a.flash,
+.stops-table td.stop-start a.flash,
+.stops-table td.stop-end a.flash {
+  background-color: #f01b4822;
+  animation: flash 1s both ease-in;
+}
+@keyframes flash {
+  75% {
+    background-color: #f01b4822;
+  }
+  100% {
+    background-color: #f01b4800;
+  }
+}
+.stops-table td.stop-start a {
+  padding: 5px 5px 20px 5px;
+  text-align: center;
+}
+.stops-table td.stop-end a {
+  padding: 20px 5px 5px 5px;
+  text-align: center;
+}
+.stops-list li a,
+.stops-table td.stop a {
+  padding: 5px 5px 5px 20px;
+}
+.stops-table td.stop:first-child a {
+  padding: 5px 20px 5px 5px;
+  text-align: right;
+}
+.stops-table col.middle {
+  width: 14px;
+}
+span.legend-opposite,
+.stops-table td.opposite {
+  background: repeating-linear-gradient(
+      90deg,
+      DodgerBlue,
+      DodgerBlue 2px,
+      transparent 2px,
+      transparent 4px
+    )
+    center no-repeat;
+  background-size: 10px 2px;
+}
+span.legend-opposite {
+  float: left;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+
 .placeholder {
   color: #aaa;
   letter-spacing: -1px;
@@ -707,6 +976,7 @@ a:active {
   overflow: hidden;
   white-space: nowrap;
   flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
 }
 a.service-tag:hover {
   background-color: #7ac000;
@@ -741,14 +1011,21 @@ a.service-tag:hover {
 
 .stop-tag {
   display: inline-block;
-  padding: 3px 7px;
-  border-radius: 5px;
-  border: 2px solid #fff;
-  background-color: #f01b48;
-  color: #fff;
-  font-weight: bold;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  padding: 2px 5px;
+  border-radius: 4px;
+  background-color: #f01b4822;
+  color: #f01b48;
+  /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.15); */
   flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  font-weight: bold;
+}
+.mini-stop-tag {
+  display: inline-block;
+  color: #f01b48;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
 }
 
 #popover-float {
@@ -922,7 +1199,7 @@ a.service-tag:hover {
 @media (min-width: 481px) {
   #about {
     display: flex;
-    align-items: start;
+    align-items: flex-start;
     justify-content: center;
   }
   #about[hidden] {
@@ -973,6 +1250,9 @@ a.service-tag:hover {
 }
 
 @media (min-width: 641px) {
+  #service-popover {
+    max-height: 95vh;
+  }
   .mapboxgl-ctrl-attrib {
     position: fixed !important;
     left: 0;
