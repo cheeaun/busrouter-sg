@@ -2,17 +2,9 @@ import { h } from 'preact';
 import { useRef, useState, useEffect } from 'preact/hooks';
 import useResizeObserver from 'use-resize-observer';
 
-const shadowStyles = {
-  position: 'absolute',
-  width: '100%',
-  height: 10,
-  zIndex: 10,
-  pointerEvents: 'none',
-};
-
 export default function ScrollableContainer(props) {
-  const { children, ...otherProps } = props;
-  const ref = useRef(null)
+  const { children, scrollToTopKey, ...otherProps } = props;
+  const ref = useRef(null);
   const { width, height } = useResizeObserver({ ref });
   const [scrollShadow, setScrollShadow] = useState('bottom');
   useEffect(() => {
@@ -38,6 +30,11 @@ export default function ScrollableContainer(props) {
     }
     return () => el.removeEventListener('scroll', handleScroll);
   }, [width, height]);
+
+  // Scroll to top when `scrollToTopKey` changes
+  useEffect(() => {
+    ref.current.scrollTop = 0;
+  }, [scrollToTopKey]);
 
   return (
     <div {...otherProps} ref={ref} data-scroll-shadow={scrollShadow}>
