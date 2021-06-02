@@ -50,7 +50,7 @@ const TimeRanger = ({ values }) => {
   const duration = (lastVal < firstVal ? lastVal + 24 : lastVal) - firstVal;
   const width = (duration / 24) * 100;
   return (
-    <Fragment>
+    <>
       <div class="time-ranger">
         {width + left > 100 && (
           <div
@@ -70,7 +70,7 @@ const TimeRanger = ({ values }) => {
         />
       </div>
       <span class="time-duration">{formatDuration(duration)}</span>
-    </Fragment>
+    </>
   );
 };
 
@@ -145,11 +145,11 @@ function FirstLastTimes() {
         ampm = 'PM';
       }
       const timeStr = (
-        <Fragment>
+        <>
           {hour}
           <blink>:</blink>
           {`${date.getMinutes()}`.padStart(2, '0')} {ampm}
-        </Fragment>
+        </>
       );
       setTimeStr(timeStr);
     };

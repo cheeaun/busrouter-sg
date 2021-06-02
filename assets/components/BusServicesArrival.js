@@ -182,10 +182,10 @@ export default function BusServicesArrival({ services, id, map }) {
   }, [id]);
 
   return (
-    <Fragment>
+    <>
       <p class={`services-list ${isLoading ? 'loading' : ''}`}>
         {services.sort(sortServices).map((service) => (
-          <Fragment>
+          <>
             <a
               href={`#/services/${service}`}
               class={`service-tag ${
@@ -199,7 +199,7 @@ export default function BusServicesArrival({ services, id, map }) {
                 <span>{timeDisplay(servicesArrivals[service])}</span>
               )}
             </a>{' '}
-          </Fragment>
+          </>
         ))}
       </p>
       {map && liveBusCount > 0 && (
@@ -209,6 +209,6 @@ export default function BusServicesArrival({ services, id, map }) {
           {liveBusCount === 1 ? '' : 'es'} now on track.
         </p>
       )}
-    </Fragment>
+    </>
   );
 }
