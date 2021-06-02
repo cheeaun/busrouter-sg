@@ -23,7 +23,8 @@ import StopsList from './components/StopsList.jsx';
 import stopImagePath from './images/stop.png';
 import stopEndImagePath from './images/stop-end.png';
 import openNewWindowImagePath from './images/open-new-window.svg';
-import passingRoutesImagePath from './images/passing-routes.svg';
+import openNewWindowBlueImagePath from './images/open-new-window-blue.svg';
+import passingRoutesBlueImagePath from './images/passing-routes-blue.svg';
 import iconSVGPath from '../icons/icon.svg';
 import busTinyImagePath from './images/bus-tiny.png';
 
@@ -2533,7 +2534,7 @@ const App = () => {
                 >
                   Bus arrivals{' '}
                   <img
-                    src={openNewWindowImagePath}
+                    src={openNewWindowBlueImagePath}
                     width="16"
                     height="16"
                     alt=""
@@ -2546,7 +2547,7 @@ const App = () => {
                   >
                     Passing routes{' '}
                     <img
-                      src={passingRoutesImagePath}
+                      src={passingRoutesBlueImagePath}
                       width="16"
                       height="16"
                       alt=""

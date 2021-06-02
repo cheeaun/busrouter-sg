@@ -1145,9 +1145,9 @@ a.service-tag:hover {
   height: 40px;
   line-height: 40px;
   text-align: center;
-  background-color: #007aff;
-  color: #fff;
-  font-size: 12px;
+  background-color: #007aff22;
+  color: #007aff;
+  font-size: 14px;
   border-radius: 7px;
   text-decoration: none;
   margin-left: 7px;
@@ -1159,10 +1159,10 @@ a.service-tag:hover {
 }
 .popover-button:focus,
 .popover-button:hover {
-  filter: saturate(2);
+  filter: contrast(5);
 }
 .popover-button:active {
-  filter: saturate(0.7);
+  filter: brightness(0.5);
   transform: scale(0.95);
 }
 .popover-button img {
