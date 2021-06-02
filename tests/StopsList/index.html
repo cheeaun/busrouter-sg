@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Routes Tests</title>
+<style>
+#app {
+  padding: 0 10px !important;
+}
+#tests {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+}
+.test {
+  flex: 1;
+  flex-basis: 160px;
+  background-color: rgba(255,255,255,.5);
+  padding: 10px;
+  position: relative;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+}
+.test h2.small {
+  font-size: 10px;
+  font-weight: normal;
+  margin: 0;
+  padding: .75em .45em;
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  border-radius: 999px;
+  color: #fff;
+  background-color: rgba(0,0,0,.2);
+  line-height: 0;
+}
+.test ol {
+  font-variant-numeric: tabular-nums;
+  overflow: hidden;
+  width: 100%;
+  padding: 0 0 0 1.1em;
+  margin: 0;
+  color: slategray;
+  white-space: nowrap;
+}
+.test .slot {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  margin-top: .5em;
+  background-color: #fff;
+  padding: 1px;
+  border-radius: 10px;
+}
+.nada {
+  display: block;
+  padding: 10px;
+  font-size: .7em;
+  opacity: .7;
+  color: darkred;
+}
+
+#tests.large {
+  display: block;
+  width: 100%;
+  columns: 320px auto;
+}
+#tests.large .test {
+  width: 100%;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+.test h2 {
+  text-align: center;
+}
+button.link {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 0;
+  padding: 2px 1em;
+  margin: 0;
+  background: transparent none;
+  cursor: pointer;
+}
+</style>
+<div id="app"></div>
+<script type="module" src="./index.jsx"></script>
+</html>
