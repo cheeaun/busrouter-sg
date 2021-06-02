@@ -132,7 +132,7 @@ a:active {
   height: 100%;
   top: 0;
   left: 0;
-  z-index: 3;
+  z-index: 10;
   transition: all 0.3s ease-in-out;
   perspective: 500px;
 }
@@ -260,6 +260,9 @@ a:active {
 }
 #stop-popover.expand {
   z-index: 3;
+}
+#arrivals-popover.expand {
+  z-index: 4;
 }
 #stop-popover.expand ~ #service-popover.expand {
   transform: translateY(-80px);
