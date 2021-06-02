@@ -39,6 +39,7 @@
     "prod": "npx serve dist/"
   },
   "dependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.14.3",
     "@babel/runtime": "~7.13.10",
     "@deck.gl/core": "~8.4.11",
     "@deck.gl/layers": "~8.4.11",
