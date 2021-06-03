@@ -34,7 +34,6 @@ const stopsJSONPath = dataPath + 'stops.min.json';
 const servicesJSONPath = dataPath + 'services.min.json';
 
 const APP_NAME = 'BusRouter SG';
-const APP_LONG_NAME = 'Singapore Bus Routes Explorer';
 const $map = document.getElementById('map');
 const STORE = {};
 const BREAKPOINT = () => window.innerWidth > 640;
@@ -1180,7 +1179,6 @@ const App = () => {
     // Init data
 
     const stops = await fetchStopsP;
-    const bearingSnap = 7; // degrees, follows Mapbox's bearingSnap
     Object.keys(stops).forEach((number) => {
       const stop = stops[number];
       const [lng, lat, name] = stop;
