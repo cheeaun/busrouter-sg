@@ -663,6 +663,7 @@ const App = () => {
           name: stop.name,
           number: stop.number,
           type: stop.end ? 'end' : null,
+          left: stop.left,
         },
         geometry: {
           type: 'Point',
@@ -837,7 +838,7 @@ const App = () => {
           map.getSource('stops-highlight').setData({
             type: 'FeatureCollection',
             features: routeStops.map((stop, i) => {
-              const { name } = stopsData[stop];
+              const { name, left } = stopsData[stop];
               return {
                 type: 'Feature',
                 id: encode(stop),
@@ -845,6 +846,7 @@ const App = () => {
                   name,
                   number: stop,
                   type: endStops.includes(stop) ? 'end' : null,
+                  left,
                 },
                 geometry: {
                   type: 'Point',
@@ -929,13 +931,14 @@ const App = () => {
           map.getSource('stops-highlight').setData({
             type: 'FeatureCollection',
             features: intersectStops.map((stop, i) => {
-              const { name } = stopsData[stop];
+              const { name, left } = stopsData[stop];
               return {
                 type: 'Feature',
                 id: encode(stop),
                 properties: {
                   name,
                   number: stop,
+                  left,
                 },
                 geometry: {
                   type: 'Point',
@@ -1028,6 +1031,7 @@ const App = () => {
                   name,
                   number: stop,
                   type: 'end',
+                  left: stopsData[stop].left,
                 },
                 geometry: {
                   type: 'Point',
@@ -1254,8 +1258,24 @@ const App = () => {
     // Init data
 
     const stops = await fetchStopsP;
+    const bearingSnap = 7; // degrees, follows Mapbox's bearingSnap
     Object.keys(stops).forEach((number) => {
-      const [lng, lat, name] = stops[number];
+      const stop = stops[number];
+      const [lng, lat, name] = stop;
+      let left = false;
+      if (/[19]$/.test(number)) {
+        const oppositeNumber = number.replace(/[19]$/, (d) =>
+          d === '1' ? 9 : 1,
+        );
+        const oppositeStop = stops[oppositeNumber];
+        if (oppositeStop) {
+          const bearing = ruler.bearing(
+            [lng, lat],
+            [oppositeStop[0], oppositeStop[1]],
+          );
+          left = bearing > 0;
+        }
+      }
       stopsData[number] = {
         name,
         number,
@@ -1264,6 +1284,7 @@ const App = () => {
         coordinates: [lng, lat],
         services: [],
         routes: [],
+        left,
       };
       stopsDataArr.push(stopsData[number]);
     });
@@ -1395,6 +1416,7 @@ const App = () => {
             number: stop.number,
             name: stop.name,
             interchange: stop.interchange,
+            left: stop.left,
           },
           geometry: {
             type: 'Point',
@@ -1427,9 +1449,27 @@ const App = () => {
           stopTextFullFormat,
         ],
         'text-size': ['step', ['zoom'], 12, 16, 14],
-        'text-justify': 'auto',
-        'text-variable-anchor': ['left', 'right'],
-        'text-radial-offset': 1,
+        'text-justify': [
+          'case',
+          ['boolean', ['get', 'left'], false],
+          'right',
+          'left',
+        ],
+        'text-anchor': [
+          'case',
+          ['boolean', ['get', 'left'], false],
+          'right',
+          'left',
+        ],
+        'text-offset': [
+          'case',
+          ['boolean', ['get', 'left'], false],
+          ['literal', [-1, 0]],
+          ['literal', [1, 0]],
+        ],
+        // 'text-justify': 'auto',
+        // 'text-variable-anchor': ['left', 'right'],
+        // 'text-radial-offset': 1,
         'text-padding': 0.5,
         'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
         'text-max-width': 16,
