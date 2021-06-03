@@ -270,82 +270,6 @@ const App = () => {
     setShowStopPopover({ number, name, services });
 
     requestAnimationFrame(() => {
-      const { page } = route;
-      if (page === 'stop' && !map.getLayer('traffic')) {
-        requestAnimationFrame(() => {
-          map.addLayer(
-            {
-              id: 'traffic',
-              type: 'line',
-              source: 'traffic',
-              'source-layer': 'traffic',
-              minzoom: 14,
-              filter: [
-                'all',
-                ['==', '$type', 'LineString'],
-                ['has', 'congestion'],
-              ],
-              layout: {
-                'line-join': 'round',
-                'line-cap': 'round',
-              },
-              paint: {
-                'line-width': 3,
-                'line-offset': [
-                  'case',
-                  [
-                    'match',
-                    ['get', 'class'],
-                    ['link', 'motorway_link', 'service', 'street'],
-                    true,
-                    false,
-                  ],
-                  6,
-                  [
-                    'match',
-                    ['get', 'class'],
-                    ['secondary', 'tertiary'],
-                    true,
-                    false,
-                  ],
-                  6,
-                  ['==', 'class', 'primary'],
-                  12,
-                  ['==', 'class', 'trunk'],
-                  12,
-                  ['==', 'class', 'motorway'],
-                  9,
-                  6,
-                ],
-                'line-color': [
-                  'match',
-                  ['get', 'congestion'],
-                  'low',
-                  'rgba(36, 218, 26, .2)',
-                  'moderate',
-                  'rgba(253, 149, 0, .55)',
-                  'heavy',
-                  'rgba(252, 77, 77, .65)',
-                  'severe',
-                  'rgba(148, 41, 76, .75)',
-                  'transparent',
-                ],
-                'line-opacity': [
-                  'interpolate',
-                  ['linear'],
-                  ['zoom'],
-                  14.1,
-                  0,
-                  16,
-                  1,
-                ],
-              },
-            },
-            labelLayerId,
-          );
-        });
-      }
-
       if (popoverHeight === stopPopover.current?.offsetHeight) return;
       const offset = BREAKPOINT()
         ? [0, 0]
@@ -407,11 +331,6 @@ const App = () => {
     }
     setShowStopPopover(false);
     prevStopNumber.current = null;
-    setTimeout(() => {
-      if (map.getLayer('traffic')) {
-        map.removeLayer('traffic');
-      }
-    }, 500);
     setTimeout(() => {
       stopToBeHighlighted?.classList.remove('flash');
     }, 1000);
@@ -772,6 +691,12 @@ const App = () => {
     if (prevStopNumber.current) {
       hideStopPopover();
     }
+
+    map.setLayoutProperty(
+      'traffic',
+      'visibility',
+      route.page === 'stop' && route.subpage !== 'routes' ? 'visible' : 'none',
+    );
 
     switch (route.page) {
       case 'service': {
@@ -2105,6 +2030,59 @@ const App = () => {
       type: 'vector',
       url: 'mapbox://mapbox.mapbox-traffic-v1',
     });
+    map.addLayer(
+      {
+        id: 'traffic',
+        type: 'line',
+        source: 'traffic',
+        'source-layer': 'traffic',
+        minzoom: 14,
+        filter: ['all', ['==', '$type', 'LineString'], ['has', 'congestion']],
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+          visibility: 'none',
+        },
+        paint: {
+          'line-width': 3,
+          'line-offset': [
+            'case',
+            [
+              'match',
+              ['get', 'class'],
+              ['link', 'motorway_link', 'service', 'street'],
+              true,
+              false,
+            ],
+            6,
+            ['match', ['get', 'class'], ['secondary', 'tertiary'], true, false],
+            6,
+            ['==', 'class', 'primary'],
+            12,
+            ['==', 'class', 'trunk'],
+            12,
+            ['==', 'class', 'motorway'],
+            9,
+            6,
+          ],
+          'line-color': [
+            'match',
+            ['get', 'congestion'],
+            'low',
+            'rgba(36, 218, 26, .2)',
+            'moderate',
+            'rgba(253, 149, 0, .55)',
+            'heavy',
+            'rgba(252, 77, 77, .65)',
+            'severe',
+            'rgba(148, 41, 76, .75)',
+            'transparent',
+          ],
+          'line-opacity': ['interpolate', ['linear'], ['zoom'], 14.1, 0, 16, 1],
+        },
+      },
+      labelLayerId,
+    );
 
     // Service live buses
     map.addSource('buses-service', {
