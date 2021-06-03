@@ -1252,8 +1252,10 @@ a.service-tag:hover {
 }
 
 @media (min-width: 641px) {
+  #stop-popover,
+  #between-popover,
   #service-popover {
-    max-height: 95vh;
+    max-height: calc(100vh - 170px);
   }
   .mapboxgl-ctrl-attrib {
     position: fixed !important;
