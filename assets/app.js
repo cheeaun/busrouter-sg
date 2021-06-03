@@ -1278,8 +1278,16 @@ const App = () => {
     map.addControl(
       new GeolocateControl({
         offset: () => {
-          if (BREAKPOINT() || !showStopPopover) return [0, 0];
-          return [0, -stopPopover.current.offsetHeight / 2];
+          if (!BREAKPOINT()) {
+            if (stopPopover.current?.classList.contains('expand')) {
+              return [0, -stopPopover.current.offsetHeight / 2];
+            } else if (servicePopover.current?.classList.contains('expand')) {
+              return [0, -servicePopover.current.offsetHeight / 2];
+            } else if (betweenPopover.current?.classList.contains('expand')) {
+              return [0, -betweenPopover.current.offsetHeight / 2];
+            }
+          }
+          return [0, 0];
         },
       }),
     );
