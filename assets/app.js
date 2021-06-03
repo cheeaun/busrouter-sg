@@ -406,12 +406,9 @@ const App = () => {
       }
     }
     setShowStopPopover(false);
+    prevStopNumber.current = null;
     setTimeout(() => {
-      const { page, subpage } = route;
-      if (
-        map.getLayer('traffic') &&
-        (page !== 'stop' || (page === 'stop' && subpage === 'routes'))
-      ) {
+      if (map.getLayer('traffic')) {
         map.removeLayer('traffic');
       }
     }, 500);
