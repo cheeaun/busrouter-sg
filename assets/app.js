@@ -2281,44 +2281,6 @@ const App = () => {
         keys: ['number', 'name'],
       });
 
-      // Global shortcuts
-      document.addEventListener('keydown', (e) => {
-        const isFormField =
-          e.target &&
-          e.target.tagName &&
-          /input|textarea|button|select/i.test(e.target.tagName);
-        const keydown = e.key.toLowerCase();
-        switch (keydown) {
-          case '/': {
-            console.log('/', isFormField, searchField.current);
-            if (isFormField) return;
-            e.preventDefault();
-            searchField.current.focus();
-            break;
-          }
-          case 'escape': {
-            if (expandSearch) {
-              handleSearchClose();
-            } else if (showStopPopover) {
-              hideStopPopover();
-            } else if (showBetweenPopover) {
-              location.hash = '/';
-            } else if (showServicePopover) {
-              location.hash = '/';
-            }
-            break;
-          }
-          default: {
-            if (e.shiftKey && e.altKey) {
-              document.body.classList.add('alt-mode');
-            }
-          }
-        }
-      });
-      document.addEventListener('keyup', () => {
-        document.body.classList.remove('alt-mode');
-      });
-
       // For cases when user already typed something before fuse.js inits
       if (searchField.current?.value) handleSearch();
 
@@ -2334,6 +2296,48 @@ const App = () => {
   useEffect(() => {
     onLoad();
   }, []);
+
+  // Global shortcuts
+  useEffect(() => {
+    const handler = (e) => {
+      const isFormField =
+        e.target &&
+        e.target.tagName &&
+        /input|textarea|button|select/i.test(e.target.tagName);
+      const keydown = e.key.toLowerCase();
+      switch (keydown) {
+        case '/': {
+          console.log('/', isFormField, searchField.current);
+          if (isFormField) return;
+          e.preventDefault();
+          searchField.current.focus();
+          break;
+        }
+        case 'escape': {
+          if (expandSearch) {
+            handleSearchClose();
+          } else if (showStopPopover) {
+            hideStopPopover();
+          } else if (showBetweenPopover) {
+            location.hash = '/';
+          } else if (showServicePopover) {
+            location.hash = '/';
+          }
+          break;
+        }
+        default: {
+          if (e.shiftKey && e.altKey) {
+            document.body.classList.add('alt-mode');
+          }
+        }
+      }
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [expandSearch, showStopPopover, showBetweenPopover, showServicePopover]);
+  document.addEventListener('keyup', () => {
+    document.body.classList.remove('alt-mode');
+  });
 
   const popoverIsUp =
     !!showStopPopover ||
