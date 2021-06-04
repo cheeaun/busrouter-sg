@@ -1165,6 +1165,7 @@ const App = () => {
     setBetweenEndStop(null);
   };
 
+  const [mapLoaded, setMapLoaded] = useState(false);
   const onLoad = async () => {
     window.onhashchange = () => {
       prevRoute.current = route;
@@ -1300,8 +1301,6 @@ const App = () => {
     map.once('dragstart', initialHideSearch);
     map.once('zoomstart', initialHideSearch);
 
-    const mapCanvas = map.getCanvas();
-
     await new Promise((resolve, reject) => {
       map.once('styledata', () => {
         const layers = map.getStyle().layers;
@@ -1330,6 +1329,17 @@ const App = () => {
     map.loadImage(stopEndImagePath, (e, img) => {
       map.addImage('stop-end', img);
     });
+
+    setMapLoaded(true);
+  };
+
+  useEffect(() => {
+    onLoad();
+  }, []);
+
+  useEffect(() => {
+    if (!mapLoaded) return;
+    const mapCanvas = map.getCanvas();
 
     map.addSource('stops', {
       type: 'geojson',
@@ -1513,39 +1523,7 @@ const App = () => {
       map.on('mouseenter', 'stops', () => {
         mapCanvas.style.cursor = 'pointer';
       });
-      map.on('click', (e) => {
-        if (e.originalEvent.altKey) {
-          console.log(e.lngLat);
-        }
-        const { point } = e;
-        const features = map.queryRenderedFeatures(point, {
-          layers: ['stops', 'stops-icon', 'stops-highlight'],
-          validate: false,
-        });
-        if (features.length) {
-          const zoom = map.getZoom();
-          const feature = features[0];
-          const center = feature.geometry.coordinates;
-          if (zoom < 12) {
-            // Slowly zoom in first
-            map.flyTo({ zoom: zoom + 2, center });
-            setShrinkSearch(true);
-          } else {
-            if (feature.source == 'stops') {
-              location.hash = `/stops/${feature.properties.number}`;
-            } else {
-              _showStopPopover(feature.properties.number);
-            }
-          }
-        } else {
-          const { page, subpage } = route;
-          if (page === 'stop' && subpage !== 'routes') {
-            location.hash = '/';
-          } else {
-            hideStopPopover();
-          }
-        }
-      });
+
       let lastFrame = null;
       if (supportsHover) {
         let lastFeature = null;
@@ -2272,11 +2250,46 @@ const App = () => {
         }, 1000);
       });
     });
-  };
+  }, [mapLoaded]);
 
   useEffect(() => {
-    onLoad();
-  }, []);
+    if (!mapLoaded) return;
+    const handleMapClick = (e) => {
+      if (e.originalEvent.altKey) {
+        console.log(e.lngLat);
+      }
+      const { point } = e;
+      const features = map.queryRenderedFeatures(point, {
+        layers: ['stops', 'stops-icon', 'stops-highlight'],
+        validate: false,
+      });
+      if (features.length) {
+        const zoom = map.getZoom();
+        const feature = features[0];
+        const center = feature.geometry.coordinates;
+        if (zoom < 12) {
+          // Slowly zoom in first
+          map.flyTo({ zoom: zoom + 2, center });
+          setShrinkSearch(true);
+        } else {
+          if (feature.source == 'stops') {
+            location.hash = `/stops/${feature.properties.number}`;
+          } else {
+            _showStopPopover(feature.properties.number);
+          }
+        }
+      } else {
+        const { page, subpage } = route;
+        if (page === 'stop' && subpage !== 'routes') {
+          location.hash = '/';
+        } else {
+          hideStopPopover();
+        }
+      }
+    };
+    map.on('click', handleMapClick);
+    return () => map.off('click', handleMapClick);
+  }, [mapLoaded, route.page, route.subpage]);
 
   // Global shortcuts
   useEffect(() => {
