@@ -25,9 +25,3 @@ ID = "busrouter-sg"
   from = "/mapbox-tiles/*"
   to = "https://a.tiles.mapbox.com/:splat"
   status = 200
-
-[[plugins]]
-  package = "@netlify/plugin-lighthouse"
-  [[plugins.inputs.audits]]
-    path = "dist"
-    output_path = "reports/lighthouse.html"
