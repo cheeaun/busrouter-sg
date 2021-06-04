@@ -2065,7 +2065,7 @@ const App = () => {
           'line-opacity': ['interpolate', ['linear'], ['zoom'], 14.1, 0, 16, 1],
         },
       },
-      labelLayerId,
+      'road-label',
     );
 
     // Service live buses
