@@ -28,14 +28,15 @@ h1 b {
 
 .stop-tag {
   display: inline-block;
-  padding: 3px 7px;
-  border-radius: 5px;
-  border: 2px solid #fff;
-  background-color: #f01b48;
-  color: #fff;
-  font-weight: bold;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  padding: 2px 5px;
+  border-radius: 4px;
+  background-color: #f01b4822;
+  color: #f01b48;
   flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  font-weight: bold;
+  margin: 2px 0;
+  font-size: 0.8em;
 }
 
 .legend {
