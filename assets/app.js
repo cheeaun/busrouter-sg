@@ -2556,9 +2556,7 @@ const App = () => {
               <BusServicesArrival
                 active={showStopPopover}
                 map={map}
-                showBusesOnMap={
-                  route.page === 'stop' && route.subpage !== 'routes'
-                }
+                showBusesOnMap={route.page !== 'service'}
                 id={stopPopoverData.number}
                 services={stopPopoverData.services}
               />
