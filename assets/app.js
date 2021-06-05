@@ -344,7 +344,7 @@ const App = () => {
   };
 
   const zoomToStop = (num) => {
-    const number = stopPopoverData.number || num;
+    const number = num || stopPopoverData?.number;
     const { coordinates } = stopsData[number];
     let offset = BREAKPOINT()
       ? [0, 0]
