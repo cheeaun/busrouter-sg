@@ -2345,7 +2345,7 @@ const App = () => {
       : [];
 
   return (
-    <div>
+    <>
       <div
         id="search-popover"
         ref={searchPopover}
@@ -2770,7 +2770,7 @@ const App = () => {
           </div>,
         ]}
       </div>
-    </div>
+    </>
   );
 };
 
