@@ -2469,7 +2469,7 @@ const App = () => {
             onScroll={handleServicesScroll}
           >
             <li class="ads-li" hidden={!services.length || !showAd}>
-              {services.length && showAd && <Ad key="ad" />}
+              {showAd && <Ad key="ad" />}
             </li>
             {services.length
               ? (expandedSearchOnce ? services : services.slice(0, 10)).map(
