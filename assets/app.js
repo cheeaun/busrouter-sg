@@ -323,8 +323,8 @@ const App = () => {
           stopToBeHighlighted?.classList.add('flash');
           stopToBeHighlighted?.scrollIntoView({
             behaviour: 'smooth',
-            block: 'nearest',
-            inline: 'nearest',
+            block: 'center',
+            inline: 'center',
           });
         });
       }
