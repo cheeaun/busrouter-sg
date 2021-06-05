@@ -2339,10 +2339,12 @@ const App = () => {
     !!showBetweenPopover ||
     !!showArrivalsPopover ||
     !!showServicePopover;
-  const routeServices =
-    route.page === 'service' && servicesData
-      ? route.value.split('~').filter((s) => servicesData[s])
-      : [];
+  const [routeServices, setRouteServices] = useState([]);
+  useEffect(() => {
+    if (route.page === 'service' && servicesData && route.value) {
+      setRouteServices(route.value.split('~').filter((s) => servicesData[s]));
+    }
+  }, [route.page === 'service', servicesData, route.value]);
 
   return (
     <>
@@ -2619,7 +2621,7 @@ const App = () => {
         <a href="#/" onClick={navBackToStop} class="popover-close">
           &times;
         </a>
-        {route.page === 'service' && servicesData && routeServices.length && (
+        {servicesData && routeServices.length && (
           <>
             <header>
               <h1>
