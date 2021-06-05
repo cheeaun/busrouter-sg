@@ -2290,7 +2290,7 @@ const App = () => {
     };
     map.on('click', handleMapClick);
     return () => map.off('click', handleMapClick);
-  }, [mapLoaded, route.page, route.subpage]);
+  }, [mapLoaded, route.page, route.subpage, _showStopPopover, hideStopPopover]);
 
   // Global shortcuts
   useEffect(() => {
@@ -2553,13 +2553,15 @@ const App = () => {
                   />
                 </a>
               </h2>
-              {showStopPopover && (
-                <BusServicesArrival
-                  map={map}
-                  id={stopPopoverData.number}
-                  services={stopPopoverData.services}
-                />
-              )}
+              <BusServicesArrival
+                active={showStopPopover}
+                map={map}
+                showBusesOnMap={
+                  route.page === 'stop' && route.subpage !== 'routes'
+                }
+                id={stopPopoverData.number}
+                services={stopPopoverData.services}
+              />
             </ScrollableContainer>
             <div class="popover-footer">
               <div class="popover-buttons alt-hide">

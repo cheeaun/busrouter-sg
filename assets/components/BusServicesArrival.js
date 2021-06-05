@@ -1,5 +1,5 @@
 import { h, Fragment } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
+import { useRef, useState, useEffect, useCallback } from 'preact/hooks';
 import { encode } from '../utils/specialID';
 import getRoute from '../utils/getRoute';
 import { setRafInterval, clearRafInterval } from '../utils/rafInterval';
@@ -9,7 +9,8 @@ const ruler = new CheapRuler(1.3);
 
 import busTinyImagePath from '../images/bus-tiny.png';
 
-const addMapBuses = (map) => {
+const setupBusesStopLayerOnce = (map) => {
+  if (!map) return;
   if (!map.getSource('buses-stop')) {
     map.addSource('buses-stop', {
       type: 'geojson',
@@ -52,7 +53,8 @@ const addMapBuses = (map) => {
 };
 
 const removeMapBuses = (map) => {
-  map.getSource('buses-stop').setData({
+  if (!map) return;
+  map.getSource('buses-stop')?.setData({
     type: 'FeatureCollection',
     features: [],
   });
@@ -60,17 +62,24 @@ const removeMapBuses = (map) => {
 
 const timeout = (n) => new Promise((f) => setTimeout(f, n));
 
-export default function BusServicesArrival({ services, id, map }) {
+export default function BusServicesArrival({
+  services,
+  id,
+  map,
+  active,
+  showBusesOnMap,
+}) {
   if (!id) return;
   const [isLoading, setIsLoading] = useState(false);
   const [servicesArrivals, setServicesArrivals] = useState({});
   const [liveBusCount, setLiveBusCount] = useState(0);
   const route = getRoute();
 
-  const controller = new AbortController();
-  let renderStopsTimeout;
-  const fetchServices = () => {
+  let controller;
+  const renderStopsTimeout = useRef();
+  const fetchServices = useCallback(() => {
     setIsLoading(true);
+    controller = new AbortController();
     fetch(`https://arrivelah2.busrouter.sg/?id=${id}`, {
       signal: controller.signal,
     })
@@ -85,8 +94,9 @@ export default function BusServicesArrival({ services, id, map }) {
         setServicesArrivals(servicesArrivals);
         setIsLoading(false);
 
-        if (map)
-          renderStopsTimeout = setTimeout(
+        if (showBusesOnMap) {
+          setupBusesStopLayerOnce(map);
+          renderStopsTimeout.current = setTimeout(
             () => {
               const servicesWithCoords = services.filter(
                 (s) => s.no && s.next.lat > 0,
@@ -173,19 +183,25 @@ export default function BusServicesArrival({ services, id, map }) {
             },
             map.loaded() ? 0 : 1000,
           );
+        }
+      })
+      .catch(() => {
+        // Silent fail
       });
-  };
+  }, [id]);
 
   useEffect(() => {
-    if (map) addMapBuses(map);
-    const intervalID = setRafInterval(fetchServices, 15 * 1000); // 15 seconds
+    let intervalID;
+    if (active) {
+      intervalID = setRafInterval(fetchServices, 15 * 1000); // 15 seconds
+    }
     return () => {
-      if (map) removeMapBuses(map);
       clearRafInterval(intervalID);
-      controller.abort();
-      clearTimeout(renderStopsTimeout);
+      controller?.abort();
+      clearTimeout(renderStopsTimeout.current);
+      removeMapBuses(map);
     };
-  }, [id]);
+  }, [id, active, showBusesOnMap]);
 
   return (
     <>
@@ -208,7 +224,7 @@ export default function BusServicesArrival({ services, id, map }) {
           </>
         ))}
       </p>
-      {map && liveBusCount > 0 && (
+      {showBusesOnMap && liveBusCount > 0 && (
         <p style={{ marginTop: 5, fontSize: '.8em' }}>
           <span class="live">LIVE</span>{' '}
           <img src={busTinyImagePath} width="16" alt="" /> {liveBusCount} bus
