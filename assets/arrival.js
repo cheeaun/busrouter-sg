@@ -5,6 +5,7 @@ import fetchCache from './utils/fetchCache';
 import setIcon from '../utils/setIcon';
 
 import wheelchairImagePath from './images/wheelchair.svg';
+import wheelchairInaccessibleImagePath from './images/wheelchair-inaccessible.svg';
 import busSingleImagePath from './images/bus-single.svg';
 import busDoubleImagePath from './images/bus-double.svg';
 import busBendyImagePath from './images/bus-bendy.svg';
@@ -30,12 +31,21 @@ const BUSES = {
   },
 };
 
-const WheelChair = () => (
+const WheelChair = ({ size = 11 }) => (
   <img
     src={wheelchairImagePath}
-    width="11"
-    height="11"
+    width={size}
+    height={size}
     alt="Wheelchair accessible"
+  />
+);
+
+const WheelChairInaccessible = ({ size = 11 }) => (
+  <img
+    src={wheelchairInaccessibleImagePath}
+    width={size}
+    height={size}
+    alt="Wheelchair inaccessible"
   />
 );
 
@@ -69,7 +79,7 @@ const Bus = (props) => {
       <span class={`time time-${load.toLowerCase()}`}>
         {timeDisplay(duration_ms)}
       </span>
-      {feature.toLowerCase() === 'wab' && <WheelChair />}
+      {feature.toLowerCase() !== 'wab' && <WheelChairInaccessible />}
     </span>
   );
 };
@@ -296,10 +306,18 @@ function ArrivalTimes() {
         <span class="load load-sea">Seats available</span>
         <span class="load load-sda">Standing available</span>
         <span class="load load-lsd">Limited standing</span>
-        <span>
-          <WheelChair /> Wheelchair accessible
-        </span>
       </div>
+      <footer>
+        <WheelChair size="16" /> All public buses in revenue service are{' '}
+        <a
+          href="https://en.wikipedia.org/wiki/Public_buses_of_Singapore#2020s:_In_with_electric_buses,_out_with_non-wheelchair-accessible_buses"
+          target="_blank"
+        >
+          wheelchair-accessible
+        </a>
+        . The ones that are not accesssible will be marked with this icon{' '}
+        <WheelChairInaccessible size="16" />.
+      </footer>
     </div>
   );
 }
