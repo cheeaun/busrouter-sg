@@ -1702,34 +1702,6 @@ const App = () => {
 
     map.addLayer(
       {
-        id: 'routes-bg',
-        type: 'line',
-        source: 'routes',
-        layout: {
-          'line-cap': 'round',
-        },
-        paint: {
-          'line-color': '#fff',
-          'line-opacity': ['interpolate', ['linear'], ['zoom'], 12, 1, 22, 0],
-          'line-width': 6,
-          'line-offset': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            12,
-            0,
-            16,
-            -3,
-            22,
-            ['*', ['zoom'], -3],
-          ],
-        },
-      },
-      labelLayerId,
-    );
-
-    map.addLayer(
-      {
         id: 'routes',
         type: 'line',
         source: 'routes',
@@ -1782,7 +1754,35 @@ const App = () => {
           ],
         },
       },
-      labelLayerId,
+      'stops',
+    );
+
+    map.addLayer(
+      {
+        id: 'routes-bg',
+        type: 'line',
+        source: 'routes',
+        layout: {
+          'line-cap': 'round',
+        },
+        paint: {
+          'line-color': '#fff',
+          'line-opacity': ['interpolate', ['linear'], ['zoom'], 12, 1, 22, 0],
+          'line-width': 6,
+          'line-offset': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            12,
+            0,
+            16,
+            -3,
+            22,
+            ['*', ['zoom'], -3],
+          ],
+        },
+      },
+      'routes',
     );
 
     map.addLayer(
@@ -1820,7 +1820,7 @@ const App = () => {
           'text-halo-width': 2,
         },
       },
-      'stops-highlight',
+      'stops',
     );
 
     // Bus service routes (passing, overlapping)
@@ -1877,7 +1877,7 @@ const App = () => {
           ],
         },
       },
-      'stops-highlight-circle',
+      'stops',
     );
 
     map.addLayer(
