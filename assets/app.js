@@ -157,7 +157,7 @@ const App = () => {
   const handleSearchFocus = (e) => {
     setExpandSearch(true);
     setExpandedSearchOnce(true);
-    $map.classList.add('fade-out');
+    // $map.classList.add('fade-out');
     rafScrollTop();
     searchPopover.current?.addEventListener('transitionend', (e) => {
       cancelAnimationFrame(rafST);
