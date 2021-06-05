@@ -118,6 +118,7 @@ const App = () => {
   const [expandSearch, setExpandSearch] = useState(false);
   const [expandedSearchOnce, setExpandedSearchOnce] = useState(false);
   const [shrinkSearch, setShrinkSearch] = useState(false);
+  const [stopPopoverData, setStopPopoverData] = useState(null);
   const [showStopPopover, setShowStopPopover] = useState(false);
   const [showServicePopover, setShowServicePopover] = useState(false);
   const [showArrivalsPopover, setShowArrivalsPopover] = useState(false);
@@ -266,7 +267,8 @@ const App = () => {
 
     setShrinkSearch(true);
     prevStopNumber.current = number;
-    setShowStopPopover({ number, name, services });
+    setShowStopPopover(true);
+    setStopPopoverData({ number, name, services });
 
     requestAnimationFrame(() => {
       if (popoverHeight === stopPopover.current?.offsetHeight) return;
@@ -292,8 +294,7 @@ const App = () => {
     if (e && (page !== 'stop' || subpage === 'routes')) {
       e.preventDefault();
     }
-    let { number } = showStopPopover;
-    number = number || prevStopNumber.current;
+    const number = stopPopoverData?.number || prevStopNumber.current;
     let stopToBeHighlighted;
     if (number) {
       map.setFeatureState(
@@ -343,7 +344,7 @@ const App = () => {
   };
 
   const zoomToStop = (num) => {
-    const number = showStopPopover.number || num;
+    const number = stopPopoverData.number || num;
     const { coordinates } = stopsData[number];
     let offset = BREAKPOINT()
       ? [0, 0]
@@ -2523,23 +2524,23 @@ const App = () => {
         ref={stopPopover}
         class={`popover ${showStopPopover ? 'expand' : ''}`}
       >
-        {showStopPopover && (
+        {stopPopoverData && (
           <>
             <a href="#/" onClick={hideStopPopover} class="popover-close">
               &times;
             </a>
             <header>
               <h1 onClick={zoomToStop}>
-                <b class="stop-tag">{showStopPopover.number}</b>{' '}
-                {showStopPopover.name}
+                <b class="stop-tag">{stopPopoverData.number}</b>{' '}
+                {stopPopoverData.name}
               </h1>
             </header>
             <ScrollableContainer class="popover-scroll">
               <h2>
-                {showStopPopover.services.length} service
-                {showStopPopover.services.length == 1 ? '' : 's'} &middot;{' '}
+                {stopPopoverData.services.length} service
+                {stopPopoverData.services.length == 1 ? '' : 's'} &middot;{' '}
                 <a
-                  href={`/bus-first-last/#${showStopPopover.number}`}
+                  href={`/bus-first-last/#${stopPopoverData.number}`}
                   target="_blank"
                 >
                   First/last bus{' '}
@@ -2552,16 +2553,18 @@ const App = () => {
                   />
                 </a>
               </h2>
-              <BusServicesArrival
-                map={route.page === 'stop' ? map : null}
-                id={showStopPopover.number}
-                services={showStopPopover.services}
-              />
+              {showStopPopover && (
+                <BusServicesArrival
+                  map={map}
+                  id={stopPopoverData.number}
+                  services={stopPopoverData.services}
+                />
+              )}
             </ScrollableContainer>
             <div class="popover-footer">
               <div class="popover-buttons alt-hide">
                 <a
-                  href={`/bus-arrival/#${showStopPopover.number}`}
+                  href={`/bus-arrival/#${stopPopoverData.number}`}
                   target="_blank"
                   onClick={openBusArrival}
                   class="popover-button"
@@ -2574,9 +2577,9 @@ const App = () => {
                     alt=""
                   />
                 </a>
-                {showStopPopover.services.length > 1 && (
+                {stopPopoverData.services.length > 1 && (
                   <a
-                    href={`#/stops/${showStopPopover.number}/routes`}
+                    href={`#/stops/${stopPopoverData.number}/routes`}
                     class="popover-button"
                   >
                     Passing routes{' '}
@@ -2591,13 +2594,13 @@ const App = () => {
               </div>
               <div class="popover-buttons alt-show-flex">
                 <button
-                  onClick={() => setStartStop(showStopPopover.number)}
+                  onClick={() => setStartStop(stopPopoverData.number)}
                   class="popover-button"
                 >
                   Set as Start
                 </button>
                 <button
-                  onClick={() => setEndStop(showStopPopover.number)}
+                  onClick={() => setEndStop(stopPopoverData.number)}
                   class="popover-button"
                 >
                   Set as End

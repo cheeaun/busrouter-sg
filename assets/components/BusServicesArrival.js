@@ -67,9 +67,13 @@ export default function BusServicesArrival({ services, id, map }) {
   const [liveBusCount, setLiveBusCount] = useState(0);
   const route = getRoute();
 
+  const controller = new AbortController();
+  let renderStopsTimeout;
   const fetchServices = () => {
     setIsLoading(true);
-    fetch(`https://arrivelah2.busrouter.sg/?id=${id}`)
+    fetch(`https://arrivelah2.busrouter.sg/?id=${id}`, {
+      signal: controller.signal,
+    })
       .then((res) => res.json())
       .then((results) => {
         const servicesArrivals = {};
@@ -82,7 +86,7 @@ export default function BusServicesArrival({ services, id, map }) {
         setIsLoading(false);
 
         if (map)
-          setTimeout(
+          renderStopsTimeout = setTimeout(
             () => {
               const servicesWithCoords = services.filter(
                 (s) => s.no && s.next.lat > 0,
@@ -178,6 +182,8 @@ export default function BusServicesArrival({ services, id, map }) {
     return () => {
       if (map) removeMapBuses(map);
       clearRafInterval(intervalID);
+      controller.abort();
+      clearTimeout(renderStopsTimeout);
     };
   }, [id]);
 
