@@ -12,6 +12,7 @@ import fetchCache from './utils/fetchCache';
 import getRoute from './utils/getRoute';
 import getDistance from './utils/getDistance';
 import getWalkingMinutes from './utils/getWalkingMinutes';
+import usePrevious from './utils/usePrevious';
 
 import Ad from './ad';
 import BusServicesArrival from './components/BusServicesArrival';
@@ -108,8 +109,8 @@ let fuseServices;
 let fuseStops;
 
 const App = () => {
-  const prevRoute = useRef(null);
   const [route, setRoute] = useState(getRoute());
+  const prevRoute = usePrevious(route);
 
   const [routeLoading, setRouteLoading] = useState(true);
   const [services, setServices] = useState([]);
@@ -338,7 +339,7 @@ const App = () => {
   };
 
   const navBackToStop = (e) => {
-    if (prevRoute.current?.page === 'stop') {
+    if (prevRoute?.page === 'stop') {
       e.preventDefault();
       history.back();
     }
@@ -648,11 +649,13 @@ const App = () => {
   };
 
   const defaultTitle = document.title;
-  const defaultDesc = document.querySelector('meta[property="og:description"]')
-    .content;
+  const defaultDesc = document.querySelector(
+    'meta[property="og:description"]',
+  ).content;
   const defaultURL = document.querySelector('meta[property="og:url"]').content;
-  const defaultImg = document.querySelector('meta[property="og:image"]')
-    .content;
+  const defaultImg = document.querySelector(
+    'meta[property="og:image"]',
+  ).content;
   const setHead = (headContent = {}) => {
     let {
       title = defaultTitle,
@@ -1172,7 +1175,6 @@ const App = () => {
   const [mapLoaded, setMapLoaded] = useState(false);
   const onLoad = async () => {
     window.onhashchange = () => {
-      prevRoute.current = route;
       setRoute(getRoute());
       renderRoute();
     };
