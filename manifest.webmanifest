@@ -7,8 +7,7 @@
   "theme_color": "#F9F5ED",
   "scope": "/",
   "start_url": "/",
-  "icons": [
-    {
+  "icons": [{
       "src": "icons/maskable-icon.png",
       "sizes": "196x196",
       "type": "image/png",
@@ -25,21 +24,20 @@
       "type": "image/png"
     }
   ],
-  "screenshots": [
-    {
+  "screenshots": [{
       "src": "screenshots/manifest/1.jpg",
       "type": "image/jpg",
-      "sizes": "576x1024"
+      "sizes": "640x1136"
     },
     {
       "src": "screenshots/manifest/2.jpg",
       "type": "image/jpg",
-      "sizes": "576x1024"
+      "sizes": "640x1136"
     },
     {
       "src": "screenshots/manifest/3.jpg",
       "type": "image/jpg",
-      "sizes": "576x1024"
+      "sizes": "640x1136"
     }
   ]
 }
