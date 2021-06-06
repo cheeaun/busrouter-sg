@@ -177,6 +177,7 @@ table tbody td.blank {
 footer {
   padding: 10px;
   background-color: #f7f7f7;
+  font-size: 14px;
 }
 
 .stop-tag {
@@ -188,7 +189,7 @@ footer {
   flex-shrink: 0;
   font-variant-numeric: tabular-nums;
   font-size: 12px;
-  font-weight: bold;
+  font-weight: 500;
   position: relative;
 }
 .stop-tag:after {

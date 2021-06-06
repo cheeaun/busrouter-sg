@@ -268,9 +268,6 @@ a:active {
   transform: translateY(-80px);
   pointer-events: none;
 }
-#stop-popover.expand ~ #service-popover.expand .popover-close {
-  opacity: 0;
-}
 #stop-popover header,
 #between-popover header,
 #service-popover header {
@@ -290,6 +287,9 @@ a:active {
 #between-popover h1 .stop-tag,
 #service-popover h1 .service-tag {
   margin: 0 0.5em 0 0;
+}
+#service-popover h1 .service-tag {
+  margin-top: -0.2em;
 }
 #stop-popover header h1 {
   cursor: pointer;
@@ -616,7 +616,6 @@ a:active {
 
 #arrivals-popover .popover-close {
   z-index: 1;
-  background-color: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(10px) saturate(3);
 }
 #arrivals-popover .popover-popout {
@@ -628,6 +627,7 @@ a:active {
 }
 #arrivals-popover .popover-popout img {
   vertical-align: text-bottom;
+  filter: brightness(0.5);
 }
 #arrivals-popover .popover-popout:hover img {
   filter: brightness(0.2);
@@ -971,28 +971,29 @@ span.legend-opposite {
   padding: 3px 7px;
   border: 2px solid #fff;
   border-radius: 5px;
-  background-color: #95cf29;
-  color: #fff;
-  font-weight: bold;
+  background-color: #55dd3333;
+  color: #3a6727;
+  font-weight: 500;
   text-decoration: none;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   overflow: hidden;
   white-space: nowrap;
   flex-shrink: 0;
   font-variant-numeric: tabular-nums;
 }
+h1 .service-tag {
+  font-weight: bold;
+}
 a.service-tag:hover {
-  background-color: #7ac000;
+  color: #000;
 }
 .service-tag.current,
 .current .service-tag {
-  border-color: #729e1f;
-  background-color: #7ac000;
+  color: #000;
   pointer-events: none;
-  animation: currenting infinite linear 1s alternate both;
+  animation: currenting infinite linear 0.5s alternate both;
 }
 .service-tag.highlight {
-  border-color: #729e1f;
+  color: #000;
   animation: currenting infinite linear 0.5s alternate both;
 }
 @keyframes currenting {
@@ -1021,13 +1022,14 @@ a.service-tag:hover {
   flex-shrink: 0;
   font-variant-numeric: tabular-nums;
   font-size: 12px;
-  font-weight: bold;
+  font-weight: 500;
 }
 .mini-stop-tag {
   display: inline-block;
   color: #f01b48;
   font-size: 10px;
   font-variant-numeric: tabular-nums;
+  font-weight: 500;
 }
 
 #popover-float {
@@ -1115,8 +1117,8 @@ a.service-tag:hover {
   text-align: center;
   font-size: 18px;
   border-radius: 123123px;
-  background-color: rgba(0, 0, 0, 0.2);
-  color: #fff;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.45);
   text-decoration: none;
 }
 .popover-close:hover {

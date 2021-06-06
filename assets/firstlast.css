@@ -34,7 +34,7 @@ h1 b {
   color: #f01b48;
   flex-shrink: 0;
   font-variant-numeric: tabular-nums;
-  font-weight: bold;
+  font-weight: 500;
   margin: 2px 0;
   font-size: 0.8em;
 }
