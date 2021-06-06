@@ -1458,14 +1458,15 @@ a.service-tag:hover {
 .donation-box {
   display: block;
   padding: 12px 7px;
-  color: #5e3800;
-  background: #ffdf0048 radial-gradient(circle, #fffbe1, rgba(255, 255, 255, 0));
+  color: #007aff;
+  background-color: rgba(255, 255, 255, 0.5);
   font-weight: 500;
-  border-radius: 5px;
-  border: 1px solid #ffda23;
+  border-radius: 7px;
   text-align: center;
+  box-shadow: 0 2px 5px #ddd;
+  transition: background-color 0.3s ease-in-out;
 }
 .donation-box:hover {
   color: #000;
-  border-color: #f1cc0f;
+  background-color: #fff;
 }
