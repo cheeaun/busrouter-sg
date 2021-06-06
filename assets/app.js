@@ -2472,7 +2472,7 @@ const App = () => {
               {showAd && <Ad key="ad" />}
             </li>
             {services.length
-              ? (expandedSearchOnce ? services : services.slice(0, 10)).map(
+              ? (expandedSearchOnce ? services : services.slice(0, 25)).map(
                   (s) => (
                     <li key={s.number}>
                       <a
