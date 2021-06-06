@@ -1452,3 +1452,20 @@ a.service-tag:hover {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
 }
+
+/* Donation box */
+
+.donation-box {
+  display: block;
+  padding: 12px 7px;
+  color: #5e3800;
+  background: #ffdf0048 radial-gradient(circle, #fffbe1, rgba(255, 255, 255, 0));
+  font-weight: 500;
+  border-radius: 5px;
+  border: 1px solid #ffda23;
+  text-align: center;
+}
+.donation-box:hover {
+  color: #000;
+  border-color: #f1cc0f;
+}
