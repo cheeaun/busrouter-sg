@@ -124,6 +124,7 @@ const App = () => {
   const [showArrivalsPopover, setShowArrivalsPopover] = useState(false);
   const [intersectStops, setIntersectStops] = useState(0);
   const [showAd, setShowAd] = useState(false);
+  const [routeServices, setRouteServices] = useState([]);
 
   const [showBetweenPopover, setShowBetweenPopover] = useState(false);
   const [betweenStartStop, setBetweenStartStop] = useState(null);
@@ -714,6 +715,8 @@ const App = () => {
         // Hide all stops
         map.setLayoutProperty('stops', 'visibility', 'none');
         map.setLayoutProperty('stops-icon', 'visibility', 'none');
+
+        setRouteServices(services);
 
         if (services.length === 1) {
           const service = services[0];
@@ -2339,12 +2342,6 @@ const App = () => {
     !!showBetweenPopover ||
     !!showArrivalsPopover ||
     !!showServicePopover;
-  const [routeServices, setRouteServices] = useState([]);
-  useEffect(() => {
-    if (route.page === 'service' && servicesData && route.value) {
-      setRouteServices(route.value.split('~').filter((s) => servicesData[s]));
-    }
-  }, [route.page === 'service', servicesData, route.value]);
 
   return (
     <>
