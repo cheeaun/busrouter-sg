@@ -1143,9 +1143,7 @@ a.service-tag:hover {
   cursor: pointer;
   border: 0;
   display: block;
-  padding: 0 9px;
-  height: 40px;
-  line-height: 40px;
+  padding: 11px 9px;
   text-align: center;
   background-color: #007aff22;
   color: #007aff;
