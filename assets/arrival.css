@@ -1,6 +1,5 @@
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   padding: 0;
   margin: 0;
   background-color: #f7f7f7;
@@ -29,12 +28,14 @@ main {
   text-align: center;
   pointer-events: auto;
 }
+
 .stops-list li {
   margin: 0;
   padding: 0;
   list-style: none;
   display: inline;
 }
+
 .stops-list a {
   display: inline-block;
   padding: 10px;
@@ -44,6 +45,7 @@ main {
   position: relative;
   padding-top: 50%;
 }
+
 #bus-stop-map img {
   width: 100%;
   height: auto;
@@ -52,6 +54,32 @@ main {
   left: 0;
   top: 0;
 }
+
+#bus-stop-map:before {
+  opacity: 0;
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 15px;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 70%);
+  z-index: 1;
+  transform: translate(-50%, -50%) scale(0.5);
+  animation: boop 0.3s 0.5s ease-in-out both;
+}
+
+@keyframes boop {
+  80% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
 #bus-stop-map:after {
   opacity: 0;
   content: '';
@@ -63,10 +91,11 @@ main {
   width: 30px;
   height: 40px;
   background: transparent url(../assets/images/stop-active.svg) no-repeat bottom;
+  z-index: 2;
   background-size: contain;
-  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
   animation: appear 0.3s 0.5s ease-in-out both;
 }
+
 @keyframes appear {
   80% {
     opacity: 1;
@@ -77,6 +106,7 @@ main {
     transform: translate(-50%, -100%) scale(1);
   }
 }
+
 h1 {
   position: sticky;
   top: 0;
@@ -90,15 +120,18 @@ h1 {
   z-index: 11;
   backdrop-filter: blur(1px) saturate(3);
 }
+
 h1 b {
   margin-top: 5px;
   font-size: 1.35em;
   display: flex;
   align-items: center;
 }
+
 h1 b .stop-tag {
   margin-right: 1ex;
 }
+
 table {
   text-align: left;
   table-layout: fixed;
@@ -108,21 +141,26 @@ table {
   margin: 0;
   overflow: hidden;
 }
+
 table thead * {
   font-weight: normal;
   color: #666;
 }
+
 table th,
 table td {
   padding: 6px 10px;
 }
+
 table th *,
 table td * {
   vertical-align: middle;
 }
+
 table tbody {
   transition: opacity 0.3s;
 }
+
 table tbody th {
   width: 8ex;
   z-index: 10;
@@ -131,20 +169,25 @@ table tbody th {
   cursor: pointer;
   pointer-events: auto;
 }
+
 table tbody tr:nth-child(2n) {
   background-color: #fafafa;
 }
+
 table tbody tr.pin {
   background-color: lightyellow;
 }
+
 table tbody tr.pin th {
   color: darkorange;
 }
+
 @media (hover: hover) {
   table tbody th:hover {
     color: darkorange;
   }
 }
+
 table tbody td.blank {
   text-align: center;
   padding: 3em;
@@ -160,6 +203,7 @@ table tbody td.blank {
   backdrop-filter: blur(1px) saturate(3);
   display: flex;
 }
+
 .legend span {
   display: flex;
   align-items: center;
@@ -168,7 +212,8 @@ table tbody td.blank {
   margin-right: 3px;
   border-radius: 1px;
 }
-.legend span > img {
+
+.legend span>img {
   margin-right: 5px;
   min-height: 16px;
   min-width: 16px;
@@ -178,6 +223,7 @@ footer {
   padding: 10px;
   background-color: #f7f7f7;
   font-size: 14px;
+  display: flow-root;
 }
 
 .stop-tag {
@@ -192,6 +238,7 @@ footer {
   font-weight: 500;
   position: relative;
 }
+
 .stop-tag:after {
   content: '';
   position: absolute;
@@ -204,6 +251,7 @@ footer {
   overflow: hidden;
   background-color: limegreen;
 }
+
 @keyframes blink {
   0% {
     opacity: 1;
@@ -212,6 +260,7 @@ footer {
     opacity: 0.3;
   }
 }
+
 .stop-tag.loading:after {
   animation: blink 0.3s ease-in-out 4 alternate both;
 }
@@ -219,13 +268,16 @@ footer {
 .load {
   border-bottom-width: 1px;
 }
+
 .load-sea {
   color: green;
 }
+
 .load-sda {
   color: orangered;
   border-bottom-style: dotted;
 }
+
 .load-lsd {
   color: firebrick;
   border-bottom-style: dashed;
@@ -235,13 +287,16 @@ footer {
   display: inline-block;
   border-bottom-width: 1px;
 }
+
 .time-sea {
   color: green;
 }
+
 .time-sda {
   color: orangered;
   border-bottom-style: dotted;
 }
+
 .time-lsd {
   color: firebrick;
   border-bottom-style: dashed;
@@ -286,18 +341,14 @@ footer {
 .bus-lane-cell {
   padding-left: 0;
   padding-right: 0;
-  background: repeating-linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0.05) 0,
-    rgba(0, 0, 0, 0.05) 1px,
-    transparent 1px,
-    transparent 50px
-  );
+  background: repeating-linear-gradient( to right, rgba(0, 0, 0, 0.05) 0, rgba(0, 0, 0, 0.05) 1px, transparent 1px, transparent 50px);
 }
+
 .bus-lane {
   position: relative;
   height: 1.8em;
 }
+
 .bus-lane .bus {
   left: 0;
   bottom: 0;
@@ -308,9 +359,10 @@ footer {
   filter: drop-shadow(1px 0 0 #fff) drop-shadow(1px -1px #fff);
 }
 
-.bus-lane .bus > * {
+.bus-lane .bus>* {
   animation: show 3s both;
 }
+
 @keyframes show {
   0% {
     transform: translateX(12px);
@@ -322,18 +374,21 @@ footer {
   }
 }
 
-.bus-lane > .bus.ghost:first-child > * {
+.bus-lane>.bus.ghost:first-child>* {
   animation: ghosting 3s both;
 }
+
 @keyframes ghosting {
   100% {
     transform: translateX(-12px);
     opacity: 0;
   }
 }
-.bus-lane .bus ~ .bus.ghost > * {
+
+.bus-lane .bus~.bus.ghost>* {
   animation: ghosting2 1.5s both;
 }
+
 @keyframes ghosting2 {
   100% {
     transform: scale(0.6);
@@ -344,18 +399,23 @@ footer {
 .bus-lane .bus:not(.ghost) {
   z-index: 3;
 }
-.bus-lane .bus:not(.ghost) ~ .bus:not(.ghost) {
+
+.bus-lane .bus:not(.ghost)~.bus:not(.ghost) {
   z-index: 2;
 }
-.bus-lane .bus:not(.ghost) ~ .bus:not(.ghost) > * {
+
+.bus-lane .bus:not(.ghost)~.bus:not(.ghost)>* {
   filter: opacity(0.75);
 }
-.bus-lane .bus:not(.ghost) ~ .bus:not(.ghost) ~ .bus:not(.ghost) {
+
+.bus-lane .bus:not(.ghost)~.bus:not(.ghost)~.bus:not(.ghost) {
   z-index: 1;
 }
-.bus-lane .bus:not(.ghost) ~ .bus:not(.ghost) ~ .bus:not(.ghost) > * {
+
+.bus-lane .bus:not(.ghost)~.bus:not(.ghost)~.bus:not(.ghost)>* {
   filter: opacity(0.5);
 }
+
 .bus-lane .bus,
 .bus-lane .bus img {
   vertical-align: bottom;
