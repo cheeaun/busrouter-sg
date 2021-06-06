@@ -2532,7 +2532,7 @@ const App = () => {
               &times;
             </a>
             <header>
-              <h1 onClick={zoomToStop}>
+              <h1 onClick={() => zoomToStop(stopPopoverData.number)}>
                 <b class="stop-tag">{stopPopoverData.number}</b>{' '}
                 {stopPopoverData.name}
               </h1>
