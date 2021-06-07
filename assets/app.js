@@ -208,7 +208,7 @@ const App = () => {
     if (expandSearch) return;
     setExpandSearch(true);
     setExpandedSearchOnce(true);
-    $map.classList.add('fade-out');
+    // $map.classList.add('fade-out');
   };
 
   const _showStopPopover = (number) => {
