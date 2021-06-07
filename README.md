@@ -28,6 +28,14 @@ _Previously_ known as Singapore Bus Routes Explorer, abbreviated as 'SBRE' and _
 
 [![Screenshot of Singapore Bus Routes Explorer](screenshots/screenshot-1.png)](https://busrouter.sg/)
 
+## Visualization mini-site
+
+A separate mini-site showing **ALL** stops and routes on a map. All of them.
+
+Check it out: [Visualization mini-site](https://busrouter.sg/visualization/) (⚠️ Uses a lot of bandwidth).
+
+![](screenshots/visualization/screenshot-1.jpg)
+
 ## Technicalities
 
 ### Data
@@ -45,18 +53,16 @@ The scripts for the web app:
 
 ### Visualization
 
-> 🚧 This section is outdated.
-
-There's a separate visualization mini-site on `/visualization/` URL.
+At least Node.js 14 is required.
 
 The scripts to generate the data, in order:
 
-1. `node visualization/build-routes`
-   - Reads `stops2.json` and transform routes data with "levels" for 3D extrusion
-   - Generates `visualization/data/routes.json` for usage on mini-site and `visualization/data/levels.json` to be read by the `build-stops` script
-2. `node visualization/build-stops`
-   - Reads `stops.geojson` and _buffered_ into circle polygons which will be 3D-extruded
-   - Generates `visualization/data/stops.3d.json` for usage on mini-site
+1. `node visualization/build-routes.mjs`
+   - Reads `data.busrouter.sg/v1/data/stops.min.json` and transform routes data with "levels" for 3D extrusion.
+   - Generates `visualization/data/routes.json` and `visualization/data/levels.json` to be read by the `build-stops` script.
+2. `node visualization/build-stops.mjs`
+   - Reads `data.busrouter.sg/v1/data/stops.min.geojson` and _buffered_ into triangle polygons which will be 3D-extruded.
+   - Generates `visualization/data/stops.3d.json`.
 
 ## 📜 License
 

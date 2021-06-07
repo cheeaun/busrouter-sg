@@ -1,18 +1,41 @@
-const fs = require('fs');
-const buffer = require('@turf/buffer');
-const simplify = require('@turf/simplify');
-const length = require('@turf/length').default;
-const CheapRuler = require('cheap-ruler');
+import fs from 'fs';
+import simplify from '@turf/simplify';
+import CheapRuler from 'cheap-ruler';
+import got from 'got';
 const ruler = new CheapRuler(1.3);
 
-const stops = JSON.parse(fs.readFileSync('data/3/stops2.json'));
+const { body: stopsMin } = await got(
+  'https://data.busrouter.sg/v1/stops.min.json',
+  {
+    responseType: 'json',
+  },
+);
+const stops = {};
+Object.entries(stopsMin).forEach(([number, data]) => {
+  stops[number] = {
+    lng: data[0],
+    lat: data[1],
+    name: data[2],
+  };
+});
+// const stops = JSON.parse(fs.readFileSync('data/3/stops2.json'));
 const stopsArr = Object.keys(stops).map((s) => ({
   no: s,
   ...stops[s],
 }));
-const routesGeoJSON = JSON.parse(fs.readFileSync('data/3/routes.geojson'));
+const { body: routesGeoJSON } = await got(
+  'https://data.busrouter.sg/v1/routes.min.geojson',
+  { responseType: 'json' },
+);
+// const routesGeoJSON = JSON.parse(fs.readFileSync('data/3/routes.geojson'));
 const { features: routes } = routesGeoJSON;
-const serviceStops = JSON.parse(fs.readFileSync('data/3/serviceStops.json'));
+const { body: serviceStops } = await got(
+  'https://data.busrouter.sg/v1/services.min.json',
+  {
+    responseType: 'json',
+  },
+);
+// const serviceStops = JSON.parse(fs.readFileSync('data/3/serviceStops.json'));
 
 // Sort routes by length - shortest to furthest
 const sortedRoutes = routes.sort(
@@ -31,7 +54,7 @@ let mostHighestLevel = 0;
 const newRoutes = [];
 
 sortedServices.forEach((service) => {
-  const _stops = serviceStops[service];
+  const _stops = serviceStops[service].routes;
   const allStops = [...new Set([..._stops[0], ...(_stops[1] || [])])];
   // const highestLevel = allStops.reduce((acc, s) => Math.max(stops[s].level || 0, acc), 0);
   // const level = highestLevel + 1;
