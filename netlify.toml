@@ -25,3 +25,8 @@ ID = "busrouter-sg"
   from = "/mapbox-tiles/*"
   to = "https://a.tiles.mapbox.com/:splat"
   status = 200
+
+[[redirects]]
+  from = "/ads.txt"
+  to = "https://cdn4.buysellads.net/ads.txt"
+  status = 301
