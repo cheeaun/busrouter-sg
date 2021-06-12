@@ -7,5 +7,5 @@ export default () => {
     }
   } catch (e) {}
 
-  return <div id="bsa-zone_1623358681242-2_123456" style={{ backgroundColor: 'rgba(0,0,0,.03)' }} />;
+  return <div id="bsa-zone_1623358681242-2_123456" class="ads" style={{ backgroundColor: 'rgba(0,0,0,.03)' }} />;
 };
