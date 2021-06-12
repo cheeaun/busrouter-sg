@@ -13,5 +13,5 @@ export default () => {
     window.optimize.pushAll();
   }, []);
 
-  return <div id="bsa-zone_1623358681242-2_123456"/>;
+  return <div id="bsa-zone_1623358681242-2_123456" style={{ backgroundColor: 'rgba(0,0,0,.03)' }} />;
 };
