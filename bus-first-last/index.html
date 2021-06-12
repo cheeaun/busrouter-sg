@@ -5,13 +5,17 @@
 <link rel="stylesheet" href="../assets/firstlast.css">
 <link rel="preload" as="script" href="../assets/firstlast.js">
 <script type="text/javascript">
-  (function () {
-    var bsa_optimize = document.createElement('script');
-    bsa_optimize.type = 'text/javascript';
-    bsa_optimize.async = true;
-    bsa_optimize.src = 'https://cdn4.buysellads.net/pub/busrouter.js?' + (new Date() - new Date() % 600000);
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(bsa_optimize);
-  })();
+	(function(){
+		var bsa_optimize=document.createElement('script');
+		bsa_optimize.type='text/javascript';
+		bsa_optimize.async=true;
+		bsa_optimize.src='https://cdn4.buysellads.net/pub/busrouter.js?'+(new Date()-new Date()%600000);
+		(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(bsa_optimize);
+	})();
+window.optimize = window.optimize || { queue: [] };
+window.optimize.queue.push(() => {
+  window.optimize.pushAll();
+});
 </script>
 <main>
   <div id="firstlast"></div>

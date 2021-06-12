@@ -18,13 +18,17 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192.png">
 <script type="text/javascript">
-  (function () {
-    var bsa_optimize = document.createElement('script');
-    bsa_optimize.type = 'text/javascript';
-    bsa_optimize.async = true;
-    bsa_optimize.src = 'https://cdn4.buysellads.net/pub/busrouter.js?' + (new Date() - new Date() % 600000);
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(bsa_optimize);
-  })();
+	(function(){
+		var bsa_optimize=document.createElement('script');
+		bsa_optimize.type='text/javascript';
+		bsa_optimize.async=true;
+		bsa_optimize.src='https://cdn4.buysellads.net/pub/busrouter.js?'+(new Date()-new Date()%600000);
+		(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(bsa_optimize);
+	})();
+window.optimize = window.optimize || { queue: [] };
+window.optimize.queue.push(() => {
+  window.optimize.pushAll();
+});
 </script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
