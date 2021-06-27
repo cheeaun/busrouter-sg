@@ -1324,7 +1324,7 @@ a.service-tag:hover {
     top: 16px;
     left: 336px;
   }
-  .popover.expand #popover-float {
+  .popover.expand #popover-float:not([hidden]) {
     opacity: 1;
   }
   .float-pill {
