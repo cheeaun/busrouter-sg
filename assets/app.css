@@ -1276,6 +1276,68 @@ a.service-tag:hover {
   }
 }
 
+#search-popover .sidebar-ads {
+  display: none;
+}
+
+@media (min-width: 1200px) and (min-height: 600px) and (orientation: landscape) {
+  #map {
+    left: 320px;
+    right: 0;
+    width: auto;
+  }
+  .mapboxgl-ctrl-attrib {
+    left: 320px;
+  }
+  #logo {
+    z-index: 3;
+  }
+  #search-popover,
+  #search-popover.expand,
+  #search-popover.shrink {
+    width: 320px;
+    top: 0;
+    left: 0;
+    right: auto;
+    transform: none;
+    border-radius: 0;
+    box-shadow: 1px 0 rgba(0, 0, 0, 0.15);
+    background: linear-gradient(to bottom right, #f9f5ed 30%, #e0eed1, #ade1f5);
+  }
+  #search-popover .popover-inner {
+    border-radius: 0;
+  }
+  #search-popover .popover-list {
+    transition: opacity 0.3s ease-in-out;
+  }
+  #search-popover.shrink:hover .popover-list {
+    opacity: 1;
+  }
+  .popover-search {
+    padding: 22px 14px 22px 74px;
+    min-height: auto;
+  }
+  .popover.expand .popover-search button {
+    display: none;
+  }
+  .popover #popover-float {
+    top: auto;
+    bottom: 14px;
+    right: 336px;
+  }
+  .popover.expand #popover-float {
+    opacity: 1;
+  }
+
+  #search-popover .ads-li {
+    display: none;
+  }
+  #search-popover .sidebar-ads {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    display: block;
+  }
+}
+
 /* Geolocation */
 
 .mapboxgl-ctrl-custom-geolocate {
