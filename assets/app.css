@@ -1321,12 +1321,16 @@ a.service-tag:hover {
     display: none;
   }
   .popover #popover-float {
-    top: auto;
-    bottom: 14px;
-    right: 336px;
+    top: 16px;
+    left: 336px;
   }
   .popover.expand #popover-float {
     opacity: 1;
+  }
+  .float-pill {
+    transform: none !important;
+    left: 0;
+    right: auto;
   }
 
   #search-popover .ads-li {

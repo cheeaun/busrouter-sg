@@ -2370,7 +2370,10 @@ const App = () => {
           shrinkSearch ? 'shrink' : ''
         } ${routeLoading ? 'loading' : ''}`}
       >
-        <div id="popover-float" hidden={!/service|stop/.test(route.page)}>
+        <div
+          id="popover-float"
+          hidden={!/service|stop/.test(route.page) || routeServices.length <= 1}
+        >
           <div class="float-pill" ref={floatPill}>
             <a href="#/" class="popover-close">
               &times;
