@@ -660,6 +660,9 @@ a:active {
 .popover-search input[type='search']:active {
   background-color: rgba(0, 0, 0, 0.2);
 }
+.popover-search input[type='search']:focus-visible {
+  outline-color: #007aff;
+}
 
 .popover-search button {
   display: none;
