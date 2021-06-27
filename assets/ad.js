@@ -11,7 +11,7 @@ export default () => {
   const adRef = useRef();
 
   useEffect(() => {
-    if (adRef.current?.offsetWidth > 0 && adRef.current?.offsetHeight > 0) {
+    if (adRef.current?.offsetWidth > 0) {
       // Only push if the ad slot is visible
       adRef.current.id = 'bsa-zone_1623358681242-2_123456';
       window.optimize = window.optimize || { queue: [] };
