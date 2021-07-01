@@ -81,8 +81,11 @@ function showStopTooltip(data) {
   $tooltip.classList.add('show');
   const { x, y: top } = data;
   const left = Math.max(
-    5,
-    Math.min(window.innerWidth - $tooltip.offsetWidth - 5, x - 5)
+    5 + $map.offsetLeft,
+    Math.min(
+      window.innerWidth - $tooltip.offsetWidth - 5,
+      x + $map.offsetLeft - 5
+    )
   );
   $tooltip.style.transform = `translate(${left}px, ${top}px)`;
 }
