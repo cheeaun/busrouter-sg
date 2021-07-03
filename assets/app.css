@@ -220,7 +220,7 @@ a:active {
   transform: translateY(
     calc(80px + env(safe-area-inset-top) + env(safe-area-inset-bottom))
   );
-  z-index: 2;
+  z-index: 3;
 }
 #search-popover.loading {
   opacity: 0.75;
@@ -1326,7 +1326,7 @@ a.service-tag:hover {
     left: 320px;
   }
   #logo {
-    z-index: 3;
+    z-index: 4;
   }
   #search-popover,
   #search-popover.expand,
@@ -1379,6 +1379,16 @@ a.service-tag:hover {
 
   .plus {
     display: none !important;
+  }
+  @media (hover: hover) {
+    .popover-list li:not(.ads) > label:not([hidden]) {
+      transition: opacity 0.3s ease-in-out;
+      transition-delay: 0.3s;
+      opacity: 0;
+    }
+    .popover-list:hover li:not(.ads) > label:not([hidden]) {
+      opacity: 1;
+    }
   }
 }
 
@@ -1599,6 +1609,7 @@ a.service-tag:hover {
   cursor: pointer;
   position: relative;
   transition: border-color 0.3s ease-in-out;
+  vertical-align: middle;
 }
 .plus:before {
   content: '';
@@ -1650,6 +1661,9 @@ a.service-tag:hover {
 }
 .simple-stops-list li a:hover {
   background-color: #f01b4822;
+}
+.simple-stops-list .stop-tag {
+  font-weight: normal;
 }
 .simple-stops-list .stop-name {
   flex-grow: 1;

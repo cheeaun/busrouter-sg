@@ -2511,6 +2511,7 @@ const App = () => {
                                 location.hash = `/services/${newRouteServices.join(
                                   '~'
                                 )}`;
+                                unhighlightRoute();
                               }}
                             >
                               &times;
@@ -2638,6 +2639,14 @@ const App = () => {
                       route.value && route.value.split('~').includes(s.number);
                     return (
                       <li key={s.number}>
+                        <a
+                          href={`#/services/${s.number}`}
+                          class={checked ? 'current' : ''}
+                          onMouseEnter={() => previewRoute(s.number)}
+                          onMouseLeave={unpreviewRoute}
+                        >
+                          <b class="service-tag">{s.number}</b> {s.name}
+                        </a>
                         <label hidden={!isServicePage}>
                           <input
                             type="checkbox"
@@ -2661,14 +2670,6 @@ const App = () => {
                             }}
                           />
                         </label>
-                        <a
-                          href={`#/services/${s.number}`}
-                          class={checked ? 'current' : ''}
-                          onMouseEnter={() => previewRoute(s.number)}
-                          onMouseLeave={unpreviewRoute}
-                        >
-                          <b class="service-tag">{s.number}</b> {s.name}
-                        </a>
                       </li>
                     );
                   }
@@ -2824,7 +2825,7 @@ const App = () => {
                 {servicesData[routeServices[0]].routes
                   .map((r) => `${r.length} stop${r.length > 1 ? 's' : ''}`)
                   .join(' ∙ ')}
-                ∙&nbsp;
+                &nbsp;&nbsp;
                 <button
                   type="button"
                   class="plus"
