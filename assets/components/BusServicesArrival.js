@@ -88,8 +88,7 @@ export default function BusServicesArrival({
         const servicesArrivals = {};
         const { services } = results;
         services.forEach(
-          (service) =>
-            (servicesArrivals[service.no] = service.next.duration_ms),
+          (service) => (servicesArrivals[service.no] = service.next.duration_ms)
         );
         setServicesArrivals(servicesArrivals);
         setIsLoading(false);
@@ -99,7 +98,7 @@ export default function BusServicesArrival({
           renderStopsTimeout.current = setTimeout(
             () => {
               const servicesWithCoords = services.filter(
-                (s) => s.no && s.next.lat > 0,
+                (s) => s.no && s.next.lat > 0
               );
               setLiveBusCount(servicesWithCoords.length);
               const pointMargin = 100;
@@ -119,7 +118,7 @@ export default function BusServicesArrival({
                         ],
                         {
                           validate: false,
-                        },
+                        }
                       )
                       .filter((f) => {
                         return (
@@ -132,12 +131,12 @@ export default function BusServicesArrival({
                     features.forEach((f) => {
                       const nearestPoint = ruler.pointOnLine(
                         f.geometry.coordinates,
-                        coords,
+                        coords
                       );
                       if (nearestPoint.t) {
                         const distance = ruler.distance(
                           coords,
-                          nearestPoint.point,
+                          nearestPoint.point
                         );
                         if (distance < shortestDistance) {
                           shortestDistance = distance;
@@ -150,7 +149,7 @@ export default function BusServicesArrival({
                       console.log(
                         `Fixed bus position: ${s.no} - ${(
                           shortestDistance * 1000
-                        ).toFixed(3)}m`,
+                        ).toFixed(3)}m`
                       );
                       s.next = {
                         lng: nearestCoords[0],
@@ -159,11 +158,11 @@ export default function BusServicesArrival({
                     }
                   }
                   return s;
-                },
+                }
               );
               requestAnimationFrame(async () => {
                 const servicesWithFixedCoords = await Promise.all(
-                  servicesWithFixedCoordsPromises,
+                  servicesWithFixedCoordsPromises
                 );
                 map.getSource('buses-stop').setData({
                   type: 'FeatureCollection',
@@ -181,7 +180,7 @@ export default function BusServicesArrival({
                 });
               });
             },
-            map.loaded() ? 0 : 1000,
+            map.loaded() ? 0 : 1000
           );
         }
       })
@@ -203,6 +202,8 @@ export default function BusServicesArrival({
     };
   }, [id, active, showBusesOnMap]);
 
+  const servicesValue = route.value?.split('~') || [];
+
   return (
     <>
       <p class={`services-list ${isLoading ? 'loading' : ''}`}>
@@ -211,7 +212,7 @@ export default function BusServicesArrival({
             <a
               href={`#/services/${service}`}
               class={`service-tag ${
-                route.page === 'service' && service === route.value
+                route.page === 'service' && servicesValue.includes(service)
                   ? 'current'
                   : ''
               }`}

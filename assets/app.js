@@ -378,7 +378,7 @@ const App = () => {
       const otherServices = $servicesList.querySelectorAll('.service-tag');
       otherServices.forEach((el) => {
         el.classList.remove('highlight');
-        if (el.textContent.trim() === service.trim()) {
+        if (el.dataset.service.trim() === service.trim()) {
           el.style.opacity = '';
         } else {
           el.style.opacity = 0.3;
@@ -808,19 +808,24 @@ const App = () => {
             })
             .join(', ');
           setHead({
-            title: `Bus services; ${servicesTitle} - ${APP_NAME}`,
+            title: `Bus services: ${servicesTitle} - ${APP_NAME}`,
             url: `/services/${services.join('~')}`,
           });
 
           let routeStops = [];
+          let endStops = [];
           let serviceGeometries = [];
           services.forEach((service) => {
             const { routes } = servicesData[service];
-            const allRoutes = routes[0]
-              .concat(routes[1] || [])
-              .filter((el, pos, arr) => {
+            endStops.push(routes[0][0], routes[0][routes[0].length - 1]);
+            if (routes[1]) {
+              endStops.push(routes[1][0], routes[1][routes[1].length - 1]);
+            }
+            const allRoutes = [...routes[0], ...(routes[1] || [])].filter(
+              (el, pos, arr) => {
                 return arr.indexOf(el) === pos;
-              });
+              }
+            );
             routeStops = routeStops.concat(allRoutes);
 
             const routeGeometries = routesData[service];
@@ -840,6 +845,7 @@ const App = () => {
               intersectStops.push(el);
             return unique;
           });
+          intersectStops.sort();
           setIntersectStops(intersectStops);
 
           // Fit map to route bounds
@@ -861,7 +867,7 @@ const App = () => {
 
           map.getSource('stops-highlight').setData({
             type: 'FeatureCollection',
-            features: intersectStops.map((stop, i) => {
+            features: routeStops.map((stop, i) => {
               const { name, left } = stopsData[stop];
               return {
                 type: 'Feature',
@@ -869,6 +875,11 @@ const App = () => {
                 properties: {
                   name,
                   number: stop,
+                  type: endStops.includes(stop)
+                    ? 'end'
+                    : intersectStops.includes(stop)
+                    ? 'intersect'
+                    : null,
                   left,
                 },
                 geometry: {
@@ -1601,11 +1612,18 @@ const App = () => {
       id: 'stops-highlight',
       type: 'symbol',
       source: 'stops-highlight',
-      filter: ['any', ['>=', ['zoom'], 14], ['==', ['get', 'type'], 'end']],
+      filter: [
+        'any',
+        ['>=', ['zoom'], 14],
+        ['==', ['get', 'type'], 'end'],
+        ['==', ['get', 'type'], 'intersect'],
+      ],
       layout: {
         'icon-image': [
           'case',
           ['==', ['get', 'type'], 'end'],
+          'stop-end',
+          ['==', ['get', 'type'], 'intersect'],
           'stop-end',
           'stop',
         ],
@@ -1614,12 +1632,28 @@ const App = () => {
           ['zoom'],
           0.3,
           10,
-          ['case', ['==', ['get', 'type'], 'end'], 0.3, 0.45],
+          [
+            'case',
+            ['==', ['get', 'type'], 'end'],
+            0.3,
+            ['==', ['get', 'type'], 'intersect'],
+            0.25,
+            0.45,
+          ],
           15,
-          ['case', ['==', ['get', 'type'], 'end'], 0.45, 0.6],
+          [
+            'case',
+            ['==', ['get', 'type'], 'end'],
+            0.45,
+            ['==', ['get', 'type'], 'intersect'],
+            0.4,
+            0.6,
+          ],
         ],
         'icon-anchor': [
           'case',
+          ['==', ['get', 'type'], 'end'],
+          'bottom',
           ['==', ['get', 'type'], 'end'],
           'bottom',
           'center',
@@ -1874,7 +1908,7 @@ const App = () => {
             1,
             ['boolean', ['feature-state', 'fadein'], false],
             0.07,
-            0.7, // default
+            0.5, // default
           ],
           'line-width': [
             'interpolate',
@@ -1930,16 +1964,16 @@ const App = () => {
       source: 'routes-path',
       layout: {
         'symbol-placement': 'line',
-        'symbol-spacing': 100,
+        'symbol-spacing': 300,
         'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
         'text-field': '{service}',
-        'text-size': 12,
+        'text-size': 14,
         'text-rotation-alignment': 'viewport',
         'text-padding': 0,
         'text-line-height': 1,
       },
       paint: {
-        'text-color': '#3f5711',
+        'text-color': '#3a6727',
         'text-halo-color': '#eeffd1',
         'text-halo-width': 2,
         'text-opacity': [
@@ -1950,6 +1984,50 @@ const App = () => {
         ],
       },
     });
+
+    map.addLayer(
+      {
+        id: 'route-path-arrows',
+        type: 'symbol',
+        source: 'routes-path',
+        minzoom: 12,
+        layout: {
+          'symbol-placement': 'line',
+          'symbol-spacing': 200,
+          'text-field': '→',
+          'text-size': 16,
+          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
+          // 'text-allow-overlap': true,
+          // 'text-ignore-placement': true,
+          'text-keep-upright': false,
+          'text-anchor': 'bottom',
+          'text-padding': 0,
+          'text-line-height': 1,
+          'text-offset': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            12,
+            ['literal', [0, 0]],
+            22,
+            ['literal', [0, -2]],
+          ],
+        },
+        paint: {
+          'text-color': '#5301a4',
+          'text-opacity': 0.9,
+          'text-halo-color': '#fff',
+          'text-halo-width': 2,
+          'text-opacity': [
+            'case',
+            ['boolean', ['feature-state', 'fadein'], false],
+            0.1,
+            1,
+          ],
+        },
+      },
+      'stops'
+    );
 
     requestIdleCallback(() => {
       let hoveredRouteID;
@@ -2404,30 +2482,91 @@ const App = () => {
                   </div>
                 </div>
               ) : (
-                [
+                <>
                   <div class="service-flex">
-                    <div>
-                      <h1>{routeServices.length} services selected</h1>
-                      <p>
-                        {intersectStops.length} intersecting stop
-                        {intersectStops.length !== 1 && 's'}
-                      </p>
-                    </div>
-                  </div>,
+                    <h1>Showing {routeServices.length} services</h1>
+                  </div>
                   <div class="services-list">
-                    {routeServices.sort(sortServices).map((service) => (
-                      <a
-                        href={`#/services/${service}`}
-                        onClick={(e) => clickRoute(e, service)}
-                        onMouseEnter={(e) => highlightRoute(e, service)}
-                        onMouseLeave={unhighlightRoute}
-                        class="service-tag"
-                      >
-                        {service}
-                      </a>
-                    ))}
-                  </div>,
-                ]
+                    <div>
+                      {routeServices.sort(sortServices).map((service) => (
+                        <>
+                          <a
+                            href={`#/services/${service}`}
+                            onClick={(e) => clickRoute(e, service)}
+                            onMouseEnter={(e) => highlightRoute(e, service)}
+                            onMouseLeave={unhighlightRoute}
+                            class="service-tag"
+                            data-service={service}
+                          >
+                            {service}
+                            <span
+                              class="close"
+                              title="Remove this service"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                const newRouteServices = routeServices.filter(
+                                  (s) => s !== service
+                                );
+                                location.hash = `/services/${newRouteServices.join(
+                                  '~'
+                                )}`;
+                              }}
+                            >
+                              &times;
+                            </span>
+                          </a>
+                        </>
+                      ))}
+                      <button
+                        type="button"
+                        class="plus"
+                        onClick={() => {
+                          setExpandSearch(true);
+                          setExpandedSearchOnce(true);
+                        }}
+                      />
+                    </div>
+                    {!!intersectStops.length && (
+                      <>
+                        <h2>
+                          {intersectStops.length} intersecting stop
+                          {intersectStops.length !== 1 && 's'}
+                        </h2>
+                        <ul class="simple-stops-list">
+                          {intersectStops.map((s) => {
+                            const stop = stopsData[s];
+                            return (
+                              <li key={stop.number}>
+                                <a
+                                  href={`#/stops/${stop.number}`}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    zoomToStop(s);
+                                    // onStopClickAgain={_showStopPopover}
+                                  }}
+                                >
+                                  <b class="stop-tag">{stop.number}</b>{' '}
+                                  <span class="stop-name">{stop.name}</span>{' '}
+                                  {routeServices.length > 2 && (
+                                    <span class="services-meta-list">
+                                      {stopsData[stop.number].services
+                                        .filter((s) =>
+                                          routeServices.includes(s)
+                                        )
+                                        .sort(sortServices)
+                                        .join(' ')}
+                                    </span>
+                                  )}
+                                </a>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </>
+                    )}
+                  </div>
+                </>
               ))}
             {route.page === 'stop' &&
               route.subpage === 'routes' &&
@@ -2493,23 +2632,46 @@ const App = () => {
             </li>
             {services.length
               ? (expandedSearchOnce ? services : services.slice(0, 25)).map(
-                  (s) => (
-                    <li key={s.number}>
-                      <a
-                        href={`#/services/${s.number}`}
-                        class={
-                          route.page === 'service' &&
-                          route.value.split('~').includes(s.number)
-                            ? 'current'
-                            : ''
-                        }
-                        onMouseEnter={() => previewRoute(s.number)}
-                        onMouseLeave={unpreviewRoute}
-                      >
-                        <b class="service-tag">{s.number}</b> {s.name}
-                      </a>
-                    </li>
-                  )
+                  (s) => {
+                    const isServicePage = route.page === 'service';
+                    const checked =
+                      route.value && route.value.split('~').includes(s.number);
+                    return (
+                      <li key={s.number}>
+                        <label hidden={!isServicePage}>
+                          <input
+                            type="checkbox"
+                            checked={checked}
+                            onChange={(e) => {
+                              const { checked } = e.target;
+                              let newServices = [];
+                              if (checked) {
+                                newServices = route.value
+                                  .split('~')
+                                  .concat(s.number);
+                              } else {
+                                newServices = route.value
+                                  .split('~')
+                                  .filter((service) => service !== s.number);
+                              }
+                              newServices.sort(sortServices);
+                              location.hash = `/services/${newServices.join(
+                                '~'
+                              )}`;
+                            }}
+                          />
+                        </label>
+                        <a
+                          href={`#/services/${s.number}`}
+                          class={checked ? 'current' : ''}
+                          onMouseEnter={() => previewRoute(s.number)}
+                          onMouseLeave={unpreviewRoute}
+                        >
+                          <b class="service-tag">{s.number}</b> {s.name}
+                        </a>
+                      </li>
+                    );
+                  }
                 )
               : !searching &&
                 [1, 2, 3, 4, 5, 6, 7, 8].map((s, i) => (
@@ -2662,6 +2824,15 @@ const App = () => {
                 {servicesData[routeServices[0]].routes
                   .map((r) => `${r.length} stop${r.length > 1 ? 's' : ''}`)
                   .join(' ∙ ')}
+                ∙&nbsp;
+                <button
+                  type="button"
+                  class="plus"
+                  onClick={() => {
+                    setExpandSearch(true);
+                    setExpandedSearchOnce(true);
+                  }}
+                />
               </h2>
               <StopsList
                 routes={servicesData[routeServices[0]].routes}
