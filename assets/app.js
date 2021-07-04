@@ -2698,9 +2698,13 @@ const App = () => {
                               }
                               newServices.sort(sortServices);
                               setTimeout(() => {
+                                if (newServices.length) {
                                   location.hash = `/services/${newServices.join(
                                     '~'
                                   )}`;
+                                } else {
+                                  location.hash = '/';
+                                }
                               }, 250);
                             }}
                           />
