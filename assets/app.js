@@ -1600,7 +1600,11 @@ const App = () => {
       source: 'stops-highlight',
       minzoom: 11,
       maxzoom: 14,
-      filter: ['!=', ['get', 'type'], 'end'],
+      filter: [
+        'all',
+        ['!=', ['get', 'type'], 'end'],
+        ['!=', ['get', 'type'], 'intersect'],
+      ],
       paint: {
         'circle-radius': ['step', ['zoom'], 1.5, 12, 2],
         'circle-color': '#fff',
