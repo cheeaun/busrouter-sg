@@ -2675,9 +2675,11 @@ const App = () => {
                                   .filter((service) => service !== s.number);
                               }
                               newServices.sort(sortServices);
+                              setTimeout(() => {
                               location.hash = `/services/${newServices.join(
                                 '~'
                               )}`;
+                              }, 250);
                             }}
                           />
                         </label>
