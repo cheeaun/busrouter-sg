@@ -147,6 +147,10 @@ const App = () => {
 
   let labelLayerId;
 
+  const largerScreen = window.matchMedia(
+    '(min-width: 1200px) and (min-height: 600px) and (orientation: landscape)'
+  ).matches;
+
   const handleKeys = (e) => {
     switch (e.key.toLowerCase()) {
       case 'enter': {
@@ -854,15 +858,29 @@ const App = () => {
             const { coordinates } = stopsData[stop];
             bounds.extend(coordinates);
           });
-          map.fitBounds(bounds, {
-            padding: BREAKPOINT()
-              ? 80
-              : {
-                  top: 80,
-                  right: 80,
-                  bottom: 60 + 54 + 80, // height of search bar + float pill
-                  left: 80,
-                },
+          requestAnimationFrame(() => {
+            map.fitBounds(bounds, {
+              padding: largerScreen
+                ? {
+                    top: floatPill.current.offsetHeight / 2,
+                    right: 80,
+                    bottom: 80,
+                    left: floatPill.current.offsetHeight / 2,
+                  }
+                : BREAKPOINT()
+                ? {
+                    top: 80,
+                    right: Math.max(floatPill.current.offsetWidth / 2, 80),
+                    bottom: 60 + 20 + floatPill.current.offsetHeight / 2,
+                    left: Math.max(floatPill.current.offsetWidth / 2, 80),
+                  }
+                : {
+                    top: 80,
+                    right: 80,
+                    bottom: 60 + 20 + floatPill.current.offsetHeight, // height of search bar + float pill
+                    left: 80,
+                  },
+            });
           });
 
           map.getSource('stops-highlight').setData({
@@ -2392,9 +2410,6 @@ const App = () => {
     return () => map.off('click', handleMapClick);
   }, [mapLoaded, route.page, route.subpage, _showStopPopover, hideStopPopover]);
 
-  const largerScreen = window.matchMedia(
-    '(min-width: 1200px) and (min-height: 600px) and (orientation: landscape)'
-  ).matches;
   const popoverIsUp = useMemo(
     () =>
       (!!showStopPopover ||
@@ -2683,9 +2698,9 @@ const App = () => {
                               }
                               newServices.sort(sortServices);
                               setTimeout(() => {
-                                location.hash = `/services/${newServices.join(
-                                  '~'
-                                )}`;
+                                  location.hash = `/services/${newServices.join(
+                                    '~'
+                                  )}`;
                               }, 250);
                             }}
                           />
