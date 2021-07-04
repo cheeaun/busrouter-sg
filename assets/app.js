@@ -2392,6 +2392,25 @@ const App = () => {
     return () => map.off('click', handleMapClick);
   }, [mapLoaded, route.page, route.subpage, _showStopPopover, hideStopPopover]);
 
+  const largerScreen = window.matchMedia(
+    '(min-width: 1200px) and (min-height: 600px) and (orientation: landscape)'
+  ).matches;
+  const popoverIsUp = useMemo(
+    () =>
+      (!!showStopPopover ||
+        !!showBetweenPopover ||
+        !!showArrivalsPopover ||
+        !!showServicePopover) &&
+      !largerScreen,
+    [
+      showStopPopover,
+      showBetweenPopover,
+      showArrivalsPopover,
+      showServicePopover,
+      largerScreen,
+    ]
+  );
+
   // Global shortcuts
   useEffect(() => {
     const handler = (e) => {
@@ -2404,6 +2423,7 @@ const App = () => {
         case '/': {
           console.log('/', isFormField, searchField.current);
           if (isFormField) return;
+          if (popoverIsUp) return;
           e.preventDefault();
           searchField.current.focus();
           break;
@@ -2429,29 +2449,16 @@ const App = () => {
     };
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
-  }, [expandSearch, showStopPopover, showBetweenPopover, showServicePopover]);
+  }, [
+    expandSearch,
+    showStopPopover,
+    showBetweenPopover,
+    showServicePopover,
+    popoverIsUp,
+  ]);
   document.addEventListener('keyup', () => {
     document.body.classList.remove('alt-mode');
   });
-
-  const largerScreen = window.matchMedia(
-    '(min-width: 1200px) and (min-height: 600px) and (orientation: landscape)'
-  ).matches;
-  const popoverIsUp = useMemo(
-    () =>
-      (!!showStopPopover ||
-        !!showBetweenPopover ||
-        !!showArrivalsPopover ||
-        !!showServicePopover) &&
-      !largerScreen,
-    [
-      showStopPopover,
-      showBetweenPopover,
-      showArrivalsPopover,
-      showServicePopover,
-      largerScreen,
-    ]
-  );
 
   return (
     <>
@@ -2626,7 +2633,7 @@ const App = () => {
               onfocus={handleSearchFocus}
               oninput={handleSearch}
               onkeydown={handleKeys}
-              disabled={(!searching && !services.length) || popoverIsUp}
+              disabled={!searching && !services.length}
             />
             <button type="button" onclick={handleSearchClose}>
               Cancel
@@ -2676,9 +2683,9 @@ const App = () => {
                               }
                               newServices.sort(sortServices);
                               setTimeout(() => {
-                              location.hash = `/services/${newServices.join(
-                                '~'
-                              )}`;
+                                location.hash = `/services/${newServices.join(
+                                  '~'
+                                )}`;
                               }, 250);
                             }}
                           />
