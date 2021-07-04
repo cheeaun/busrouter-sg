@@ -2266,7 +2266,7 @@ const App = () => {
           ],
         },
       },
-      labelLayerId
+      'stops'
     );
 
     map.addLayer(
