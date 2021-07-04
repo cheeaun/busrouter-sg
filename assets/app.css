@@ -1382,12 +1382,19 @@ a.service-tag:hover {
   }
   @media (hover: hover) {
     .popover-list li:not(.ads) > label:not([hidden]) {
-      transition: opacity 0.3s ease-in-out;
+      transition: all 0.3s ease-in-out;
       transition-delay: 0.3s;
       opacity: 0;
+      transform: translateX(100%);
+      pointer-events: none;
+    }
+    .popover-list li:not(.ads):nth-child(even) > label:not([hidden]) {
+      transition-delay: 0.35s;
     }
     .popover-list:hover li:not(.ads) > label:not([hidden]) {
       opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
     }
   }
 }
@@ -1611,30 +1618,33 @@ a.service-tag:hover {
   transition: border-color 0.3s ease-in-out;
   vertical-align: middle;
 }
-.plus:before {
-  content: '';
-  display: block;
-  width: 2px;
-  height: 10px;
-  position: absolute;
-  top: 4px;
-  left: 8px;
-  background-color: #3a6727;
-  border-radius: 2px;
-}
+.plus:before,
 .plus:after {
   content: '';
   display: block;
-  height: 2px;
-  width: 10px;
   position: absolute;
-  top: 8px;
-  left: 4px;
   background-color: #3a6727;
   border-radius: 2px;
+  transition: transform 0.3s ease-in-out;
+}
+.plus:before {
+  width: 2px;
+  height: 10px;
+  top: 4px;
+  left: 8px;
+}
+.plus:after {
+  height: 2px;
+  width: 10px;
+  top: 8px;
+  left: 4px;
 }
 .plus:hover {
   border-color: #3a6727;
+}
+.plus:hover:before,
+.plus:hover:after {
+  transform: rotate(180deg);
 }
 .plus:active {
   filter: brightness(0.8);
@@ -1719,10 +1729,11 @@ input[type='checkbox']:after {
   border-width: 0 2px 2px 0;
   width: 6px;
   height: 10px;
-  transform: rotate(45deg);
-  transition: 0.1s opacity ease-in-out;
+  transform: rotate(-45deg);
+  transition: 0.3s all ease-in-out;
 }
 input[type='checkbox']:active:after,
 input[type='checkbox']:checked:after {
   opacity: 1;
+  transform: rotate(45deg);
 }
