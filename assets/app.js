@@ -2559,6 +2559,7 @@ const App = () => {
                           setExpandSearch(true);
                           setExpandedSearchOnce(true);
                         }}
+                        title="Add another bus route"
                       />
                     </div>
                     {!!intersectStops.length && (
@@ -2872,6 +2873,7 @@ const App = () => {
                     setExpandSearch(true);
                     setExpandedSearchOnce(true);
                   }}
+                  title="Add another bus route"
                 />
               </h2>
               <StopsList
