@@ -1724,7 +1724,7 @@ input[type='checkbox']:after {
   content: '';
   position: absolute;
   top: 6px;
-  left: 8px;
+  left: 9px;
   border: solid #3a6727;
   border-width: 0 2px 2px 0;
   width: 6px;
