@@ -1281,16 +1281,17 @@ const App = () => {
       servicesDataArr,
     };
 
+    const supportsHover = matchMedia('(any-hover: hover)').matches;
     map = window._map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/cheeaun/ckn18umqw1jsi17nymmpdinba',
       renderWorldCopies: false,
       boxZoom: false,
       minZoom: 8,
-      logoPosition: 'top-right',
+      logoPosition: 'bottom-left',
       attributionControl: false,
       pitchWithRotate: false,
-      dragRotate: false,
+      dragRotate: !supportsHover,
       touchPitch: false,
       bounds: [lowerLong, lowerLat, upperLong, upperLat],
       fitBoundsOptions: {
@@ -1300,20 +1301,16 @@ const App = () => {
       },
     });
 
-    map.touchZoomRotate.disableRotation();
+    if (!supportsHover) {
+      map.touchZoomRotate.disableRotation();
+    }
 
     // Controls
     map.addControl(
       new mapboxgl.AttributionControl({
         compact: true,
       }),
-      'top-right'
-    );
-    map.addControl(
-      new mapboxgl.NavigationControl({
-        showCompass: false,
-      }),
-      'top-right'
+      'bottom-left'
     );
     map.addControl(
       new GeolocateControl({
@@ -1329,8 +1326,22 @@ const App = () => {
           }
           return [0, 0];
         },
-      })
+      }),
+      'top-right'
     );
+
+    map.addControl(
+      new mapboxgl.NavigationControl({
+        showCompass: true,
+        showZoom: supportsHover,
+      }),
+      'top-right'
+    );
+    const compassButton = document.querySelector('.mapboxgl-ctrl-compass');
+    map.on('rotateend', () => {
+      const bearing = map.getBearing();
+      compassButton.classList.toggle('show', bearing !== 0);
+    });
 
     let initialMoveStart = false;
     const initialHideSearch = () => {
