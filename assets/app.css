@@ -1406,6 +1406,9 @@ a.service-tag:hover {
   vertical-align: middle;
   fill: currentColor;
 }
+.mapboxgl-ctrl-custom-geolocate.active svg .inner {
+  fill: currentColor;
+}
 .user-location {
   perspective: 20px;
   pointer-events: none;

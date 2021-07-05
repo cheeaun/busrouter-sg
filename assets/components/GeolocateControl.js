@@ -14,7 +14,7 @@ export default class GeolocateControl {
         offset: [0, 0],
         onClick: () => {},
       },
-      options,
+      options
     );
   }
   onAdd(map) {
@@ -33,9 +33,10 @@ export default class GeolocateControl {
     const button = document.createElement('button');
     button.className = 'mapboxgl-ctrl-icon mapboxgl-ctrl-custom-geolocate';
     button.type = 'button';
-    button.innerHTML = `<svg viewBox="0 0 24 24" width="20" height="20">
-      <path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm9 3a9 9 0 0 0-8-8V1h-2v2a9 9 0 0 0-8 8H1v2h2a9 9 0 0 0 8 8v2h2v-2a9 9 0 0 0 8-8h2v-2h-2zm-9 8a7 7 0 1 1 0-14 7 7 0 0 1 0 14z"/>
-    </svg>`;
+    button.innerHTML = `<svg viewBox="0 0 16 15" width="20" height="20">
+    <path d="M.75 5.94c-.3.14-.51.33-.63.57a1.12 1.12 0 00.3 1.38c.2.17.47.26.8.27l5.54.02c.06 0 .09 0 .1.02.02.02.02.05.02.1l.02 5.5c.01.35.1.62.28.82.17.2.39.33.64.37.26.04.51-.01.77-.14.25-.14.45-.37.6-.7l5.7-12.34c.16-.32.22-.61.18-.87a1.05 1.05 0 00-.32-.65c-.17-.16-.4-.26-.67-.28-.28-.03-.58.03-.9.18L.75 5.94z"/>
+    <path fill="#fff" class="inner" d="M2.37 6.74h-.02c0-.01 0-.02.02-.03l10.9-4.95h.03l-.01.03-4.97 10.88c0 .02-.01.02-.02.02v-.02l.04-5.31a.64.64 0 00-.66-.66l-5.31.04z"/>
+  </svg>`;
     button.addEventListener('click', this._clickButton, false);
     this._button = button;
     this._container.appendChild(this._button);
@@ -73,12 +74,8 @@ export default class GeolocateControl {
     const { offset: _offset } = this.options;
     const offset = typeof _offset === 'function' ? _offset() : _offset;
     const { x, y } = map.project(center);
-    const {
-      offsetWidth,
-      offsetHeight,
-      offsetLeft,
-      offsetTop,
-    } = map.getContainer();
+    const { offsetWidth, offsetHeight, offsetLeft, offsetTop } =
+      map.getContainer();
     const margin = Math.max(offsetWidth, offsetHeight);
     const withinBounds =
       x > offsetLeft - margin &&
@@ -99,7 +96,7 @@ export default class GeolocateControl {
             offset,
             animate: false,
           },
-          eventData,
+          eventData
         );
       } else {
         map.flyTo(
@@ -110,7 +107,7 @@ export default class GeolocateControl {
             duration: 2000,
             offset,
           },
-          eventData,
+          eventData
         );
       }
     } else {
@@ -122,7 +119,7 @@ export default class GeolocateControl {
           offset,
           animate: false,
         },
-        eventData,
+        eventData
       );
     }
   };
@@ -136,7 +133,7 @@ export default class GeolocateControl {
       compassHeading(e.alpha, e.beta, e.gamma);
     // -60deg rotateX is for *tilting* the compass "box" to look like a trapezoid
     this._compass.style.transform = `rotate(${Math.round(
-      heading,
+      heading
     )}deg) rotateX(-60deg)`;
   };
   _clickButton = (e, locking = true) => {
@@ -198,7 +195,7 @@ export default class GeolocateControl {
           if (e.code === 1) {
             // PERMISSION_DENIED
             alert(
-              'Looks like location tracking is blocked on your browser. Please enable it in the settings to use this feature.',
+              'Looks like location tracking is blocked on your browser. Please enable it in the settings to use this feature.'
             );
           } else {
             // Retry again
@@ -209,7 +206,7 @@ export default class GeolocateControl {
           enableHighAccuracy: true,
           timeout: 60 * 1000, // 1min
           maximumAge: 1000, // 1s
-        },
+        }
       );
 
       if (window.DeviceOrientationEvent) {
