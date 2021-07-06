@@ -96,6 +96,11 @@ a:active {
 .mapboxgl-ctrl-bottom-left {
   bottom: 60px;
 }
+@supports (top: max(1px)) {
+  .mapboxgl-ctrl-bottom-left {
+    bottom: calc(60px + env(safe-area-inset-bottom));
+  }
+}
 
 #logo {
   position: fixed;
@@ -1285,7 +1290,7 @@ a.service-tag:hover {
   }
 
   .mapboxgl-ctrl-bottom-left {
-    bottom: 0;
+    bottom: 0 !important;
   }
 }
 
