@@ -94,11 +94,12 @@ a:active {
   display: block;
 }
 .mapboxgl-ctrl-bottom-left {
-  bottom: 60px;
+  transform: translateY(-60px);
+  transition: transform 0.3s ease-in-out;
 }
 @supports (top: max(1px)) {
   .mapboxgl-ctrl-bottom-left {
-    bottom: calc(60px + env(safe-area-inset-bottom));
+    transform: translateY(calc(-60px - env(safe-area-inset-bottom)));
   }
 }
 
@@ -1290,7 +1291,7 @@ a.service-tag:hover {
   }
 
   .mapboxgl-ctrl-bottom-left {
-    bottom: 0 !important;
+    transform: translateY(0) !important;
   }
 }
 
