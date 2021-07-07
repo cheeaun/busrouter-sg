@@ -2530,123 +2530,129 @@ const App = () => {
               &times;
             </a>
             {showServicesFloatPill && (
-                <>
-                  <div class="service-flex">
-                    <h1>Showing {routeServices.length} services</h1>
-                  </div>
-                  <div class="services-list">
-                    <div>
-                      {routeServices.sort(sortServices).map((service) => (
-                        <>
-                          <a
-                            href={`#/services/${service}`}
-                            onClick={(e) => clickRoute(e, service)}
-                            onMouseEnter={(e) => highlightRoute(e, service)}
-                            onMouseLeave={unhighlightRoute}
-                            class="service-tag"
-                            data-service={service}
-                          >
-                            {service}
-                            <span
-                              class="close"
-                              title="Remove this service"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                const newRouteServices = routeServices.filter(
-                                  (s) => s !== service
-                                );
-                                location.hash = `/services/${newRouteServices.join(
-                                  '~'
-                                )}`;
-                                unhighlightRoute();
-                              }}
-                            >
-                              &times;
-                            </span>
-                          </a>
-                        </>
-                      ))}
-                      <button
-                        type="button"
-                        class="plus"
-                        onClick={() => {
-                          setExpandSearch(true);
-                          setExpandedSearchOnce(true);
-                        }}
-                        title="Add another bus route"
-                      />
-                    </div>
-                    {!!intersectStops.length && (
+              <>
+                <div class="service-flex">
+                  <h1>Showing {routeServices.length} services</h1>
+                </div>
+                <div class="services-list">
+                  <div>
+                    {routeServices.sort(sortServices).map((service) => (
                       <>
-                        <h2>
-                          {intersectStops.length} intersecting stop
-                          {intersectStops.length !== 1 && 's'}
-                        </h2>
-                        <ul class="simple-stops-list">
-                          {intersectStops.map((s) => {
-                            const stop = stopsData[s];
-                            return (
-                              <li key={stop.number}>
-                                <a
-                                  href={`#/stops/${stop.number}`}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    zoomToStop(s);
-                                    // onStopClickAgain={_showStopPopover}
-                                  }}
-                                >
-                                  <b class="stop-tag">{stop.number}</b>{' '}
-                                  <span class="stop-name">{stop.name}</span>{' '}
-                                  {routeServices.length > 2 && (
-                                    <span class="services-meta-list">
-                                      {stopsData[stop.number].services
-                                        .filter((s) =>
-                                          routeServices.includes(s)
-                                        )
-                                        .sort(sortServices)
-                                        .join(' ')}
-                                    </span>
-                                  )}
-                                </a>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </>
-                    )}
-                  </div>
-                </>
-            )}
-            {showPassingRoutesFloatPill && (
-                <>
-                  <div class="service-flex">
-                    <span class="stop-tag">{route.value}</span>
-                    <div>
-                      <h1>{stopsData[route.value].name}</h1>
-                      <p>
-                        {stopsData[route.value].services.length} passing routes
-                      </p>
-                    </div>
-                  </div>
-                  <div class="services-list" onClick={unhighlightRoute}>
-                    {stopsData[route.value].services
-                      .sort(sortServices)
-                      .map((service) => (
                         <a
                           href={`#/services/${service}`}
                           onClick={(e) => clickRoute(e, service)}
                           onMouseEnter={(e) => highlightRoute(e, service)}
                           onMouseLeave={unhighlightRoute}
                           class="service-tag"
-                        data-service={service}
+                          data-service={service}
                         >
                           {service}
+                          <span
+                            class="close"
+                            title="Remove this service"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              const newRouteServices = routeServices.filter(
+                                (s) => s !== service
+                              );
+                              location.hash = `/services/${newRouteServices.join(
+                                '~'
+                              )}`;
+                              unhighlightRoute();
+                            }}
+                          >
+                            &times;
+                          </span>
                         </a>
-                      ))}
+                      </>
+                    ))}
+                    <button
+                      type="button"
+                      class="plus"
+                      onClick={() => {
+                        setExpandSearch(true);
+                        setExpandedSearchOnce(true);
+                      }}
+                      title="Add another bus route"
+                    />
                   </div>
-                </>
-              )}
+                  {!!intersectStops.length && (
+                    <>
+                      <h2>
+                        {intersectStops.length} intersecting stop
+                        {intersectStops.length !== 1 && 's'}
+                      </h2>
+                      <ul class="simple-stops-list">
+                        {intersectStops.map((s) => {
+                          const stop = stopsData[s];
+                          return (
+                            <li key={stop.number}>
+                              <a
+                                href={`#/stops/${stop.number}`}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  zoomToStop(s);
+                                  // onStopClickAgain={_showStopPopover}
+                                }}
+                              >
+                                <b class="stop-tag">{stop.number}</b>{' '}
+                                <span class="stop-name">{stop.name}</span>{' '}
+                                {routeServices.length > 2 && (
+                                  <span class="services-meta-list">
+                                    {stopsData[stop.number].services
+                                      .filter((s) => routeServices.includes(s))
+                                      .sort(sortServices)
+                                      .join(' ')}
+                                  </span>
+                                )}
+                              </a>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </>
+                  )}
+                </div>
+              </>
+            )}
+            {showPassingRoutesFloatPill && (
+              <>
+                <div class="service-flex">
+                  <span class="stop-tag">{route.value}</span>
+                  <div>
+                    <h1>{stopsData[route.value].name}</h1>
+                  </div>
+                </div>
+                <div class="services-list" onClick={unhighlightRoute}>
+                  <h2>
+                    {stopsData[route.value].services.length} passing routes{' '}
+                    &middot;{' '}
+                    <a
+                      href={`#/services/${stopsData[route.value].services
+                        .sort(sortServices)
+                        .join('~')}`}
+                    >
+                      Multi-route mode
+                    </a>
+                  </h2>
+                  {stopsData[route.value].services
+                    .sort(sortServices)
+                    .map((service) => (
+                      <a
+                        href={`#/services/${service}`}
+                        onClick={(e) => clickRoute(e, service)}
+                        onMouseEnter={(e) => highlightRoute(e, service)}
+                        onMouseLeave={unhighlightRoute}
+                        class="service-tag"
+                        data-service={service}
+                      >
+                        {service}
+                      </a>
+                    ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
         <div class="popover-inner">

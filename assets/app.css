@@ -1127,6 +1127,9 @@ a.service-tag:hover {
 .float-pill .services-list > h2:first-child {
   margin-top: 0.5em;
 }
+.float-pill h2 a {
+  color: inherit;
+}
 .float-pill p {
   font-size: 0.8em;
   margin: 0;
