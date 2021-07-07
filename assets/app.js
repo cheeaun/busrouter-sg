@@ -2633,7 +2633,7 @@ const App = () => {
                         .sort(sortServices)
                         .join('~')}`}
                     >
-                      Multi-route mode
+                      Multi-route mode ⊕
                     </a>
                   </h2>
                   {stopsData[route.value].services
