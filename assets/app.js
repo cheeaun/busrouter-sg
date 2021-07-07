@@ -2486,6 +2486,14 @@ const App = () => {
     document.body.classList.remove('alt-mode');
   });
 
+  const showServicesFloatPill =
+    route.page === 'service' && servicesData && routeServices.length > 1;
+  const showPassingRoutesFloatPill =
+    route.page === 'stop' &&
+    route.subpage === 'routes' &&
+    stopsData &&
+    stopsData[route.value];
+
   return (
     <>
       <div
@@ -2497,35 +2505,13 @@ const App = () => {
       >
         <div
           id="popover-float"
-          hidden={!/service|stop/.test(route.page) || routeServices.length <= 1}
+          hidden={!(showServicesFloatPill || showPassingRoutesFloatPill)}
         >
           <div class="float-pill" ref={floatPill}>
             <a href="#/" class="popover-close">
               &times;
             </a>
-            {route.page === 'service' &&
-              servicesData &&
-              routeServices.length > 1 &&
-              (routeServices.length === 1 ? (
-                <div class="service-flex">
-                  <span class="service-tag">{routeServices[0]}</span>
-                  <div class="service-info">
-                    <h1>{servicesData[routeServices[0]].name}</h1>
-                    <p>
-                      {servicesData[routeServices[0]].routes.length} route
-                      {servicesData[routeServices[0]].routes.length > 1
-                        ? 's'
-                        : ''}{' '}
-                      ∙&nbsp;
-                      {servicesData[routeServices[0]].routes
-                        .map(
-                          (r) => `${r.length} stop${r.length > 1 ? 's' : ''}`
-                        )
-                        .join(' ∙ ')}
-                    </p>
-                  </div>
-                </div>
-              ) : (
+            {showServicesFloatPill && (
                 <>
                   <div class="service-flex">
                     <h1>Showing {routeServices.length} services</h1>
@@ -2613,11 +2599,8 @@ const App = () => {
                     )}
                   </div>
                 </>
-              ))}
-            {route.page === 'stop' &&
-              route.subpage === 'routes' &&
-              stopsData &&
-              stopsData[route.value] && (
+            )}
+            {showPassingRoutesFloatPill && (
                 <>
                   <div class="service-flex">
                     <span class="stop-tag">{route.value}</span>
@@ -2638,6 +2621,7 @@ const App = () => {
                           onMouseEnter={(e) => highlightRoute(e, service)}
                           onMouseLeave={unhighlightRoute}
                           class="service-tag"
+                        data-service={service}
                         >
                           {service}
                         </a>
