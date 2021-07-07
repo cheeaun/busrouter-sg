@@ -438,16 +438,25 @@ const App = () => {
         coordinates.forEach((c) => {
           bounds.extend(c);
         });
-        const bottom = floatPill.current
-          ? floatPill.current.offsetHeight + 60 + 80
-          : 80;
         map.fitBounds(bounds, {
-          padding: BREAKPOINT()
-            ? 80
+          padding: largerScreen
+            ? {
+                top: floatPill.current.offsetHeight / 2,
+                right: 80,
+                bottom: 80,
+                left: floatPill.current.offsetHeight / 2,
+              }
+            : BREAKPOINT()
+            ? {
+                top: 80,
+                right: Math.max(floatPill.current.offsetWidth / 2, 80),
+                bottom: 60 + 20 + floatPill.current.offsetHeight / 2,
+                left: Math.max(floatPill.current.offsetWidth / 2, 80),
+              }
             : {
                 top: 80,
                 right: 80,
-                bottom,
+                bottom: 60 + 20 + floatPill.current.offsetHeight, // height of search bar + float pill
                 left: 80,
               },
         });
@@ -968,16 +977,25 @@ const App = () => {
             bounds.extend(coordinates);
           });
           requestAnimationFrame(() => {
-            const bottom = floatPill.current
-              ? floatPill.current.offsetHeight + 60 + 80
-              : 80;
             map.fitBounds(bounds, {
-              padding: BREAKPOINT()
-                ? 80
+              padding: largerScreen
+                ? {
+                    top: floatPill.current.offsetHeight / 2,
+                    right: 80,
+                    bottom: 80,
+                    left: floatPill.current.offsetHeight / 2,
+                  }
+                : BREAKPOINT()
+                ? {
+                    top: 80,
+                    right: Math.max(floatPill.current.offsetWidth / 2, 80),
+                    bottom: 60 + 20 + floatPill.current.offsetHeight / 2,
+                    left: Math.max(floatPill.current.offsetWidth / 2, 80),
+                  }
                 : {
                     top: 80,
                     right: 80,
-                    bottom,
+                    bottom: 60 + 20 + floatPill.current.offsetHeight, // height of search bar + float pill
                     left: 80,
                   },
             });
