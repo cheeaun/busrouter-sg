@@ -39,7 +39,12 @@ const $map = document.getElementById('map');
 const STORE = {};
 const BREAKPOINT = () => window.innerWidth > 640;
 const supportsHover =
-  window.matchMedia && window.matchMedia('(hover: hover)').matches;
+  window.matchMedia && matchMedia('(any-hover: hover)').matches;
+const supportsTouch =
+  (window.matchMedia && matchMedia('(any-pointer: coarse)').matches) ||
+  'ontouchstart' in window ||
+  navigator.MaxTouchPoints > 0 ||
+  navigator.msMaxTouchPoints > 0;
 const supportsPromise = 'Promise' in window;
 const ruler = new CheapRuler(1.3);
 
@@ -1299,7 +1304,6 @@ const App = () => {
       servicesDataArr,
     };
 
-    const supportsHover = matchMedia('(any-hover: hover)').matches;
     map = window._map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/cheeaun/ckn18umqw1jsi17nymmpdinba',
@@ -1309,7 +1313,7 @@ const App = () => {
       logoPosition: 'bottom-left',
       attributionControl: false,
       pitchWithRotate: false,
-      dragRotate: !supportsHover,
+      dragRotate: supportsTouch,
       touchPitch: false,
       bounds: [lowerLong, lowerLat, upperLong, upperLat],
       fitBoundsOptions: {
@@ -1319,7 +1323,7 @@ const App = () => {
       },
     });
 
-    if (!supportsHover) {
+    if (!supportsTouch) {
       map.touchZoomRotate.disableRotation();
     }
 
@@ -1351,7 +1355,7 @@ const App = () => {
     map.addControl(
       new mapboxgl.NavigationControl({
         showCompass: true,
-        showZoom: supportsHover,
+        showZoom: !supportsTouch,
       }),
       'top-right'
     );
