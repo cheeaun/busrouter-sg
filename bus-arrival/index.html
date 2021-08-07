@@ -1,27 +1,33 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bus arrival times</title>
-<link rel="stylesheet" href="../assets/arrival.css">
-<link rel="preconnect" href="https://arrivelah2.busrouter.sg" crossorigin>
-<link rel="dns-prefetch" href="https://arrivelah2.busrouter.sg" crossorigin>
-<link rel="preload" as="script" href="../assets/arrival.js">
-<link rel="preload" as="image" href="../assets/images/stop-active.svg">
-<link rel="preload" as="image" href="../assets/images/bus-single.svg">
-<link rel="preload" as="image" href="../assets/images/bus-double.svg">
-<link rel="apple-touch-icon" href="../icons/icon-192.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Bus arrival times">
-<main>
-  <div id="arrivals"></div>
-</main>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=UA-23235796-4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  gtag('js', new Date());
-  window._GA_TRACKING_ID = 'UA-23235796-4';
-  gtag('config', window._GA_TRACKING_ID, { send_page_view: false });
-  window.gtag = gtag;
-</script>
-<script src="../assets/arrival.js"></script>
+<html lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bus arrival times</title>
+  <link rel="stylesheet" href="../assets/arrival.css" />
+  <link rel="preconnect" href="https://arrivelah2.busrouter.sg" crossorigin />
+  <link rel="dns-prefetch" href="https://arrivelah2.busrouter.sg" crossorigin />
+  <link rel="preload" as="image" href="../assets/images/stop-active.svg" />
+  <link rel="preload" as="image" href="../assets/images/bus-single.svg" />
+  <link rel="preload" as="image" href="../assets/images/bus-double.svg" />
+  <link rel="apple-touch-icon" href="../icons/icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Bus arrival times" />
+  <main>
+    <div id="arrivals"></div>
+  </main>
+  <script
+    defer
+    src="https://www.googletagmanager.com/gtag/js?id=UA-23235796-4"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    window._GA_TRACKING_ID = 'UA-23235796-4';
+    gtag('config', window._GA_TRACKING_ID, { send_page_view: false });
+    window.gtag = gtag;
+  </script>
+  <script src="../assets/arrival.js" type="module"></script>
+</html>

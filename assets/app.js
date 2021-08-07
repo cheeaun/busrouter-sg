@@ -3036,12 +3036,10 @@ render(<App />, document.getElementById('app'));
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    const debug = /debug/.test(location.hash);
-    if (debug) {
-      navigator.serviceWorker.register('../service-worker.js?debug');
-    } else {
-      navigator.serviceWorker.register('../service-worker.js');
-    }
+    navigator.serviceWorker.register(
+      new URL('../service-worker.js', import.meta.url),
+      { type: 'module' }
+    );
   });
 }
 
@@ -3060,7 +3058,7 @@ if (
 if (window.navigator.standalone) {
   document.body.classList.add('standalone');
 
-  // Refresh map size when dimissing software keyboard
+  // Refresh map size when dismissing software keyboard
   // https://stackoverflow.com/a/19464029/20838
   document.addEventListener('focusout', () => {
     if (_map) _map.resize();

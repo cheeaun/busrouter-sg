@@ -29,7 +29,7 @@ const map = new mapboxgl.Map({
 map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 map.addControl(
   new mapboxgl.AttributionControl({ compact: true }),
-  'bottom-left',
+  'bottom-left'
 );
 
 // https://davidwalsh.name/javascript-debounce-function
@@ -71,7 +71,7 @@ const mapCanvas = map.getCanvas();
 map.on('load', async () => {
   const stopsData = (await stopsFetch).sort((a, b) => a.number - b.number);
   const routesData = (await routesFetch).sort((a, b) =>
-    sortServices(a.number, b.number),
+    sortServices(a.number, b.number)
   );
 
   const serviceStops = {};
@@ -135,7 +135,7 @@ map.on('load', async () => {
   const $tooltip = document.getElementById('tooltip');
   const highestLevel = routesData.reduce(
     (level, d) => (d.level > level ? d.level : level),
-    1,
+    1
   );
 
   const routesLayer = new MapboxLayer({
@@ -262,7 +262,7 @@ map.on('load', async () => {
         ${routesList
           .map(
             (number) =>
-              `<li><a href="#services/${number}" class="number">${number}</a></li>`,
+              `<li><a href="#services/${number}" class="number">${number}</a></li>`
           )
           .join('')}
       </ul>
@@ -273,7 +273,7 @@ map.on('load', async () => {
         ${stopsData
           .map(
             (s) =>
-              `<li><a href="#stops/${s.number}"><span class="number">${s.number}</span>&nbsp;&nbsp;${s.name}</a></li>`,
+              `<li><a href="#stops/${s.number}"><span class="number">${s.number}</span>&nbsp;&nbsp;${s.name}</a></li>`
           )
           .join('')}
       </ul>
@@ -309,7 +309,7 @@ map.on('load', async () => {
     if (e.target.tagName.toLowerCase() === 'a') {
       mouseoutRAF = requestAnimationFrame(() => {
         const [_, type, number] = location.hash.match(
-          /#([^\/]+)\/([^\/]+)/i,
+          /#([^\/]+)\/([^\/]+)/i
         ) || [, ,];
         if (type) {
           if (type === 'stops') {

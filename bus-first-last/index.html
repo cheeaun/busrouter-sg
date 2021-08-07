@@ -1,32 +1,44 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Approximate first &amp; last bus arrival times</title>
-<link rel="stylesheet" href="../assets/firstlast.css">
-<link rel="preload" as="script" href="../assets/firstlast.js">
-<script type="text/javascript">
-	(function(){
-		var bsa_optimize=document.createElement('script');
-		bsa_optimize.type='text/javascript';
-		bsa_optimize.async=true;
-		bsa_optimize.src='https://cdn4.buysellads.net/pub/busrouter.js?'+(new Date()-new Date()%600000);
-		(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(bsa_optimize);
-	})();
-window.optimize = window.optimize || { queue: [] };
-window.optimize.queue.push(() => {
-  window.optimize.pushAll();
-});
-</script>
-<main>
-  <div id="firstlast"></div>
-</main>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=UA-23235796-4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  gtag('js', new Date());
-  window._GA_TRACKING_ID = 'UA-23235796-4';
-  gtag('config', window._GA_TRACKING_ID, { send_page_view: false });
-  window.gtag = gtag;
-</script>
-<script src="../assets/firstlast.js"></script>
+<html lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Approximate first &amp; last bus arrival times</title>
+  <link rel="stylesheet" href="../assets/firstlast.css" />
+  <script>
+    function bsa() {
+      var bsa_optimize = document.createElement('script');
+      bsa_optimize.type = 'text/javascript';
+      bsa_optimize.async = true;
+      bsa_optimize.src =
+        'https://cdn4.buysellads.net/pub/busrouter.js?' +
+        (new Date() - (new Date() % 600000));
+      (
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(bsa_optimize);
+    }
+    bsa();
+    window.optimize = window.optimize || { queue: [] };
+    window.optimize.queue.push(() => {
+      window.optimize.pushAll();
+    });
+  </script>
+  <main>
+    <div id="firstlast"></div>
+  </main>
+  <script
+    defer
+    src="https://www.googletagmanager.com/gtag/js?id=UA-23235796-4"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    window._GA_TRACKING_ID = 'UA-23235796-4';
+    gtag('config', window._GA_TRACKING_ID, { send_page_view: false });
+    window.gtag = gtag;
+  </script>
+  <script src="../assets/firstlast.js" type="module"></script>
+</html>

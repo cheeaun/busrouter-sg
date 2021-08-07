@@ -20,9 +20,8 @@
   <link
     rel="preload"
     as="script"
-    href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js"
+    href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.js"
   />
-  <link rel="preload" as="script" href="assets/app.js" />
   <meta
     name="description"
     content="Explore bus stops and routes on the map for all bus services in Singapore, with realtime bus arrival times and per-bus-stop passing routes overview."
@@ -30,8 +29,9 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
   <link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192.png" />
-  <script type="text/javascript">
-    (function () {
+
+  <script>
+    function bsa() {
       var bsa_optimize = document.createElement('script');
       bsa_optimize.type = 'text/javascript';
       bsa_optimize.async = true;
@@ -42,8 +42,10 @@
         document.getElementsByTagName('head')[0] ||
         document.getElementsByTagName('body')[0]
       ).appendChild(bsa_optimize);
-    })();
+    }
+    bsa();
   </script>
+
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta
@@ -167,6 +169,6 @@
     gtag('config', window._GA_TRACKING_ID, { send_page_view: false });
     window.gtag = gtag;
   </script>
-  <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js"></script>
-  <script src="assets/app.js"></script>
+  <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.js"></script>
+  <script src="assets/app.js" type="module"></script>
 </html>

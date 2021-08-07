@@ -220,7 +220,7 @@ function ArrivalTimes() {
     try {
       localStorage.setItem(
         'busroutersg.arrival.pinnedServices',
-        JSON.stringify(pinnedServices),
+        JSON.stringify(pinnedServices)
       );
     } catch (e) {}
   }

@@ -1,240 +1,242 @@
 <!DOCTYPE html>
-<meta charset="utf-8" />
-<meta
-  name="viewport"
-  content="width=device-width,maximum-scale=1,initial-scale=1"
-/>
-<title>Singapore Bus Routes &amp; Stops Visualization</title>
-<style>
-  @import 'https://api.tiles.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css';
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    background: #09101d;
-    color: #fff;
-    font-size: 12px;
-    pointer-events: none;
-  }
-  body.ready {
-    pointer-events: auto;
-  }
-  #map {
-    position: fixed;
-    top: 0;
-    bottom: 40%;
-    width: 100%;
-    transition: 0.3s bottom;
-  }
-  .map-expand #map {
-    bottom: 44px;
-  }
-  #panel {
-    position: fixed;
-    top: 60%;
-    bottom: 0;
-    width: 100%;
-    display: flex;
-    background-image: linear-gradient(#0c172e, #09101d);
-    transition: 0.3s top;
-  }
-  .map-expand #panel {
-    top: calc(100% - 44px);
-  }
-  #panel > div {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-  }
-  #panel > div:first-child {
-    border-right: 1px solid #112330;
-  }
-  #panel > div h2 {
-    font-size: 1em;
-    font-weight: normal;
-    text-transform: uppercase;
-    padding: 0.5em 1em;
-  }
-  #panel ul {
-    display: block;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    overflow: auto;
-    animation: fadein 2s ease-in-out both;
-    -webkit-overflow-scrolling: touch;
-  }
-  @keyframes fadein {
-    0% {
-      opacity: 0;
-      transform: translateY(-5px);
+<html lang="en">
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width,maximum-scale=1,initial-scale=1"
+  />
+  <title>Singapore Bus Routes &amp; Stops Visualization</title>
+  <style>
+    @import 'https://api.tiles.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.css';
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+        Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background: #09101d;
+      color: #fff;
+      font-size: 12px;
+      pointer-events: none;
     }
-  }
-  #panel ul li {
-    display: inline;
-  }
-  #panel ul li a {
-    display: block;
-    padding: 0.5em 1em;
-    color: #72a4b5;
-    text-decoration: none;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
-  #panel span.number {
-    font-feature-settings: 'tnum';
-    font-variant-numeric: tabular-nums;
-  }
-  #panel ul li a:hover {
-    background-color: #112330;
-    color: #fff;
-  }
-  #panel ul li a:focus {
-    background-color: #112330;
-    animation: focus 1s ease-in-out;
-  }
-  @keyframes focus {
-    0% {
-      background-color: #fff;
+    body.ready {
+      pointer-events: auto;
     }
-    100% {
-      background-color: #112330;
-    }
-  }
-  #panel ul li a:target {
-    background-color: #fff;
-    color: #09101d;
-  }
-  #toggle {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 10px;
-    transform: scaleX(2) translateX(-0.75em);
-    background-color: transparent;
-    border: 0;
-    color: rgba(255, 255, 255, 0.5);
-    line-height: 24px;
-    cursor: pointer;
-    z-index: 2;
-    transition: 0.3s transform;
-    outline: 0;
-  }
-  #toggle:hover {
-    color: #fff;
-  }
-  #toggle:active {
-    color: rgba(0, 0, 0, 0.5);
-  }
-  .map-expand #toggle {
-    transform: scale(2, -1) translateX(-0.75em);
-  }
-  #status {
-    position: fixed;
-    padding: 0 50px 0 1.6em;
-    height: 44px;
-    line-height: 44px;
-    border-radius: 44px;
-    background-color: #fff;
-    color: #09101d;
-    top: 10px;
-    left: 10px;
-    margin-right: 10px;
-    text-transform: uppercase;
-    font-weight: bold;
-    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    transform-origin: top left;
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
-  }
-  #status[hidden] {
-    display: block;
-    transform: translateY(-100px) rotate(-15deg);
-    opacity: 0;
-    pointer-events: none;
-  }
-  #status span {
-    display: inline-block;
-    line-height: 1.1em;
-    vertical-align: middle;
-  }
-  #status .close {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 44px;
-    height: 44px;
-    border-radius: 44px;
-    color: inherit;
-    text-decoration: none;
-    text-align: center;
-    font-size: 20px;
-    transition: background-color 0.3s;
-  }
-  #status .close:hover {
-    color: #000;
-    background-color: #e5eec1;
-  }
-  #tooltip {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 0.5em 0.75em;
-    background-color: #fff;
-    color: #09101d;
-    border-radius: 10em;
-    transition: opacity 0.3s;
-    opacity: 1;
-    white-space: nowrap;
-    font-size: 10px;
-    text-transform: uppercase;
-  }
-  #tooltip[hidden] {
-    display: block;
-    opacity: 0;
-    pointer-events: none;
-  }
-  @media (min-width: 800px) {
     #map {
-      bottom: 0;
-      width: calc(100% - 320px);
+      position: fixed;
+      top: 0;
+      bottom: 40%;
+      width: 100%;
+      transition: 0.3s bottom;
+    }
+    .map-expand #map {
+      bottom: 44px;
     }
     #panel {
-      top: 0;
-      width: 320px;
-      right: 0;
+      position: fixed;
+      top: 60%;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      background-image: linear-gradient(#0c172e, #09101d);
+      transition: 0.3s top;
+    }
+    .map-expand #panel {
+      top: calc(100% - 44px);
+    }
+    #panel > div {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    #panel > div:first-child {
+      border-right: 1px solid #112330;
+    }
+    #panel > div h2 {
+      font-size: 1em;
+      font-weight: normal;
+      text-transform: uppercase;
+      padding: 0.5em 1em;
+    }
+    #panel ul {
+      display: block;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      overflow: auto;
+      animation: fadein 2s ease-in-out both;
+      -webkit-overflow-scrolling: touch;
+    }
+    @keyframes fadein {
+      0% {
+        opacity: 0;
+        transform: translateY(-5px);
+      }
+    }
+    #panel ul li {
+      display: inline;
+    }
+    #panel ul li a {
+      display: block;
+      padding: 0.5em 1em;
+      color: #72a4b5;
+      text-decoration: none;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    #panel span.number {
+      font-feature-settings: 'tnum';
+      font-variant-numeric: tabular-nums;
+    }
+    #panel ul li a:hover {
+      background-color: #112330;
+      color: #fff;
+    }
+    #panel ul li a:focus {
+      background-color: #112330;
+      animation: focus 1s ease-in-out;
+    }
+    @keyframes focus {
+      0% {
+        background-color: #fff;
+      }
+      100% {
+        background-color: #112330;
+      }
+    }
+    #panel ul li a:target {
+      background-color: #fff;
+      color: #09101d;
     }
     #toggle {
-      display: none;
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 10px;
+      transform: scaleX(2) translateX(-0.75em);
+      background-color: transparent;
+      border: 0;
+      color: rgba(255, 255, 255, 0.5);
+      line-height: 24px;
+      cursor: pointer;
+      z-index: 2;
+      transition: 0.3s transform;
+      outline: 0;
     }
-  }
-  .mapboxgl-canvas-container,
-  .mapboxgl-canvas-container * {
-    cursor: crosshair !important;
-  }
-  .mapboxgl-ctrl-group {
-    border-radius: 44px;
-  }
-  .mapboxgl-ctrl {
-    animation: fadein 2s ease-in-out 2s both;
-  }
-</style>
-<div id="map"></div>
-<div id="panel"></div>
-<div id="status" hidden></div>
-<div id="tooltip" hidden></div>
-<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js"></script>
-<script src="visualization.js"></script>
-<script
-  defer
-  src="https://www.googletagmanager.com/gtag/js?id=UA-23235796-4"
-></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() {
-    dataLayer.push(arguments);
-  }
-  gtag('js', new Date());
-  gtag('config', 'UA-23235796-4');
-  window.gtag = gtag;
-</script>
+    #toggle:hover {
+      color: #fff;
+    }
+    #toggle:active {
+      color: rgba(0, 0, 0, 0.5);
+    }
+    .map-expand #toggle {
+      transform: scale(2, -1) translateX(-0.75em);
+    }
+    #status {
+      position: fixed;
+      padding: 0 50px 0 1.6em;
+      height: 44px;
+      line-height: 44px;
+      border-radius: 44px;
+      background-color: #fff;
+      color: #09101d;
+      top: 10px;
+      left: 10px;
+      margin-right: 10px;
+      text-transform: uppercase;
+      font-weight: bold;
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-origin: top left;
+      box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+    }
+    #status[hidden] {
+      display: block;
+      transform: translateY(-100px) rotate(-15deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+    #status span {
+      display: inline-block;
+      line-height: 1.1em;
+      vertical-align: middle;
+    }
+    #status .close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 44px;
+      color: inherit;
+      text-decoration: none;
+      text-align: center;
+      font-size: 20px;
+      transition: background-color 0.3s;
+    }
+    #status .close:hover {
+      color: #000;
+      background-color: #e5eec1;
+    }
+    #tooltip {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 0.5em 0.75em;
+      background-color: #fff;
+      color: #09101d;
+      border-radius: 10em;
+      transition: opacity 0.3s;
+      opacity: 1;
+      white-space: nowrap;
+      font-size: 10px;
+      text-transform: uppercase;
+    }
+    #tooltip[hidden] {
+      display: block;
+      opacity: 0;
+      pointer-events: none;
+    }
+    @media (min-width: 800px) {
+      #map {
+        bottom: 0;
+        width: calc(100% - 320px);
+      }
+      #panel {
+        top: 0;
+        width: 320px;
+        right: 0;
+      }
+      #toggle {
+        display: none;
+      }
+    }
+    .mapboxgl-canvas-container,
+    .mapboxgl-canvas-container * {
+      cursor: crosshair !important;
+    }
+    .mapboxgl-ctrl-group {
+      border-radius: 44px;
+    }
+    .mapboxgl-ctrl {
+      animation: fadein 2s ease-in-out 2s both;
+    }
+  </style>
+  <div id="map"></div>
+  <div id="panel"></div>
+  <div id="status" hidden></div>
+  <div id="tooltip" hidden></div>
+  <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.js"></script>
+  <script src="visualization.js" type="module"></script>
+  <script
+    defer
+    src="https://www.googletagmanager.com/gtag/js?id=UA-23235796-4"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'UA-23235796-4');
+    window.gtag = gtag;
+  </script>
+</html>

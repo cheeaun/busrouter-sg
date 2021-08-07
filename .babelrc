@@ -1,27 +1,7 @@
 {
-  "presets": [
-    [
-      "@babel/preset-env",
-      {
-        "targets": {
-          "browsers": [
-            ">0.25%",
-            "not dead",
-            "not ie 11",
-            "not chrome < 51",
-            "not op_mini all",
-            "not Android > 1",
-            "not safari < 10"
-          ]
-        },
-        "useBuiltIns": "usage",
-        "corejs": 3,
-        "modules": false
-      }
-    ]
-  ],
+  "presets": ["@parcel/babel-preset-env"],
   "plugins": [
-    "@babel/plugin-transform-runtime",
+    "@parcel/babel-plugin-transform-runtime",
     ["@babel/plugin-transform-react-jsx", {
       "pragma": "h",
       "pragmaFrag": "Fragment"

@@ -4,6 +4,7 @@ dist
 tmp
 */_*
 .cache
+.parcel-cache
 .env
 data/3/route-lines
 .vscode
