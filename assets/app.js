@@ -15,6 +15,7 @@ import getWalkingMinutes from './utils/getWalkingMinutes';
 import usePrevious from './utils/usePrevious';
 
 import Ad from './ad';
+import About from './components/About';
 import BusServicesArrival from './components/BusServicesArrival';
 import GeolocateControl from './components/GeolocateControl';
 import BetweenRoutes from './components/BetweenRoutes';
@@ -49,12 +50,10 @@ const supportsPromise = 'Promise' in window;
 const ruler = new CheapRuler(1.3);
 
 const $logo = document.getElementById('logo');
-const $about = document.getElementById('about');
-const $closeAbout = document.getElementById('close-about');
 
 const redirectToOldSite = () => {
   const redirect = confirm(
-    'Looks like your browser is a little old. Redirecting you to the older version of BusRouter SG.'
+    'Looks like your browser is a little old. Redirecting you to the older version of BusRouter SG.',
   );
   if (redirect) location.href = 'https://v1.busrouter.sg/';
 };
@@ -62,17 +61,6 @@ const redirectToOldSite = () => {
 if (!supportsPromise || !mapboxgl.supported()) {
   redirectToOldSite();
 }
-
-$closeAbout.onclick = $logo.onclick = () => {
-  $about.hidden = !$about.hidden;
-  try {
-    localStorage.setItem('busroutersg.about', 'true');
-  } catch (e) {}
-};
-try {
-  const intro = localStorage.getItem('busroutersg.about');
-  if (intro !== 'true') $about.hidden = false;
-} catch (e) {}
 
 let rafST;
 const rafScrollTop = () => {
@@ -89,8 +77,8 @@ function showStopTooltip(data) {
     5 + $map.offsetLeft,
     Math.min(
       window.innerWidth - $tooltip.offsetWidth - 5,
-      x + $map.offsetLeft - 5
-    )
+      x + $map.offsetLeft - 5,
+    ),
   );
   $tooltip.style.transform = `translate(${left}px, ${top}px)`;
 }
@@ -153,7 +141,7 @@ const App = () => {
   let labelLayerId;
 
   const largerScreen = window.matchMedia(
-    '(min-width: 1200px) and (min-height: 600px) and (orientation: landscape)'
+    '(min-width: 1200px) and (min-height: 600px) and (orientation: landscape)',
   ).matches;
 
   const handleKeys = (e) => {
@@ -248,7 +236,7 @@ const App = () => {
         },
         {
           selected: false,
-        }
+        },
       );
       map.setFeatureState(
         {
@@ -257,7 +245,7 @@ const App = () => {
         },
         {
           selected: false,
-        }
+        },
       );
     }
     map.setFeatureState(
@@ -267,7 +255,7 @@ const App = () => {
       },
       {
         selected: true,
-      }
+      },
     );
     map.setFeatureState(
       {
@@ -276,7 +264,7 @@ const App = () => {
       },
       {
         selected: true,
-      }
+      },
     );
 
     setShrinkSearch(true);
@@ -318,7 +306,7 @@ const App = () => {
         },
         {
           selected: false,
-        }
+        },
       );
       map.setFeatureState(
         {
@@ -327,12 +315,12 @@ const App = () => {
         },
         {
           selected: false,
-        }
+        },
       );
       if (stopPopover.current?.classList.contains('expand')) {
         requestAnimationFrame(() => {
           stopToBeHighlighted = servicePopover.current?.querySelector(
-            `a[data-stop="${number}"]`
+            `a[data-stop="${number}"]`,
           );
           stopToBeHighlighted?.classList.add('flash');
           stopToBeHighlighted?.scrollIntoView({
@@ -417,7 +405,7 @@ const App = () => {
         source: 'routes-path',
         id: hoveredRouteID,
       },
-      { hover: true, fadein: false }
+      { hover: true, fadein: false },
     );
 
     STORE.routesPathServices.forEach((service) => {
@@ -428,7 +416,7 @@ const App = () => {
           source: 'routes-path',
           id,
         },
-        { hover: false, fadein: true }
+        { hover: false, fadein: true },
       );
     });
 
@@ -480,7 +468,7 @@ const App = () => {
           source: 'routes-path',
           id,
         },
-        { fadein: false, hover: false }
+        { fadein: false, hover: false },
       );
     });
   };
@@ -501,7 +489,7 @@ const App = () => {
       window.open(
         url,
         `busArrivals-${stopNumber}`,
-        `width=${width},height=${height},menubar=0,toolbar=0,top=${top},left=${left}`
+        `width=${width},height=${height},menubar=0,toolbar=0,top=${top},left=${left}`,
       );
     } else {
       setShowArrivalsPopover({
@@ -671,11 +659,11 @@ const App = () => {
 
   const defaultTitle = document.title;
   const defaultDesc = document.querySelector(
-    'meta[property="og:description"]'
+    'meta[property="og:description"]',
   ).content;
   const defaultURL = document.querySelector('meta[property="og:url"]').content;
   const defaultImg = document.querySelector(
-    'meta[property="og:image"]'
+    'meta[property="og:image"]',
   ).content;
   const setHead = (headContent = {}) => {
     let {
@@ -685,7 +673,7 @@ const App = () => {
       image = defaultImg,
     } = headContent;
     document.title = document.querySelector(
-      'meta[property="og:title"]'
+      'meta[property="og:title"]',
     ).content = title;
     if (!/^https?/.test(url)) url = 'https://busrouter.sg/#' + url;
     document.querySelector('meta[property="og:url"]').content = url;
@@ -720,7 +708,7 @@ const App = () => {
     map.setLayoutProperty(
       'traffic',
       'visibility',
-      route.page === 'stop' && route.subpage !== 'routes' ? 'visible' : 'none'
+      route.page === 'stop' && route.subpage !== 'routes' ? 'visible' : 'none',
     );
 
     switch (route.page) {
@@ -757,7 +745,7 @@ const App = () => {
           if (routes[1])
             endStops.push(routes[1][0], routes[1][routes[1].length - 1]);
           let routeStops = [...routes[0], ...(routes[1] || [])].filter(
-            (el, pos, arr) => arr.indexOf(el) == pos
+            (el, pos, arr) => arr.indexOf(el) == pos,
           ); // Merge and unique
 
           // Fit map to route bounds
@@ -842,7 +830,7 @@ const App = () => {
             const allRoutes = [...routes[0], ...(routes[1] || [])].filter(
               (el, pos, arr) => {
                 return arr.indexOf(el) === pos;
-              }
+              },
             );
             routeStops = routeStops.concat(allRoutes);
 
@@ -851,7 +839,7 @@ const App = () => {
               routeGeometries.map((r) => ({
                 service,
                 geometry: toGeoJSON(r),
-              }))
+              })),
             );
           });
 
@@ -936,7 +924,7 @@ const App = () => {
               })),
             });
             STORE.routesPathServices = serviceGeometries.map(
-              (sg) => sg.service
+              (sg) => sg.service,
             );
           });
         }
@@ -1050,7 +1038,7 @@ const App = () => {
               })),
             });
             STORE.routesPathServices = serviceGeometries.map(
-              (sg) => sg.service
+              (sg) => sg.service,
             );
           });
         } else {
@@ -1094,7 +1082,7 @@ const App = () => {
             let serviceStops = servicesData[service].routes[routeIndex];
             serviceStops = serviceStops.slice(
               0,
-              serviceStops.indexOf(endStop.number) + 1
+              serviceStops.indexOf(endStop.number) + 1,
             );
             return { service, stops: serviceStops, route };
           });
@@ -1103,7 +1091,7 @@ const App = () => {
             const [service, routeIndex] = route.split('-');
             let serviceStops = servicesData[service].routes[routeIndex];
             serviceStops = serviceStops.slice(
-              serviceStops.indexOf(startStop.number)
+              serviceStops.indexOf(startStop.number),
             );
 
             // This service already can go straight to the end stop,
@@ -1172,12 +1160,12 @@ const App = () => {
           startWalkMins: getWalkingMinutes(
             ruler.distance(
               startStop.coordinates,
-              nearestStartStop.coordinates
-            ) * 1000
+              nearestStartStop.coordinates,
+            ) * 1000,
           ),
           endWalkMins: getWalkingMinutes(
             ruler.distance(endStop.coordinates, nearestEndStop.coordinates) *
-              1000
+              1000,
           ),
           results: [
             findRoutesBetween(startStop, endStop),
@@ -1249,13 +1237,13 @@ const App = () => {
       let left = false;
       if (/[19]$/.test(number)) {
         const oppositeNumber = number.replace(/[19]$/, (d) =>
-          d === '1' ? 9 : 1
+          d === '1' ? 9 : 1,
         );
         const oppositeStop = stops[oppositeNumber];
         if (oppositeStop) {
           const bearing = ruler.bearing(
             [lng, lat],
-            [oppositeStop[0], oppositeStop[1]]
+            [oppositeStop[0], oppositeStop[1]],
           );
           left = bearing > 0;
         }
@@ -1332,7 +1320,7 @@ const App = () => {
       new mapboxgl.AttributionControl({
         compact: true,
       }),
-      'bottom-left'
+      'bottom-left',
     );
     map.addControl(
       new GeolocateControl({
@@ -1349,7 +1337,7 @@ const App = () => {
           return [0, 0];
         },
       }),
-      'top-right'
+      'top-right',
     );
 
     map.addControl(
@@ -1357,7 +1345,7 @@ const App = () => {
         showCompass: true,
         showZoom: !supportsTouch,
       }),
-      'top-right'
+      'top-right',
     );
     const compassButton = document.querySelector('.mapboxgl-ctrl-compass');
     map.on('rotateend', () => {
@@ -1381,7 +1369,7 @@ const App = () => {
         console.log(layers);
 
         labelLayerId = layers.find(
-          (l) => l.type == 'symbol' && l.layout['text-field']
+          (l) => l.type == 'symbol' && l.layout['text-field'],
         ).id;
 
         resolve();
@@ -1561,7 +1549,7 @@ const App = () => {
           ],
         },
       },
-      'settlement-subdivision-label'
+      'settlement-subdivision-label',
     );
 
     map.addLayer({
@@ -1784,7 +1772,7 @@ const App = () => {
           ],
         },
       },
-      'stops-highlight'
+      'stops-highlight',
     );
 
     requestIdleCallback(() => {
@@ -1862,7 +1850,7 @@ const App = () => {
           ],
         },
       },
-      'stops'
+      'stops',
     );
 
     map.addLayer(
@@ -1890,7 +1878,7 @@ const App = () => {
           ],
         },
       },
-      'routes'
+      'routes',
     );
 
     map.addLayer(
@@ -1928,7 +1916,7 @@ const App = () => {
           'text-halo-width': 2,
         },
       },
-      'stops'
+      'stops',
     );
 
     // Bus service routes (passing, overlapping)
@@ -1985,7 +1973,7 @@ const App = () => {
           ],
         },
       },
-      'stops'
+      'stops',
     );
 
     map.addLayer(
@@ -2017,7 +2005,7 @@ const App = () => {
           ],
         },
       },
-      'routes-path'
+      'routes-path',
     );
 
     map.addLayer({
@@ -2088,7 +2076,7 @@ const App = () => {
           ],
         },
       },
-      'stops'
+      'stops',
     );
 
     requestIdleCallback(() => {
@@ -2114,7 +2102,7 @@ const App = () => {
                 source: 'routes-path',
                 id: hoveredRouteID,
               },
-              { hover: false, fadein: false }
+              { hover: false, fadein: false },
             );
           }
 
@@ -2124,7 +2112,7 @@ const App = () => {
               source: 'routes-path',
               id: hoveredRouteID,
             },
-            { hover: true, fadein: false }
+            { hover: true, fadein: false },
           );
 
           STORE.routesPathServices.forEach((service) => {
@@ -2135,7 +2123,7 @@ const App = () => {
                 source: 'routes-path',
                 id,
               },
-              { hover: false, fadein: true }
+              { hover: false, fadein: true },
             );
           });
 
@@ -2152,7 +2140,7 @@ const App = () => {
                 source: 'routes-path',
                 id,
               },
-              { fadein: false, hover: false }
+              { fadein: false, hover: false },
             );
           });
           hoveredRouteID = null;
@@ -2217,7 +2205,7 @@ const App = () => {
           'line-opacity': ['interpolate', ['linear'], ['zoom'], 14.1, 0, 16, 1],
         },
       },
-      'road-label'
+      'road-label',
     );
 
     // Service live buses
@@ -2299,7 +2287,7 @@ const App = () => {
           ],
         },
       },
-      'stops'
+      'stops',
     );
 
     map.addLayer(
@@ -2325,7 +2313,7 @@ const App = () => {
           ],
         },
       },
-      'stops-highlight'
+      'stops-highlight',
     );
 
     map.addLayer(
@@ -2342,7 +2330,7 @@ const App = () => {
           'line-width': 6,
         },
       },
-      'routes-between'
+      'routes-between',
     );
 
     map.addLayer({
@@ -2456,7 +2444,7 @@ const App = () => {
       showArrivalsPopover,
       showServicePopover,
       largerScreen,
-    ]
+    ],
   );
 
   // Global shortcuts
@@ -2518,6 +2506,7 @@ const App = () => {
 
   return (
     <>
+      <About />
       <div
         id="search-popover"
         ref={searchPopover}
@@ -2558,10 +2547,10 @@ const App = () => {
                               e.preventDefault();
                               e.stopPropagation();
                               const newRouteServices = routeServices.filter(
-                                (s) => s !== service
+                                (s) => s !== service,
                               );
                               location.hash = `/services/${newRouteServices.join(
-                                '~'
+                                '~',
                               )}`;
                               unhighlightRoute();
                             }}
@@ -2724,7 +2713,7 @@ const App = () => {
                               setTimeout(() => {
                                 if (newServices.length) {
                                   location.hash = `/services/${newServices.join(
-                                    '~'
+                                    '~',
                                   )}`;
                                 } else {
                                   location.hash = '/';
@@ -2735,7 +2724,7 @@ const App = () => {
                         </label>
                       </li>
                     );
-                  }
+                  },
                 )
               : !searching &&
                 [1, 2, 3, 4, 5, 6, 7, 8].map((s, i) => (
@@ -3038,7 +3027,7 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register(
       new URL('../service-worker.js', import.meta.url),
-      { type: 'module' }
+      { type: 'module' },
     );
   });
 }
@@ -3088,11 +3077,11 @@ if (isSafari && !window.navigator.standalone) {
         (w - icon.width) / 2,
         (h - icon.height) / 2,
         icon.width,
-        icon.height
+        icon.height,
       );
       document.head.insertAdjacentHTML(
         'beforeend',
-        `<link rel="apple-touch-startup-image" href="${canvas.toDataURL()}">`
+        `<link rel="apple-touch-startup-image" href="${canvas.toDataURL()}">`,
       );
     };
     icon.src = iconSVGPath;
