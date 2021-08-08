@@ -217,9 +217,9 @@ const App = () => {
     const popoverHeight = stopPopover.current?.offsetHeight;
     const offset = BREAKPOINT() ? [0, 0] : [0, -popoverHeight / 2];
     const zoom = map.getZoom();
-    if (zoom < 16) {
+    if (zoom < 17) {
       map.flyTo({
-        zoom: 16,
+        zoom: 17,
         center: coordinates,
         offset,
         animate: zoom >= 12,
@@ -278,9 +278,9 @@ const App = () => {
         ? [0, 0]
         : [0, -stopPopover.current?.offsetHeight / 2];
       const zoom = map.getZoom();
-      if (zoom < 16) {
+      if (zoom < 17) {
         map.flyTo({
-          zoom: 16,
+          zoom: 17,
           center: coordinates,
           offset,
           animate: zoom >= 12,
@@ -357,9 +357,9 @@ const App = () => {
         : [0, -servicePopover.current.offsetHeight / 2];
     }
     const zoom = map.getZoom();
-    if (zoom < 16) {
+    if (zoom < 17) {
       map.flyTo({
-        zoom: 16,
+        zoom: 17,
         center: coordinates,
         offset,
       });
