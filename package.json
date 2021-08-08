@@ -48,6 +48,9 @@
   "alias": {
     "react": "preact/compat"
   },
+  "engines": {
+    "node": ">=14.10"
+  },
   "browserslist": [
     ">0.25%",
     "not dead",
