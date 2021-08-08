@@ -58,8 +58,6 @@
     "not safari < 10"
   ],
   "@parcel/bundler-default": {
-    "minBundles": 2,
-    "minBundleSize": 20000,
-    "maxParallelRequests": 6
+    "minBundleSize": 50000
   }
 }
