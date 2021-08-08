@@ -1,4 +1,4 @@
-import { h, render, Fragment } from 'preact';
+import { h, Fragment } from 'preact';
 import { useRef } from 'preact/hooks';
 
 function rowSpaner(stopGrid, column, stop) {
