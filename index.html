@@ -29,23 +29,6 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
   <link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192.png" />
-
-  <script>
-    function bsa() {
-      var bsa_optimize = document.createElement('script');
-      bsa_optimize.type = 'text/javascript';
-      bsa_optimize.async = true;
-      bsa_optimize.src =
-        'https://cdn4.buysellads.net/pub/busrouter.js?' +
-        (new Date() - (new Date() % 600000));
-      (
-        document.getElementsByTagName('head')[0] ||
-        document.getElementsByTagName('body')[0]
-      ).appendChild(bsa_optimize);
-    }
-    bsa();
-  </script>
-
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta
@@ -101,6 +84,8 @@
   </noscript>
   <div id="app"></div>
   <div id="tooltip"></div>
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.js"></script>
+  <script src="assets/app.js" type="module"></script>
   <script
     async
     src="https://www.googletagmanager.com/gtag/js?id=G-D34FLYKNNR"
@@ -115,6 +100,19 @@
     gtag('config', window._GA_TRACKING_ID, { send_page_view: false });
     window.gtag = gtag;
   </script>
-  <script src="https://api.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.js"></script>
-  <script src="assets/app.js" type="module"></script>
+  <script>
+    function bsa() {
+      var bsa_optimize = document.createElement('script');
+      bsa_optimize.type = 'text/javascript';
+      bsa_optimize.async = true;
+      bsa_optimize.src =
+        'https://cdn4.buysellads.net/pub/busrouter.js?' +
+        (new Date() - (new Date() % 600000));
+      (
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(bsa_optimize);
+    }
+    bsa();
+  </script>
 </html>
