@@ -38,7 +38,7 @@
   "about": {
     "disclaimerCopyright": "<0>Built</0> & <2>visualized</2> by <4>@cheeaun</4>. Data <6>© LTA</6>.",
     "sisterSites": "Sister sites: <1>🚆 RailRouter SG</1> <3>🚖 TaxiRouter SG</3>",
-    "liking": "❤️ Liking BusRouter SG?",
+    "liking": "❤️ Liking $t(app.name)?",
     "treatCoffee": "☕️ Support my work & treat me a coffee!",
     "explore": "Let's explore"
   },
