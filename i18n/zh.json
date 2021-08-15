@@ -10,8 +10,8 @@
     "seatsAvailable": "座位可用",
     "standingAvailable": "站点可用",
     "limitedStanding": "站点限制",
-    "arriving": "阿尔尔",
-    "arrivingMinutes": "{{minutes}}米",
+    "arriving": "到达",
+    "arrivingMinutes": "{{minutes}}分钟",
     "multiRouteMode": "多路模式",
     "nRoutes": "{{count}} 路由",
     "nRoutes_plural": "{{count}} 路由",
@@ -38,7 +38,7 @@
   "about": {
     "disclaimerCopyright": "<0>Built</0> & <2>可视化</2> by <4>@cheeaun</4>. Data <6>© LTA</6>。",
     "sisterSites": "姐妹网站： <1>🚆 RailRouter SG</1> <3>🚖 TaxiRouter SG</3>",
-    "liking": "❤️ Liking $t(app.name)?",
+    "liking": "❤️ 喜欢 $t(app.name)吗？",
     "treatCoffee": "☕ 支持我的工作并给我一杯咖啡！",
     "explore": "让我们来探索吧！"
   },
