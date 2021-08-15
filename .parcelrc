@@ -1,6 +1,7 @@
 {
   "extends": "@parcel/config-default",
   "transformers": {
+    "i18n/*.json": ["@parcel/transformer-json"],
     "*.{jpg,png,svg,json}": ["@parcel/transformer-raw"]
   }
 }

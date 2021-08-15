@@ -1,9 +1,12 @@
+import './i18n';
 import { h, render, Fragment } from 'preact';
 import { useState, useRef, useEffect, useMemo } from 'preact/hooks';
 import { toGeoJSON } from '@mapbox/polyline';
 import Fuse from 'fuse.js';
 import intersect from 'just-intersect';
 import CheapRuler from 'cheap-ruler';
+import MapboxLanguage from '@mapbox/mapbox-gl-language';
+import { useTranslation } from 'react-i18next';
 
 import { MAPBOX_ACCESS_TOKEN } from './config';
 import { encode, decode } from './utils/specialID';
@@ -35,7 +38,6 @@ const routesJSONPath = dataPath + 'routes.min.json';
 const stopsJSONPath = dataPath + 'stops.min.json';
 const servicesJSONPath = dataPath + 'services.min.json';
 
-const APP_NAME = 'BusRouter SG';
 const $map = document.getElementById('map');
 const STORE = {};
 const BREAKPOINT = () => window.innerWidth > 640;
@@ -105,6 +107,8 @@ let fuseServices;
 let fuseStops;
 
 const App = () => {
+  const { t } = useTranslation();
+
   const [route, setRoute] = useState(getRoute());
   const prevRoute = usePrevious(route);
 
@@ -138,7 +142,7 @@ const App = () => {
 
   let previewRAF = useRef(null).current;
 
-  let labelLayerId;
+  // let labelLayerId;
 
   const largerScreen = window.matchMedia(
     '(min-width: 1200px) and (min-height: 600px) and (orientation: landscape)',
@@ -657,19 +661,15 @@ const App = () => {
     });
   };
 
-  const defaultTitle = document.title;
-  const defaultDesc = document.querySelector(
-    'meta[property="og:description"]',
-  ).content;
   const defaultURL = document.querySelector('meta[property="og:url"]').content;
   const defaultImg = document.querySelector(
     'meta[property="og:image"]',
   ).content;
   const setHead = (headContent = {}) => {
     let {
-      title = defaultTitle,
+      title = t('app.title'),
       url = defaultURL,
-      desc = defaultDesc,
+      desc = t('app.description'),
       image = defaultImg,
     } = headContent;
     document.title = document.querySelector(
@@ -734,7 +734,10 @@ const App = () => {
           const service = services[0];
           const { name, routes } = servicesData[service];
           setHead({
-            title: `Bus service ${service}: ${name} - ${APP_NAME}`,
+            title: t('service.title', {
+              serviceNumber: service,
+              serviceName: name,
+            }),
             url: `/services/${service}`,
           });
 
@@ -807,14 +810,14 @@ const App = () => {
             });
           });
         } else {
-          const servicesTitle = services
+          const serviceNumbersNames = services
             .map((s) => {
               const { name } = servicesData[s];
               return `${s}: ${name}`;
             })
             .join(', ');
           setHead({
-            title: `Bus services: ${servicesTitle} - ${APP_NAME}`,
+            title: t('service.title', { serviceNumbersNames }),
             url: `/services/${services.join('~')}`,
           });
 
@@ -943,7 +946,7 @@ const App = () => {
         const { routes, name, coordinates } = stopsData[stop];
         if (route.subpage === 'routes') {
           setHead({
-            title: `Routes passing Bus stop ${stop}: ${name} - ${APP_NAME}`,
+            title: t('stop.titleRoutes', { stopNumber: stop, stopName: name }),
             url: `/stops/${stop}/routes`,
           });
 
@@ -1043,7 +1046,7 @@ const App = () => {
           });
         } else {
           setHead({
-            title: `Bus stop ${stop}: ${name} - ${APP_NAME}`,
+            title: t('stop.title', { stopNumber: stop, stopName: name }),
             url: `/stops/${stop}`,
           });
           map.setLayoutProperty('stops', 'visibility', 'visible');
@@ -1063,7 +1066,9 @@ const App = () => {
         }
 
         setHead({
-          title: `Routes between ${startStopNumber} and ${endStopNumber} - ${APP_NAME}`,
+          title: `Routes between ${startStopNumber} and ${endStopNumber} - ${t(
+            'app.name',
+          )}`,
           url: `/between/${startStopNumber}-${endStopNumber}`,
         });
         // Reset
@@ -1353,6 +1358,9 @@ const App = () => {
       compassButton.classList.toggle('show', bearing !== 0);
     });
 
+    const language = new MapboxLanguage();
+    map.addControl(language);
+
     let initialMoveStart = false;
     const initialHideSearch = () => {
       if (initialMoveStart) return;
@@ -1368,13 +1376,16 @@ const App = () => {
         const layers = map.getStyle().layers;
         console.log(layers);
 
-        labelLayerId = layers.find(
-          (l) => l.type == 'symbol' && l.layout['text-field'],
-        ).id;
+        // labelLayerId = layers.find(
+        //   (l) => l.type == 'symbol' && l.layout['text-field'],
+        // ).id;
 
         resolve();
       });
     });
+
+    // const localizedStyle = language.setLanguage(map.getStyle(), 'zh-Hans');
+    // map.setStyle(localizedStyle);
 
     if (window.performance) {
       const timeSincePageLoad = Math.round(performance.now());
@@ -2525,7 +2536,11 @@ const App = () => {
             {showServicesFloatPill && (
               <>
                 <div class="service-flex">
-                  <h1>Showing {routeServices.length} services</h1>
+                  <h1>
+                    {t('multiRoute.showingServices', {
+                      count: routeServices.length,
+                    })}
+                  </h1>
                 </div>
                 <div class="services-list">
                   <div>
@@ -2567,14 +2582,15 @@ const App = () => {
                         setExpandSearch(true);
                         setExpandedSearchOnce(true);
                       }}
-                      title="Add another bus route"
+                      title={t('multiRoute.addRoute')}
                     />
                   </div>
                   {!!intersectStops.length && (
                     <>
                       <h2>
-                        {intersectStops.length} intersecting stop
-                        {intersectStops.length !== 1 && 's'}
+                        {t('multiRoute.intersectingStops', {
+                          count: intersectStops.length,
+                        })}
                       </h2>
                       <ul class="simple-stops-list">
                         {intersectStops.map((s) => {
@@ -2619,14 +2635,16 @@ const App = () => {
                 </div>
                 <div class="services-list" onClick={unhighlightRoute}>
                   <h2>
-                    {stopsData[route.value].services.length} passing routes{' '}
-                    &middot;{' '}
+                    {t('passingRoutes.passingRoutes', {
+                      count: stopsData[route.value].services.length,
+                    })}{' '}
+                    ·{' '}
                     <a
                       href={`#/services/${stopsData[route.value].services
                         .sort(sortServices)
                         .join('~')}`}
                     >
-                      Multi-route mode ⊕
+                      {t('glossary.multiRouteMode')} ⊕
                     </a>
                   </h2>
                   {stopsData[route.value].services
@@ -2652,7 +2670,7 @@ const App = () => {
           <div class="popover-search">
             <input
               type="search"
-              placeholder="Search for bus service or stop"
+              placeholder={t('search.placeholder')}
               autocomplete="off"
               autocorrect="off"
               autocapitalize="off"
@@ -2664,7 +2682,7 @@ const App = () => {
               disabled={!searching && !services.length}
             />
             <button type="button" onclick={handleSearchClose}>
-              Cancel
+              {t('common.cancel')}
             </button>
           </div>
           <ul
@@ -2774,13 +2792,15 @@ const App = () => {
             </header>
             <ScrollableContainer class="popover-scroll">
               <h2>
-                {stopPopoverData.services.length} service
-                {stopPopoverData.services.length == 1 ? '' : 's'} &middot;{' '}
+                {t('glossary.nServices', {
+                  count: stopPopoverData.services.length,
+                })}{' '}
+                ∙{' '}
                 <a
                   href={`/bus-first-last/#${stopPopoverData.number}`}
                   target="_blank"
                 >
-                  First/last bus{' '}
+                  {t('stop.firstLastBus')}{' '}
                   <img
                     src={openNewWindowImagePath}
                     width="12"
@@ -2806,7 +2826,7 @@ const App = () => {
                   onClick={openBusArrival}
                   class="popover-button"
                 >
-                  Bus arrivals{' '}
+                  {t('glossary.busArrivals')}{' '}
                   <img
                     src={openNewWindowBlueImagePath}
                     width="16"
@@ -2819,7 +2839,7 @@ const App = () => {
                     href={`#/stops/${stopPopoverData.number}/routes`}
                     class="popover-button"
                   >
-                    Passing routes{' '}
+                    {t('glossary.passingRoutes')}{' '}
                     <img
                       src={passingRoutesBlueImagePath}
                       width="16"
@@ -2869,13 +2889,12 @@ const App = () => {
               scrollToTopKey={`sttk-${routeServices[0]}`}
             >
               <h2>
-                {servicesData[routeServices[0]].routes.length} route
-                {servicesData[routeServices[0]].routes.length > 1
-                  ? 's'
-                  : ''}{' '}
-                ∙&nbsp;
+                {t('glossary.nRoutes', {
+                  count: servicesData[routeServices[0]].routes.length,
+                })}{' '}
+                ∙{' '}
                 {servicesData[routeServices[0]].routes
-                  .map((r) => `${r.length} stop${r.length > 1 ? 's' : ''}`)
+                  .map((route) => t('glossary.nStops', { count: route.length }))
                   .join(' ∙ ')}
                 &nbsp;&nbsp;
                 <button
@@ -2885,7 +2904,7 @@ const App = () => {
                     setExpandSearch(true);
                     setExpandedSearchOnce(true);
                   }}
-                  title="Add another bus route"
+                  title={t('multiRoute.addRoute')}
                 />
               </h2>
               <StopsList
@@ -2895,8 +2914,7 @@ const App = () => {
                 onStopClickAgain={_showStopPopover}
               />
               <div class="callout info">
-                <span class="legend-opposite" /> Bus stops with opposite
-                direction of services
+                <span class="legend-opposite" /> {t('service.oppositeLegend')}
               </div>
             </ScrollableContainer>
           </>

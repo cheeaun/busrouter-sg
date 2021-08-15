@@ -1,11 +1,15 @@
 import { h, Fragment } from 'preact';
 import { useRef, useState, useEffect, useCallback } from 'preact/hooks';
+import CheapRuler from 'cheap-ruler';
+const ruler = new CheapRuler(1.3);
+import { useTranslation } from 'react-i18next';
+
 import { encode } from '../utils/specialID';
 import getRoute from '../utils/getRoute';
 import { setRafInterval, clearRafInterval } from '../utils/rafInterval';
 import { timeDisplay, sortServices } from '../utils/bus';
-import CheapRuler from 'cheap-ruler';
-const ruler = new CheapRuler(1.3);
+
+import ArrivalTimeText from './ArrivalTimeText';
 
 import busTinyImagePath from '../images/bus-tiny.png';
 
@@ -70,6 +74,7 @@ export default function BusServicesArrival({
   showBusesOnMap,
 }) {
   if (!id) return;
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [servicesArrivals, setServicesArrivals] = useState({});
   const [liveBusCount, setLiveBusCount] = useState(0);
@@ -88,7 +93,8 @@ export default function BusServicesArrival({
         const servicesArrivals = {};
         const { services } = results;
         services.forEach(
-          (service) => (servicesArrivals[service.no] = service.next.duration_ms)
+          (service) =>
+            (servicesArrivals[service.no] = service.next.duration_ms),
         );
         setServicesArrivals(servicesArrivals);
         setIsLoading(false);
@@ -98,7 +104,7 @@ export default function BusServicesArrival({
           renderStopsTimeout.current = setTimeout(
             () => {
               const servicesWithCoords = services.filter(
-                (s) => s.no && s.next.lat > 0
+                (s) => s.no && s.next.lat > 0,
               );
               setLiveBusCount(servicesWithCoords.length);
               const pointMargin = 100;
@@ -118,7 +124,7 @@ export default function BusServicesArrival({
                         ],
                         {
                           validate: false,
-                        }
+                        },
                       )
                       .filter((f) => {
                         return (
@@ -131,12 +137,12 @@ export default function BusServicesArrival({
                     features.forEach((f) => {
                       const nearestPoint = ruler.pointOnLine(
                         f.geometry.coordinates,
-                        coords
+                        coords,
                       );
                       if (nearestPoint.t) {
                         const distance = ruler.distance(
                           coords,
-                          nearestPoint.point
+                          nearestPoint.point,
                         );
                         if (distance < shortestDistance) {
                           shortestDistance = distance;
@@ -149,7 +155,7 @@ export default function BusServicesArrival({
                       console.log(
                         `Fixed bus position: ${s.no} - ${(
                           shortestDistance * 1000
-                        ).toFixed(3)}m`
+                        ).toFixed(3)}m`,
                       );
                       s.next = {
                         lng: nearestCoords[0],
@@ -158,11 +164,11 @@ export default function BusServicesArrival({
                     }
                   }
                   return s;
-                }
+                },
               );
               requestAnimationFrame(async () => {
                 const servicesWithFixedCoords = await Promise.all(
-                  servicesWithFixedCoordsPromises
+                  servicesWithFixedCoordsPromises,
                 );
                 map.getSource('buses-stop').setData({
                   type: 'FeatureCollection',
@@ -180,7 +186,7 @@ export default function BusServicesArrival({
                 });
               });
             },
-            map.loaded() ? 0 : 1000
+            map.loaded() ? 0 : 1000,
           );
         }
       })
@@ -219,7 +225,9 @@ export default function BusServicesArrival({
             >
               {service}
               {servicesArrivals[service] && (
-                <span>{timeDisplay(servicesArrivals[service])}</span>
+                <span>
+                  <ArrivalTimeText ms={servicesArrivals[service]} />
+                </span>
               )}
             </a>{' '}
           </>
@@ -227,9 +235,9 @@ export default function BusServicesArrival({
       </p>
       {showBusesOnMap && liveBusCount > 0 && (
         <p style={{ marginTop: 5, fontSize: '.8em' }}>
-          <span class="live">LIVE</span>{' '}
-          <img src={busTinyImagePath} width="16" alt="" /> {liveBusCount} bus
-          {liveBusCount === 1 ? '' : 'es'} now on track.
+          <span class="live">{t('common.live')}</span>{' '}
+          <img src={busTinyImagePath} width="16" alt="" />{' '}
+          {t('stop.liveBusTrack', { count: liveBusCount })}
         </p>
       )}
     </>

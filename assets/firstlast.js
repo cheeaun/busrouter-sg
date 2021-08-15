@@ -1,5 +1,10 @@
+import './i18n';
 import { h, render, Fragment } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
+import format from 'date-fns/format';
+import _formatDuration from 'date-fns/formatDuration';
+import { useTranslation } from 'react-i18next';
+
 import fetchCache from './utils/fetchCache';
 import { sortServices } from './utils/bus';
 import Ad from './ad';
@@ -8,29 +13,31 @@ const dataPath = 'https://data.busrouter.sg/v1/';
 const firstLastJSONPath = dataPath + 'firstlast.min.json';
 const stopsJSONPath = dataPath + 'stops.min.json';
 
-const timeFormat = (time) => {
-  if (!/\d{4}/.test(time)) return time;
-  let h = parseInt(time.slice(0, 2), 10);
-  const m = time.slice(2);
-  let ampm = 'AM';
-  if (h >= 12 && h < 24) {
-    ampm = 'PM';
-    h -= 12;
-  } else if (h === 0 || h === 24) {
-    h = 12;
-  }
-  return `${h}:${m} ${ampm}`;
+// TODO: add locales when it's supported
+// import { zhCN } from 'date-fns/locale';
+const dateLocales = {
+  // zh: zhCN,
 };
 
-const formatDuration = (duration) => {
-  // hours
-  const durationMins = duration * 60;
-  const hour = Math.floor(durationMins / 60);
-  const minute = Math.round(durationMins % 60);
-  let str = '';
-  if (hour) str = `${hour}h`;
-  if (minute) str += ` ${minute}m`;
-  return str.trim();
+const timeStrToDate = (time) => {
+  if (!/\d{4}/.test(time)) return null;
+  let h = +time.slice(0, 2);
+  const m = +time.slice(2);
+  const d = new Date();
+  d.setHours(h, m);
+  return d;
+};
+
+const timeFormat = (time, language) => {
+  const date = timeStrToDate(time);
+  return date ? format(date, 'p', { locale: dateLocales[language] }) : '-';
+};
+
+const formatDuration = (duration, language) => {
+  const h = duration;
+  const hours = Math.floor(h);
+  const minutes = Math.round((h - hours) * 60);
+  return _formatDuration({ hours, minutes }, { locale: dateLocales[language] });
 };
 
 const convertTimeToNumber = (time) => {
@@ -40,6 +47,7 @@ const convertTimeToNumber = (time) => {
 };
 
 const TimeRanger = ({ values }) => {
+  const { i18n } = useTranslation();
   const nadaEl = <div class="time-ranger nada" />;
   if (!values) return nadaEl;
   const [first, last] = values;
@@ -69,12 +77,15 @@ const TimeRanger = ({ values }) => {
           }}
         />
       </div>
-      <span class="time-duration">{formatDuration(duration)}</span>
+      <span class="time-duration">
+        {formatDuration(duration, i18n.language)}
+      </span>
     </>
   );
 };
 
 function FirstLastTimes() {
+  const { t, i18n } = useTranslation();
   const [stop, setStop] = useState(null);
   const [stopName, setStopName] = useState(null);
   const [data, setData] = useState([]);
@@ -84,7 +95,10 @@ function FirstLastTimes() {
 
   useEffect(() => {
     if (!stop || !stopName) return;
-    document.title = `Approximate first & last bus arrival times for ${stop}: ${stopName}`;
+    document.title = t('firstLast.title', {
+      stopNumber: stop,
+      stopName,
+    });
   }, [stop, stopName]);
 
   useEffect(() => {
@@ -96,7 +110,7 @@ function FirstLastTimes() {
         const stop = location.hash.slice(1);
         const data = flData[stop];
         if (!data) {
-          alert('Bus stop code not found.');
+          alert(t('firstLast.busStopCodeNotFound'));
           return;
         }
 
@@ -130,38 +144,36 @@ function FirstLastTimes() {
 
     const setLeft = () => {
       const date = new Date();
-      const time =
-        `${date.getHours()}`.padStart(2, '0') +
-        '' +
-        `${date.getMinutes()}`.padStart(2, '0');
-      const val = convertTimeToNumber(time);
+      const val = convertTimeToNumber(format(date, 'HHmm'));
       const left = (val / 24) * 100;
       setTimeLeft(left);
 
-      let ampm = 'Am';
-      let hour = date.getHours();
-      if (hour > 12) {
-        hour -= 12;
-        ampm = 'PM';
+      const timeStr = format(date, 'p');
+      let timeStrComp;
+      if (/:/.test(timeStr)) {
+        // Make sure there's ":" before making it blink
+        const [a, b] = timeStr.split(':');
+        timeStrComp = (
+          <>
+            {a}
+            <blink>:</blink>
+            {b}
+          </>
+        );
+        setTimeStr(timeStrComp || timeStr);
       }
-      const timeStr = (
-        <>
-          {hour}
-          <blink>:</blink>
-          {`${date.getMinutes()}`.padStart(2, '0')} {ampm}
-        </>
-      );
-      setTimeStr(timeStr);
     };
     setLeft();
     setInterval(setLeft, 60 * 1000);
   }, []);
 
+  const isInSingapore = new Date().getTimezoneOffset() === -480;
+
   return (
     <div>
       {!!data.length && <Ad />}
       <h1>
-        Approximate first &amp; last bus arrival times&nbsp;for
+        {t('firstLast.preHeading')}
         <br />
         <b>
           <span class="stop-tag">{stop || '     '}</span>{' '}
@@ -170,28 +182,31 @@ function FirstLastTimes() {
       </h1>
       <p class="legend">
         <span>
-          <span class="abbr">WD</span> Weekdays
+          <span class="abbr">{t('glossary.weekdaysShort')}</span>{' '}
+          {t('glossary.weekdays')}
         </span>
         <span>
-          <span class="abbr">SAT</span> Saturdays
+          <span class="abbr">{t('glossary.saturdaysShort')}</span>{' '}
+          {t('glossary.saturdays')}
         </span>
         <span>
-          <span class="abbr">SUN</span> Sundays &amp; Public Holidays
+          <span class="abbr">{t('glossary.sundaysPublicHolidaysShort')}</span>{' '}
+          {t('glossary.sundaysPublicHolidays')}
         </span>
       </p>
       <table>
         <thead>
           <tr>
-            <th>Service</th>
+            <th>{t('glossary.service')}</th>
             <th></th>
-            <th>First bus</th>
-            <th>Last bus</th>
+            <th>{t('glossary.firstBus')}</th>
+            <th>{t('glossary.lastBus')}</th>
             <th class="timerange-header">
-              <span>12 AM</span>
-              <span>6 AM</span>
-              <span>12 PM</span>
-              <span>6 PM</span>
-              {!!data.length && !!timeLeft && !!timeStr && (
+              <span>12 🌚</span>
+              <span>6</span>
+              <span>12 🌞</span>
+              <span>6</span>
+              {isInSingapore && !!data.length && !!timeLeft && !!timeStr && (
                 <div
                   class="timerange-indicator"
                   style={{ left: `${timeLeft}%` }}
@@ -207,21 +222,19 @@ function FirstLastTimes() {
               const [service, ...times] = d;
               const sameAsPrevService =
                 data[i - 1] && service === data[i - 1][0];
-              const [
-                wd1raw,
-                wd2raw,
-                sat1raw,
-                sat2raw,
-                sun1raw,
-                sun2raw,
-              ] = times;
-              const [wd1, wd2, sat1, sat2, sun1, sun2] = times.map(timeFormat);
+              const [wd1raw, wd2raw, sat1raw, sat2raw, sun1raw, sun2raw] =
+                times;
+              const [wd1, wd2, sat1, sat2, sun1, sun2] = times.map((t) =>
+                timeFormat(t, i18n.language),
+              );
               return (
                 <tbody class={sameAsPrevService ? 'insignificant' : ''}>
                   <tr>
                     <td rowspan="3">{service}</td>
                     <th>
-                      <abbr title="Weekdays">WD</abbr>
+                      <abbr title={t('glossary.weekdays')}>
+                        {t('glossary.weekdaysShort')}
+                      </abbr>
                     </th>
                     <td title={wd1raw}>{wd1}</td>
                     <td title={wd2raw}>{wd2}</td>
@@ -231,7 +244,9 @@ function FirstLastTimes() {
                   </tr>
                   <tr>
                     <th>
-                      <abbr title="Saturdays">SAT</abbr>
+                      <abbr title={t('glossary.saturdays')}>
+                        {t('glossary.saturdaysShort')}
+                      </abbr>
                     </th>
                     <td title={sat1raw}>{sat1}</td>
                     <td title={sat2raw}>{sat2}</td>
@@ -241,7 +256,9 @@ function FirstLastTimes() {
                   </tr>
                   <tr>
                     <th>
-                      <abbr title="Sundays &amp; Public Holidays">SUN</abbr>
+                      <abbr title={t('glossary.sundaysPublicHolidays')}>
+                        {t('glossary.sundaysPublicHolidaysShort')}
+                      </abbr>
                     </th>
                     <td title={sun1raw}>{sun1}</td>
                     <td title={sun2raw}>{sun2}</td>
@@ -259,7 +276,9 @@ function FirstLastTimes() {
                     <span class="placeholder">██</span>
                   </td>
                   <th>
-                    <abbr title="Weekdays">WD</abbr>
+                    <abbr title={t('glossary.weekdays')}>
+                      {t('glossary.weekdaysShort')}
+                    </abbr>
                   </th>
                   <td>
                     <span class="placeholder">████</span>
@@ -273,7 +292,9 @@ function FirstLastTimes() {
                 </tr>
                 <tr>
                   <th>
-                    <abbr title="Saturdays">SAT</abbr>
+                    <abbr title={t('glossary.saturdays')}>
+                      {t('glossary.saturdaysShort')}
+                    </abbr>
                   </th>
                   <td>
                     <span class="placeholder">████</span>
@@ -287,7 +308,9 @@ function FirstLastTimes() {
                 </tr>
                 <tr>
                   <th>
-                    <abbr title="Sundays &amp; Public Holidays">SUN</abbr>
+                    <abbr title={t('glossary.sundaysPublicHolidays')}>
+                      {t('glossary.sundaysPublicHolidaysShort')}
+                    </abbr>
                   </th>
                   <td>
                     <span class="placeholder">████</span>
@@ -305,16 +328,10 @@ function FirstLastTimes() {
           <tr>
             <td colspan="5">
               <p>
-                {data.length
-                  ? `${data.length} service${data.length === 1 ? '' : 's'} · `
-                  : ''}
-                <a href="/">BusRouter SG</a>
-              </p>
-              <p class="timerange-note">
-                <small>
-                  <b>*</b> Current time based on your timezone, which may be
-                  different than Singapore timezone.
-                </small>
+                {!!data.length && (
+                  <>{t('glossary.nServices', { count: data.length })} · </>
+                )}
+                <a href="/">{t('app.name')}</a>
               </p>
             </td>
           </tr>

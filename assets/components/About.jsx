@@ -1,7 +1,9 @@
 import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
+import { useTranslation, Trans } from 'react-i18next';
 
 export default function About() {
+  const { t } = useTranslation();
   const [hidden, setHidden] = useState(true);
   useEffect(() => {
     try {
@@ -22,51 +24,51 @@ export default function About() {
     <div id="about" hidden={hidden} onClick={() => setHidden(true)}>
       <section onClick={(e) => e.stopPropagation()}>
         <h2>
-          BusRouter SG
+          {t('app.name')}
           <br />
-          <small>Singapore Bus Routes Explorer</small>
+          <small>{t('app.shortDescription')}</small>
         </h2>
-        <p>
-          Explore bus stops and routes on the map for all bus services in
-          Singapore, with realtime bus arrival times and per-bus-stop passing
-          routes overview.
-        </p>
+        <p>{t('app.description')}</p>
         <hr />
         <p>
-          <a
-            href="https://github.com/cheeaun/busrouter-sg"
-            target="_blank"
-            rel="noopener"
-          >
-            Built
-          </a>{' '}
-          &amp;{' '}
-          <a href="/visualization/" target="_blank" rel="noopener">
-            visualized
-          </a>{' '}
-          by{' '}
-          <a href="http://twitter.com/cheeaun" target="_blank" rel="noopener">
-            @cheeaun
-          </a>
-          . Data{' '}
-          <a
-            href="http://www.mytransport.sg/"
-            target="_blank"
-            rel="noopener"
-            title="Land Transport Authority"
-          >
-            &copy; LTA
-          </a>
-          .
+          <Trans i18nKey="about.disclaimerCopyright">
+            <a
+              href="https://github.com/cheeaun/busrouter-sg"
+              target="_blank"
+              rel="noopener"
+            >
+              Built
+            </a>
+            &
+            <a href="/visualization/" target="_blank" rel="noopener">
+              visualized
+            </a>
+            by
+            <a href="http://twitter.com/cheeaun" target="_blank" rel="noopener">
+              @cheeaun
+            </a>
+            . Data
+            <a
+              href="http://www.mytransport.sg/"
+              target="_blank"
+              rel="noopener"
+              title="Land Transport Authority"
+            >
+              &copy; LTA
+            </a>
+            .
+          </Trans>
         </p>
         <p>
-          Sister sites:{' '}
-          <a href="https://railrouter.sg/" target="_blank" rel="noopener">
-            🚆 RailRouter SG
-          </a>{' '}
-          <a href="https://taxirouter.sg/" target="_blank" rel="noopener">
-            🚖 TaxiRouter SG
-          </a>
+          <Trans i18nKey="about.sisterSites">
+            Sister sites:
+            <a href="https://railrouter.sg/" target="_blank" rel="noopener">
+              🚆 RailRouter SG
+            </a>{' '}
+            <a href="https://taxirouter.sg/" target="_blank" rel="noopener">
+              🚖 TaxiRouter SG
+            </a>
+          </Trans>
         </p>
         <p>
           <a
@@ -75,9 +77,9 @@ export default function About() {
             target="_blank"
             rel="noopener"
           >
-            ❤️ Liking BusRouter SG?
+            {t('about.liking')}
             <br />
-            ☕️ Support my work & treat me a coffee!
+            {t('about.treatCoffee')}
           </a>
         </p>
         <div class="popover-buttons">
@@ -90,7 +92,7 @@ export default function About() {
               } catch (e) {}
             }}
           >
-            Let's explore!
+            {t('about.explore')}
           </button>
         </div>
       </section>

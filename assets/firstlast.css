@@ -147,18 +147,20 @@ abbr {
   position: absolute;
   /* background-color: #007aff; */
   background-image: linear-gradient(
-    rgba(255, 255, 255, 0) 16px,
-    #007aff 16px,
+    rgba(255, 255, 255, 0) 2.5em,
+    #007aff 2.5em,
     #007aff 60%,
     rgba(255, 255, 255, 0) 90%
   );
   width: 2px;
   height: 100vh;
   pointer-events: none;
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
 }
 .timerange-indicator > span {
   position: absolute;
-  top: 16px;
+  top: 2em;
   transform: translateX(-50%);
   padding: 3px 6px;
   border-radius: 123123px;
@@ -265,7 +267,7 @@ tfoot a {
 }
 
 blink {
-  animation: blink 1s linear infinite alternate;
+  animation: blink 0.5s linear infinite alternate;
 }
 @keyframes blink {
   0% {

@@ -1547,6 +1547,7 @@ a.service-tag:hover {
   /* animation: glowing infinite alternate 1s linear both; */
   color: #fff;
   background-color: #00454d;
+  text-transform: uppercase;
 }
 
 /* Fancy pants features */

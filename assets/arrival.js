@@ -1,8 +1,13 @@
+import './i18n';
 import { h, render } from 'preact';
 import { useState, useRef, useEffect } from 'preact/hooks';
-import { timeDisplay, sortServicesPinned } from './utils/bus';
+import { useTranslation, Trans } from 'react-i18next';
+
+import { sortServicesPinned } from './utils/bus';
 import fetchCache from './utils/fetchCache';
 import setIcon from '../utils/setIcon';
+
+import ArrivalTimeText from './components/ArrivalTimeText';
 
 import wheelchairImagePath from './images/wheelchair.svg';
 import wheelchairInaccessibleImagePath from './images/wheelchair-inaccessible.svg';
@@ -77,7 +82,7 @@ const Bus = (props) => {
       <img {...busImage} />
       <br />
       <span class={`time time-${load.toLowerCase()}`}>
-        {timeDisplay(duration_ms)}
+        <ArrivalTimeText ms={duration_ms} />
       </span>
       {feature.toLowerCase() !== 'wab' && <WheelChairInaccessible />}
     </span>
@@ -140,6 +145,7 @@ function BusLane({ no, buses }) {
 }
 
 function ArrivalTimes() {
+  const { t } = useTranslation();
   const [busStop, setBusStop] = useState(null);
   const [stopsData, setStopsData] = useState(null);
   const [fetchingServices, setFetchingServices] = useState(false);
@@ -220,7 +226,7 @@ function ArrivalTimes() {
     try {
       localStorage.setItem(
         'busroutersg.arrival.pinnedServices',
-        JSON.stringify(pinnedServices)
+        JSON.stringify(pinnedServices),
       );
     } catch (e) {}
   }
@@ -256,7 +262,7 @@ function ArrivalTimes() {
         />
       </div>
       <h1>
-        Bus arrival times for
+        {t('arrivals.preHeading')}
         <b id="bus-stop-name">
           <span class={fetchingServices ? 'loading stop-tag' : 'stop-tag'}>
             {code}
@@ -303,20 +309,22 @@ function ArrivalTimes() {
         )}
       </table>
       <div class="legend">
-        <span class="load load-sea">Seats available</span>
-        <span class="load load-sda">Standing available</span>
-        <span class="load load-lsd">Limited standing</span>
+        <span class="load load-sea">{t('glossary.seatsAvailable')}</span>
+        <span class="load load-sda">{t('glossary.standingAvailable')}</span>
+        <span class="load load-lsd">{t('glossary.limitedStanding')}</span>
       </div>
       <footer>
-        <WheelChair size="16" /> All public buses in revenue service are{' '}
-        <a
-          href="https://en.wikipedia.org/wiki/Public_buses_of_Singapore#2020s:_In_with_electric_buses,_out_with_non-wheelchair-accessible_buses"
-          target="_blank"
-        >
-          wheelchair-accessible
-        </a>
-        . The ones that are not accesssible will be marked with this icon{' '}
-        <WheelChairInaccessible size="16" />.
+        <Trans i18nKey="arrivals.wheelchairDisclaimer">
+          <WheelChair size="16" /> All public buses in revenue service are
+          <a
+            href="https://en.wikipedia.org/wiki/Public_buses_of_Singapore#2020s:_In_with_electric_buses,_out_with_non-wheelchair-accessible_buses"
+            target="_blank"
+          >
+            wheelchair-accessible
+          </a>
+          . The ones that are not accesssible will be marked with this icon
+          <WheelChairInaccessible size="16" />.
+        </Trans>
       </footer>
     </div>
   );
