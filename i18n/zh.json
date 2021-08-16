@@ -1,80 +1,73 @@
 {
   "common": {
     "cancel": "取消",
-    "live": "实时模式"
+    "live": "居住"
   },
   "glossary": {
-    "busArrivals": "公交车抵达者",
-    "passingRoutes": "通过路由",
+    "busArrivals": "巴士抵达",
+    "passingRoutes": "通行路线",
     "popOut": "弹出",
-    "seatsAvailable": "座位可用",
-    "standingAvailable": "站点可用",
-    "limitedStanding": "站点限制",
+    "seatsAvailable": "可用座位",
+    "standingAvailable": "站立可用",
+    "limitedStanding": "有限的地位",
     "arriving": "到达",
-    "arrivingMinutes": "{{minutes}}分钟",
-    "multiRouteMode": "多路模式",
-    "nRoutes": "{{count}} 路由",
-    "nRoutes_plural": "{{count}} 路由",
-    "nStops": "{{count}} 停止",
-    "nStops_plural": "{{count}} 停止",
-    "nServices": "{{count}} 服务",
-    "nServices_plural": "{{count}} 服务",
+    "arrivingMinutes": "{{minutes}}米",
+    "multiRouteMode": "多路由模式",
     "weekdaysShort": "WD",
-    "weekdays": "周日",
-    "saturdaysShort": "微型卫星",
-    "saturdays": "周六",
-    "sundaysPublicHolidaysShort": "静音",
-    "sundaysPublicHolidays": "星期日和公共假",
+    "weekdays": "平日",
+    "saturdaysShort": "SAT",
+    "saturdays": "星期六",
+    "sundaysPublicHolidaysShort": "太阳",
+    "sundaysPublicHolidays": "星期日及公众假期",
     "service": "服务",
-    "firstBus": "第一辆公交车",
-    "lastBus": "最后一个总线"
+    "firstBus": "第一班车",
+    "lastBus": "末班车",
+    "nRoutes_0": "{{count}} 条路线",
+    "nStops_0": "{{count}} 站",
+    "nServices_0": "{{count}} 服务"
   },
   "app": {
-    "name": "BusRouter SG",
-    "title": "$t(app.name) - 新加坡公共汽车路由浏览器",
-    "shortDescription": "新加坡 Bus Routes 资源管理器",
-    "description": "探索在新加坡所有公共汽车服务地图上的公共汽车站和路线，实时公共汽车到达时间和每班车途经路线概览。"
+    "name": "总线路由器SG",
+    "title": "$t(app.name) - 新加坡巴士路线浏览器",
+    "shortDescription": "新加坡巴士路线浏览器",
+    "description": "在地图上探索新加坡所有巴士服务的巴士站和路线，以及实时巴士到达时间和每个巴士站的经过路线概览。"
   },
   "about": {
-    "disclaimerCopyright": "<0>Built</0> & <2>可视化</2> by <4>@cheeaun</4>. Data <6>© LTA</6>。",
-    "sisterSites": "姐妹网站： <1>🚆 RailRouter SG</1> <3>🚖 TaxiRouter SG</3>",
+    "disclaimerCopyright": "<0>已建成</0>& <2>可视化</2>来自 <4>@cheeun</4> .数据 <6>© LTA</6> .",
+    "sisterSites": "姐妹网站：<1>🚆 RailRouter SG</1> <3>🚖 TaxiRouter SG</3>",
     "liking": "❤️ 喜欢 $t(app.name)吗？",
-    "treatCoffee": "☕ 支持我的工作并给我一杯咖啡！",
-    "explore": "让我们来探索吧！"
+    "treatCoffee": "☕️ 支持我的工作，请我喝杯咖啡！",
+    "explore": "让我们探索一下"
   },
   "search": {
-    "placeholder": "搜索公共汽车服务或停止"
+    "placeholder": "搜索巴士服务或停止"
   },
   "service": {
-    "title": "客车服务 {{serviceNumber}}: {{serviceName}} - $t(app.name)",
-    "titleMultiple": "公交服务: ${serviceNumbersNames} - $t(app.name)",
-    "oppositeLegend": "总线停止与服务相反的方向"
+    "title": "巴士服务 {{serviceNumber}}: {{serviceName}} - $t(app.name)",
+    "titleMultiple": "巴士服务： ${serviceNumbersNames} - $t(app.name)",
+    "oppositeLegend": "与服务方向相反的巴士站"
   },
   "stop": {
-    "title": "客车停止 {{stopNumber}}: {{stopName}} - $t(app.name)",
-    "titleRoutes": "路由通过公共汽车站 {{stopNumber}}: {{stopName}} - $t(app.name)",
-    "firstLastBus": "第一轮/最后一轮总线",
-    "liveBusTrack": "{{count}} 辆公共汽车正在轨道上",
-    "liveBusTrack_plural": "{{count}} 辆公共汽车已经上了轨道。"
+    "title": "巴士站 {{stopNumber}}: {{stopName}} - $t(app.name)",
+    "titleRoutes": "通过巴士站 {{stopNumber}}: {{stopName}} - $t(app.name)",
+    "firstLastBus": "首班车/末班车",
+    "liveBusTrack_0": "{{count}} 辆公共汽车现在在轨道上。"
   },
   "passingRoutes": {
-    "passingRoutes": "{{count}} 路由",
-    "passingRoutes_plural": "{{count}} 路由"
+    "passingRoutes_0": "{{count}} 条路线"
   },
   "multiRoute": {
-    "addRoute": "添加另一个公共汽车路由",
-    "showingServices": "显示 {{count}} 服务",
-    "showingServices_plural": "显示 {{count}} 服务",
-    "intersectingStops": "{{count}} 交叉停止",
-    "intersectingStops_plural": "{{count}} 交叉停止"
+    "addRoute": "添加另一条公交路线",
+    "showingServices_0": "显示 {{count}} 服务",
+    "intersectingStops_0": "{{count}} 交叉站"
   },
   "arrivals": {
-    "preHeading": "客车到达时间",
-    "wheelchairDisclaimer": "<0/> 税收服务中的所有公共汽车都是<2>轮椅无障碍</2>。无法访问的公共汽车将被标记为<4/>"
+    "preHeading": "巴士到达时间",
+    "wheelchairDisclaimer": "<0/> 所有提供收入服务的公共巴士都<2>可供轮椅通行</2>.不可访问的将标有此图标 <4/>"
   },
   "firstLast": {
-    "title": "{{stopNumber}}的近似第一次和最后一次总线到达时间: {{stopName}}",
-    "busStopCodeNotFound": "未找到公交车停止代码。",
-    "preHeading": "大约第一次和最后一次总线抵达时间"
+    "title": "{{stopNumber}}: {{stopName}} 大约首末班车到达时间",
+    "busStopCodeNotFound": "未找到巴士站代码。",
+    "preHeading": "大约首末班车到达时间"
   }
 }
