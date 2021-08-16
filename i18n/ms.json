@@ -1,0 +1,73 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "live": "Live"
+  },
+  "glossary": {
+    "busArrivals": "Bus arrivals",
+    "passingRoutes": "Passing routes",
+    "popOut": "Pop out",
+    "seatsAvailable": "Seats available",
+    "standingAvailable": "Standing available",
+    "limitedStanding": "Limited standing",
+    "arriving": "Arr",
+    "arrivingMinutes": "{{minutes}}m",
+    "multiRouteMode": "Multi-route mode",
+    "weekdaysShort": "WD",
+    "weekdays": "Weekdays",
+    "saturdaysShort": "SAT",
+    "saturdays": "Saturdays",
+    "sundaysPublicHolidaysShort": "SUN",
+    "sundaysPublicHolidays": "Sunday & Public Holidays",
+    "service": "Service",
+    "firstBus": "First Bus",
+    "lastBus": "Last Bus",
+    "nRoutes_0": "{{count}} routes",
+    "nStops_0": "{{count}} stops",
+    "nServices_0": "{{count}} services"
+  },
+  "app": {
+    "name": "BusRouter SG",
+    "title": "$t(app.name) - Singapore Bus Routes Explorer",
+    "shortDescription": "Singapore Bus Routes Explorer",
+    "description": "Explore bus stops and routes on the map for all bus services in Singapore, with realtime bus arrival times and per-bus-stop passing routes overview."
+  },
+  "about": {
+    "disclaimerCopyright": "<0>Built</0> & <2>visualized</2> by <4>@cheeaun</4>. Data <6>© LTA</6>.",
+    "sisterSites": "Sister sites: <1>🚆 RailRouter SG</1> <3>🚖 TaxiRouter SG</3>",
+    "liking": "❤️ Liking $t(app.name)?",
+    "treatCoffee": "☕️ Support my work & treat me a coffee!",
+    "explore": "Let's explore"
+  },
+  "search": {
+    "placeholder": "Search for bus service or stop"
+  },
+  "service": {
+    "title": "Bus service {{serviceNumber}}: {{serviceName}} - $t(app.name)",
+    "titleMultiple": "Bus services: ${serviceNumbersNames} - $t(app.name)",
+    "oppositeLegend": "Bus stops with opposite direction of services"
+  },
+  "stop": {
+    "title": "Bus stop {{stopNumber}}: {{stopName}} - $t(app.name)",
+    "titleRoutes": "Routes passing bus stop {{stopNumber}}: {{stopName}} - $t(app.name)",
+    "firstLastBus": "First/last bus",
+    "liveBusTrack_0": "{{count}} buses now on track."
+  },
+  "passingRoutes": {
+    "passingRoutes_0": "{{count}} passing routes"
+  },
+  "multiRoute": {
+    "addRoute": "Add another bus route",
+    "showingServices_0": "Showing {{count}} services",
+    "intersectingStops_0": "{{count}} intersecting stops"
+  },
+  "arrivals": {
+    "preHeading": "Bus arrival times",
+    "wheelchairDisclaimer": "<0/> All public buses in revenue service are <2>wheelchair-accessible</2>. The ones that are not accesssible will be marked with this icon <4/>"
+  },
+  "firstLast": {
+    "title": "Approximate first & last bus arrival times for {{stopNumber}}: {{stopName}}",
+    "busStopCodeNotFound": "Bus stop code not found.",
+    "preHeading": "Approximate first & last bus arrival times"
+  }
+}
