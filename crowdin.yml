@@ -1,3 +1,4 @@
 files:
   - source: /i18n/en.json
     translation: /i18n/%two_letters_code%.json
+    type: i18next_json
