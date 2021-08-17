@@ -7,9 +7,9 @@
     "busArrivals": "巴士抵达",
     "passingRoutes": "公交路线图",
     "popOut": "弹出",
-    "seatsAvailable": "有座位",
-    "standingAvailable": "站立可用",
-    "limitedStanding": "有限的地位",
+    "seatsAvailable": "可坐",
+    "standingAvailable": "可站",
+    "limitedStanding": "擁擠",
     "arriving": "到达",
     "arrivingMinutes": "{{minutes}}米",
     "multiRouteMode": "多路由模式",
@@ -27,7 +27,7 @@
     "nServices_0": "{{count}} 服务"
   },
   "app": {
-    "name": "总线路由器SG",
+    "name": "BusRouter SG",
     "title": "$t(app.name) - 新加坡巴士路线浏览器",
     "shortDescription": "新加坡巴士路线浏览器",
     "description": "在地图上探索新加坡所有巴士服务的巴士站和路线，以及实时巴士到达时间和每个巴士站的经过路线概览。"
