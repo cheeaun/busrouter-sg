@@ -5,9 +5,9 @@
   },
   "glossary": {
     "busArrivals": "巴士抵达",
-    "passingRoutes": "通行路线",
+    "passingRoutes": "公交路线图",
     "popOut": "弹出",
-    "seatsAvailable": "可用座位",
+    "seatsAvailable": "有座位",
     "standingAvailable": "站立可用",
     "limitedStanding": "有限的地位",
     "arriving": "到达",
