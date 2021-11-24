@@ -1,73 +1,73 @@
 {
   "common": {
-    "cancel": "Cancel",
-    "live": "Live"
+    "cancel": "Batal",
+    "live": "Langsung"
   },
   "glossary": {
-    "busArrivals": "Bus arrivals",
-    "passingRoutes": "Passing routes",
-    "popOut": "Pop out",
-    "seatsAvailable": "Seats available",
-    "standingAvailable": "Standing available",
-    "limitedStanding": "Limited standing",
+    "busArrivals": "Ketibaan bas",
+    "passingRoutes": "Laluan yang dilalui",
+    "popOut": "Terkeluar",
+    "seatsAvailable": "Tempat duduk disediakan",
+    "standingAvailable": "Berdiri tersedia",
+    "limitedStanding": "Kedudukan terhad",
     "arriving": "Arr",
     "arrivingMinutes": "{{minutes}}m",
-    "multiRouteMode": "Multi-route mode",
-    "weekdaysShort": "WD",
-    "weekdays": "Weekdays",
-    "saturdaysShort": "SAT",
-    "saturdays": "Saturdays",
-    "sundaysPublicHolidaysShort": "SUN",
-    "sundaysPublicHolidays": "Sunday & Public Holidays",
-    "service": "Service",
-    "firstBus": "First Bus",
-    "lastBus": "Last Bus",
-    "nRoutes_0": "{{count}} routes",
-    "nStops_0": "{{count}} stops",
-    "nServices_0": "{{count}} services"
+    "multiRouteMode": "Mod berbilang laluan",
+    "weekdaysShort": "MG",
+    "weekdays": "Hari Minggu",
+    "saturdaysShort": "SAB",
+    "saturdays": "Sabtu",
+    "sundaysPublicHolidaysShort": "AHD",
+    "sundaysPublicHolidays": "Ahad & Cuti Umum",
+    "service": "Perkhidmatan",
+    "firstBus": "Bas Pertama",
+    "lastBus": "Bas Terakhir",
+    "nRoutes_0": "{{count}} laluan",
+    "nStops_0": "{{count}} hentian",
+    "nServices_0": "{{count}} perkhidmatan"
   },
   "app": {
     "name": "BusRouter SG",
-    "title": "$t(app.name) - Singapore Bus Routes Explorer",
-    "shortDescription": "Singapore Bus Routes Explorer",
-    "description": "Explore bus stops and routes on the map for all bus services in Singapore, with realtime bus arrival times and per-bus-stop passing routes overview."
+    "title": "$t(app.name) - Penjelajah Laluan Bas Singapura",
+    "shortDescription": "Penjelajah Laluan Bas Singapura",
+    "description": "Terokai perhentian dan laluan bas pada peta untuk semua perkhidmatan bas di Singapura, dengan masa ketibaan bas masa nyata dan gambaran keseluruhan laluan setiap hentian bas."
   },
   "about": {
-    "disclaimerCopyright": "<0>Built</0> & <2>visualized</2> by <4>@cheeaun</4>. Data <6>© LTA</6>.",
-    "sisterSites": "Sister sites: <1>🚆 RailRouter SG</1> <3>🚖 TaxiRouter SG</3>",
-    "liking": "❤️ Liking $t(app.name)?",
-    "treatCoffee": "☕️ Support my work & treat me a coffee!",
-    "explore": "Let's explore"
+    "disclaimerCopyright": "<0>Dibina</0> & <2>divisualisasikan</2> oleh <4>@cheeaun</4> . Data <6>© LTA</6> .",
+    "sisterSites": "Tapak kakak: <1>🚆 RailRouter SG</1> <3>🚖 TaxiRouter SG</3>",
+    "liking": "❤️ Suka $t(app.name)?",
+    "treatCoffee": "☕️ Sokong kerja saya & layan saya kopi!",
+    "explore": "Jom explore"
   },
   "search": {
-    "placeholder": "Search for bus service or stop"
+    "placeholder": "Cari perkhidmatan bas atau perhentian"
   },
   "service": {
-    "title": "Bus service {{serviceNumber}}: {{serviceName}} - $t(app.name)",
-    "titleMultiple": "Bus services: ${serviceNumbersNames} - $t(app.name)",
-    "oppositeLegend": "Bus stops with opposite direction of services"
+    "title": "Perkhidmatan bas {{serviceNumber}}: {{serviceName}} - $t(app.name)",
+    "titleMultiple": "Perkhidmatan bas: ${serviceNumbersNames} - $t(app.name)",
+    "oppositeLegend": "Perhentian bas dengan arah perkhidmatan yang bertentangan"
   },
   "stop": {
-    "title": "Bus stop {{stopNumber}}: {{stopName}} - $t(app.name)",
-    "titleRoutes": "Routes passing bus stop {{stopNumber}}: {{stopName}} - $t(app.name)",
-    "firstLastBus": "First/last bus",
-    "liveBusTrack_0": "{{count}} buses now on track."
+    "title": "Perhentian bas {{stopNumber}}: {{stopName}} - $t(app.name)",
+    "titleRoutes": "Laluan yang melalui perhentian bas {{stopNumber}}: {{stopName}} - $t(app.name)",
+    "firstLastBus": "Bas pertama/terakhir",
+    "liveBusTrack_0": "{{count}} bas kini berada di landasan."
   },
   "passingRoutes": {
-    "passingRoutes_0": "{{count}} passing routes"
+    "passingRoutes_0": "{{count}} laluan yang lalu"
   },
   "multiRoute": {
-    "addRoute": "Add another bus route",
-    "showingServices_0": "Showing {{count}} services",
-    "intersectingStops_0": "{{count}} intersecting stops"
+    "addRoute": "Tambah laluan bas lain",
+    "showingServices_0": "Menunjukkan {{count}} perkhidmatan",
+    "intersectingStops_0": "{{count}} perhentian bersilang"
   },
   "arrivals": {
-    "preHeading": "Bus arrival times",
-    "wheelchairDisclaimer": "<0/> All public buses in revenue service are <2>wheelchair-accessible</2>. The ones that are not accesssible will be marked with this icon <4/>"
+    "preHeading": "Masa ketibaan bas",
+    "wheelchairDisclaimer": "<0/> Semua bas awam dalam perkhidmatan hasil adalah <2>boleh diakses kerusi roda</2> . Yang tidak boleh diakses akan ditandakan dengan ikon ini <4/>"
   },
   "firstLast": {
-    "title": "Approximate first & last bus arrival times for {{stopNumber}}: {{stopName}}",
-    "busStopCodeNotFound": "Bus stop code not found.",
-    "preHeading": "Approximate first & last bus arrival times"
+    "title": "Anggaran masa ketibaan bas pertama & terakhir untuk {{stopNumber}}: {{stopName}}",
+    "busStopCodeNotFound": "Kod perhentian bas tidak ditemui.",
+    "preHeading": "Anggaran masa ketibaan bas pertama & terakhir"
   }
 }
