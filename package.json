@@ -14,7 +14,7 @@
     "@deck.gl/core": "8.6.4",
     "@deck.gl/layers": "8.6.4",
     "@deck.gl/mapbox": "8.6.4",
-    "@mapbox/mapbox-gl-language": "mapbox/mapbox-gl-language#d7b2a1a41e7c9a72e68cdbfc4a6db607e0d9d857",
+    "@mapbox/mapbox-gl-language": "~1.0.0",
     "cheap-ruler": "~3.0.1",
     "date-fns": "~2.26.0",
     "fuse.js": "~6.4.6",
