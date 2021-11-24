@@ -1,0 +1,73 @@
+{
+  "common": {
+    "cancel": "取消",
+    "live": "居住"
+  },
+  "glossary": {
+    "busArrivals": "巴士抵达",
+    "passingRoutes": "公交路线图",
+    "popOut": "弹出",
+    "seatsAvailable": "可坐",
+    "standingAvailable": "可站",
+    "limitedStanding": "擁擠",
+    "arriving": "到达",
+    "arrivingMinutes": "{{minutes}}米",
+    "multiRouteMode": "多路由模式",
+    "weekdaysShort": "WD",
+    "weekdays": "平日",
+    "saturdaysShort": "SAT",
+    "saturdays": "星期六",
+    "sundaysPublicHolidaysShort": "SUN",
+    "sundaysPublicHolidays": "星期日及公众假期",
+    "service": "服务",
+    "firstBus": "第一班车",
+    "lastBus": "末班车",
+    "nRoutes_0": "{{count}} 条路线",
+    "nStops_0": "{{count}} 站",
+    "nServices_0": "{{count}} 服务"
+  },
+  "app": {
+    "name": "BusRouter SG",
+    "title": "$t(app.name) - 新加坡巴士路线浏览器",
+    "shortDescription": "新加坡巴士路线浏览器",
+    "description": "在地图上探索新加坡所有巴士服务的巴士站和路线，以及实时巴士到达时间和每个巴士站的经过路线概览。"
+  },
+  "about": {
+    "disclaimerCopyright": "<0>已建成</0>& <2>可视化</2>来自 <4>@cheeun</4> .数据 <6>© LTA</6> .",
+    "sisterSites": "姐妹网站：<1>🚆 RailRouter SG</1> <3>🚖 TaxiRouter SG</3>",
+    "liking": "❤️ 喜欢 $t(app.name)吗？",
+    "treatCoffee": "☕️ 支持我的工作，请我喝杯咖啡！",
+    "explore": "让我们探索一下"
+  },
+  "search": {
+    "placeholder": "搜索巴士服务或停止"
+  },
+  "service": {
+    "title": "巴士服务 {{serviceNumber}}: {{serviceName}} - $t(app.name)",
+    "titleMultiple": "巴士服务： ${serviceNumbersNames} - $t(app.name)",
+    "oppositeLegend": "与服务方向相反的巴士站"
+  },
+  "stop": {
+    "title": "巴士站 {{stopNumber}}: {{stopName}} - $t(app.name)",
+    "titleRoutes": "通过巴士站 {{stopNumber}}: {{stopName}} - $t(app.name)",
+    "firstLastBus": "首班车/末班车",
+    "liveBusTrack_0": "{{count}} 辆公共汽车现在在轨道上。"
+  },
+  "passingRoutes": {
+    "passingRoutes_0": "{{count}} 条路线"
+  },
+  "multiRoute": {
+    "addRoute": "添加另一条公交路线",
+    "showingServices_0": "显示 {{count}} 服务",
+    "intersectingStops_0": "{{count}} 交叉站"
+  },
+  "arrivals": {
+    "preHeading": "巴士到达时间",
+    "wheelchairDisclaimer": "<0/> 所有提供收入服务的公共巴士都<2>可供轮椅通行</2>.不可访问的将标有此图标 <4/>"
+  },
+  "firstLast": {
+    "title": "{{stopNumber}}: {{stopName}} 大约首末班车到达时间",
+    "busStopCodeNotFound": "未找到巴士站代码。",
+    "preHeading": "大约首末班车到达时间"
+  }
+}
