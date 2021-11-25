@@ -673,8 +673,7 @@ const App = () => {
   };
   const [head, setHead] = useState(defaultHead);
   useEffect(() => {
-    console.log('setHead', head);
-    const { title, url, desc, image } = head;
+    let { title, url, desc, image } = head;
     document.title = document.querySelector(
       'meta[property="og:title"]',
     ).content = Array.isArray(title) ? t(...title) : title;
