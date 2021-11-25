@@ -33,7 +33,7 @@
     "description": "在地图上探索新加坡所有巴士服务的巴士站和路线，以及实时巴士到达时间和每个巴士站的经过路线概览。"
   },
   "about": {
-    "disclaimerCopyright": "<0>已建成</0>& <2>可视化</2>来自 <4>@cheeun</4> .数据 <6>© LTA</6> .",
+    "disclaimerCopyright": "<0>已建成</0>&<2>可视化</2>来自 <4>@cheeaun</4>. 数据 <6>© LTA</6>.",
     "sisterSites": "姐妹网站：<1>🚆 RailRouter SG</1> <3>🚖 TaxiRouter SG</3>",
     "liking": "❤️ 喜欢 $t(app.name)吗？",
     "treatCoffee": "☕️ 支持我的工作，请我喝杯咖啡！",
