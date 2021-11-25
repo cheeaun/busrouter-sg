@@ -13,6 +13,12 @@
     "arriving": "到达",
     "arrivingMinutes": "{{minutes}}米",
     "multiRouteMode": "多路由模式",
+    "nRoutes_one": "{{count}} route",
+    "nRoutes_other": "{{count}} routes",
+    "nStops_one": "{{count}} stop",
+    "nStops_other": "{{count}} stops",
+    "nServices_one": "{{count}} service",
+    "nServices_other": "{{count}} services",
     "weekdaysShort": "WD",
     "weekdays": "平日",
     "saturdaysShort": "SAT",
@@ -21,10 +27,7 @@
     "sundaysPublicHolidays": "星期日及公众假期",
     "service": "服务",
     "firstBus": "第一班车",
-    "lastBus": "末班车",
-    "nRoutes_0": "{{count}} 条路线",
-    "nStops_0": "{{count}} 站",
-    "nServices_0": "{{count}} 服务"
+    "lastBus": "末班车"
   },
   "app": {
     "name": "BusRouter SG",
@@ -52,15 +55,19 @@
     "title": "巴士站 {{stopNumber}}: {{stopName}} - $t(app.name)",
     "titleRoutes": "通过巴士站 {{stopNumber}}: {{stopName}} - $t(app.name)",
     "firstLastBus": "首班车/末班车",
-    "liveBusTrack_0": "{{count}} 辆公共汽车现在在轨道上。"
+    "liveBusTrack_one": "{{count}} bus now on track",
+    "liveBusTrack_other": "{{count}} buses now on track."
   },
   "passingRoutes": {
-    "passingRoutes_0": "{{count}} 条路线"
+    "passingRoutes_one": "{{count}} passing route",
+    "passingRoutes_other": "{{count}} passing routes"
   },
   "multiRoute": {
     "addRoute": "添加另一条公交路线",
-    "showingServices_0": "显示 {{count}} 服务",
-    "intersectingStops_0": "{{count}} 交叉站"
+    "showingServices_one": "Showing {{count}} service",
+    "showingServices_other": "Showing {{count}} services",
+    "intersectingStops_one": "{{count}} intersecting stop",
+    "intersectingStops_other": "{{count}} intersecting stops"
   },
   "arrivals": {
     "preHeading": "巴士到达时间",
