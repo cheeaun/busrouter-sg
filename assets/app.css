@@ -685,6 +685,7 @@ a:active {
   margin: 0;
   background: transparent none;
   -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
 }
 .popover.expand .popover-search button {
   display: inline-block;
