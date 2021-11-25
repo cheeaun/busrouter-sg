@@ -13,12 +13,12 @@
     "arriving": "到达",
     "arrivingMinutes": "{{minutes}}米",
     "multiRouteMode": "多路由模式",
-    "nRoutes_one": "{{count}} route",
-    "nRoutes_other": "{{count}} routes",
-    "nStops_one": "{{count}} stop",
-    "nStops_other": "{{count}} stops",
-    "nServices_one": "{{count}} service",
-    "nServices_other": "{{count}} services",
+    "nRoutes_one": "{{count}} 路由",
+    "nRoutes_other": "{{count}} 路由",
+    "nStops_one": "{{count}} 停止",
+    "nStops_other": "{{count}} 停止",
+    "nServices_one": "{{count}} 服务",
+    "nServices_other": "{{count}} 服务",
     "weekdaysShort": "WD",
     "weekdays": "平日",
     "saturdaysShort": "SAT",
@@ -55,19 +55,19 @@
     "title": "巴士站 {{stopNumber}}: {{stopName}} - $t(app.name)",
     "titleRoutes": "通过巴士站 {{stopNumber}}: {{stopName}} - $t(app.name)",
     "firstLastBus": "首班车/末班车",
-    "liveBusTrack_one": "{{count}} bus now on track",
-    "liveBusTrack_other": "{{count}} buses now on track."
+    "liveBusTrack_one": "{{count}} 辆公共汽车正在轨道上",
+    "liveBusTrack_other": "{{count}} 辆公共汽车已经上了轨道。"
   },
   "passingRoutes": {
-    "passingRoutes_one": "{{count}} passing route",
-    "passingRoutes_other": "{{count}} passing routes"
+    "passingRoutes_one": "{{count}} 路由",
+    "passingRoutes_other": "{{count}} 路由"
   },
   "multiRoute": {
     "addRoute": "添加另一条公交路线",
-    "showingServices_one": "Showing {{count}} service",
-    "showingServices_other": "Showing {{count}} services",
-    "intersectingStops_one": "{{count}} intersecting stop",
-    "intersectingStops_other": "{{count}} intersecting stops"
+    "showingServices_one": "显示 {{count}} 服务",
+    "showingServices_other": "显示 {{count}} 服务",
+    "intersectingStops_one": "{{count}} 交叉停止",
+    "intersectingStops_other": "{{count}} 交叉停止"
   },
   "arrivals": {
     "preHeading": "巴士到达时间",
