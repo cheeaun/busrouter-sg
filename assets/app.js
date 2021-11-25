@@ -107,7 +107,7 @@ let fuseServices;
 let fuseStops;
 
 const App = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [route, setRoute] = useState(getRoute());
   const prevRoute = usePrevious(route);
@@ -665,21 +665,32 @@ const App = () => {
   const defaultImg = document.querySelector(
     'meta[property="og:image"]',
   ).content;
-  const setHead = (headContent = {}) => {
-    let {
-      title = t('app.title'),
-      url = defaultURL,
-      desc = t('app.description'),
-      image = defaultImg,
-    } = headContent;
+  const defaultHead = {
+    title: ['app.title'],
+    url: defaultURL,
+    desc: ['app.description'],
+    image: defaultImg,
+  };
+  const [head, setHead] = useState(defaultHead);
+  useEffect(() => {
+    console.log('setHead', head);
+    const { title, url, desc, image } = head;
     document.title = document.querySelector(
       'meta[property="og:title"]',
-    ).content = title;
+    ).content = Array.isArray(title) ? t(...title) : title;
     if (!/^https?/.test(url)) url = 'https://busrouter.sg/#' + url;
     document.querySelector('meta[property="og:url"]').content = url;
-    document.querySelector('meta[property="og:description"]').content = desc;
+    document.querySelector('meta[name="description"]').content =
+      document.querySelector('meta[property="og:description"]').content =
+        Array.isArray(desc) ? t(...desc) : desc;
     document.querySelector('meta[property="og:image"]').content = image;
-  };
+  }, [head]);
+
+  useEffect(() => {
+    i18n.on('languageChanged', () => {
+      setHead({ ...head });
+    });
+  }, []);
 
   const renderRoute = () => {
     const route = getRoute();
@@ -734,10 +745,13 @@ const App = () => {
           const service = services[0];
           const { name, routes } = servicesData[service];
           setHead({
-            title: t('service.title', {
-              serviceNumber: service,
-              serviceName: name,
-            }),
+            title: [
+              'service.title',
+              {
+                serviceNumber: service,
+                serviceName: name,
+              },
+            ],
             url: `/services/${service}`,
           });
 
@@ -817,7 +831,7 @@ const App = () => {
             })
             .join(', ');
           setHead({
-            title: t('service.title', { serviceNumbersNames }),
+            title: ['service.title', { serviceNumbersNames }],
             url: `/services/${services.join('~')}`,
           });
 
@@ -946,7 +960,7 @@ const App = () => {
         const { routes, name, coordinates } = stopsData[stop];
         if (route.subpage === 'routes') {
           setHead({
-            title: t('stop.titleRoutes', { stopNumber: stop, stopName: name }),
+            title: ['stop.titleRoutes', { stopNumber: stop, stopName: name }],
             url: `/stops/${stop}/routes`,
           });
 
@@ -1046,7 +1060,7 @@ const App = () => {
           });
         } else {
           setHead({
-            title: t('stop.title', { stopNumber: stop, stopName: name }),
+            title: ['stop.title', { stopNumber: stop, stopName: name }],
             url: `/stops/${stop}`,
           });
           map.setLayoutProperty('stops', 'visibility', 'visible');
@@ -1183,7 +1197,7 @@ const App = () => {
         break;
       }
       default: {
-        setHead();
+        setHead(defaultHead);
 
         // Show all stops
         map.setLayoutProperty('stops', 'visibility', 'visible');
@@ -1358,8 +1372,20 @@ const App = () => {
       compassButton.classList.toggle('show', bearing !== 0);
     });
 
-    const language = new MapboxLanguage();
+    const mapLang = () => {
+      // There's only en and zh, Don't have ms yet
+      return { zh: 'zh-Hans', ms: 'ms' }[i18n.language] || 'en';
+    };
+    const language = new MapboxLanguage({
+      supportedLanguages: ['en', 'zh-Hans', 'ms'],
+      defaultLanguage: mapLang(),
+    });
     map.addControl(language);
+
+    i18n.on('languageChanged', () => {
+      const localizedStyle = language.setLanguage(map.getStyle(), mapLang());
+      map.setStyle(localizedStyle);
+    });
 
     let initialMoveStart = false;
     const initialHideSearch = () => {

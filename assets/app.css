@@ -1599,7 +1599,7 @@ a.service-tag:hover {
   font-weight: 500;
   border-radius: 7px;
   text-align: center;
-  box-shadow: 0 2px 5px #ddd;
+  box-shadow: 0 2px 5px #007aff33;
   transition: background-color 0.3s ease-in-out;
 }
 .donation-box:hover {
@@ -1746,4 +1746,23 @@ input[type='checkbox']:active:after,
 input[type='checkbox']:checked:after {
   opacity: 1;
   transform: rotate(45deg);
+}
+
+/* Locale selector */
+
+#locale-selector select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  border-radius: 7px;
+  background-color: rgba(255, 255, 255, 0.25);
+  background-image: none;
+  border: 0;
+  margin: 0 8px 0 0;
+  padding: 5px;
+}
+#locale-selector select:hover,
+#locale-selector select:active,
+#locale-selector select:focus {
+  background-color: rgba(255, 255, 255, 0.5);
 }

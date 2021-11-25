@@ -3,7 +3,7 @@ import { useEffect, useState } from 'preact/hooks';
 import { useTranslation, Trans } from 'react-i18next';
 
 export default function About() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [hidden, setHidden] = useState(true);
   useEffect(() => {
     try {
@@ -29,6 +29,22 @@ export default function About() {
           <small>{t('app.shortDescription')}</small>
         </h2>
         <p>{t('app.description')}</p>
+        <label id="locale-selector">
+          <select
+            onchange={(e) => {
+              const lang = e.target.value;
+              i18n.changeLanguage(lang);
+            }}
+            defaultValue={i18n.language}
+          >
+            <option value="en">English</option>
+            <option value="ms">Bahasa Melayu</option>
+            <option value="zh">中文</option>
+          </select>
+          <a href="https://crwd.in/busrouter-sg" target="_blank">
+            <small>{t('about.helpTranslations')}</small>
+          </a>
+        </label>
         <hr />
         <p>
           <Trans i18nKey="about.disclaimerCopyright">
