@@ -52,7 +52,7 @@
     "title": "巴士站 {{stopNumber}}: {{stopName}} - $t(app.name)",
     "titleRoutes": "通过巴士站 {{stopNumber}}: {{stopName}} - $t(app.name)",
     "firstLastBus": "首班车/末班车",
-    "liveBusTrack_0": "{{count}} 辆公共汽车现在在轨道上。"
+    "liveBusTrack_0": "{{count}} 辆公共汽车在轨道上。"
   },
   "passingRoutes": {
     "passingRoutes_0": "{{count}} 条路线"
