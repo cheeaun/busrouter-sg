@@ -11,7 +11,7 @@
     "standingAvailable": "可站",
     "limitedStanding": "擁擠",
     "arriving": "到达",
-    "arrivingMinutes": "{{minutes}}米",
+    "arrivingMinutes": "{{minutes}}分钟",
     "multiRouteMode": "多路由模式",
     "weekdaysShort": "WD",
     "weekdays": "平日",
