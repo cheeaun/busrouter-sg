@@ -38,9 +38,15 @@ export default function About() {
             defaultValue={i18n.language}
           >
             <option value="en">English</option>
-            <option value="zh">中文</option>
-            <option value="ms">Bahasa Melayu</option>
-            <option value="ta">தமிழ்</option>
+            <option value="zh" lang="zh">
+              中文
+            </option>
+            <option value="ms" lang="ms">
+              Bahasa Melayu
+            </option>
+            <option value="ta" lang="ta">
+              தமிழ்
+            </option>
           </select>
           <a href="https://crwd.in/busrouter-sg" target="_blank">
             <small>{t('about.helpTranslations')}</small>
