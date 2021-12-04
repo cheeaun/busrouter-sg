@@ -13,12 +13,12 @@
     "arriving": "Arr",
     "arrivingMinutes": "{{minutes}}m",
     "multiRouteMode": "Multi-route mode",
-    "nRoutes_one": "{{count}} route",
-    "nRoutes_other": "{{count}} routes",
-    "nStops_one": "{{count}} stop",
-    "nStops_other": "{{count}} stops",
-    "nServices_one": "{{count}} service",
-    "nServices_other": "{{count}} services",
+    "nRoutes": "{{count}} route",
+    "nRoutes_plural": "{{count}} routes",
+    "nStops": "{{count}} stop",
+    "nStops_plural": "{{count}} stops",
+    "nServices": "{{count}} service",
+    "nServices_plural": "{{count}} services",
     "weekdaysShort": "WD",
     "weekdays": "Weekdays",
     "saturdaysShort": "SAT",
@@ -55,19 +55,19 @@
     "title": "Bus stop {{stopNumber}}: {{stopName}} - $t(app.name)",
     "titleRoutes": "Routes passing bus stop {{stopNumber}}: {{stopName}} - $t(app.name)",
     "firstLastBus": "First/last bus",
-    "liveBusTrack_one": "{{count}} bus now on track",
-    "liveBusTrack_other": "{{count}} buses now on track."
+    "liveBusTrack": "{{count}} bus now on track",
+    "liveBusTrack_plural": "{{count}} buses now on track."
   },
   "passingRoutes": {
-    "passingRoutes_one": "{{count}} passing route",
-    "passingRoutes_other": "{{count}} passing routes"
+    "passingRoutes": "{{count}} passing route",
+    "passingRoutes_plural": "{{count}} passing routes"
   },
   "multiRoute": {
     "addRoute": "Add another bus route",
-    "showingServices_one": "Showing {{count}} service",
-    "showingServices_other": "Showing {{count}} services",
-    "intersectingStops_one": "{{count}} intersecting stop",
-    "intersectingStops_other": "{{count}} intersecting stops"
+    "showingServices": "Showing {{count}} service",
+    "showingServices_plural": "Showing {{count}} services",
+    "intersectingStops": "{{count}} intersecting stop",
+    "intersectingStops_plural": "{{count}} intersecting stops"
   },
   "arrivals": {
     "preHeading": "Bus arrival times",
