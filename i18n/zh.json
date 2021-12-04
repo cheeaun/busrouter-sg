@@ -22,9 +22,9 @@
     "service": "服务",
     "firstBus": "第一班车",
     "lastBus": "末班车",
-    "nRoutes_0": "{{count}} routes",
-    "nStops_0": "{{count}} stops",
-    "nServices_0": "{{count}} services"
+    "nRoutes_0": "{{count}} 条路线",
+    "nStops_0": "{{count}} 站",
+    "nServices_0": "{{count}} 服务"
   },
   "app": {
     "name": "BusRouter SG",
@@ -52,15 +52,15 @@
     "title": "巴士站 {{stopNumber}}: {{stopName}} - $t(app.name)",
     "titleRoutes": "通过巴士站 {{stopNumber}}: {{stopName}} - $t(app.name)",
     "firstLastBus": "首班车/末班车",
-    "liveBusTrack_0": "{{count}} buses now on track."
+    "liveBusTrack_0": "{{count}} 辆公共汽车在轨道上。"
   },
   "passingRoutes": {
-    "passingRoutes_0": "{{count}} passing routes"
+    "passingRoutes_0": "{{count}} 条路线"
   },
   "multiRoute": {
     "addRoute": "添加另一条公交路线",
-    "showingServices_0": "Showing {{count}} services",
-    "intersectingStops_0": "{{count}} intersecting stops"
+    "showingServices_0": "显示 {{count}} 服务",
+    "intersectingStops_0": "{{count}} 交叉站"
   },
   "arrivals": {
     "preHeading": "巴士到达时间",
