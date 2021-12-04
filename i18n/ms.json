@@ -13,12 +13,6 @@
     "arriving": "Arr",
     "arrivingMinutes": "{{minutes}}m",
     "multiRouteMode": "Mod berbilang laluan",
-    "nRoutes_one": "{{count}} laluan",
-    "nRoutes_other": "{{count}} laluan",
-    "nStops_one": "{{count}} berhenti",
-    "nStops_other": "{{count}} hentian",
-    "nServices_one": "{{count}} perkhidmatan",
-    "nServices_other": "{{count}} perkhidmatan",
     "weekdaysShort": "MG",
     "weekdays": "Hari Minggu",
     "saturdaysShort": "SAB",
@@ -27,7 +21,10 @@
     "sundaysPublicHolidays": "Ahad & Cuti Umum",
     "service": "Perkhidmatan",
     "firstBus": "Bas Pertama",
-    "lastBus": "Bas Terakhir"
+    "lastBus": "Bas Terakhir",
+    "nRoutes_0": "{{count}} routes",
+    "nStops_0": "{{count}} stops",
+    "nServices_0": "{{count}} services"
   },
   "app": {
     "name": "BusRouter SG",
@@ -55,19 +52,15 @@
     "title": "Perhentian bas {{stopNumber}}: {{stopName}} - $t(app.name)",
     "titleRoutes": "Laluan yang melalui perhentian bas {{stopNumber}}: {{stopName}} - $t(app.name)",
     "firstLastBus": "Bas pertama/terakhir",
-    "liveBusTrack_one": "{{count}} bas kini di landasan",
-    "liveBusTrack_other": "{{count}} bas kini berada di landasan."
+    "liveBusTrack_0": "{{count}} buses now on track."
   },
   "passingRoutes": {
-    "passingRoutes_one": "{{count}} laluan lewat",
-    "passingRoutes_other": "{{count}} laluan yang lalu"
+    "passingRoutes_0": "{{count}} passing routes"
   },
   "multiRoute": {
     "addRoute": "Tambah laluan bas lain",
-    "showingServices_one": "Menunjukkan {{count}} perkhidmatan",
-    "showingServices_other": "Menunjukkan {{count}} perkhidmatan",
-    "intersectingStops_one": "{{count}} perhentian bersilang",
-    "intersectingStops_other": "{{count}} perhentian bersilang"
+    "showingServices_0": "Showing {{count}} services",
+    "intersectingStops_0": "{{count}} intersecting stops"
   },
   "arrivals": {
     "preHeading": "Masa ketibaan bas",
