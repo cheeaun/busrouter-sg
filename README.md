@@ -51,6 +51,10 @@ The scripts for the web app:
 - `npm start` - start server for development
 - `npm run build` - build for production and deployment, in `./dist` folder.
 
+### Localization
+
+[![Crowdin](https://badges.crowdin.net/busrouter-sg/localized.svg)](https://crowdin.com/project/busrouter-sg)
+
 ### Visualization
 
 At least Node.js 14 is required.
