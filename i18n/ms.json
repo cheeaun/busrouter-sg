@@ -22,9 +22,9 @@
     "service": "Perkhidmatan",
     "firstBus": "Bas Pertama",
     "lastBus": "Bas Terakhir",
-    "nRoutes_0": "{{count}} routes",
-    "nStops_0": "{{count}} stops",
-    "nServices_0": "{{count}} services"
+    "nRoutes_0": "{{count}} laluan",
+    "nStops_0": "{{count}} hentian",
+    "nServices_0": "{{count}} perkhidmatan"
   },
   "app": {
     "name": "BusRouter SG",
@@ -52,15 +52,15 @@
     "title": "Perhentian bas {{stopNumber}}: {{stopName}} - $t(app.name)",
     "titleRoutes": "Laluan yang melalui perhentian bas {{stopNumber}}: {{stopName}} - $t(app.name)",
     "firstLastBus": "Bas pertama/terakhir",
-    "liveBusTrack_0": "{{count}} buses now on track."
+    "liveBusTrack_0": "{{count}} bas kini berada di landasan."
   },
   "passingRoutes": {
-    "passingRoutes_0": "{{count}} passing routes"
+    "passingRoutes_0": "{{count}} laluan yang lalu"
   },
   "multiRoute": {
     "addRoute": "Tambah laluan bas lain",
-    "showingServices_0": "Showing {{count}} services",
-    "intersectingStops_0": "{{count}} intersecting stops"
+    "showingServices_0": "Menunjukkan {{count}} perkhidmatan",
+    "intersectingStops_0": "{{count}} perhentian bersilang"
   },
   "arrivals": {
     "preHeading": "Masa ketibaan bas",
