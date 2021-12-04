@@ -1373,10 +1373,10 @@ const App = () => {
 
     const mapLang = () => {
       // There's only en and zh, Don't have ms yet
-      return { zh: 'zh-Hans', ms: 'ms' }[i18n.language] || 'en';
+      return { zh: 'zh-Hans' }[i18n.language] || i18n.language;
     };
     const language = new MapboxLanguage({
-      supportedLanguages: ['en', 'zh-Hans', 'ms'],
+      supportedLanguages: ['en', 'zh-Hans', 'ms', 'ta'],
       defaultLanguage: mapLang(),
     });
     map.addControl(language);

@@ -6,15 +6,18 @@ import { initReactI18next } from 'react-i18next';
 import en from '../i18n/en.json';
 import ms from '../i18n/ms.json';
 import zh from '../i18n/zh.json';
+import ta from '../i18n/ta.json';
 
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
+    compatibilityJSON: 'v3',
     resources: {
       en: { translation: en },
       ms: { translation: ms },
       zh: { translation: zh },
+      ta: { translation: ta },
     },
     fallbackLng: 'en',
     debug: /localhost/i.test(location.hostname),
