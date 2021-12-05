@@ -21,7 +21,7 @@
     "service": "服务",
     "firstBus": "第一班车",
     "lastBus": "末班车",
-    "arrivingMinutes_0": "{{count}}m",
+    "arrivingMinutes_0": "{{count}}分钟",
     "nRoutes_0": "{{count}} 条路线",
     "nStops_0": "{{count}} 站",
     "nServices_0": "{{count}} 服务"
