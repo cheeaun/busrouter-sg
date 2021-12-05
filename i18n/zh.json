@@ -11,7 +11,6 @@
     "standingAvailable": "可站",
     "limitedStanding": "擁擠",
     "arriving": "到达",
-    "arrivingMinutes": "{{minutes}}分钟",
     "multiRouteMode": "多路由模式",
     "weekdaysShort": "WD",
     "weekdays": "平日",
@@ -22,6 +21,7 @@
     "service": "服务",
     "firstBus": "第一班车",
     "lastBus": "末班车",
+    "arrivingMinutes_0": "{{count}}m",
     "nRoutes_0": "{{count}} 条路线",
     "nStops_0": "{{count}} 站",
     "nServices_0": "{{count}} 服务"
