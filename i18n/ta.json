@@ -21,7 +21,7 @@
     "service": "சேவை",
     "firstBus": "முதல் பேருந்து",
     "lastBus": "கடைசி பேருந்து",
-    "arrivingMinutes": "{{count}}மீ",
+    "arrivingMinutes": "{{count}}நிமிடம்",
     "arrivingMinutes_plural": "{{count}}நிமிடங்கள்",
     "nRoutes": "{{count}} பாதை",
     "nRoutes_plural": "{{count}} வழிகள்",
