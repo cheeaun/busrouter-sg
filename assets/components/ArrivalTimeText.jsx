@@ -7,5 +7,5 @@ export default function ArrivalTimeText({ ms }) {
   const mins = Math.floor(ms / 1000 / 60);
   return mins <= 0
     ? t('glossary.arriving')
-    : t('glossary.arrivingMinutes', { minutes: mins });
+    : t('glossary.arrivingMinutes', { count: mins });
 }
