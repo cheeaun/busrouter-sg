@@ -70,7 +70,10 @@
     "intersectingStops_plural": "{{count}} intersecting stops"
   },
   "arrivals": {
+    "invalidBusStopCode": "Invalid bus stop code.",
     "preHeading": "Bus arrival times",
+    "title": "Bus arrival times",
+    "titleStop": "Bus arrival times for {{stopNumber}} - {{stopName}}",
     "wheelchairDisclaimer": "<0/> All public buses in revenue service are <2>wheelchair-accessible</2>. The ones that are not accesssible will be marked with this icon <4/>"
   },
   "firstLast": {
