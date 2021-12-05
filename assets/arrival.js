@@ -8,6 +8,7 @@ import fetchCache from './utils/fetchCache';
 import setIcon from '../utils/setIcon';
 
 import ArrivalTimeText from './components/ArrivalTimeText';
+import LocaleSelector from './components/LocaleSelector';
 
 import wheelchairImagePath from './images/wheelchair.svg';
 import wheelchairInaccessibleImagePath from './images/wheelchair-inaccessible.svg';
@@ -145,7 +146,7 @@ function BusLane({ no, buses }) {
 }
 
 function ArrivalTimes() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [busStop, setBusStop] = useState(null);
   const [stopsData, setStopsData] = useState(null);
   const [fetchingServices, setFetchingServices] = useState(false);
@@ -164,26 +165,36 @@ function ArrivalTimes() {
         const stop = stops[code];
         if (stop) {
           const [lng, lat, name] = stop;
-          document.title = `Bus arrival times for ${code + ' - ' + name}`;
-          document
-            .querySelector('[name="apple-mobile-web-app-title"]')
-            .setAttribute('content', name);
           setBusStop({ code, name, lat, lng });
           setIcon(code);
         } else {
-          alert('Invalid bus stop code.');
+          alert(t('arrivals.invalidBusStopCode'));
         }
       } else {
-        document.title = 'Bus arrival times';
-        document
-          .querySelector('[name="apple-mobile-web-app-title"]')
-          .setAttribute('content', 'Bus arrival times');
         setBusStop(null);
       }
     };
     window.onhashchange();
     setStopsData(stops);
   }, []);
+
+  useEffect(() => {
+    if (busStop?.code) {
+      const { code, name } = busStop;
+      document.title = t('arrivals.titleStop', {
+        stopNumber: code,
+        stopName: name,
+      });
+      document
+        .querySelector('[name="apple-mobile-web-app-title"]')
+        .setAttribute('content', document.title);
+    } else {
+      document.title = t('arrivals.title');
+      document
+        .querySelector('[name="apple-mobile-web-app-title"]')
+        .setAttribute('content', document.title);
+    }
+  }, [busStop, i18n.language]);
 
   let arrivalsTimeout, arrivalsRAF;
   function fetchServices(id) {
@@ -325,6 +336,9 @@ function ArrivalTimes() {
           . The ones that are not accesssible will be marked with this icon
           <WheelChairInaccessible size="16" />.
         </Trans>
+        <p>
+          <LocaleSelector />
+        </p>
       </footer>
     </div>
   );

@@ -2,6 +2,8 @@ import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { useTranslation, Trans } from 'react-i18next';
 
+import LocaleSelector from './LocaleSelector';
+
 export default function About() {
   const { t, i18n } = useTranslation();
   const [hidden, setHidden] = useState(true);
@@ -29,33 +31,7 @@ export default function About() {
           <small>{t('app.shortDescription')}</small>
         </h2>
         <p>{t('app.description')}</p>
-        <label id="locale-selector">
-          🌐{' '}
-          <select
-            onchange={(e) => {
-              const lang = e.target.value;
-              i18n.changeLanguage(lang);
-            }}
-            defaultValue={i18n.language}
-          >
-            <option value="en">English</option>
-            <option value="zh" lang="zh">
-              中文
-            </option>
-            <option value="ms" lang="ms">
-              Bahasa Melayu
-            </option>
-            <option value="ta" lang="ta">
-              தமிழ்
-            </option>
-          </select>
-          <a
-            href="https://github.com/cheeaun/busrouter-sg/discussions/54"
-            target="_blank"
-          >
-            <small>{t('about.helpTranslations')}</small>
-          </a>
-        </label>
+        <LocaleSelector />
         <hr />
         <p>
           <Trans i18nKey="about.disclaimerCopyright">

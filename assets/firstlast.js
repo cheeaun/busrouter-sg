@@ -9,17 +9,22 @@ import fetchCache from './utils/fetchCache';
 import { sortServices } from './utils/bus';
 import Ad from './ad';
 
+import LocaleSelector from './components/LocaleSelector';
+
 const dataPath = 'https://data.busrouter.sg/v1/';
 const firstLastJSONPath = dataPath + 'firstlast.min.json';
 const stopsJSONPath = dataPath + 'stops.min.json';
 
 // TODO: add locales when it's supported
-// import { zhCN } from 'date-fns/locale';
+import { zhCN, ms, ta } from 'date-fns/locale';
 const dateLocales = {
-  // zh: zhCN,
+  zh: zhCN,
+  ms,
+  ta,
 };
 
 const timeStrToDate = (time) => {
+  if (time instanceof Date) return time;
   if (!/\d{4}/.test(time)) return null;
   let h = +time.slice(0, 2);
   const m = +time.slice(2);
@@ -91,6 +96,7 @@ function FirstLastTimes() {
   const [data, setData] = useState([]);
 
   const [timeLeft, setTimeLeft] = useState(null);
+  const [timeDate, setTimeDate] = useState(null);
   const [timeStr, setTimeStr] = useState('');
 
   useEffect(() => {
@@ -99,7 +105,7 @@ function FirstLastTimes() {
       stopNumber: stop,
       stopName,
     });
-  }, [stop, stopName]);
+  }, [stop, stopName, i18n.language]);
 
   useEffect(() => {
     Promise.all([
@@ -142,30 +148,35 @@ function FirstLastTimes() {
       window.onhashchange();
     });
 
-    const setLeft = () => {
+    const updateTimeTick = () => {
       const date = new Date();
+      setTimeDate(date);
       const val = convertTimeToNumber(format(date, 'HHmm'));
       const left = (val / 24) * 100;
       setTimeLeft(left);
-
-      const timeStr = format(date, 'p');
-      let timeStrComp;
-      if (/:/.test(timeStr)) {
-        // Make sure there's ":" before making it blink
-        const [a, b] = timeStr.split(':');
-        timeStrComp = (
-          <>
-            {a}
-            <blink>:</blink>
-            {b}
-          </>
-        );
-        setTimeStr(timeStrComp || timeStr);
-      }
     };
-    setLeft();
-    setInterval(setLeft, 60 * 1000);
+    updateTimeTick();
+    setInterval(updateTimeTick, 60 * 1000);
   }, []);
+
+  const formatTimeTick = (timeDate) => {
+    const timeStr = timeFormat(timeDate, i18n.language);
+    console.log({ timeDate, timeStr });
+    let timeStrComp;
+    if (/:/.test(timeStr)) {
+      // Make sure there's ":" before making it blink
+      const [a, b] = timeStr.split(':');
+      timeStrComp = (
+        <>
+          {a}
+          <blink>:</blink>
+          {b}
+        </>
+      );
+      return timeStrComp || timeStr;
+    }
+    return timeStr;
+  };
 
   const isInSingapore = new Date().getTimezoneOffset() === -480;
 
@@ -206,12 +217,12 @@ function FirstLastTimes() {
               <span>6</span>
               <span>12 🌞</span>
               <span>6</span>
-              {isInSingapore && !!data.length && !!timeLeft && !!timeStr && (
+              {isInSingapore && !!data.length && !!timeLeft && !!timeDate && (
                 <div
                   class="timerange-indicator"
                   style={{ left: `${timeLeft}%` }}
                 >
-                  <span>{timeStr}*</span>
+                  <span>{formatTimeTick(timeDate)}*</span>
                 </div>
               )}
             </th>
@@ -332,6 +343,9 @@ function FirstLastTimes() {
                   <>{t('glossary.nServices', { count: data.length })} · </>
                 )}
                 <a href="/">{t('app.name')}</a>
+              </p>
+              <p>
+                <LocaleSelector />
               </p>
             </td>
           </tr>
