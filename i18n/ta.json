@@ -70,7 +70,10 @@
     "intersectingStops_plural": "{{count}} வெட்டும் நிறுத்தங்கள்"
   },
   "arrivals": {
+    "invalidBusStopCode": "Invalid bus stop code.",
     "preHeading": "பேருந்து வரும் நேரம்",
+    "title": "Bus arrival times",
+    "titleStop": "Bus arrival times for {{stopNumber}} - {{stopName}}",
     "wheelchairDisclaimer": "<0/> வருவாய் சேவையில் உள்ள அனைத்து பொதுப் பேருந்துகளும் <2>சக்கர நாற்காலியில் செல்லக்கூடியவை</2> . அணுக முடியாதவை இந்த ஐகானுடன் <4/> குறிக்கப்படும்"
   },
   "firstLast": {
