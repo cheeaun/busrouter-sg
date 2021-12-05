@@ -63,7 +63,10 @@
     "intersectingStops_0": "{{count}} 交叉站"
   },
   "arrivals": {
+    "invalidBusStopCode": "Invalid bus stop code.",
     "preHeading": "巴士到达时间",
+    "title": "Bus arrival times",
+    "titleStop": "Bus arrival times for {{stopNumber}} - {{stopName}}",
     "wheelchairDisclaimer": "<0/> 所有提供收入服务的公共巴士都<2>可供轮椅通行</2>.不可访问的将标有此图标 <4/>"
   },
   "firstLast": {
