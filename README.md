@@ -55,6 +55,8 @@ The scripts for the web app:
 
 [![Crowdin](https://badges.crowdin.net/busrouter-sg/localized.svg)](https://crowdin.com/project/busrouter-sg)
 
+**[➡️ Start translating ⬅️](https://crwd.in/busrouter-sg)**
+
 ### Visualization
 
 At least Node.js 14 is required.

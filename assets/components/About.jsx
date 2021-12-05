@@ -30,6 +30,7 @@ export default function About() {
         </h2>
         <p>{t('app.description')}</p>
         <label id="locale-selector">
+          🌐{' '}
           <select
             onchange={(e) => {
               const lang = e.target.value;
@@ -48,7 +49,10 @@ export default function About() {
               தமிழ்
             </option>
           </select>
-          <a href="https://crwd.in/busrouter-sg" target="_blank">
+          <a
+            href="https://github.com/cheeaun/busrouter-sg/discussions/54"
+            target="_blank"
+          >
             <small>{t('about.helpTranslations')}</small>
           </a>
         </label>
