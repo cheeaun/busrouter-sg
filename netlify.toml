@@ -30,3 +30,8 @@ ID = "busrouter-sg"
   from = "/ads.txt"
   to = "https://cdn4.buysellads.net/ads.txt"
   force = true
+
+[[plugins]]
+package = "netlify-plugin-ttl-cache"
+  [plugins.inputs]
+  path = "dist"
