@@ -85,7 +85,7 @@ const TimeRanger = ({ values }) => {
         />
       </div>
       <span class="time-duration">
-        {formatDuration(duration, i18n.language)}
+        {formatDuration(duration, i18n.resolvedLanguage)}
       </span>
     </>
   );
@@ -107,7 +107,7 @@ function FirstLastTimes() {
       stopNumber: stop,
       stopName,
     });
-  }, [stop, stopName, i18n.language]);
+  }, [stop, stopName, i18n.resolvedLanguage]);
 
   useEffect(() => {
     Promise.all([
@@ -162,7 +162,7 @@ function FirstLastTimes() {
   }, []);
 
   const formatTimeTick = (timeDate) => {
-    const timeStr = timeFormat(timeDate, i18n.language);
+    const timeStr = timeFormat(timeDate, i18n.resolvedLanguage);
     console.log({ timeDate, timeStr });
     let timeStrComp;
     if (/:/.test(timeStr)) {
@@ -238,7 +238,7 @@ function FirstLastTimes() {
               const [wd1raw, wd2raw, sat1raw, sat2raw, sun1raw, sun2raw] =
                 times;
               const [wd1, wd2, sat1, sat2, sun1, sun2] = times.map((t) =>
-                timeFormat(t, i18n.language),
+                timeFormat(t, i18n.resolvedLanguage),
               );
               return (
                 <tbody class={sameAsPrevService ? 'insignificant' : ''}>

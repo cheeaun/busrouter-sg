@@ -1375,7 +1375,7 @@ const App = () => {
 
     const mapLang = () => {
       // There's only en and zh, Don't have ms yet
-      return { zh: 'zh-Hans' }[i18n.language] || i18n.language;
+      return { zh: 'zh-Hans' }[i18n.resolvedLanguage] || i18n.resolvedLanguage;
     };
     const language = new MapboxLanguage({
       supportedLanguages: ['en', 'zh-Hans', 'ms', 'ta'],
@@ -2407,17 +2407,17 @@ const App = () => {
 
     renderRoute();
 
-    requestIdleCallback(() => {
-      // Popover search field
-      fuseServices = new Fuse(servicesDataArr, {
-        threshold: 0.3,
-        keys: ['number', 'name'],
-      });
-      fuseStops = new Fuse(stopsDataArr, {
-        threshold: 0.3,
-        keys: ['number', 'name'],
-      });
+    // Popover search field
+    fuseServices = new Fuse(servicesDataArr, {
+      threshold: 0.3,
+      keys: ['number', 'name'],
+    });
+    fuseStops = new Fuse(stopsDataArr, {
+      threshold: 0.3,
+      keys: ['number', 'name'],
+    });
 
+    requestIdleCallback(() => {
       // For cases when user already typed something before fuse.js inits
       if (searchField.current?.value) handleSearch();
 
