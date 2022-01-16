@@ -31,9 +31,9 @@ i18n
     },
   })
   .then((t) => {
-    document.documentElement.lang = i18n.language;
+    document.documentElement.lang = i18n.resolvedLanguage;
     i18n.on('languageChanged', () => {
-      document.documentElement.lang = i18n.language;
+      document.documentElement.lang = i18n.resolvedLanguage;
       document.querySelectorAll('[data-i18n-key]').forEach((el) => {
         if (el.dataset.i18nAttr) {
           el.setAttribute(el.dataset.i18nAttr, t(el.dataset.i18nKey));

@@ -11,7 +11,7 @@ export default function LocaleSelector() {
           const lang = e.target.value;
           i18n.changeLanguage(lang);
         }}
-        defaultValue={i18n.language}
+        defaultValue={i18n.resolvedLanguage}
       >
         <option value="en">English</option>
         <option value="zh" lang="zh">

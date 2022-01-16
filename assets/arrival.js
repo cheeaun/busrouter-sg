@@ -196,7 +196,7 @@ function ArrivalTimes() {
         .querySelector('[name="apple-mobile-web-app-title"]')
         .setAttribute('content', document.title);
     }
-  }, [busStop, i18n.language]);
+  }, [busStop, i18n.resolvedLanguage]);
 
   let arrivalsTimeout, arrivalsRAF;
   function fetchServices(id) {
