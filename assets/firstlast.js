@@ -1,4 +1,6 @@
 import './i18n';
+import './error-tracking';
+
 import { h, render, Fragment } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 import format from 'date-fns/format';

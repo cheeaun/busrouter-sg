@@ -1,4 +1,6 @@
 import './i18n';
+import './error-tracking';
+
 import { h, render } from 'preact';
 import { useState, useRef, useEffect } from 'preact/hooks';
 import { useTranslation, Trans } from 'react-i18next';

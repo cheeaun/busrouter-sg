@@ -1,4 +1,6 @@
 import './i18n';
+import './error-tracking';
+
 import { h, render, Fragment } from 'preact';
 import { useState, useRef, useEffect, useMemo } from 'preact/hooks';
 import { toGeoJSON } from '@mapbox/polyline';
