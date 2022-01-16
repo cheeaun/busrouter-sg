@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { useRef, useState, useEffect } from 'preact/hooks';
-import useResizeObserver from 'use-resize-observer';
+import useResizeObserver from '../utils/useResizeObserver';
 
 export default function ScrollableContainer(props) {
   const { children, scrollToTopKey, ...otherProps } = props;
