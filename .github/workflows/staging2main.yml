@@ -1,0 +1,16 @@
+name: Pull Request to `main` from `staging`
+
+on:
+  push:
+    branches:
+      - staging
+
+jobs:
+  auto-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: vsoch/pull-request-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST_FROM_BRANCH: "staging"
+          PULL_REQUEST_BRANCH: "main"
