@@ -414,7 +414,7 @@ const App = () => {
       { hover: true, fadein: false },
     );
 
-    STORE.routesPathServices.forEach((service) => {
+    STORE.routesPathServices?.forEach((service) => {
       const id = encode(service);
       if (hoveredRouteID === id) return;
       map.setFeatureState(
@@ -467,7 +467,7 @@ const App = () => {
     if (e && e.target?.classList.contains('service-tag')) {
       e.target.classList.remove('highlight');
     }
-    STORE.routesPathServices.forEach((service) => {
+    STORE.routesPathServices?.forEach((service) => {
       const id = encode(service);
       map.setFeatureState(
         {
@@ -708,7 +708,7 @@ const App = () => {
       'routes-between',
       'buses-service',
     ].forEach((source) => {
-      map.getSource(source).setData({
+      map.getSource(source)?.setData({
         type: 'FeatureCollection',
         features: [],
       });
@@ -1424,9 +1424,11 @@ const App = () => {
     }
 
     map.loadImage(stopImagePath, (e, img) => {
+      if (e) throw e;
       map.addImage('stop', img);
     });
     map.loadImage(stopEndImagePath, (e, img) => {
+      if (e) throw e;
       map.addImage('stop-end', img);
     });
 
@@ -2153,7 +2155,7 @@ const App = () => {
             { hover: true, fadein: false },
           );
 
-          STORE.routesPathServices.forEach((service) => {
+          STORE.routesPathServices?.forEach((service) => {
             const id = encode(service);
             if (hoveredRouteID === id) return;
             map.setFeatureState(
@@ -2171,7 +2173,7 @@ const App = () => {
       map.on('mouseleave', 'routes-path', () => {
         mapCanvas.style.cursor = '';
         if (hoveredRouteID) {
-          STORE.routesPathServices.forEach((service) => {
+          STORE.routesPathServices?.forEach((service) => {
             const id = encode(service);
             map.setFeatureState(
               {
@@ -2255,6 +2257,7 @@ const App = () => {
       },
     });
     map.loadImage(busTinyImagePath, (e, img) => {
+      if (e) throw e;
       map.addImage('bus-tiny', img);
     });
     map.addLayer({
