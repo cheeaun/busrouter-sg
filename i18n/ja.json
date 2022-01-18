@@ -36,9 +36,9 @@
     "disclaimerCopyright": "<0>構築</0>＆<2>視覚化</2><4> @cheeaun</4> 。データ<6>©LTA</6> 。",
     "helpTranslations": "翻訳のヘルプ",
     "sisterSites": "姉妹サイト: <1>🚆 RailRouter SG</1> <3>🚖 TaxiRouter SG</3>",
-    "liking": "❤️ $t(app.name)?",
-    "treatCoffee": "☕ 仕事をサポートしてコーヒーをおごってください！",
-    "explore": "探索しましょう"
+    "liking": "❤️ $t(app.name)が好きですか？",
+    "treatCoffee": "☕️私の仕事をサポートし、私にコーヒーを扱ってください！",
+    "explore": "探検しましょう"
   },
   "search": {
     "placeholder": "バスサービスまたは停留所を検索"
@@ -46,20 +46,20 @@
   "service": {
     "title": "バス {{serviceNumber}}: {{serviceName}} - $t(app.name)",
     "titleMultiple": "バスサービス: ${serviceNumbersNames} - $t(app.name)",
-    "oppositeLegend": "反対方向のりばのりば"
+    "oppositeLegend": "バスはサービスの反対方向に停車します"
   },
   "stop": {
-    "title": "{{stopNumber}}: {{stopName}} - $t(app.name)",
-    "titleRoutes": "バス停を通過するルート {{stopNumber}}: {{stopName}} - $t(app.name)",
+    "title": "バス停 {{stopNumber}}： {{stopName}} - $t(app.name)",
+    "titleRoutes": "バス停渡しルート {{stopNumber}}： {{stopName}} - $t(app.name)",
     "firstLastBus": "最初/最後のバス",
-    "liveBusTrack_0": "{{count}} バスが軌道に乗っています。"
+    "liveBusTrack_0": "{{count}} 台のバスが軌道に乗っています。"
   },
   "passingRoutes": {
-    "passingRoutes_0": "{{count}} のルートを渡しています"
+    "passingRoutes_0": "{{count}} 通過ルート"
   },
   "multiRoute": {
     "addRoute": "別のバスルートを追加",
-    "showingServices_0": "{{count}} 件のサービスを表示",
+    "showingServices_0": "{{count}} サービスを表示",
     "intersectingStops_0": "{{count}} 交差停止"
   },
   "arrivals": {
