@@ -1,0 +1,77 @@
+{
+  "common": {
+    "cancel": "キャンセル",
+    "live": "ライブ"
+  },
+  "glossary": {
+    "busArrivals": "バス到着時",
+    "passingRoutes": "ルートを渡しています",
+    "popOut": "ポップアウト",
+    "seatsAvailable": "利用可能な席",
+    "standingAvailable": "利用可能な状態",
+    "limitedStanding": "限られたスタンド",
+    "arriving": "Arr",
+    "multiRouteMode": "マルチルートモード",
+    "weekdaysShort": "WD",
+    "weekdays": "Weekday",
+    "saturdaysShort": "SAT",
+    "saturdays": "土曜日",
+    "sundaysPublicHolidaysShort": "SUN",
+    "sundaysPublicHolidays": "日曜日と祝祭日",
+    "service": "サービス",
+    "firstBus": "最初のバス",
+    "lastBus": "最後のバス",
+    "arrivingMinutes_0": "{{count}}分",
+    "nRoutes_0": "{{count}} ルート",
+    "nStops_0": "{{count}} ストップ",
+    "nServices_0": "{{count}} サービス"
+  },
+  "app": {
+    "name": "BusRouter SG",
+    "title": "$t(app.name) - シンガポールバスルートエクスプローラー",
+    "shortDescription": "シンガポールバスのルートエクスプローラー",
+    "description": "シンガポールのすべてのバスサービスのバス停とルートを、リアルタイムのバス到着時間とバス停留所の通過経路の概要で探索してください。"
+  },
+  "about": {
+    "disclaimerCopyright": "<0>ビルト</0>と<2>ビジュアル化</2>by <4>@cheeaun</4>. Data <6>© LTA</6>.",
+    "helpTranslations": "翻訳のヘルプ",
+    "sisterSites": "姉妹サイト: <1>🚆 RailRouter SG</1> <3>🚖 TaxiRouter SG</3>",
+    "liking": "❤️ $t(app.name)?",
+    "treatCoffee": "☕ 仕事をサポートしてコーヒーをおごってください！",
+    "explore": "探索しましょう"
+  },
+  "search": {
+    "placeholder": "バスサービスまたは停留所を検索"
+  },
+  "service": {
+    "title": "バス {{serviceNumber}}: {{serviceName}} - $t(app.name)",
+    "titleMultiple": "バスサービス: ${serviceNumbersNames} - $t(app.name)",
+    "oppositeLegend": "反対方向のりばのりば"
+  },
+  "stop": {
+    "title": "{{stopNumber}}: {{stopName}} - $t(app.name)",
+    "titleRoutes": "バス停を通過するルート {{stopNumber}}: {{stopName}} - $t(app.name)",
+    "firstLastBus": "最初/最後のバス",
+    "liveBusTrack_0": "{{count}} バスが軌道に乗っています。"
+  },
+  "passingRoutes": {
+    "passingRoutes_0": "{{count}} のルートを渡しています"
+  },
+  "multiRoute": {
+    "addRoute": "別のバスルートを追加",
+    "showingServices_0": "{{count}} 件のサービスを表示",
+    "intersectingStops_0": "{{count}} 交差停止"
+  },
+  "arrivals": {
+    "invalidBusStopCode": "無効なバス停止コードです。",
+    "preHeading": "バス到着時間",
+    "title": "バス到着時間",
+    "titleStop": "{{stopNumber}} - {{stopName}} のバス到着時間",
+    "wheelchairDisclaimer": "<0/>収益サービスのすべての公共バスは<2>車椅子でアクセス可能</2>です。アクセスできない公共バスには<4/>アイコンが表示されます。"
+  },
+  "firstLast": {
+    "title": "{{stopNumber}}: {{stopName}} のおおよその最初と最後のバス到着時間",
+    "busStopCodeNotFound": "バス停コードが見つかりません。",
+    "preHeading": "おおよその最初と最後のバス到着時間"
+  }
+}
