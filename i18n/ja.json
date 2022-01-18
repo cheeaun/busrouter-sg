@@ -5,10 +5,10 @@
   },
   "glossary": {
     "busArrivals": "バス到着時",
-    "passingRoutes": "ルートを渡しています",
+    "passingRoutes": "通過ルート",
     "popOut": "ポップアウト",
-    "seatsAvailable": "利用可能な席",
-    "standingAvailable": "利用可能な状態",
+    "seatsAvailable": "空席あり",
+    "standingAvailable": "立って利用可能",
     "limitedStanding": "限られたスタンド",
     "arriving": "Arr",
     "multiRouteMode": "マルチルートモード",
