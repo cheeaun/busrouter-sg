@@ -33,7 +33,7 @@
     "description": "シンガポールのすべてのバスサービスのバス停とルートを、リアルタイムのバス到着時間とバス停留所の通過経路の概要で探索してください。"
   },
   "about": {
-    "disclaimerCopyright": "<0>ビルト</0>と<2>ビジュアル化</2>by <4>@cheeaun</4>. Data <6>© LTA</6>.",
+    "disclaimerCopyright": "<0>構築</0>＆<2>視覚化</2><4> @cheeaun</4> 。データ<6>©LTA</6> 。",
     "helpTranslations": "翻訳のヘルプ",
     "sisterSites": "姉妹サイト: <1>🚆 RailRouter SG</1> <3>🚖 TaxiRouter SG</3>",
     "liking": "❤️ $t(app.name)?",
