@@ -1378,7 +1378,7 @@ const App = () => {
       return { zh: 'zh-Hans' }[i18n.resolvedLanguage] || i18n.resolvedLanguage;
     };
     const language = new MapboxLanguage({
-      supportedLanguages: ['en', 'zh-Hans', 'ms', 'ta'],
+      supportedLanguages: ['en', 'zh-Hans', 'ms', 'ta', 'ja'],
       defaultLanguage: mapLang(),
     });
     map.addControl(language);

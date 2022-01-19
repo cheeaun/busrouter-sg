@@ -23,6 +23,9 @@ export default function LocaleSelector() {
         <option value="ta" lang="ta">
           தமிழ்
         </option>
+        <option value="ja" lang="ja">
+          日本語
+        </option>
       </select>{' '}
       <a
         href="https://github.com/cheeaun/busrouter-sg/discussions/54"

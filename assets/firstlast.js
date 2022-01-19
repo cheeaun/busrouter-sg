@@ -18,11 +18,12 @@ const firstLastJSONPath = dataPath + 'firstlast.min.json';
 const stopsJSONPath = dataPath + 'stops.min.json';
 
 // TODO: add locales when it's supported
-import { zhCN, ms, ta } from 'date-fns/locale';
+import { zhCN, ms, ta, ja } from 'date-fns/locale';
 const dateLocales = {
   zh: zhCN,
   ms,
   ta,
+  ja,
 };
 
 const timeStrToDate = (time) => {
