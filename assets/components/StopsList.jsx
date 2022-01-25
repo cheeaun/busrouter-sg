@@ -365,62 +365,74 @@ export default function StopsList(props) {
             const isEdgeRows =
               (index === 0 || index === stopGrid.length - 1) && s1 === s2;
             return (
-              <tr class={isEdgeRows ? 'edge' : ''}>
-                {isEdgeRows ? (
-                  <td
-                    class={`stop-${
-                      s1 === '~~~' ? 'u' : index === 0 ? 'start' : 'end'
-                    } ${loopRoute ? 'loop' : ''}`}
-                    colspan="3"
-                  >
-                    {s1 !== '~~~' && <StopLink stop={s1} />}
-                  </td>
-                ) : (
-                  <>
-                    {s1 ? (
-                      s1 !== '___' && (
-                        <td
-                          class={`${col1IsEmpty ? '' : 'stop'} ${
-                            col1FirstStop ? 'first' : ''
-                          } ${col1LastStop ? 'last' : ''}`}
-                          rowspan={
-                            isOpposite ||
-                            index === stopGrid.length - 1 ||
-                            index === 0
-                              ? 1
-                              : rowSpaner(stopGrid, 0, s1)
-                          }
-                        >
-                          <StopLink stop={s1} />
-                        </td>
-                      )
-                    ) : (
-                      <td class={col1IsEmpty ? '' : 'empty'} />
-                    )}
-                    <td class={isOpposite ? 'opposite' : ''} />
-                    {s2 ? (
-                      s2 !== '___' && (
-                        <td
-                          class={`${col2IsEmpty ? '' : 'stop'} ${
-                            col2FirstStop ? 'first' : ''
-                          } ${col2LastStop ? 'last' : ''}`}
-                          rowspan={
-                            isOpposite ||
-                            index === stopGrid.length - 1 ||
-                            index === 0
-                              ? 1
-                              : rowSpaner(stopGrid, 1, s2)
-                          }
-                        >
-                          <StopLink stop={s2} />
-                        </td>
-                      )
-                    ) : (
-                      <td class={col2IsEmpty ? '' : 'empty'} />
-                    )}
-                  </>
+              <>
+                {/*
+                  Safari needs this empty row
+                  Else the table will break for A->B,C->D routes
+                  Which means tables without this td[colspan=3]
+                */}
+                {index === 0 && (
+                  <tr>
+                    <td colspan="3"></td>
+                  </tr>
                 )}
-              </tr>
+                <tr class={isEdgeRows ? 'edge' : ''}>
+                  {isEdgeRows ? (
+                    <td
+                      class={`stop-${
+                        s1 === '~~~' ? 'u' : index === 0 ? 'start' : 'end'
+                      } ${loopRoute ? 'loop' : ''}`}
+                      colspan="3"
+                    >
+                      {s1 !== '~~~' && <StopLink stop={s1} />}
+                    </td>
+                  ) : (
+                    <>
+                      {s1 ? (
+                        s1 !== '___' && (
+                          <td
+                            class={`${col1IsEmpty ? '' : 'stop'} ${
+                              col1FirstStop ? 'first' : ''
+                            } ${col1LastStop ? 'last' : ''}`}
+                            rowspan={
+                              isOpposite ||
+                              index === stopGrid.length - 1 ||
+                              index === 0
+                                ? 1
+                                : rowSpaner(stopGrid, 0, s1)
+                            }
+                          >
+                            <StopLink stop={s1} />
+                          </td>
+                        )
+                      ) : (
+                        <td class={col1IsEmpty ? '' : 'empty'} />
+                      )}
+                      <td class={isOpposite ? 'opposite' : ''} />
+                      {s2 ? (
+                        s2 !== '___' && (
+                          <td
+                            class={`${col2IsEmpty ? '' : 'stop'} ${
+                              col2FirstStop ? 'first' : ''
+                            } ${col2LastStop ? 'last' : ''}`}
+                            rowspan={
+                              isOpposite ||
+                              index === stopGrid.length - 1 ||
+                              index === 0
+                                ? 1
+                                : rowSpaner(stopGrid, 1, s2)
+                            }
+                          >
+                            <StopLink stop={s2} />
+                          </td>
+                        )
+                      ) : (
+                        <td class={col2IsEmpty ? '' : 'empty'} />
+                      )}
+                    </>
+                  )}
+                </tr>
+              </>
             );
           },
         )}
