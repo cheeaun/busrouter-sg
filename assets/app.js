@@ -813,16 +813,52 @@ const App = () => {
 
           // Show routes
           requestAnimationFrame(() => {
+            const { name: serviceName } = servicesData[service];
+            const isLoop = serviceName.includes('⟲');
+
             const routes = routesData[service];
             const geometries = routes.map((route) => toGeoJSON(route));
-            map.getSource('routes').setData({
-              type: 'FeatureCollection',
-              features: geometries.map((geometry) => ({
-                type: 'Feature',
-                properties: {},
-                geometry,
-              })),
-            });
+
+            if (isLoop) {
+              const newGeometries = [geometries[0], geometries[0]];
+              const splittedNewGeometries = newGeometries.map(
+                ({ type, coordinates }, index) =>
+                  !index
+                    ? {
+                        type,
+                        coordinates: coordinates.slice(
+                          0,
+                          coordinates.length / 2 + 1,
+                        ),
+                      }
+                    : {
+                        type,
+                        coordinates: coordinates.slice(coordinates.length / 2),
+                      },
+              );
+
+              map.getSource('routes').setData({
+                type: 'FeatureCollection',
+                features: splittedNewGeometries.map((geometry, direction) => ({
+                  type: 'Feature',
+                  properties: {
+                    direction,
+                  },
+                  geometry,
+                })),
+              });
+            } else {
+              map.getSource('routes').setData({
+                type: 'FeatureCollection',
+                features: geometries.map((geometry, direction) => ({
+                  type: 'Feature',
+                  properties: {
+                    direction,
+                  },
+                  geometry,
+                })),
+              });
+            }
           });
         } else {
           const serviceNumbersNames = services
@@ -1845,17 +1881,14 @@ const App = () => {
           'line-cap': 'round',
         },
         paint: {
-          'line-color': '#f01b48',
-          'line-gradient': [
-            'interpolate',
-            ['linear'],
-            ['line-progress'],
+          'line-color': [
+            'match',
+            ['get', 'direction'],
             0,
             '#f01b48',
-            0.5,
-            '#972FFE',
             1,
-            '#f01b48',
+            '#05A8AA',
+            '#000000',
           ],
           'line-opacity': [
             'interpolate',
