@@ -18,7 +18,7 @@ import getRoute from './utils/getRoute';
 import getDistance from './utils/getDistance';
 import getWalkingMinutes from './utils/getWalkingMinutes';
 import usePrevious from './utils/usePrevious';
-import { findLoopHalfpoint } from './utils/routesCalculation';
+import { getGeometriesForLoop } from './utils/routesCalculation';
 
 import Ad from './ad';
 import About from './components/About';
@@ -814,103 +814,27 @@ const App = () => {
 
           // Show routes
           requestAnimationFrame(() => {
+            const routes = routesData[service];
+            const geometries = routes.map((route) => toGeoJSON(route));
+
             const { name: serviceName, routes: serviceStops } =
               servicesData[service];
             const isLoop = serviceName.includes('⟲');
 
-            const routes = routesData[service];
-            const geometries = routes.map((route) => toGeoJSON(route));
+            const geometriesToBeMapped = isLoop
+              ? getGeometriesForLoop(serviceStops, geometries, stopsData, ruler)
+              : geometries;
 
-            if (isLoop) {
-              const loopStops = serviceStops[0];
-              const loopGeometries = geometries[0];
-
-              const [half, hasMidStop] = findLoopHalfpoint(
-                loopStops,
-                loopStops.length,
-              );
-
-              let midStopCoordinate;
-              if (hasMidStop) {
-                const midStop = loopStops[half];
-
-                midStopCoordinate = stopsData[midStop].coordinates;
-              } else {
-                const lastStopOfFirstHalfOfLoop = loopStops[half - 1];
-                const firstStopOfSecondHalfOfLoop = loopStops[half];
-
-                const lastStopFirstHalfCoordinates =
-                  stopsData[lastStopOfFirstHalfOfLoop].coordinates;
-                const firstStopSecondHalfCoordinates =
-                  stopsData[firstStopOfSecondHalfOfLoop].coordinates;
-
-                const middleSegment = ruler.lineSlice(
-                  lastStopFirstHalfCoordinates,
-                  firstStopSecondHalfCoordinates,
-                  loopGeometries.coordinates,
-                );
-
-                const middleSegmentLength = ruler.lineDistance(middleSegment);
-
-                midStopCoordinate = ruler.along(
-                  middleSegment,
-                  middleSegmentLength / 2,
-                );
-              }
-
-              const {
-                point: interpolatedCoordinate,
-                index: interpolationSegmentIndex,
-              } = ruler.pointOnLine(
-                loopGeometries.coordinates,
-                midStopCoordinate,
-              );
-
-              const newGeometries = [loopGeometries, loopGeometries];
-              const splittedNewGeometries = newGeometries.map(
-                ({ type, coordinates }, index) =>
-                  !index
-                    ? {
-                        type,
-                        coordinates: [
-                          ...coordinates.slice(
-                            0,
-                            interpolationSegmentIndex + 1,
-                          ),
-                          interpolatedCoordinate,
-                        ],
-                      }
-                    : {
-                        type,
-                        coordinates: [
-                          interpolatedCoordinate,
-                          ...coordinates.slice(interpolationSegmentIndex + 1),
-                        ],
-                      },
-              );
-
-              map.getSource('routes').setData({
-                type: 'FeatureCollection',
-                features: splittedNewGeometries.map((geometry, direction) => ({
-                  type: 'Feature',
-                  properties: {
-                    direction,
-                  },
-                  geometry,
-                })),
-              });
-            } else {
-              map.getSource('routes').setData({
-                type: 'FeatureCollection',
-                features: geometries.map((geometry, direction) => ({
-                  type: 'Feature',
-                  properties: {
-                    direction,
-                  },
-                  geometry,
-                })),
-              });
-            }
+            map.getSource('routes').setData({
+              type: 'FeatureCollection',
+              features: geometriesToBeMapped.map((geometry, direction) => ({
+                type: 'Feature',
+                properties: {
+                  direction,
+                },
+                geometry,
+              })),
+            });
           });
         } else {
           const serviceNumbersNames = services

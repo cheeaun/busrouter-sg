@@ -14,7 +14,7 @@ function areOpposite(stop1, stop2) {
   return stop1 !== stop2 && stop1 === getOpposite(stop2);
 }
 
-export const findLoopHalfpoint = (route1, route1Len) => {
+const findLoopHalfpoint = (route1, route1Len) => {
   let half;
   let hasMidStop = false;
 
@@ -256,4 +256,66 @@ export const getStopGridForNormalOrLoopRoute = (
   }
 
   return stopGrid;
+};
+
+export const getGeometriesForLoop = (
+  serviceStops,
+  geometries,
+  stopsData,
+  ruler,
+) => {
+  const loopStops = serviceStops[0];
+  const loopGeometries = geometries[0];
+
+  const [half, hasMidStop] = findLoopHalfpoint(loopStops, loopStops.length);
+
+  let midStopCoordinate;
+  if (hasMidStop) {
+    const midStop = loopStops[half];
+
+    midStopCoordinate = stopsData[midStop].coordinates;
+  } else {
+    const lastStopOfFirstHalfOfLoop = loopStops[half - 1];
+    const firstStopOfSecondHalfOfLoop = loopStops[half];
+
+    const lastStopFirstHalfCoordinates =
+      stopsData[lastStopOfFirstHalfOfLoop].coordinates;
+    const firstStopSecondHalfCoordinates =
+      stopsData[firstStopOfSecondHalfOfLoop].coordinates;
+
+    const middleSegment = ruler.lineSlice(
+      lastStopFirstHalfCoordinates,
+      firstStopSecondHalfCoordinates,
+      loopGeometries.coordinates,
+    );
+
+    const middleSegmentLength = ruler.lineDistance(middleSegment);
+
+    midStopCoordinate = ruler.along(middleSegment, middleSegmentLength / 2);
+  }
+
+  const { point: interpolatedCoordinate, index: interpolationSegmentIndex } =
+    ruler.pointOnLine(loopGeometries.coordinates, midStopCoordinate);
+
+  const newGeometries = [loopGeometries, loopGeometries];
+  const splittedNewGeometries = newGeometries.map(
+    ({ type, coordinates }, index) =>
+      !index
+        ? {
+            type,
+            coordinates: [
+              ...coordinates.slice(0, interpolationSegmentIndex + 1),
+              interpolatedCoordinate,
+            ],
+          }
+        : {
+            type,
+            coordinates: [
+              interpolatedCoordinate,
+              ...coordinates.slice(interpolationSegmentIndex + 1),
+            ],
+          },
+  );
+
+  return splittedNewGeometries;
 };
