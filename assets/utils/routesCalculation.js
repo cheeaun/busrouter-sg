@@ -23,8 +23,6 @@ export const findLoopHalfpoint = (route1, route1Len) => {
     const stop = route1[i];
     // console.log(i, j, route1, 1, stop);
 
-    console.log({ stop });
-
     if (isOpposite(stop)) {
       // WEIRD CASE: the route has duplicate stops!
       // Don't check first item because last item is its duplicate in loop route
