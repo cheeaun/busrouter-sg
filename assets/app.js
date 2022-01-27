@@ -538,13 +538,22 @@ const App = () => {
     previewRAF = requestAnimationFrame(() => {
       const routes = routesData[service];
       const geometries = routes.map((route) => toGeoJSON(route));
+
+      const { name: serviceName, routes: serviceStops } = servicesData[service];
+      const isLoop = serviceName.includes('⟲');
+
+      const geometriesToBeMapped = isLoop
+        ? getGeometriesForLoop(serviceStops, geometries, stopsData, ruler)
+        : geometries;
+
       map.getSource('routes-path').setData({
         type: 'FeatureCollection',
-        features: geometries.map((geometry) => ({
+        features: geometriesToBeMapped.map((geometry, direction) => ({
           type: 'Feature',
           id: encode(service),
           properties: {
             service,
+            direction,
           },
           geometry,
         })),
@@ -852,23 +861,40 @@ const App = () => {
           let endStops = [];
           let serviceGeometries = [];
           services.forEach((service) => {
-            const { routes } = servicesData[service];
-            endStops.push(routes[0][0], routes[0][routes[0].length - 1]);
-            if (routes[1]) {
-              endStops.push(routes[1][0], routes[1][routes[1].length - 1]);
-            }
-            const allRoutes = [...routes[0], ...(routes[1] || [])].filter(
-              (el, pos, arr) => {
-                return arr.indexOf(el) === pos;
-              },
+            const { name: serviceName, routes: serviceStops } =
+              servicesData[service];
+            endStops.push(
+              serviceStops[0][0],
+              serviceStops[0][serviceStops[0].length - 1],
             );
+            if (serviceStops[1]) {
+              endStops.push(
+                serviceStops[1][0],
+                serviceStops[1][serviceStops[1].length - 1],
+              );
+            }
+            const allRoutes = [
+              ...serviceStops[0],
+              ...(serviceStops[1] || []),
+            ].filter((el, pos, arr) => {
+              return arr.indexOf(el) === pos;
+            });
             routeStops = routeStops.concat(allRoutes);
 
-            const routeGeometries = routesData[service];
+            const routes = routesData[service];
+            const geometries = routes.map((route) => toGeoJSON(route));
+
+            const isLoop = serviceName.includes('⟲');
+
+            const routeGeometries = isLoop
+              ? getGeometriesForLoop(serviceStops, geometries, stopsData, ruler)
+              : geometries;
+
             serviceGeometries = serviceGeometries.concat(
-              routeGeometries.map((r) => ({
+              routeGeometries.map((geometry, direction) => ({
                 service,
-                geometry: toGeoJSON(r),
+                geometry,
+                direction,
               })),
             );
           });
@@ -944,14 +970,17 @@ const App = () => {
           requestAnimationFrame(() => {
             map.getSource('routes-path').setData({
               type: 'FeatureCollection',
-              features: serviceGeometries.map((sg) => ({
-                type: 'Feature',
-                id: encode(sg.service),
-                properties: {
-                  service: sg.service,
-                },
-                geometry: sg.geometry,
-              })),
+              features: serviceGeometries.map(
+                ({ service, geometry, direction }) => ({
+                  type: 'Feature',
+                  id: encode(service),
+                  properties: {
+                    service,
+                    direction,
+                  },
+                  geometry,
+                }),
+              ),
             });
             STORE.routesPathServices = serviceGeometries.map(
               (sg) => sg.service,
@@ -1046,26 +1075,44 @@ const App = () => {
 
           // Show all routes
           requestAnimationFrame(() => {
-            const serviceGeometries = routes.map((route) => {
-              const [service, index] = route.split('-');
-              const line = routesData[service][index];
-              const geometry = toGeoJSON(line);
-              return {
+            const serviceGeometries = routes.flatMap((passingRoute) => {
+              const [service, index] = passingRoute.split('-');
+              const route = routesData[service][index];
+              const geometry = toGeoJSON(route);
+
+              const { name: serviceName, routes: serviceStops } =
+                servicesData[service];
+              const isLoop = serviceName.includes('⟲');
+
+              const routeGeometries = isLoop
+                ? getGeometriesForLoop(
+                    serviceStops,
+                    [geometry],
+                    stopsData,
+                    ruler,
+                  )
+                : [geometry];
+
+              return routeGeometries.map((routeGeometry, directionIndex) => ({
                 service,
-                geometry,
-              };
+                geometry: routeGeometry,
+                direction: isLoop ? directionIndex : parseInt(index),
+              }));
             });
 
             map.getSource('routes-path').setData({
               type: 'FeatureCollection',
-              features: serviceGeometries.map((sg, i) => ({
-                type: 'Feature',
-                id: encode(sg.service),
-                properties: {
-                  service: sg.service,
-                },
-                geometry: sg.geometry,
-              })),
+              features: serviceGeometries.map(
+                ({ service, geometry, direction }) => ({
+                  type: 'Feature',
+                  id: encode(service),
+                  properties: {
+                    service,
+                    direction,
+                  },
+                  geometry,
+                }),
+              ),
             });
             STORE.routesPathServices = serviceGeometries.map(
               (sg) => sg.service,
@@ -1989,17 +2036,14 @@ const App = () => {
           'line-cap': 'round',
         },
         paint: {
-          'line-color': '#f01b48',
-          'line-gradient': [
-            'interpolate',
-            ['linear'],
-            ['line-progress'],
+          'line-color': [
+            'match',
+            ['get', 'direction'],
             0,
             '#f01b48',
-            0.5,
-            '#972FFE',
             1,
-            '#f01b48',
+            '#05A8AA',
+            '#000000',
           ],
           'line-opacity': [
             'case',
