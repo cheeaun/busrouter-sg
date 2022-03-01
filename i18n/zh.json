@@ -1,7 +1,7 @@
 {
   "common": {
     "cancel": "取消",
-    "live": "居住"
+    "live": "实时"
   },
   "glossary": {
     "busArrivals": "巴士抵达",
@@ -9,7 +9,7 @@
     "popOut": "弹出",
     "seatsAvailable": "可坐",
     "standingAvailable": "可站",
-    "limitedStanding": "擁擠",
+    "limitedStanding": "拥挤",
     "arriving": "到达",
     "multiRouteMode": "多路由模式",
     "weekdaysShort": "WD",
@@ -41,7 +41,7 @@
     "explore": "让我们探索一下"
   },
   "search": {
-    "placeholder": "搜索巴士服务或停止"
+    "placeholder": "搜索巴士服务或停靠站"
   },
   "service": {
     "title": "巴士服务 {{serviceNumber}}: {{serviceName}} - $t(app.name)",
