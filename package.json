@@ -59,7 +59,7 @@
     "react": "preact/compat"
   },
   "engines": {
-    "node": ">=14.10"
+    "node": ">=16"
   },
   "browserslist": [
     ">0.25%",
