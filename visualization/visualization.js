@@ -1,3 +1,4 @@
+import mapboxgl from 'mapbox-gl';
 import MapboxLayer from '@deck.gl/mapbox/dist/esm/mapbox-layer';
 import SolidPolygonLayer from '@deck.gl/layers/dist/esm/solid-polygon-layer/solid-polygon-layer';
 import PathLayer from '@deck.gl/layers/dist/esm/path-layer/path-layer';

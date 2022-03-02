@@ -1,3 +1,4 @@
+import mapboxgl from 'mapbox-gl';
 import checkGeolocationSupport from '../utils/checkGeolocationSupport';
 import compassHeading from '../utils/compassHeading';
 
@@ -14,7 +15,7 @@ export default class GeolocateControl {
         offset: [0, 0],
         onClick: () => {},
       },
-      options
+      options,
     );
   }
   onAdd(map) {
@@ -96,7 +97,7 @@ export default class GeolocateControl {
             offset,
             animate: false,
           },
-          eventData
+          eventData,
         );
       } else {
         map.flyTo(
@@ -107,7 +108,7 @@ export default class GeolocateControl {
             duration: 2000,
             offset,
           },
-          eventData
+          eventData,
         );
       }
     } else {
@@ -119,7 +120,7 @@ export default class GeolocateControl {
           offset,
           animate: false,
         },
-        eventData
+        eventData,
       );
     }
   };
@@ -133,7 +134,7 @@ export default class GeolocateControl {
       compassHeading(e.alpha, e.beta, e.gamma);
     // -60deg rotateX is for *tilting* the compass "box" to look like a trapezoid
     this._compass.style.transform = `rotate(${Math.round(
-      heading
+      heading,
     )}deg) rotateX(-60deg)`;
   };
   _clickButton = (e, locking = true) => {
@@ -195,7 +196,7 @@ export default class GeolocateControl {
           if (e.code === 1) {
             // PERMISSION_DENIED
             alert(
-              'Looks like location tracking is blocked on your browser. Please enable it in the settings to use this feature.'
+              'Looks like location tracking is blocked on your browser. Please enable it in the settings to use this feature.',
             );
           } else {
             // Retry again
@@ -206,7 +207,7 @@ export default class GeolocateControl {
           enableHighAccuracy: true,
           timeout: 60 * 1000, // 1min
           maximumAge: 1000, // 1s
-        }
+        },
       );
 
       if (window.DeviceOrientationEvent) {

@@ -3,6 +3,7 @@ import './error-tracking';
 
 import { h, render, Fragment } from 'preact';
 import { useState, useRef, useEffect, useMemo } from 'preact/hooks';
+import mapboxgl from 'mapbox-gl';
 import { toGeoJSON } from '@mapbox/polyline';
 import Fuse from 'fuse.js';
 import intersect from 'just-intersect';
