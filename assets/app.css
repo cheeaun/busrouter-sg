@@ -1,4 +1,4 @@
-@import 'https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css';
+@import 'npm:mapbox-gl/dist/mapbox-gl.css';
 
 html,
 body {
@@ -700,6 +700,7 @@ a:active {
   padding: 0 0 60px;
   list-style: none;
   overflow: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
 .popover-list.loading {
