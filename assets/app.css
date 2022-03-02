@@ -700,6 +700,7 @@ a:active {
   padding: 0 0 60px;
   list-style: none;
   overflow: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
 .popover-list.loading {
