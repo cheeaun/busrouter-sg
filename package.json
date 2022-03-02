@@ -35,7 +35,6 @@
     "workbox-strategies": "~6.5.0"
   },
   "devDependencies": {
-    "@babel/core": "~7.17.5",
     "@babel/plugin-transform-react-jsx": "~7.17.3",
     "@mapbox/polyline": "~1.1.1",
     "@parcel/babel-plugin-transform-runtime": "~2.3.2",
@@ -49,8 +48,8 @@
     "@turf/simplify": "~6.5.0",
     "autoprefixer": "~10.4.2",
     "babel-plugin-transform-remove-console": "~6.9.4",
-    "cpy-cli": "~4.0.0",
-    "got": "~12.0.1",
+    "cpy-cli": "3.1.1",
+    "got": "11.8.3",
     "netlify-plugin-ttl-cache": "~1.0.2",
     "parcel": "~2.3.2",
     "process": "^0.11.10"
@@ -59,7 +58,7 @@
     "react": "preact/compat"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=14.10"
   },
   "browserslist": [
     ">0.25%",
