@@ -59,7 +59,8 @@
     "react": "preact/compat"
   },
   "engines": {
-    "node": ">=14.10"
+    "node": "14.10",
+    "npm": "6.14"
   },
   "browserslist": [
     ">0.25%",
@@ -69,5 +70,9 @@
     "not op_mini all",
     "not Android > 1",
     "not safari < 10"
-  ]
+  ],
+  "volta": {
+    "node": "14.10.1",
+    "npm": "6.14.16"
+  }
 }
