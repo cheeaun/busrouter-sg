@@ -833,7 +833,7 @@ const App = () => {
             })
             .join(', ');
           setHead({
-            title: ['service.title', { serviceNumbersNames }],
+            title: ['service.titleMultiple', { serviceNumbersNames }],
             url: `/services/${services.join('~')}`,
           });
 
