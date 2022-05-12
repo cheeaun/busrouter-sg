@@ -49,7 +49,7 @@
   },
   "service": {
     "title": "Bus service {{serviceNumber}}: {{serviceName}} - $t(app.name)",
-    "titleMultiple": "Bus services: ${serviceNumbersNames} - $t(app.name)",
+    "titleMultiple": "Bus services: {{serviceNumbersNames}} - $t(app.name)",
     "oppositeLegend": "Bus stops with opposite direction of services"
   },
   "stop": {
