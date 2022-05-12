@@ -49,7 +49,7 @@
   },
   "service": {
     "title": "பேருந்து சேவை {{serviceNumber}}: {{serviceName}} - $t(app.name)",
-    "titleMultiple": "பேருந்து சேவைகள்: {{serviceNumbersNames}} - $t(app.name)",
+    "titleMultiple": "Bus services: {{serviceNumbersNames}} - $t(app.name)",
     "oppositeLegend": "பேருந்துகள் எதிர் திசையில் சேவைகளுடன் நிற்கின்றன"
   },
   "stop": {
