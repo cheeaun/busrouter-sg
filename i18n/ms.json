@@ -45,7 +45,7 @@
   },
   "service": {
     "title": "Perkhidmatan bas {{serviceNumber}}: {{serviceName}} - $t(app.name)",
-    "titleMultiple": "Perkhidmatan bas: {{serviceNumbersNames}} - $t(app.name)",
+    "titleMultiple": "Bus services: {{serviceNumbersNames}} - $t(app.name)",
     "oppositeLegend": "Perhentian bas dengan arah perkhidmatan yang bertentangan"
   },
   "stop": {
