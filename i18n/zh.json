@@ -45,7 +45,7 @@
   },
   "service": {
     "title": "巴士服务 {{serviceNumber}}: {{serviceName}} - $t(app.name)",
-    "titleMultiple": "巴士服务： {{serviceNumbersNames}} - $t(app.name)",
+    "titleMultiple": "Bus services: {{serviceNumbersNames}} - $t(app.name)",
     "oppositeLegend": "与服务方向相反的巴士站"
   },
   "stop": {
