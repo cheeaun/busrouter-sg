@@ -101,7 +101,7 @@ const isSameBuses = (b1, b2) =>
 function BusLane({ no, buses }) {
   const prevNo = useRef();
   const prevBuses = useRef();
-  const nextBuses = buses.filter((nb) => typeof nb.duration_ms === 'number');
+  const nextBuses = buses.filter((nb) => typeof nb?.duration_ms === 'number');
 
   if (prevNo.current === no && !isSameBuses(prevBuses.current, nextBuses)) {
     nextBuses.forEach((nb) => {
