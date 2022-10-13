@@ -4,7 +4,7 @@
     "live": "实时"
   },
   "glossary": {
-    "busArrivals": "巴士抵达",
+    "busArrivals": "巴士抵达时间",
     "passingRoutes": "公交路线图",
     "popOut": "弹出",
     "seatsAvailable": "可坐",
@@ -18,7 +18,7 @@
     "saturdays": "星期六",
     "sundaysPublicHolidaysShort": "SUN",
     "sundaysPublicHolidays": "星期日及公众假期",
-    "service": "服务",
+    "service": "营运",
     "firstBus": "第一班车",
     "lastBus": "末班车",
     "arrivingMinutes_0": "{{count}}分钟",
