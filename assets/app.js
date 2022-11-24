@@ -2855,7 +2855,7 @@ const App = () => {
                   href={`/bus-arrival/#${stopPopoverData.number}`}
                   target="_blank"
                   onClick={openBusArrival}
-                  class="popover-button"
+                  class="popover-button primary"
                 >
                   {t('glossary.busArrivals')}{' '}
                   <img

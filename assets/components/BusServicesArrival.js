@@ -77,7 +77,10 @@ export default function BusServicesArrival({
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [servicesArrivals, setServicesArrivals] = useState({});
+  const [servicesIssues, setServicesIssues] = useState([]);
   const [liveBusCount, setLiveBusCount] = useState(0);
+  const [oneServiceHasMultipleDirections, setOneServiceHasMultipleDirections] =
+    useState(false);
   const route = getRoute();
 
   let controller;
@@ -92,12 +95,38 @@ export default function BusServicesArrival({
       .then((results) => {
         const servicesArrivals = {};
         const { services } = results;
-        services.forEach(
-          (service) =>
-            (servicesArrivals[service.no] = service.next.duration_ms),
-        );
+        services.forEach((service) => {
+          if (
+            !servicesArrivals[service.no] ||
+            servicesArrivals[service.no] > service.next.duration_ms // if there is a service with multiple directions, we only want the one with the shortest duration
+          ) {
+            servicesArrivals[service.no] = service.next.duration_ms;
+          }
+        });
         setServicesArrivals(servicesArrivals);
         setIsLoading(false);
+
+        // check for issues (duplicate services, multiple visits)
+        const servicesWithIssues = [];
+        services.forEach((service, i) => {
+          const hasDuplicateServices =
+            services.findIndex((s) => s.no === service.no) !== i;
+          if (hasDuplicateServices) {
+            servicesWithIssues.push(service.no);
+          }
+          const { next, next2, next3 } = service;
+          const hasMultipleVisits =
+            next?.visit_number > 1 ||
+            next2?.visit_number > 1 ||
+            next3?.visit_number > 1;
+          if (hasMultipleVisits) {
+            servicesWithIssues.push(service.no);
+          }
+        });
+        setServicesIssues(servicesWithIssues);
+
+        const hasIssues = servicesWithIssues.length > 0;
+        setOneServiceHasMultipleDirections(hasIssues);
 
         if (showBusesOnMap) {
           setupBusesStopLayerOnce(map);
@@ -224,6 +253,7 @@ export default function BusServicesArrival({
               }`}
             >
               {service}
+              {servicesIssues.includes(service) && ' ⚠️'}
               {servicesArrivals[service] && (
                 <span>
                   <ArrivalTimeText ms={servicesArrivals[service]} />
@@ -233,6 +263,11 @@ export default function BusServicesArrival({
           </>
         ))}
       </p>
+      {oneServiceHasMultipleDirections && (
+        <div class="callout warning iconic">
+          {t('stop.multipleDirectionsWarning')}
+        </div>
+      )}
       {showBusesOnMap && liveBusCount > 0 && (
         <p style={{ marginTop: 5, fontSize: '.8em' }}>
           <span class="live">{t('common.live')}</span>{' '}
