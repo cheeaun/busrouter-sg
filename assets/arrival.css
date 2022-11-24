@@ -380,6 +380,10 @@ footer {
   table {
     float: right;
   }
+  .legend {
+    clear: both;
+    width: 50%;
+  }
 }
 
 .bus-lane-cell {
