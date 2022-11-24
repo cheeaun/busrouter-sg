@@ -52,6 +52,7 @@
     "title": "巴士站 {{stopNumber}}: {{stopName}} - $t(app.name)",
     "titleRoutes": "通过巴士站 {{stopNumber}}: {{stopName}} - $t(app.name)",
     "firstLastBus": "首班车/末班车",
+    "multipleDirectionsWarning": "Some services serve multiple directions. Open \"Bus arrivals\" to see more details.",
     "liveBusTrack_0": "{{count}} 辆公共汽车在轨道上。"
   },
   "passingRoutes": {
@@ -67,6 +68,7 @@
     "preHeading": "巴士到达时间",
     "title": "巴士到达时间",
     "titleStop": "巴士到达时间为 {{stopNumber}} - {{stopName}}",
+    "multipleVisitsLegend": "1st or 2nd visit. Bus stops here twice, going in different directions. Check destination before boarding.",
     "wheelchairDisclaimer": "<0/> 所有提供收入服务的公共巴士都<2>可供轮椅通行</2>.不可访问的将标有此图标 <4/>"
   },
   "firstLast": {
