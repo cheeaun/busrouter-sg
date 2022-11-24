@@ -52,6 +52,7 @@
     "title": "バス停 {{stopNumber}}： {{stopName}} - $t(app.name)",
     "titleRoutes": "バス停渡しルート {{stopNumber}}： {{stopName}} - $t(app.name)",
     "firstLastBus": "最初/最後のバス",
+    "multipleDirectionsWarning": "Some services serve multiple directions. Open \"Bus arrivals\" to see more details.",
     "liveBusTrack_0": "{{count}} 台のバスが軌道に乗っています。"
   },
   "passingRoutes": {
@@ -67,6 +68,7 @@
     "preHeading": "バス到着時間",
     "title": "バス到着時間",
     "titleStop": "{{stopNumber}} - {{stopName}} のバス到着時間",
+    "multipleVisitsLegend": "1st or 2nd visit. Bus stops here twice, going in different directions. Check destination before boarding.",
     "wheelchairDisclaimer": "<0/>収益サービスのすべての公共バスは<2>車椅子でアクセス可能</2>です。アクセスできない公共バスには<4/>アイコンが表示されます。"
   },
   "firstLast": {
