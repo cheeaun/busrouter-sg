@@ -212,7 +212,7 @@ const App = () => {
   };
 
   const handleServicesScroll = () => {
-    if (expandSearch) return;
+    if (expandSearch || expandedSearchOnce) return;
     setExpandSearch(true);
     setExpandedSearchOnce(true);
     // $map.classList.add('fade-out');
