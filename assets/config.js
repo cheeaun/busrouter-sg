@@ -1,2 +1,4 @@
 export const MAPBOX_ACCESS_TOKEN =
   'pk.eyJ1IjoiY2hlZWF1biIsImEiOiJjam9weHRuMW4xdXczM3FteTR1OGt3OWxhIn0.I9fgZVxvN_wSJb8soniwpQ';
+export const ARCGIS_API_KEY =
+  'AAPKabd75694252a4a1885ed1e9daf2c021bnzUEoNoYQafflN6M1AZWT0hk_dHkyPleyOdjBVDSwDoCnX01cNV39nTBWanJHXh-';
