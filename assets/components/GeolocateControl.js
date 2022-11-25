@@ -9,6 +9,7 @@ export default class GeolocateControl {
   _setup = false;
   _currentLocation = null;
   _buttonClicked = false;
+  _orientationGranted = false;
   constructor(options) {
     this.options = Object.assign(
       {
@@ -224,6 +225,19 @@ export default class GeolocateControl {
               : 'deviceorientation';
         }
         window.addEventListener(deviceorientation, this._setHeading, false);
+
+        if (!this._orientationGranted) {
+          if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission()
+              .then(function (permissionState) {
+                if (permissionState === 'granted') {
+                  this._orientationGranted = true;
+                  console.log('granted');
+                }
+              })
+              .catch((e) => {});
+          }
+        }
       }
     }
   };
