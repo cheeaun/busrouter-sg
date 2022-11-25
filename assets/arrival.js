@@ -1,8 +1,8 @@
 import './i18n';
 import './error-tracking';
 
-import { h, render } from 'preact';
-import { useState, useRef, useEffect } from 'preact/hooks';
+import { h, render, Fragment } from 'preact';
+import { useState, useRef, useEffect, useLayoutEffect } from 'preact/hooks';
 import { useTranslation, Trans } from 'react-i18next';
 
 import { sortServicesPinned } from './utils/bus';
@@ -58,10 +58,15 @@ const WheelChairInaccessible = ({ size = 11 }) => (
 );
 
 const Bus = (props) => {
-  const prevPx = useRef();
-  const { duration_ms, type, load, feature, _ghost, _id } = props;
+  const { maxPx, index, duration_ms, type, load, feature, _ghost, _id } = props;
+
   const busImage = BUSES[type.toLowerCase()];
+
+  const prevPx = useRef();
   const px = (duration_ms / 1000 / 60) * (duration_ms > 0 ? 10 : 2.5);
+
+  const busTooFar = px > maxPx - 30; // 30 = bus width
+  const pxFar = 90 + index * 2; // index = zero-based
 
   useEffect(() => {
     prevPx.current = px;
@@ -78,27 +83,35 @@ const Bus = (props) => {
       id={_id ? `bus-${_id}` : null}
       class={`bus ${_ghost ? 'ghost' : ''}`}
       style={{
-        transform: `translateX(${px.toFixed(1)}px)`,
+        marginLeft: busTooFar ? pxFar + '%' : px.toFixed(1) + 'px',
         transitionDuration: `${time}s`,
       }}
     >
-      <img {...busImage} />
-      <br />
-      <span class={`time time-${load.toLowerCase()}`}>
-        <ArrivalTimeText ms={duration_ms} />
+      <span class="bus-float">
+        {/* <b class="debug">{_id}</b> */}
+        <img {...busImage} />
+        <br />
+        <span class={`time time-${load.toLowerCase()}`}>
+          <ArrivalTimeText ms={duration_ms} />
+        </span>
+        {feature.toLowerCase() !== 'wab' && <WheelChairInaccessible />}
       </span>
-      {feature.toLowerCase() !== 'wab' && <WheelChairInaccessible />}
     </span>
   );
 };
 
 let BUSID = 1;
 const busID = () => BUSID++;
-const isSameBus = (b1, b2) => b1.feature === b2.feature && b1.type === b2.type;
+const isSameBus = (b1, b2) =>
+  b1.feature === b2.feature &&
+  b1.type === b2.type &&
+  b1.visit_number === b2.visit_number &&
+  b1.origin_code === b2.origin_code &&
+  b1.destination_code === b2.destination_code;
 const isSameBuses = (b1, b2) =>
   b1.map((b) => b._id).join() === b2.map((b) => b._id).join();
 
-function BusLane({ no, buses }) {
+function BusLane({ index, no, buses }) {
   const prevNo = useRef();
   const prevBuses = useRef();
   const nextBuses = buses.filter((nb) => typeof nb?.duration_ms === 'number');
@@ -133,16 +146,34 @@ function BusLane({ no, buses }) {
     if (!nb._id) nb._id = busID();
   });
 
+  // DEBUGGING
+  // const prevBusesClone = structuredClone(prevBuses.current);
+  // const nextBusesClone = structuredClone(nextBuses);
+  // if (no == 315) {
+  //   console.log(
+  //     no,
+  //     prevBusesClone?.map((b) => b._id)?.join(),
+  //     nextBusesClone?.map((b) => b._id)?.join(),
+  //   );
+  // }
+
   useEffect(() => {
     prevNo.current = no;
-    prevBuses.current = nextBuses;
+    prevBuses.current = structuredClone(nextBuses);
   }, [no, nextBuses]);
 
+  const busLaneRef = useRef();
+  const [busLaneWidth, setBusLaneWidth] = useState(0);
+  useLayoutEffect(() => {
+    setBusLaneWidth(busLaneRef.current?.offsetWidth);
+  }, []);
+
   return (
-    <div class="bus-lane">
-      {nextBuses.map((b) => (
-        <Bus key={b._id} {...b} />
+    <div class="bus-lane" ref={busLaneRef}>
+      {nextBuses.map((b, i) => (
+        <Bus key={b._id} index={i} {...b} maxPx={busLaneWidth} />
       ))}
+      {index && <span class="visit-number">{index}</span>}
     </div>
   );
 }
@@ -151,7 +182,7 @@ function ArrivalTimes() {
   const { t, i18n } = useTranslation();
   const [busStop, setBusStop] = useState(null);
   const [stopsData, setStopsData] = useState(null);
-  const [fetchingServices, setFetchingServices] = useState(false);
+  const [fetchServicesStatus, setFetchServicesStatus] = useState(null); // 'loading', 'error', 'online'
   const [services, setServices] = useState(null);
   const initialPinnedServices =
     JSON.parse(localStorage.getItem('busroutersg.arrival.pinnedServices')) ||
@@ -201,19 +232,20 @@ function ArrivalTimes() {
   let arrivalsTimeout, arrivalsRAF;
   function fetchServices(id) {
     if (!id) return;
-    setFetchingServices(true);
+    if (window._PAUSED) return;
+    setFetchServicesStatus('loading');
     fetch(`https://arrivelah2.busrouter.sg/?id=${id}`)
       .then((r) => r.json())
       .then((results) => {
+        setFetchServicesStatus(results.services?.length ? 'online' : null);
         setServices(results.services);
-        setTimeout(() => setFetchingServices(false), 1200);
         arrivalsTimeout = setTimeout(() => {
           arrivalsRAF = requestAnimationFrame(() => fetchServices(id));
         }, 15 * 1000); // 15 seconds
       })
       .catch((e) => {
         console.error(e);
-        setTimeout(() => setFetchingServices(false), 1200);
+        setFetchServicesStatus('error');
         arrivalsTimeout = setTimeout(() => {
           arrivalsRAF = requestAnimationFrame(() => fetchServices(id));
         }, 3 * 1000); // 3 seconds
@@ -262,6 +294,15 @@ function ArrivalTimes() {
   const { code, name, lat, lng } = busStop;
   if (services) services.sort(sortServicesPinned(pinnedServices));
 
+  const hasMultipleVisits = services?.some((service) => {
+    const { next, next2, next3 } = service;
+    return (
+      next?.visit_number > 1 ||
+      next2?.visit_number > 1 ||
+      next3?.visit_number > 1
+    );
+  });
+
   return (
     <div>
       <div id="bus-stop-map">
@@ -277,10 +318,7 @@ function ArrivalTimes() {
       <h1>
         {t('arrivals.preHeading')}
         <b id="bus-stop-name">
-          <span class={fetchingServices ? 'loading stop-tag' : 'stop-tag'}>
-            {code}
-          </span>{' '}
-          {name}
+          <span class={`stop-tag ${fetchServicesStatus}`}>{code}</span> {name}
         </b>
       </h1>
       <table>
@@ -289,20 +327,43 @@ function ArrivalTimes() {
             <tbody class={!services.length ? 'loading' : ''}>
               {services.map(({ no, next, next2, next3 }) => {
                 const pinned = pinnedServices.includes(no);
+                const buses = [next, next2, next3];
+                const buses1 = buses.filter((b) => b?.visit_number === 1);
+                const buses2 = buses.filter((b) => b?.visit_number === 2);
                 return (
-                  <tr class={pinned ? 'pin' : ''}>
-                    <th
-                      onClick={(e) => {
-                        e.preventDefault();
-                        togglePin(no);
-                      }}
-                    >
-                      {no}
-                    </th>
-                    <td class="bus-lane-cell">
-                      <BusLane no={no} buses={[next, next2, next3]} />
-                    </td>
-                  </tr>
+                  <>
+                    <tr class={pinned ? 'pin' : ''}>
+                      <th
+                        onClick={(e) => {
+                          e.preventDefault();
+                          togglePin(no);
+                        }}
+                      >
+                        {no}
+                      </th>
+                      <td
+                        class={`bus-lane-cell ${
+                          buses2.length ? 'multiple' : ''
+                        }`}
+                      >
+                        {buses2.length ? (
+                          <>
+                            <BusLane index={1} no={no} buses={buses1} />
+                            <BusLane index={2} no={no} buses={buses2} />
+                          </>
+                        ) : (
+                          <BusLane no={no} buses={buses} />
+                        )}
+                      </td>
+                    </tr>
+                    <tr class={pinned ? 'pin' : ''}>
+                      <th colspan="2">
+                        <small class="destination">
+                          {stopsData[next.destination_code][2]}
+                        </small>
+                      </th>
+                    </tr>
+                  </>
                 );
               })}
             </tbody>
@@ -322,9 +383,20 @@ function ArrivalTimes() {
         )}
       </table>
       <div class="legend">
-        <span class="load load-sea">{t('glossary.seatsAvailable')}</span>
-        <span class="load load-sda">{t('glossary.standingAvailable')}</span>
-        <span class="load load-lsd">{t('glossary.limitedStanding')}</span>
+        <div class="loads">
+          <span class="load load-sea">{t('glossary.seatsAvailable')}</span>
+          <span class="load load-sda">{t('glossary.standingAvailable')}</span>
+          <span class="load load-lsd">{t('glossary.limitedStanding')}</span>
+        </div>
+        {hasMultipleVisits && (
+          <p class="visits">
+            <span class="visit-numbers">
+              <span class="visit-number">1</span>
+              <span class="visit-number">2</span>
+            </span>
+            {t('arrivals.multipleVisitsLegend')}
+          </p>
+        )}
       </div>
       <footer>
         <Trans i18nKey="arrivals.wheelchairDisclaimer">

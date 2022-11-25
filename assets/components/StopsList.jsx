@@ -254,6 +254,7 @@ export default function StopsList(props) {
 
       // Extra metadata
       const metadata = {
+        isSame: stopGrid[i][0] === stopGrid[i][1], // Same stop (very lazy check, no snapping)
         isOpposite: areOpposite(stopGrid[i][0], stopGrid[i][1]),
         col1IsEmpty,
         col2IsEmpty,
@@ -351,6 +352,7 @@ export default function StopsList(props) {
               s1,
               s2,
               {
+                isSame,
                 isOpposite,
                 col1IsEmpty,
                 col2IsEmpty,
@@ -408,7 +410,9 @@ export default function StopsList(props) {
                       ) : (
                         <td class={col1IsEmpty ? '' : 'empty'} />
                       )}
-                      <td class={isOpposite ? 'opposite' : ''} />
+                      <td
+                        class={isOpposite ? 'opposite' : isSame ? 'same' : ''}
+                      />
                       {s2 ? (
                         s2 !== '___' && (
                           <td

@@ -212,7 +212,7 @@ const App = () => {
   };
 
   const handleServicesScroll = () => {
-    if (expandSearch) return;
+    if (expandSearch || expandedSearchOnce) return;
     setExpandSearch(true);
     setExpandedSearchOnce(true);
     // $map.classList.add('fade-out');
@@ -1315,7 +1315,8 @@ const App = () => {
 
     map = window._map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/cheeaun/ckn18umqw1jsi17nymmpdinba',
+      // style: 'mapbox://styles/cheeaun/clasg1d6s003s15qmq7wr6yp1/draft',
+      style: 'mapbox://styles/cheeaun/clasg1d6s003s15qmq7wr6yp1',
       renderWorldCopies: false,
       boxZoom: false,
       minZoom: 8,
@@ -2246,7 +2247,7 @@ const App = () => {
           'line-opacity': ['interpolate', ['linear'], ['zoom'], 14.1, 0, 16, 1],
         },
       },
-      'road-label',
+      'road-label-navigation',
     );
 
     // Service live buses
@@ -2855,7 +2856,7 @@ const App = () => {
                   href={`/bus-arrival/#${stopPopoverData.number}`}
                   target="_blank"
                   onClick={openBusArrival}
-                  class="popover-button"
+                  class="popover-button primary"
                 >
                   {t('glossary.busArrivals')}{' '}
                   <img

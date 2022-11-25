@@ -1,10 +1,10 @@
-import mapboxgl from 'mapbox-gl';
+import maplibregl from 'maplibre-gl';
 import MapboxLayer from '@deck.gl/mapbox/dist/esm/mapbox-layer';
 import SolidPolygonLayer from '@deck.gl/layers/dist/esm/solid-polygon-layer/solid-polygon-layer';
 import PathLayer from '@deck.gl/layers/dist/esm/path-layer/path-layer';
 import { sortServices } from '../assets/utils/bus';
 import fetchCache from '../assets/utils/fetchCache';
-import { MAPBOX_ACCESS_TOKEN } from '../assets/config';
+import { ARCGIS_API_KEY } from '../assets/config';
 import routesJSONPath from './data/routes.json';
 import stops3DJSONPath from './data/stops.3d.json';
 
@@ -12,14 +12,14 @@ const CACHE_TIME = 7 * 24 * 60; // 1 week
 const stopsFetch = fetchCache(stops3DJSONPath, CACHE_TIME);
 const routesFetch = fetchCache(routesJSONPath, CACHE_TIME);
 
-mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
 const lowerLat = 1.1,
   upperLat = 1.58,
   lowerLong = 103.49,
   upperLong = 104.15;
-const map = new mapboxgl.Map({
+const map = new maplibregl.Map({
   container: 'map',
-  style: `mapbox://styles/uberdata/cjoqbbf6l9k302sl96tyvka09`,
+  // style: `mapbox://styles/uberdata/cjoqbbf6l9k302sl96tyvka09`,
+  style: `https://basemaps-api.arcgis.com/arcgis/rest/services/styles/4cad6f82d6b54c67bdcc3a6fb105888f?type=style&token=${ARCGIS_API_KEY}`,
   boxZoom: false,
   minZoom: 8,
   renderWorldCopies: false,
@@ -27,9 +27,9 @@ const map = new mapboxgl.Map({
   attributionControl: false,
 });
 
-map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
+map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
 map.addControl(
-  new mapboxgl.AttributionControl({ compact: true }),
+  new maplibregl.AttributionControl({ compact: true }),
   'bottom-left',
 );
 

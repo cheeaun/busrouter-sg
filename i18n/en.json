@@ -56,6 +56,7 @@
     "title": "Bus stop {{stopNumber}}: {{stopName}} - $t(app.name)",
     "titleRoutes": "Routes passing bus stop {{stopNumber}}: {{stopName}} - $t(app.name)",
     "firstLastBus": "First/last bus",
+    "multipleDirectionsWarning": "Some services serve multiple directions. Open \"Bus arrivals\" to see more details.",
     "liveBusTrack": "{{count}} bus now on track",
     "liveBusTrack_plural": "{{count}} buses now on track."
   },
@@ -75,6 +76,7 @@
     "preHeading": "Bus arrival times",
     "title": "Bus arrival times",
     "titleStop": "Bus arrival times for {{stopNumber}} - {{stopName}}",
+    "multipleVisitsLegend": "1st or 2nd visit. Bus stops here twice, going in different directions. Check destination before boarding.",
     "wheelchairDisclaimer": "<0/> All public buses in revenue service are <2>wheelchair-accessible</2>. The ones that are not accesssible will be marked with this icon <4/>"
   },
   "firstLast": {

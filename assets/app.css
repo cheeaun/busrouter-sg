@@ -585,14 +585,26 @@ a:active {
   font-size: 0.8em;
   line-height: 1.3;
 }
+.callout.iconic {
+  display: flex;
+}
+.callout.iconic:before {
+  margin-right: .5em;
+}
 .warning {
   background-color: papayawhip;
   color: saddlebrown;
   font-weight: bold;
 }
+.warning.iconic:before {
+  content: '⚠️';
+}
 .info {
   background-color: lightcyan;
   color: midnightblue;
+}
+.info.iconic:before {
+  content: 'ℹ';
 }
 
 #arrivals-popover {
@@ -984,6 +996,19 @@ span.legend-opposite {
   margin-right: 8px;
 }
 
+.stops-table td.same {
+  background: linear-gradient(
+      #f01b4866,
+      #f01b4866 2px,
+      #ffff 2px,
+      #ffff 4px,
+      #f01b4866 4px,
+      #f01b4866
+    )
+    center no-repeat;
+  background-size: 10px 6px;
+}
+
 .placeholder {
   color: #aaa;
   letter-spacing: -1px;
@@ -1213,6 +1238,10 @@ a.service-tag:hover {
   margin-left: 7px;
   flex: 1;
   font-weight: bold;
+}
+.popover-button.primary {
+  box-shadow: inset 0 0 0 2px #007aff, 0 1px 5px #007aff99;
+  background-color: #fff;
 }
 .popover-button:first-child {
   margin-left: 0;

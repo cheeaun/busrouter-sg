@@ -7,7 +7,7 @@
   />
   <title>Singapore Bus Routes &amp; Stops Visualization</title>
   <style>
-    @import 'npm:mapbox-gl/dist/mapbox-gl.css';
+    @import 'npm:maplibre-gl/dist/maplibre-gl.css';
     body {
       margin: 0;
       padding: 0;
@@ -209,15 +209,18 @@
         display: none;
       }
     }
-    .mapboxgl-canvas-container,
-    .mapboxgl-canvas-container * {
+    .maplibregl-canvas-container,
+    .maplibregl-canvas-container * {
       cursor: crosshair !important;
     }
-    .mapboxgl-ctrl-group {
+    .maplibregl-ctrl-group {
       border-radius: 44px;
     }
-    .mapboxgl-ctrl {
+    .maplibregl-ctrl {
       animation: fadein 2s ease-in-out 2s both;
+    }
+    .maplibregl-ctrl-attrib {
+      color: #000;
     }
   </style>
   <script

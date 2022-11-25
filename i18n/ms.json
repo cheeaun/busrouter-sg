@@ -52,6 +52,7 @@
     "title": "Perhentian bas {{stopNumber}}: {{stopName}} - $t(app.name)",
     "titleRoutes": "Laluan yang melalui perhentian bas {{stopNumber}}: {{stopName}} - $t(app.name)",
     "firstLastBus": "Bas pertama/terakhir",
+    "multipleDirectionsWarning": "Sesetengah perkhidmatan menyediakan pelbagai arah. Buka \"Ketibaan bas\" untuk melihat butiran lanjut.",
     "liveBusTrack_0": "{{count}} bas kini berada di landasan."
   },
   "passingRoutes": {
@@ -67,6 +68,7 @@
     "preHeading": "Masa ketibaan bas",
     "title": "Masa ketibaan bas",
     "titleStop": "Masa ketibaan bas untuk {{stopNumber}} - {{stopName}}",
+    "multipleVisitsLegend": "Lawatan pertama atau kedua. Bas berhenti di sini dua kali, pergi ke arah yang berbeza. Semak destinasi sebelum menaiki pesawat.",
     "wheelchairDisclaimer": "<0/> Semua bas awam dalam perkhidmatan hasil adalah <2>boleh diakses kerusi roda</2> . Yang tidak boleh diakses akan ditandakan dengan ikon ini <4/>"
   },
   "firstLast": {
