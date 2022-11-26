@@ -1516,9 +1516,6 @@ a.service-tag:hover {
   transform: scale(4);
   clip-path: polygon(50% 50%, 30% 0, 70% 0);
 }
-.user-location-compass.uncertain {
-  background: radial-gradient(closest-side, #007aff00, #007affdd, #007aff00);
-}
 /* .user-location-accuracy {
   width: 20px;
   height: 20px;
