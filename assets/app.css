@@ -1468,9 +1468,10 @@ a.service-tag:hover {
   overflow: hidden;
   background-color: #fff;
   border-radius: 123123px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-  position: absolute;
-  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+  /* position: absolute; */
+  /* transform: translate(-50%, -50%); */
+  position: relative;
   z-index: 1;
 }
 .user-location-dot:after {
@@ -1494,7 +1495,7 @@ a.service-tag:hover {
     transform: scale(1.2);
   }
 }
-.user-location-compass {
+/* .user-location-compass {
   width: 6px;
   height: 20px;
   background: linear-gradient(rgba(0, 122, 255, 0), #007aff);
@@ -1504,8 +1505,21 @@ a.service-tag:hover {
   transform-origin: bottom center;
   transform: rotateX(-60deg);
   transition: transform 0.3s;
+} */
+.user-location-compass {
+  z-index: 0;
+  position: absolute;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(closest-side, #007affdd, #007aff00);
+  transform: scale(4);
+  clip-path: polygon(50% 50%, 30% 0, 70% 0);
 }
-.user-location-accuracy {
+.user-location-compass.uncertain {
+  background: radial-gradient(closest-side, #007aff00, #007affdd, #007aff00);
+}
+/* .user-location-accuracy {
   width: 20px;
   height: 20px;
   overflow: hidden;
@@ -1514,7 +1528,7 @@ a.service-tag:hover {
   position: absolute;
   margin: -10px 0 0 -10px;
   animation: pulse 2s 1s ease-out infinite both;
-}
+} */
 @keyframes pulse {
   0% {
     transform: scale(1);

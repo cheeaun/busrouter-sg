@@ -45,10 +45,13 @@ export default class GeolocateControl {
 
     const dot = document.createElement('div');
     dot.innerHTML = `<div class="user-location-dot"></div>
-      <div class="user-location-compass" hidden></div>
-      <div class="user-location-accuracy"></div>`;
+      <div class="user-location-compass" hidden></div>`;
+    // <div class="user-location-accuracy"></div>`;
     dot.className = 'user-location';
-    this._dot = new mapboxgl.Marker(dot);
+    this._dot = new mapboxgl.Marker({
+      element: dot,
+      rotationAlignment: 'map',
+    });
     const dotElement = this._dot.getElement();
     this._compass = dotElement.querySelector('.user-location-compass');
     // this._accuracy = dotElement.querySelector('.user-location-accuracy');
@@ -126,6 +129,7 @@ export default class GeolocateControl {
     }
   };
   _setHeading = (e) => {
+    console.log('_setHeading', e);
     if (!this._watching) return;
     if (!e || e.alpha === null) return;
     this._compass.hidden = false;
@@ -134,9 +138,10 @@ export default class GeolocateControl {
       e.webkitCompassHeading ||
       compassHeading(e.alpha, e.beta, e.gamma);
     // -60deg rotateX is for *tilting* the compass "box" to look like a trapezoid
-    this._compass.style.transform = `rotate(${Math.round(
-      heading,
-    )}deg) rotateX(-60deg)`;
+    // this._compass.style.transform = `rotate(${Math.round(
+    //   heading,
+    // )}deg) scale(4)`;
+    this._dot.setRotation(heading);
   };
   _clickButton = (e, locking = true) => {
     if (e) e.preventDefault();
@@ -156,13 +161,25 @@ export default class GeolocateControl {
 
       this._watching = navigator.geolocation.watchPosition(
         (position) => {
-          const { latitude, longitude } = position.coords;
+          console.log({ position });
+          const { latitude, longitude, accuracy } = position.coords;
 
           if (`${[latitude, longitude]}` === `${this._currentLocation}`) return; // No idea why
 
           // console.log({ latitude, longitude });
           this._currentLocation = [longitude, latitude];
           this._dot.setLngLat(this._currentLocation);
+
+          const dotElement = this._dot.getElement();
+          // Scale is between 1 and 2, accuracy is between 100 and 0
+          // if accuracy >= 95, scale = 1, opacity = 1
+          // if accuracy < 95, scale = 2, opacity = 0.5
+          const scale = 1 + (100 - accuracy) / 100;
+          const opacity = 1 - (100 - accuracy) / 100 / 2;
+          dotElement.style.transform = `scale(${scale})`;
+          dotElement.style.opacity = opacity;
+          this._compass.classList.toggle('uncertain', opacity < 0.75);
+
           if (!this._dot._addedToMap) {
             this._dot.addTo(this._map);
             this._dot._addedToMap = true;
