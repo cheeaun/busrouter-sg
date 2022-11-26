@@ -162,23 +162,13 @@ export default class GeolocateControl {
       this._watching = navigator.geolocation.watchPosition(
         (position) => {
           console.log({ position });
-          const { latitude, longitude, accuracy } = position.coords;
+          const { latitude, longitude } = position.coords;
 
           if (`${[latitude, longitude]}` === `${this._currentLocation}`) return; // No idea why
 
           // console.log({ latitude, longitude });
           this._currentLocation = [longitude, latitude];
           this._dot.setLngLat(this._currentLocation);
-
-          const dotElement = this._dot.getElement();
-          // Scale is between 1 and 2, accuracy is between 100 and 0
-          // if accuracy >= 95, scale = 1, opacity = 1
-          // if accuracy < 95, scale = 2, opacity = 0.5
-          const scale = 1 + (100 - accuracy) / 100;
-          const opacity = 1 - (100 - accuracy) / 100 / 2;
-          dotElement.style.transform = `scale(${scale})`;
-          dotElement.style.opacity = opacity;
-          this._compass.classList.toggle('uncertain', opacity < 0.75);
 
           if (!this._dot._addedToMap) {
             this._dot.addTo(this._map);
