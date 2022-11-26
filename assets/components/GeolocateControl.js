@@ -9,6 +9,7 @@ export default class GeolocateControl {
   _setup = false;
   _currentLocation = null;
   _buttonClicked = false;
+  _orientationGranted = false;
   constructor(options) {
     this.options = Object.assign(
       {
@@ -44,10 +45,13 @@ export default class GeolocateControl {
 
     const dot = document.createElement('div');
     dot.innerHTML = `<div class="user-location-dot"></div>
-      <div class="user-location-compass" hidden></div>
-      <div class="user-location-accuracy"></div>`;
+      <div class="user-location-compass" hidden></div>`;
+    // <div class="user-location-accuracy"></div>`;
     dot.className = 'user-location';
-    this._dot = new mapboxgl.Marker(dot);
+    this._dot = new mapboxgl.Marker({
+      element: dot,
+      rotationAlignment: 'map',
+    });
     const dotElement = this._dot.getElement();
     this._compass = dotElement.querySelector('.user-location-compass');
     // this._accuracy = dotElement.querySelector('.user-location-accuracy');
@@ -125,6 +129,7 @@ export default class GeolocateControl {
     }
   };
   _setHeading = (e) => {
+    console.log('_setHeading', e);
     if (!this._watching) return;
     if (!e || e.alpha === null) return;
     this._compass.hidden = false;
@@ -133,9 +138,10 @@ export default class GeolocateControl {
       e.webkitCompassHeading ||
       compassHeading(e.alpha, e.beta, e.gamma);
     // -60deg rotateX is for *tilting* the compass "box" to look like a trapezoid
-    this._compass.style.transform = `rotate(${Math.round(
-      heading,
-    )}deg) rotateX(-60deg)`;
+    // this._compass.style.transform = `rotate(${Math.round(
+    //   heading,
+    // )}deg) scale(4)`;
+    this._dot.setRotation(heading);
   };
   _clickButton = (e, locking = true) => {
     if (e) e.preventDefault();
@@ -155,6 +161,7 @@ export default class GeolocateControl {
 
       this._watching = navigator.geolocation.watchPosition(
         (position) => {
+          console.log({ position });
           const { latitude, longitude } = position.coords;
 
           if (`${[latitude, longitude]}` === `${this._currentLocation}`) return; // No idea why
@@ -162,6 +169,7 @@ export default class GeolocateControl {
           // console.log({ latitude, longitude });
           this._currentLocation = [longitude, latitude];
           this._dot.setLngLat(this._currentLocation);
+
           if (!this._dot._addedToMap) {
             this._dot.addTo(this._map);
             this._dot._addedToMap = true;
@@ -224,6 +232,19 @@ export default class GeolocateControl {
               : 'deviceorientation';
         }
         window.addEventListener(deviceorientation, this._setHeading, false);
+
+        if (!this._orientationGranted) {
+          if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission()
+              .then(function (permissionState) {
+                if (permissionState === 'granted') {
+                  this._orientationGranted = true;
+                  console.log('granted');
+                }
+              })
+              .catch((e) => {});
+          }
+        }
       }
     }
   };
