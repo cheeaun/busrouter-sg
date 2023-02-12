@@ -50,7 +50,7 @@
     "@turf/simplify": "~6.5.0",
     "babel-plugin-transform-remove-console": "~6.9.4",
     "cpy-cli": "4.2.0",
-    "got": "11.8.3",
+    "got": "12.5.3",
     "netlify-plugin-ttl-cache": "~1.0.2",
     "parcel": "~2.8.0",
     "process": "^0.11.10"
