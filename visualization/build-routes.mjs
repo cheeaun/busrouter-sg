@@ -1,15 +1,10 @@
 import fs from 'fs';
 import simplify from '@turf/simplify';
 import CheapRuler from 'cheap-ruler';
-import got from 'got';
 const ruler = new CheapRuler(1.3);
 
-const { body: stopsMin } = await got(
-  'https://data.busrouter.sg/v1/stops.min.json',
-  {
-    responseType: 'json',
-  },
-);
+const stopsResponse = await fetch('https://data.busrouter.sg/v1/stops.min.json');
+const stopsMin = await stopsResponse.json();
 const stops = {};
 Object.entries(stopsMin).forEach(([number, data]) => {
   stops[number] = {
@@ -23,18 +18,12 @@ const stopsArr = Object.keys(stops).map((s) => ({
   no: s,
   ...stops[s],
 }));
-const { body: routesGeoJSON } = await got(
-  'https://data.busrouter.sg/v1/routes.min.geojson',
-  { responseType: 'json' },
-);
+const routesResponse = await fetch('https://data.busrouter.sg/v1/routes.min.geojson');
+const routesGeoJSON = await routesResponse.json();
 // const routesGeoJSON = JSON.parse(fs.readFileSync('data/3/routes.geojson'));
 const { features: routes } = routesGeoJSON;
-const { body: serviceStops } = await got(
-  'https://data.busrouter.sg/v1/services.min.json',
-  {
-    responseType: 'json',
-  },
-);
+const serviceStopsResponse = await fetch('https://data.busrouter.sg/v1/services.min.json');
+const serviceStops = await serviceStopsResponse.json();
 // const serviceStops = JSON.parse(fs.readFileSync('data/3/serviceStops.json'));
 
 // Sort routes by length - shortest to furthest
