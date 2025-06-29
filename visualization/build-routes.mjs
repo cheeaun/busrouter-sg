@@ -13,18 +13,15 @@ Object.entries(stopsMin).forEach(([number, data]) => {
     name: data[2],
   };
 });
-// const stops = JSON.parse(fs.readFileSync('data/3/stops2.json'));
 const stopsArr = Object.keys(stops).map((s) => ({
   no: s,
   ...stops[s],
 }));
 const routesResponse = await fetch('https://data.busrouter.sg/v1/routes.min.geojson');
 const routesGeoJSON = await routesResponse.json();
-// const routesGeoJSON = JSON.parse(fs.readFileSync('data/3/routes.geojson'));
 const { features: routes } = routesGeoJSON;
 const serviceStopsResponse = await fetch('https://data.busrouter.sg/v1/services.min.json');
 const serviceStops = await serviceStopsResponse.json();
-// const serviceStops = JSON.parse(fs.readFileSync('data/3/serviceStops.json'));
 
 // Sort routes by length - shortest to furthest
 const sortedRoutes = routes.sort(
