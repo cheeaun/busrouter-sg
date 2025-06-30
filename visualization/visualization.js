@@ -1,7 +1,7 @@
 import maplibregl from 'maplibre-gl';
-import MapboxLayer from '@deck.gl/mapbox/dist/esm/mapbox-layer';
-import SolidPolygonLayer from '@deck.gl/layers/dist/esm/solid-polygon-layer/solid-polygon-layer';
-import PathLayer from '@deck.gl/layers/dist/esm/path-layer/path-layer';
+import MapboxLayer from '@deck.gl/mapbox/dist/mapbox-layer';
+import SolidPolygonLayer from '@deck.gl/layers/dist/solid-polygon-layer/solid-polygon-layer';
+import PathLayer from '@deck.gl/layers/dist/path-layer/path-layer';
 import { sortServices } from '../assets/utils/bus';
 import fetchCache from '../assets/utils/fetchCache';
 import { ARCGIS_API_KEY } from '../assets/config';
