@@ -3,7 +3,7 @@ import './error-tracking';
 
 import { h, render, Fragment } from 'preact';
 import { useState, useRef, useEffect, useMemo } from 'preact/hooks';
-import mapboxgl from 'mapbox-gl';
+import maplibregl from 'maplibre-gl';
 import { toGeoJSON } from '@mapbox/polyline';
 import Fuse from 'fuse.js';
 import intersect from 'just-intersect';
@@ -63,7 +63,25 @@ const redirectToOldSite = () => {
   if (redirect) location.href = 'https://v1.busrouter.sg/';
 };
 
-if (!supportsPromise || !mapboxgl.supported()) {
+// Check WebGL support for MapLibre GL JS
+function isWebglSupported() {
+  if (window.WebGLRenderingContext) {
+    const canvas = document.createElement('canvas');
+    try {
+      const context = canvas.getContext('webgl2') || canvas.getContext('webgl');
+      if (context && typeof context.getParameter == 'function') {
+        return true;
+      }
+    } catch (e) {
+      // WebGL is supported, but disabled
+    }
+    return false;
+  }
+  // WebGL not supported
+  return false;
+}
+
+if (!supportsPromise || !isWebglSupported()) {
   redirectToOldSite();
 }
 
@@ -94,7 +112,6 @@ function hideStopTooltip() {
 window.requestIdleCallback =
   window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
 
-mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
 const lowerLat = 1.2,
   upperLat = 1.48,
   lowerLong = 103.59,
@@ -434,7 +451,7 @@ const App = () => {
         const coordinates = routes[0]
           .concat(routes[1] || [])
           .map((stop) => stopsData[stop].coordinates);
-        const bounds = new mapboxgl.LngLatBounds();
+        const bounds = new maplibregl.LngLatBounds();
         coordinates.forEach((c) => {
           bounds.extend(c);
         });
@@ -642,7 +659,7 @@ const App = () => {
       });
 
       // Fit map to stops bounds
-      const bounds = new mapboxgl.LngLatBounds();
+      const bounds = new maplibregl.LngLatBounds();
       stops.forEach((stop) => {
         bounds.extend(stop.coordinates);
       });
@@ -768,7 +785,7 @@ const App = () => {
           ); // Merge and unique
 
           // Fit map to route bounds
-          const bounds = new mapboxgl.LngLatBounds();
+          const bounds = new maplibregl.LngLatBounds();
           routeStops.forEach((stop) => {
             const { coordinates } = stopsData[stop];
             bounds.extend(coordinates);
@@ -874,7 +891,7 @@ const App = () => {
           setIntersectStops(intersectStops);
 
           // Fit map to route bounds
-          const bounds = new mapboxgl.LngLatBounds();
+          const bounds = new maplibregl.LngLatBounds();
           routeStops.forEach((stop) => {
             const { coordinates } = stopsData[stop];
             bounds.extend(coordinates);
@@ -984,7 +1001,7 @@ const App = () => {
           });
 
           // Fit map to route bounds
-          const bounds = new mapboxgl.LngLatBounds();
+          const bounds = new maplibregl.LngLatBounds();
           allStopsCoords.forEach((coordinates) => {
             bounds.extend(coordinates);
           });
@@ -1313,10 +1330,10 @@ const App = () => {
       servicesDataArr,
     };
 
-    map = window._map = new mapboxgl.Map({
+    map = window._map = new maplibregl.Map({
       container: 'map',
       // style: 'mapbox://styles/cheeaun/clasg1d6s003s15qmq7wr6yp1/draft',
-      style: 'mapbox://styles/cheeaun/clasg1d6s003s15qmq7wr6yp1',
+      style: `https://api.mapbox.com/styles/v1/cheeaun/clasg1d6s003s15qmq7wr6yp1?access_token=${MAPBOX_ACCESS_TOKEN}`,
       renderWorldCopies: false,
       boxZoom: false,
       minZoom: 8,
@@ -1331,6 +1348,81 @@ const App = () => {
           ? 120
           : { top: 40, bottom: window.innerHeight / 2, left: 40, right: 40 },
       },
+
+      transformRequest: (url, resourceType) => {
+        // Transform mapbox:// URLs to HTTPS URLs for maplibre-gl compatibility
+        // Based on https://github.com/rowanwins/maplibregl-mapbox-request-transformer
+
+        if (!url.startsWith('mapbox://')) {
+          return { url };
+        }
+
+        // Helper function to parse mapbox:// URLs
+        const parseMapboxUrl = (url) => {
+          const urlRe = /^(\w+):\/\/([^/?]*)(\/[^?]+)?\??(.+)?/;
+          const parts = url.match(urlRe);
+          if (!parts) {
+            throw new Error('Unable to parse URL object');
+          }
+          return {
+            protocol: parts[1],
+            authority: parts[2],
+            path: parts[3] || '/',
+            params: parts[4] ? parts[4].split('&') : []
+          };
+        };
+
+        // Helper function to format URL with access token
+        const formatUrl = (urlObject, accessToken) => {
+          urlObject.protocol = 'https';
+          urlObject.authority = 'api.mapbox.com';
+          urlObject.params.push(`access_token=${accessToken}`);
+          const params = urlObject.params.length ? `?${urlObject.params.join('&')}` : '';
+          return `${urlObject.protocol}://${urlObject.authority}${urlObject.path}${params}`;
+        };
+
+        if (url.indexOf('/sprites/') > -1) {
+          // Transform sprite URLs: mapbox://sprites/username/style_id/sprite_id
+          const urlObject = parseMapboxUrl(url);
+          // For sprites, we need to extract the style path and remove the sprite_id part
+          // URL format: mapbox://sprites/username/style_id/sprite_id.extension
+          // Target format: /styles/v1/username/style_id/sprite[@2x].extension
+          const pathParts = urlObject.path.split('/');
+          if (pathParts.length >= 3) {
+            const spritePart = pathParts[pathParts.length - 1]; // sprite_id.extension
+            const extension = spritePart.includes('.') ? spritePart.split('.')[1] : 'json';
+            const stylePath = pathParts.slice(0, -1).join('/'); // /username/style_id
+
+            // Check for high DPI displays and use @2x sprites
+            const isHighDPI = window.devicePixelRatio >= 2;
+            const spriteResolution = isHighDPI ? '@2x' : '';
+
+            urlObject.path = `/styles/v1${stylePath}/sprite${spriteResolution}.${extension}`;
+          }
+          return { url: formatUrl(urlObject, MAPBOX_ACCESS_TOKEN) };
+        }
+
+        if (url.indexOf('/fonts/') > -1) {
+          // Transform font URLs: mapbox://fonts/mapbox/{fontstack}/{range}.pbf
+          const urlObject = parseMapboxUrl(url);
+          urlObject.path = `/fonts/v1${urlObject.path}`;
+          return { url: formatUrl(urlObject, MAPBOX_ACCESS_TOKEN) };
+        }
+
+        if (resourceType === 'Source' || url.indexOf('/v4/') > -1) {
+          // Transform tileset URLs for sources
+          const urlObject = parseMapboxUrl(url);
+          urlObject.path = `/v4/${urlObject.authority}.json`;
+          urlObject.params.push('secure');
+          return { url: formatUrl(urlObject, MAPBOX_ACCESS_TOKEN) };
+        }
+
+        // Fallback for other mapbox:// URLs
+        const tileset = url.replace('mapbox://', '');
+        return {
+          url: `https://api.mapbox.com/v4/${tileset}/{z}/{x}/{y}.vector.pbf?access_token=${MAPBOX_ACCESS_TOKEN}`
+        };
+      },
     });
 
     if (!supportsTouch) {
@@ -1339,7 +1431,7 @@ const App = () => {
 
     // Controls
     map.addControl(
-      new mapboxgl.AttributionControl({
+      new maplibregl.AttributionControl({
         compact: true,
       }),
       'bottom-left',
@@ -1363,13 +1455,13 @@ const App = () => {
     );
 
     map.addControl(
-      new mapboxgl.NavigationControl({
+      new maplibregl.NavigationControl({
         showCompass: true,
         showZoom: !supportsTouch,
       }),
       'top-right',
     );
-    const compassButton = document.querySelector('.mapboxgl-ctrl-compass');
+    const compassButton = document.querySelector('.maplibregl-ctrl-compass');
     map.on('rotateend', () => {
       const bearing = map.getBearing();
       compassButton.classList.toggle('show', bearing !== 0);
@@ -1389,6 +1481,27 @@ const App = () => {
       const localizedStyle = language.setLanguage(map.getStyle(), mapLang());
       map.setStyle(localizedStyle);
     });
+
+    // Handle map errors gracefully (suppress mapbox:// URL errors)
+    // map.on('error', (e) => {
+    //   // Suppress errors related to mapbox:// URLs that can't be loaded in maplibre-gl
+    //   if (e.error && e.error.message && e.error.message.includes('mapbox://')) {
+    //     console.warn('Suppressed mapbox:// URL error (expected with maplibre-gl):', e.error.message);
+    //     return;
+    //   }
+    //   // Suppress 422 errors for composite tilesets that may not be accessible
+    //   if (e.error && e.error.status === 422 && e.error.url && e.error.url.includes('api.mapbox.com/v4/')) {
+    //     console.warn('Suppressed 422 error for tileset (may not be accessible):', e.error.url);
+    //     return;
+    //   }
+    //   // Suppress InvalidStateError for sprite decoding issues
+    //   if (e.error && e.error.name === 'InvalidStateError' && e.error.message.includes('source image could not be decoded')) {
+    //     console.warn('Suppressed sprite decoding error (expected with maplibre-gl):', e.error.message);
+    //     return;
+    //   }
+    //   // Log other errors normally
+    //   console.error('Map error:', e.error);
+    // });
 
     let initialMoveStart = false;
     const initialHideSearch = () => {
@@ -1425,13 +1538,16 @@ const App = () => {
       });
     }
 
-    map.loadImage(stopImagePath, (e, img) => {
-      if (e) throw e;
-      map.addImage('stop', img);
+    map.loadImage(stopImagePath).then((img) => {
+      map.addImage('stop', img.data);
+    }).catch((e) => {
+      console.error('Failed to load stop image:', e);
     });
-    map.loadImage(stopEndImagePath, (e, img) => {
-      if (e) throw e;
-      map.addImage('stop-end', img);
+
+    map.loadImage(stopEndImagePath).then((img) => {
+      map.addImage('stop-end', img.data);
+    }).catch((e) => {
+      console.error('Failed to load stop-end image:', e);
     });
 
     setMapLoaded(true);
@@ -2258,9 +2374,10 @@ const App = () => {
         features: [],
       },
     });
-    map.loadImage(busTinyImagePath, (e, img) => {
-      if (e) throw e;
-      map.addImage('bus-tiny', img);
+    map.loadImage(busTinyImagePath).then((img) => {
+      map.addImage('bus-tiny', img.data);
+    }).catch((e) => {
+      console.error('Failed to load bus-tiny image:', e);
     });
     map.addLayer({
       id: 'buses-service',
