@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "parcel serve index.html bus-arrival/index.html bus-first-last/index.html visualization/index.html -p 8888",
-    "build": "parcel build index.html bus-arrival/index.html bus-first-last/index.html visualization/index.html --no-cache",
+    "build": "parcel build index.html bus-arrival/index.html bus-first-last/index.html visualization/index.html --no-cache --no-scope-hoist",
     "postbuild": "cpy {favicon.ico,ads.txt} dist && cpy well-known/* dist/.well-known && node tasks/generateHeaders",
     "prod": "npx serve dist/"
   },
