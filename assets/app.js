@@ -54,39 +54,9 @@ const supportsTouch =
   'ontouchstart' in window ||
   navigator.MaxTouchPoints > 0 ||
   navigator.msMaxTouchPoints > 0;
-const supportsPromise = 'Promise' in window;
 const ruler = new CheapRuler(1.3);
 
 const $logo = document.getElementById('logo');
-
-const redirectToOldSite = () => {
-  const redirect = confirm(
-    'Looks like your browser is a little old. Redirecting you to the older version of BusRouter SG.',
-  );
-  if (redirect) location.href = 'https://v1.busrouter.sg/';
-};
-
-// Check WebGL support for MapLibre GL JS
-function isWebglSupported() {
-  if (window.WebGLRenderingContext) {
-    const canvas = document.createElement('canvas');
-    try {
-      const context = canvas.getContext('webgl2') || canvas.getContext('webgl');
-      if (context && typeof context.getParameter == 'function') {
-        return true;
-      }
-    } catch (e) {
-      // WebGL is supported, but disabled
-    }
-    return false;
-  }
-  // WebGL not supported
-  return false;
-}
-
-if (!supportsPromise || !isWebglSupported()) {
-  redirectToOldSite();
-}
 
 let rafST;
 const rafScrollTop = () => {
