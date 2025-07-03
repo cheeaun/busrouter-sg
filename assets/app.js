@@ -10,8 +10,9 @@ import intersect from 'just-intersect';
 import CheapRuler from 'cheap-ruler';
 import MapboxLanguage from '@mapbox/mapbox-gl-language';
 import { useTranslation } from 'react-i18next';
+import { Protocol } from 'pmtiles';
 
-import { MAPBOX_ACCESS_TOKEN } from './config';
+import { createMapStyle } from './map-style';
 import { encode, decode } from './utils/specialID';
 import { sortServices } from './utils/bus';
 import fetchCache from './utils/fetchCache';
@@ -30,6 +31,8 @@ import StopsList from './components/StopsList.jsx';
 
 import stopImagePath from './images/stop.png';
 import stopEndImagePath from './images/stop-end.png';
+import mrtStationImagePath from './images/mrt-station.png';
+import lrtStationImagePath from './images/lrt-station.png';
 import openNewWindowImagePath from './images/open-new-window.svg';
 import openNewWindowBlueImagePath from './images/open-new-window-blue.svg';
 import passingRoutesBlueImagePath from './images/passing-routes-blue.svg';
@@ -162,7 +165,7 @@ const App = () => {
 
   let previewRAF = useRef(null).current;
 
-  // let labelLayerId;
+  let labelLayerId;
 
   const largerScreen = window.matchMedia(
     '(min-width: 1200px) and (min-height: 600px) and (orientation: landscape)',
@@ -734,12 +737,6 @@ const App = () => {
     if (prevStopNumber.current) {
       hideStopPopover();
     }
-
-    map.setLayoutProperty(
-      'traffic',
-      'visibility',
-      route.page === 'stop' && route.subpage !== 'routes' ? 'visible' : 'none',
-    );
 
     switch (route.page) {
       case 'service': {
@@ -1330,10 +1327,21 @@ const App = () => {
       servicesDataArr,
     };
 
+    const mapLang = () => {
+      // There's only en and zh, Don't have ms yet
+      return { zh: 'zh-Hans' }[i18n.resolvedLanguage] || i18n.resolvedLanguage;
+    };
+
+    // Set up PMTiles protocol
+    let protocol = new Protocol();
+    maplibregl.addProtocol('pmtiles', protocol.tile);
+
+    // Create map style
+    const mapStyle = createMapStyle({ lang: mapLang() });
+
     map = window._map = new maplibregl.Map({
       container: 'map',
-      // style: 'mapbox://styles/cheeaun/clasg1d6s003s15qmq7wr6yp1/draft',
-      style: `https://api.mapbox.com/styles/v1/cheeaun/clasg1d6s003s15qmq7wr6yp1?access_token=${MAPBOX_ACCESS_TOKEN}`,
+      style: mapStyle,
       renderWorldCopies: false,
       boxZoom: false,
       minZoom: 8,
@@ -1347,81 +1355,6 @@ const App = () => {
         padding: BREAKPOINT()
           ? 120
           : { top: 40, bottom: window.innerHeight / 2, left: 40, right: 40 },
-      },
-
-      transformRequest: (url, resourceType) => {
-        // Transform mapbox:// URLs to HTTPS URLs for maplibre-gl compatibility
-        // Based on https://github.com/rowanwins/maplibregl-mapbox-request-transformer
-
-        if (!url.startsWith('mapbox://')) {
-          return { url };
-        }
-
-        // Helper function to parse mapbox:// URLs
-        const parseMapboxUrl = (url) => {
-          const urlRe = /^(\w+):\/\/([^/?]*)(\/[^?]+)?\??(.+)?/;
-          const parts = url.match(urlRe);
-          if (!parts) {
-            throw new Error('Unable to parse URL object');
-          }
-          return {
-            protocol: parts[1],
-            authority: parts[2],
-            path: parts[3] || '/',
-            params: parts[4] ? parts[4].split('&') : []
-          };
-        };
-
-        // Helper function to format URL with access token
-        const formatUrl = (urlObject, accessToken) => {
-          urlObject.protocol = 'https';
-          urlObject.authority = 'api.mapbox.com';
-          urlObject.params.push(`access_token=${accessToken}`);
-          const params = urlObject.params.length ? `?${urlObject.params.join('&')}` : '';
-          return `${urlObject.protocol}://${urlObject.authority}${urlObject.path}${params}`;
-        };
-
-        if (url.indexOf('/sprites/') > -1) {
-          // Transform sprite URLs: mapbox://sprites/username/style_id/sprite_id
-          const urlObject = parseMapboxUrl(url);
-          // For sprites, we need to extract the style path and remove the sprite_id part
-          // URL format: mapbox://sprites/username/style_id/sprite_id.extension
-          // Target format: /styles/v1/username/style_id/sprite[@2x].extension
-          const pathParts = urlObject.path.split('/');
-          if (pathParts.length >= 3) {
-            const spritePart = pathParts[pathParts.length - 1]; // sprite_id.extension
-            const extension = spritePart.includes('.') ? spritePart.split('.')[1] : 'json';
-            const stylePath = pathParts.slice(0, -1).join('/'); // /username/style_id
-
-            // Check for high DPI displays and use @2x sprites
-            const isHighDPI = window.devicePixelRatio >= 2;
-            const spriteResolution = isHighDPI ? '@2x' : '';
-
-            urlObject.path = `/styles/v1${stylePath}/sprite${spriteResolution}.${extension}`;
-          }
-          return { url: formatUrl(urlObject, MAPBOX_ACCESS_TOKEN) };
-        }
-
-        if (url.indexOf('/fonts/') > -1) {
-          // Transform font URLs: mapbox://fonts/mapbox/{fontstack}/{range}.pbf
-          const urlObject = parseMapboxUrl(url);
-          urlObject.path = `/fonts/v1${urlObject.path}`;
-          return { url: formatUrl(urlObject, MAPBOX_ACCESS_TOKEN) };
-        }
-
-        if (resourceType === 'Source' || url.indexOf('/v4/') > -1) {
-          // Transform tileset URLs for sources
-          const urlObject = parseMapboxUrl(url);
-          urlObject.path = `/v4/${urlObject.authority}.json`;
-          urlObject.params.push('secure');
-          return { url: formatUrl(urlObject, MAPBOX_ACCESS_TOKEN) };
-        }
-
-        // Fallback for other mapbox:// URLs
-        const tileset = url.replace('mapbox://', '');
-        return {
-          url: `https://api.mapbox.com/v4/${tileset}/{z}/{x}/{y}.vector.pbf?access_token=${MAPBOX_ACCESS_TOKEN}`
-        };
       },
     });
 
@@ -1467,10 +1400,6 @@ const App = () => {
       compassButton.classList.toggle('show', bearing !== 0);
     });
 
-    const mapLang = () => {
-      // There's only en and zh, Don't have ms yet
-      return { zh: 'zh-Hans' }[i18n.resolvedLanguage] || i18n.resolvedLanguage;
-    };
     const language = new MapboxLanguage({
       supportedLanguages: ['en', 'zh-Hans', 'ms', 'ta', 'ja'],
       defaultLanguage: mapLang(),
@@ -1518,9 +1447,9 @@ const App = () => {
         const layers = map.getStyle().layers;
         console.log(layers);
 
-        // labelLayerId = layers.find(
-        //   (l) => l.type == 'symbol' && l.layout['text-field'],
-        // ).id;
+        labelLayerId = layers.find(
+          (l) => l.type == 'symbol' && l.layout['text-field'],
+        ).id;
 
         resolve();
       });
@@ -1538,16 +1467,156 @@ const App = () => {
       });
     }
 
-    map.loadImage(stopImagePath).then((img) => {
-      map.addImage('stop', img.data);
-    }).catch((e) => {
-      console.error('Failed to load stop image:', e);
+    map
+      .loadImage(stopImagePath)
+      .then((img) => {
+        map.addImage('stop', img.data);
+      })
+      .catch((e) => {
+        console.error('Failed to load stop image:', e);
+      });
+
+    map
+      .loadImage(stopEndImagePath)
+      .then((img) => {
+        map.addImage('stop-end', img.data);
+      })
+      .catch((e) => {
+        console.error('Failed to load stop-end image:', e);
+      });
+
+    map
+      .loadImage(mrtStationImagePath)
+      .then((img) => {
+        map.addImage('mrt-station', img.data);
+      })
+      .catch((e) => {
+        console.error('Failed to load mrt-station image:', e);
+      });
+
+    map
+      .loadImage(lrtStationImagePath)
+      .then((img) => {
+        map.addImage('lrt-station', img.data);
+      })
+      .catch((e) => {
+        console.error('Failed to load lrt-station image:', e);
+      });
+
+    // Add rail lines layer
+    map.addLayer(
+      {
+        id: 'rail-path',
+        type: 'line',
+        source: 'sg-rail',
+        filter: [
+          'all',
+          ['==', ['geometry-type'], 'LineString'],
+          ['has', 'line_color'],
+        ],
+        minzoom: 12.5,
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+        },
+        paint: {
+          'line-color': ['to-color', ['get', 'line_color']],
+          'line-width': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            12,
+            0.5,
+            16,
+            1.5,
+            22,
+            2,
+          ],
+          'line-opacity': 0.5,
+        },
+      },
+      labelLayerId,
+    );
+    map.addLayer(
+      {
+        id: 'rail-path-case',
+        type: 'line',
+        source: 'sg-rail',
+        filter: [
+          'all',
+          ['==', ['geometry-type'], 'LineString'],
+          ['has', 'line_color'],
+        ],
+        minzoom: 13,
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+        },
+        paint: {
+          'line-color': '#fff',
+          'line-width': ['interpolate', ['linear'], ['zoom'], 16, 4.5, 22, 6],
+          'line-opacity': 0.5,
+        },
+      },
+      'rail-path',
+    );
+    map.addLayer({
+      id: 'rail-path-label',
+      type: 'symbol',
+      source: 'sg-rail',
+      filter: [
+        'all',
+        ['==', ['geometry-type'], 'LineString'],
+        ['has', 'line_color'],
+      ],
+      minzoom: 13,
+      layout: {
+        'symbol-placement': 'line',
+        'symbol-spacing': 300,
+        'text-field': ['get', 'name'],
+        'text-font': ['Noto Sans Regular'],
+        'text-size': 13,
+      },
+      paint: {
+        'text-color': ['to-color', ['get', 'line_color']],
+        'text-halo-color': '#fff',
+        'text-halo-width': 2,
+        // 'text-opacity': 0.8,
+      },
     });
 
-    map.loadImage(stopEndImagePath).then((img) => {
-      map.addImage('stop-end', img.data);
-    }).catch((e) => {
-      console.error('Failed to load stop-end image:', e);
+    // Add rail stations layer using pois icon style
+    map.addLayer({
+      id: 'rail-stations',
+      type: 'symbol',
+      source: 'sg-rail',
+      filter: [
+        'all',
+        ['==', ['geometry-type'], 'Point'],
+        ['==', ['get', 'stop_type'], 'station'],
+      ],
+      minzoom: 13,
+      layout: {
+        'icon-image': [
+          'case',
+          ['==', ['get', 'network'], 'singapore-lrt'],
+          'lrt-station',
+          'mrt-station',
+        ],
+        'icon-size': 0.2,
+        'icon-allow-overlap': false,
+        'text-field': ['coalesce', ['get', 'name_en'], ['get', 'name']],
+        'text-font': ['Noto Sans Medium'],
+        'text-size': ['interpolate', ['linear'], ['zoom'], 0, 0, 22, 16],
+        'text-variable-anchor': ['left', 'right', 'top'],
+        'text-radial-offset': 0.85,
+        'text-optional': true,
+      },
+      paint: {
+        'text-color': '#4d787e',
+        'text-halo-color': '#fff',
+        'text-halo-width': 1,
+      },
     });
 
     setMapLoaded(true);
@@ -1565,6 +1634,8 @@ const App = () => {
       type: 'geojson',
       tolerance: 10,
       buffer: 0,
+      attribution:
+        '© <a href="https://www.lta.gov.sg/" target="_blank" title="Land Transport Authority">LTA</a>',
       data: {
         type: 'FeatureCollection',
         features: stopsDataArr.map((stop) => ({
@@ -1629,7 +1700,8 @@ const App = () => {
         // 'text-variable-anchor': ['left', 'right'],
         // 'text-radial-offset': 1,
         'text-padding': 0.5,
-        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
+        // 'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
+        'text-font': ['Noto Sans Medium'],
         'text-max-width': 16,
         'text-line-height': 1.1,
       },
@@ -1707,7 +1779,7 @@ const App = () => {
           ],
         },
       },
-      'settlement-subdivision-label',
+      'places_subplace',
     );
 
     map.addLayer({
@@ -1720,6 +1792,7 @@ const App = () => {
         // 'symbol-z-order': 'source',
         'icon-image': 'stop',
         'icon-size': ['step', ['zoom'], 0.4, 15, 0.5, 16, 0.6],
+        // 'icon-size': ['interpolate', ['linear'], ['zoom'], 14, 0.4, 16, 0.6],
         'icon-padding': 0.5,
         'icon-allow-overlap': true,
         // 'icon-ignore-placement': true,
@@ -2050,7 +2123,8 @@ const App = () => {
           'symbol-spacing': 100,
           'text-field': '→',
           'text-size': 16,
-          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
+          // 'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
+          'text-font': ['Noto Sans Medium'],
           'text-allow-overlap': true,
           'text-ignore-placement': true,
           'text-keep-upright': false,
@@ -2173,7 +2247,8 @@ const App = () => {
       layout: {
         'symbol-placement': 'line',
         'symbol-spacing': 300,
-        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
+        // 'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
+        'text-font': ['Noto Sans Medium'],
         'text-field': '{service}',
         'text-size': 14,
         'text-rotation-alignment': 'viewport',
@@ -2204,7 +2279,8 @@ const App = () => {
           'symbol-spacing': 200,
           'text-field': '→',
           'text-size': 16,
-          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
+          // 'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
+          'text-font': ['Noto Sans Medium'],
           // 'text-allow-overlap': true,
           // 'text-ignore-placement': true,
           'text-keep-upright': false,
@@ -2307,65 +2383,6 @@ const App = () => {
       });
     });
 
-    // Traffic
-    map.addSource('traffic', {
-      type: 'vector',
-      url: 'mapbox://mapbox.mapbox-traffic-v1',
-    });
-    map.addLayer(
-      {
-        id: 'traffic',
-        type: 'line',
-        source: 'traffic',
-        'source-layer': 'traffic',
-        minzoom: 14,
-        filter: ['all', ['==', '$type', 'LineString'], ['has', 'congestion']],
-        layout: {
-          'line-join': 'round',
-          'line-cap': 'round',
-          visibility: 'none',
-        },
-        paint: {
-          'line-width': 3,
-          'line-offset': [
-            'case',
-            [
-              'match',
-              ['get', 'class'],
-              ['link', 'motorway_link', 'service', 'street'],
-              true,
-              false,
-            ],
-            6,
-            ['match', ['get', 'class'], ['secondary', 'tertiary'], true, false],
-            6,
-            ['==', 'class', 'primary'],
-            12,
-            ['==', 'class', 'trunk'],
-            12,
-            ['==', 'class', 'motorway'],
-            9,
-            6,
-          ],
-          'line-color': [
-            'match',
-            ['get', 'congestion'],
-            'low',
-            'rgba(36, 218, 26, .2)',
-            'moderate',
-            'rgba(253, 149, 0, .55)',
-            'heavy',
-            'rgba(252, 77, 77, .65)',
-            'severe',
-            'rgba(148, 41, 76, .75)',
-            'transparent',
-          ],
-          'line-opacity': ['interpolate', ['linear'], ['zoom'], 14.1, 0, 16, 1],
-        },
-      },
-      'road-label-navigation',
-    );
-
     // Service live buses
     map.addSource('buses-service', {
       type: 'geojson',
@@ -2374,11 +2391,14 @@ const App = () => {
         features: [],
       },
     });
-    map.loadImage(busTinyImagePath).then((img) => {
-      map.addImage('bus-tiny', img.data);
-    }).catch((e) => {
-      console.error('Failed to load bus-tiny image:', e);
-    });
+    map
+      .loadImage(busTinyImagePath)
+      .then((img) => {
+        map.addImage('bus-tiny', img.data);
+      })
+      .catch((e) => {
+        console.error('Failed to load bus-tiny image:', e);
+      });
     map.addLayer({
       id: 'buses-service',
       type: 'symbol',
@@ -2557,6 +2577,10 @@ const App = () => {
     const handleMapClick = (e) => {
       if (e.originalEvent.altKey) {
         console.log(e.lngLat);
+        const layers = map.queryRenderedFeatures(e.point, {
+          validate: false,
+        });
+        console.log({ layers });
       }
       const { point } = e;
       const features = map.queryRenderedFeatures(point, {

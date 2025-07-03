@@ -10,6 +10,7 @@ export default class GeolocateControl {
   _currentLocation = null;
   _buttonClicked = false;
   _orientationGranted = false;
+  _retries = 0;
   constructor(options) {
     this.options = Object.assign(
       {
@@ -201,12 +202,14 @@ export default class GeolocateControl {
           }
 
           console.warn(e);
+          this._retries++;
           if (e.code === 1) {
             // PERMISSION_DENIED
             alert(
               'Looks like location tracking is blocked on your browser. Please enable it in the settings to use this feature.',
             );
           } else {
+            if (this._retries > 3) return;
             // Retry again
             this._clickButton();
           }
