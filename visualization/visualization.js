@@ -31,12 +31,36 @@ const SPRITE_URL =
 
 // Customize Protomaps black theme
 const currentFlavor = namedFlavor('black');
+// Go thru all values in currentFlavor and set all to #ffffff00
+function transparentify(obj) {
+  for (const key in obj) {
+    if (typeof obj[key] === 'object') {
+      transparentify(obj[key]);
+    } else if (typeof obj[key] === 'string') {
+      obj[key] = '#ffffff00';
+    }
+  }
+}
+transparentify(currentFlavor);
+
+const roadColor = '#112230';
 
 const flavor = {
   ...currentFlavor,
   background: '#112230',
   water: '#112230',
   earth: '#08101d',
+  buildings: '#141c2a',
+  minor_service: roadColor,
+  minor_a: roadColor,
+  minor_b: roadColor,
+  link: roadColor,
+  major: roadColor,
+  highway: roadColor,
+  bridges_minor: roadColor,
+  bridges_link: roadColor,
+  bridges_major: roadColor,
+  bridges_highway: roadColor,
 };
 
 const mapLayers = layers('protomaps', flavor, { lang: 'en' });
