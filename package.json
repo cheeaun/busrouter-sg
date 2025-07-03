@@ -9,6 +9,7 @@
     "build": "parcel build index.html bus-arrival/index.html bus-first-last/index.html visualization/index.html --no-cache --no-scope-hoist",
     "postbuild": "cpy {favicon.ico,ads.txt} dist && cpy well-known/* dist/.well-known && node tasks/generateHeaders",
     "prod": "npx serve dist/",
+    "test:e2e": "playwright test",
     "pmtiles-1": "pmtiles extract https://build.protomaps.com/20250629.pmtiles singapore.pmtiles --bbox=103.56,1.15,104.13,1.48",
     "pmtiles-2": "pmtiles extract https://overturemaps-tiles-us-west-2-beta.s3.amazonaws.com/2025-06-25/buildings.pmtiles tiles/singapore-buildings.pmtiles --bbox=103.56,1.15,104.13,1.48"
   },
@@ -48,13 +49,15 @@
     "@parcel/packager-raw-url": "~2.15.4",
     "@parcel/transformer-image": "~2.15.4",
     "@parcel/transformer-webmanifest": "~2.15.4",
+    "@playwright/test": "~1.53.2",
     "@turf/circle": "~7.2.0",
     "@turf/helpers": "~7.2.0",
     "@turf/simplify": "~7.2.0",
     "babel-plugin-transform-remove-console": "~6.9.4",
     "cpy-cli": "5.0.0",
     "netlify-plugin-ttl-cache": "~1.0.2",
-    "parcel": "~2.15.4"
+    "parcel": "~2.15.4",
+    "process": "~0.11.10"
   },
   "alias": {
     "react": "preact/compat"
