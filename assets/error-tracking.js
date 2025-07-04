@@ -8,5 +8,6 @@ if (!/localhost/i.test(location.hostname)) {
     environment:
       location.hostname === 'busrouter.sg' ? 'production' : 'development',
     debug: /localhost/i.test(location.hostname),
+    allowUrls: [/busrouter\.sg/, /localhost/],
   });
 }
