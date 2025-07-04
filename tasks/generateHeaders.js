@@ -44,4 +44,10 @@ headers.forEach((h) => {
   });
 });
 
+// Headers for PMTiles, 1 week
+content += `
+/*.pmtiles
+  Cache-Control: public, max-age=604800
+`;
+
 fs.writeFileSync('dist/_headers', content);
