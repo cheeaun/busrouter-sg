@@ -96,7 +96,7 @@ export function createMapStyle({ lang = 'en' } = {}) {
         layer['source-layer'] = 'building';
         layer.paint['fill-outline-color'] = '#d7d7c7';
         layer.paint['fill-opacity'] = 1;
-        layer.minzoom = 16;
+        layer.minzoom = 15;
         break;
 
       case 'places_subplace':
