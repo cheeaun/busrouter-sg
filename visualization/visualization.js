@@ -1,10 +1,11 @@
 import maplibregl from 'maplibre-gl';
-import MapboxLayer from '@deck.gl/mapbox/dist/esm/mapbox-layer';
-import SolidPolygonLayer from '@deck.gl/layers/dist/esm/solid-polygon-layer/solid-polygon-layer';
-import PathLayer from '@deck.gl/layers/dist/esm/path-layer/path-layer';
+import MapboxLayer from '@deck.gl/mapbox/dist/mapbox-layer';
+import SolidPolygonLayer from '@deck.gl/layers/dist/solid-polygon-layer/solid-polygon-layer';
+import PathLayer from '@deck.gl/layers/dist/path-layer/path-layer';
+import { Protocol } from 'pmtiles';
+import { layers, namedFlavor } from '@protomaps/basemaps';
 import { sortServices } from '../assets/utils/bus';
 import fetchCache from '../assets/utils/fetchCache';
-import { ARCGIS_API_KEY } from '../assets/config';
 import routesJSONPath from './data/routes.json';
 import stops3DJSONPath from './data/stops.3d.json';
 
@@ -16,10 +17,71 @@ const lowerLat = 1.1,
   upperLat = 1.58,
   lowerLong = 103.49,
   upperLong = 104.15;
+
+// Set up PMTiles protocol
+let protocol = new Protocol();
+maplibregl.addProtocol('pmtiles', protocol.tile);
+
+// Create map style using protomaps black flavor
+const sgTilesPath = new URL('../tiles/singapore.pmtiles', import.meta.url);
+const GLYPHS_URL =
+  'https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf';
+const SPRITE_URL =
+  'https://protomaps.github.io/basemaps-assets/sprites/v4/dark';
+
+// Customize Protomaps black theme
+const currentFlavor = namedFlavor('black');
+// Go thru all values in currentFlavor and set all to #ffffff00
+function transparentify(obj) {
+  for (const key in obj) {
+    if (typeof obj[key] === 'object') {
+      transparentify(obj[key]);
+    } else if (typeof obj[key] === 'string') {
+      obj[key] = '#ffffff00';
+    }
+  }
+}
+transparentify(currentFlavor);
+
+const roadColor = '#112230';
+
+const flavor = {
+  ...currentFlavor,
+  background: '#112230',
+  water: '#112230',
+  earth: '#08101d',
+  buildings: '#141c2a',
+  minor_service: roadColor,
+  minor_a: roadColor,
+  minor_b: roadColor,
+  link: roadColor,
+  major: roadColor,
+  highway: roadColor,
+  bridges_minor: roadColor,
+  bridges_link: roadColor,
+  bridges_major: roadColor,
+  bridges_highway: roadColor,
+};
+
+const mapLayers = layers('protomaps', flavor, { lang: 'en' });
+
+const mapStyle = {
+  version: 8,
+  glyphs: GLYPHS_URL,
+  sprite: SPRITE_URL,
+  sources: {
+    protomaps: {
+      type: 'vector',
+      url: `pmtiles://${sgTilesPath}`,
+      attribution:
+        '<a href="https://protomaps.com" target="_blank">Protomaps</a> © <a href="https://openstreetmap.org" target="_blank">OpenStreetMap</a>',
+    },
+  },
+  layers: mapLayers,
+};
 const map = new maplibregl.Map({
   container: 'map',
-  // style: `mapbox://styles/uberdata/cjoqbbf6l9k302sl96tyvka09`,
-  style: `https://basemaps-api.arcgis.com/arcgis/rest/services/styles/4cad6f82d6b54c67bdcc3a6fb105888f?type=style&token=${ARCGIS_API_KEY}`,
+  style: mapStyle,
   boxZoom: false,
   minZoom: 8,
   renderWorldCopies: false,

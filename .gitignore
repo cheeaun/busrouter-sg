@@ -8,3 +8,9 @@ tmp
 .env
 data/3/route-lines
 .vscode
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

@@ -44,4 +44,23 @@ headers.forEach((h) => {
   });
 });
 
+// Headers for assets, 1 month, 1 week
+content += `
+/*.css
+  Cache-Control: public, max-age=2592000
+/*.js
+  Cache-Control: public, max-age=2592000
+/*.svg
+  Cache-Control: public, max-age=2592000
+/*.png
+  Cache-Control: public, max-age=2592000
+/*.jpg
+  Cache-Control: public, max-age=2592000
+
+/*.pmtiles
+  Cache-Control: public, max-age=604800
+/*.geojson
+  Cache-Control: public, max-age=604800
+`;
+
 fs.writeFileSync('dist/_headers', content);

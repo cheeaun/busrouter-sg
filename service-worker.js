@@ -6,6 +6,7 @@ import {
 } from 'workbox-strategies';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
+import { RangeRequestsPlugin } from 'workbox-range-requests';
 import * as googleAnalytics from 'workbox-google-analytics';
 
 googleAnalytics.initialize();
@@ -19,7 +20,7 @@ registerRoute(
         statuses: [200],
       }),
     ],
-  })
+  }),
 );
 
 registerRoute(
@@ -36,7 +37,7 @@ registerRoute(
         purgeOnQuotaError: true,
       }),
     ],
-  })
+  }),
 );
 
 registerRoute(
@@ -53,7 +54,7 @@ registerRoute(
         statuses: [0, 200],
       }),
     ],
-  })
+  }),
 );
 
 registerRoute(
@@ -69,7 +70,7 @@ registerRoute(
         statuses: [200],
       }),
     ],
-  })
+  }),
 );
 
 registerRoute(
@@ -85,7 +86,7 @@ registerRoute(
         statuses: [200],
       }),
     ],
-  })
+  }),
 );
 
 registerRoute(
@@ -101,5 +102,41 @@ registerRoute(
         statuses: [200],
       }),
     ],
-  })
+  }),
+);
+
+// Protomaps fonts and sprites
+registerRoute(
+  /.*protomaps\.github\.io\/basemaps-assets\/(fonts|sprites)/,
+  new CacheFirst({
+    cacheName: 'protomaps-assets',
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: 30,
+        maxAgeSeconds: 7 * 24 * 60 * 60, // 7 Days
+        purgeOnQuotaError: true,
+      }),
+      new CacheableResponsePlugin({
+        statuses: [200],
+      }),
+    ],
+  }),
+);
+
+// PMTiles requests - need range request support
+registerRoute(
+  /.*\.pmtiles$/,
+  new CacheFirst({
+    cacheName: 'pmtiles',
+    plugins: [
+      new RangeRequestsPlugin(),
+      new ExpirationPlugin({
+        maxAgeSeconds: 7 * 24 * 60 * 60, // 7 Days
+        purgeOnQuotaError: true,
+      }),
+      new CacheableResponsePlugin({
+        statuses: [200, 206], // Include 206 for range requests
+      }),
+    ],
+  }),
 );

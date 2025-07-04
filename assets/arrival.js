@@ -359,7 +359,10 @@ function ArrivalTimes() {
                     <tr class={pinned ? 'pin' : ''}>
                       <th colspan="2">
                         <small class="destination">
-                          {stopsData[next.destination_code][2]}
+                          {(next?.destination_code &&
+                            stopsData[next.destination_code]?.[2]) ||
+                            next?.destination_code ||
+                            ''}
                         </small>
                       </th>
                     </tr>

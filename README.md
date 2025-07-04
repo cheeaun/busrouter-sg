@@ -55,7 +55,7 @@ The scripts for the web app:
 
 [![Crowdin](https://badges.crowdin.net/busrouter-sg/localized.svg)](https://crowdin.com/project/busrouter-sg)
 
-**[➡️ Start translating ⬅️](https://crwd.in/busrouter-sg)**
+**[➡️ Start translating ⬅️](https://crowdin.com/project/busrouter-sg)**
 
 ### Visualization
 
