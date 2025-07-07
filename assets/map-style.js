@@ -1,12 +1,9 @@
 import { layers, namedFlavor } from '@protomaps/basemaps';
 
-// Tile paths
-const sgTilesPath = new URL('../tiles/singapore.pmtiles', import.meta.url);
-const sgBuildingsTilesPath = new URL(
-  '../tiles/singapore-buildings.pmtiles',
-  import.meta.url,
-);
-const sgRailTilesPath = new URL('../tiles/sg-rail.geojson', import.meta.url);
+const TILES_ROOT = 'https://assets.busrouter.sg/tiles/';
+const sgTilesPath = TILES_ROOT + 'singapore.pmtiles';
+const sgBuildingsTilesPath = TILES_ROOT + 'singapore-buildings.pmtiles';
+const sgRailTilesPath = TILES_ROOT + 'sg-rail.geojson';
 
 const GLYPHS_URL =
   'https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf';
@@ -230,7 +227,7 @@ export function createMapStyle({ lang = 'en' } = {}) {
       },
       'sg-rail': {
         type: 'geojson',
-        data: sgRailTilesPath.href,
+        data: sgRailTilesPath,
         attribution:
           '© <a href="https://www.smrt.com.sg/" target="_blank" title="Singapore Mass Rapid Transit">SMRT</a> © <a href="https://www.sbstransit.com.sg/" target="_blank" title="Singapore Bus Services">SBS</a>',
       },

@@ -125,7 +125,7 @@ registerRoute(
 
 // PMTiles requests - need range request support
 registerRoute(
-  /.*\.pmtiles$/,
+  /.*\.(pmtiles|geojson)$/,
   new CacheFirst({
     cacheName: 'pmtiles',
     plugins: [
