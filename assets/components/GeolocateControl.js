@@ -1,4 +1,4 @@
-import mapboxgl from 'mapbox-gl';
+import maplibregl from 'maplibre-gl';
 import checkGeolocationSupport from '../utils/checkGeolocationSupport';
 import compassHeading from '../utils/compassHeading';
 
@@ -10,6 +10,7 @@ export default class GeolocateControl {
   _currentLocation = null;
   _buttonClicked = false;
   _orientationGranted = false;
+  _retries = 0;
   constructor(options) {
     this.options = Object.assign(
       {
@@ -22,7 +23,7 @@ export default class GeolocateControl {
   onAdd(map) {
     this._map = map;
     const container = document.createElement('div');
-    container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group';
+    container.className = 'maplibregl-ctrl maplibregl-ctrl-group';
     this._container = container;
     checkGeolocationSupport(this._setupUI);
     return this._container;
@@ -33,7 +34,7 @@ export default class GeolocateControl {
     }
 
     const button = document.createElement('button');
-    button.className = 'mapboxgl-ctrl-icon mapboxgl-ctrl-custom-geolocate';
+    button.className = 'maplibregl-ctrl-icon maplibregl-ctrl-custom-geolocate';
     button.type = 'button';
     button.innerHTML = `<svg viewBox="0 0 16 15" width="18" height="18">
     <path d="M.75 5.94c-.3.14-.51.33-.63.57a1.12 1.12 0 00.3 1.38c.2.17.47.26.8.27l5.54.02c.06 0 .09 0 .1.02.02.02.02.05.02.1l.02 5.5c.01.35.1.62.28.82.17.2.39.33.64.37.26.04.51-.01.77-.14.25-.14.45-.37.6-.7l5.7-12.34c.16-.32.22-.61.18-.87a1.05 1.05 0 00-.32-.65c-.17-.16-.4-.26-.67-.28-.28-.03-.58.03-.9.18L.75 5.94z"/>
@@ -48,7 +49,7 @@ export default class GeolocateControl {
       <div class="user-location-compass" hidden></div>`;
     // <div class="user-location-accuracy"></div>`;
     dot.className = 'user-location';
-    this._dot = new mapboxgl.Marker({
+    this._dot = new maplibregl.Marker({
       element: dot,
       rotationAlignment: 'map',
     });
@@ -201,12 +202,14 @@ export default class GeolocateControl {
           }
 
           console.warn(e);
+          this._retries++;
           if (e.code === 1) {
             // PERMISSION_DENIED
             alert(
               'Looks like location tracking is blocked on your browser. Please enable it in the settings to use this feature.',
             );
           } else {
+            if (this._retries > 3) return;
             // Retry again
             this._clickButton();
           }

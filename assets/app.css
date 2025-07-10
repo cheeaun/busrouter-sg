@@ -1,4 +1,4 @@
-@import 'npm:mapbox-gl/dist/mapbox-gl.css';
+@import 'npm:maplibre-gl/dist/maplibre-gl.css';
 
 html,
 body {
@@ -60,45 +60,45 @@ a:active {
   pointer-events: none;
 }
 
-.mapboxgl-canvas {
+.maplibregl-canvas {
   outline: 0;
 }
-.mapboxgl-ctrl-group {
+.maplibregl-ctrl-group {
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 123123px;
 }
 @supports (backdrop-filter: blur(10px)) {
-  .mapboxgl-ctrl-group {
+  .maplibregl-ctrl-group {
     background-color: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px) saturate(3);
   }
 }
-.mapboxgl-ctrl-group button {
+.maplibregl-ctrl-group button {
   opacity: 0.8;
   width: 36px;
   height: 36px;
 }
-.mapboxgl-ctrl.mapboxgl-ctrl-attrib {
+.maplibregl-ctrl.maplibregl-ctrl-attrib {
   box-sizing: content-box;
 }
 @supports (top: max(1px)) {
-  .mapboxgl-ctrl-top-right {
+  .maplibregl-ctrl-top-right {
     top: max(0px, env(safe-area-inset-top));
     right: max(0px, env(safe-area-inset-right));
   }
 }
-.mapboxgl-ctrl-group button.mapboxgl-ctrl-compass {
+.maplibregl-ctrl-group button.maplibregl-ctrl-compass {
   display: none;
 }
-.mapboxgl-ctrl-group button.mapboxgl-ctrl-compass.show {
+.maplibregl-ctrl-group button.maplibregl-ctrl-compass.show {
   display: block;
 }
-.mapboxgl-ctrl-bottom-left {
+.maplibregl-ctrl-bottom-left {
   transform: translateY(-60px);
   transition: transform 0.3s ease-in-out;
 }
 @supports (top: max(1px)) {
-  .mapboxgl-ctrl-bottom-left {
+  .maplibregl-ctrl-bottom-left {
     transform: translateY(calc(-60px - env(safe-area-inset-bottom)));
   }
 }
@@ -1332,7 +1332,7 @@ a.service-tag:hover {
     margin-left: 0;
   }
 
-  .mapboxgl-ctrl-bottom-left {
+  .maplibregl-ctrl-bottom-left {
     transform: translateY(0) !important;
   }
 }
@@ -1438,23 +1438,23 @@ a.service-tag:hover {
 
 /* Geolocation */
 
-.mapboxgl-ctrl-custom-geolocate {
+.maplibregl-ctrl-custom-geolocate {
   color: #333;
   transition: color 0.3s;
 }
-.mapboxgl-ctrl-custom-geolocate.loading {
+.maplibregl-ctrl-custom-geolocate.loading {
   color: #007aff;
   pointer-events: none;
   animation: glowing infinite alternate 1s linear both;
 }
-.mapboxgl-ctrl-custom-geolocate.active {
+.maplibregl-ctrl-custom-geolocate.active {
   color: #007aff;
 }
-.mapboxgl-ctrl-custom-geolocate svg {
+.maplibregl-ctrl-custom-geolocate svg {
   vertical-align: middle;
   fill: currentColor;
 }
-.mapboxgl-ctrl-custom-geolocate.active svg .inner {
+.maplibregl-ctrl-custom-geolocate.active svg .inner {
   fill: currentColor;
 }
 .user-location {
