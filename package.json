@@ -50,7 +50,7 @@
     "@parcel/packager-raw-url": "~2.15.4",
     "@parcel/transformer-image": "~2.15.4",
     "@parcel/transformer-webmanifest": "~2.15.4",
-    "@playwright/test": "~1.53.2",
+    "@playwright/test": "~1.56.1",
     "@turf/circle": "~7.2.0",
     "@turf/helpers": "~7.2.0",
     "@turf/simplify": "~7.2.0",
