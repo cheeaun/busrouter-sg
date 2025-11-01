@@ -52,7 +52,7 @@
     "title": "Perhentian bas {{stopNumber}}: {{stopName}} - $t(app.name)",
     "titleRoutes": "Laluan yang melalui perhentian bas {{stopNumber}}: {{stopName}} - $t(app.name)",
     "firstLastBus": "Bas pertama/terakhir",
-    "multipleDirectionsWarning": "Sesetengah perkhidmatan menyediakan pelbagai arah. Buka \"Ketibaan bas\" untuk melihat butiran lanjut.",
+    "multipleDirectionsWarning": "Sesetengah perkhidmatan merangkumi pelbagai hala. Buka 'Ketibaan Bas' untuk butiran lanjut.",
     "liveBusTrack_0": "{{count}} bas kini berada di landasan."
   },
   "passingRoutes": {
